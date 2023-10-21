@@ -10,7 +10,6 @@ function addr_dec_1K_to_hex() {
 	printf '%x' $(( ${dec_addr_1K} * 1024 ))
 }
 
-
 function make_a_table() {
 	part_count_total=$(( "${#part_name[@]}" - 1 ))
 
@@ -27,13 +26,11 @@ function make_a_table() {
 	done
 }
 
-
 function import_vars_t20_stock() {
 	## Pan v1, v2
 	part_name=(boot kernel root driver appfs backupk backupd backupa config para)
 	part_size=(256 2048 3392 640 4736 2048 640 2048 256 256)
 }
-
 
 function import_vars_t31_stock() {
 	## Pan v2, v3, Floodlight
@@ -52,6 +49,8 @@ function import_vars_t31_openipc() {
 	part_name=(boot env kernel rootfs rootfs-data)
 	part_size=(256 64 3072 10240 2752)
 }
+
+
 
 echo "---------- T20 stock ----------"
 import_vars_t20_stock

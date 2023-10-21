@@ -446,8 +446,14 @@ msg "Detected chip name: $chipname, chip family: $chip_family"
 dd if=/dev/mtdblock1 of=/tmp/uboot_partimg
 strings /tmp/uboot_partimg > /tmp/uboot_partimg_strings
 
-if grep -q "demo.bin" /tmp/uboot_partimg_strings || grep -q "demo_wcv3.bin" /tmp/uboot_partimg_strings || grep -q "recovery_wcpv2.bin" /tmp/uboot_partimg_strings ; then
-   	msg "Camera is currently on stock firmware"
+if grep -q "demo.bin" /tmp/uboot_partimg_strings; then #  Cam v2 & Cam Pan
+   	msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
+   	current_fw="stock"
+elif grep -q "demo_wcv3.bin" /tmp/uboot_partimg_strings; then # Cam v3
+   	msg "Camera is currently on Cam v3 stock firmware"
+   	current_fw="stock"
+elif grep -q "recovery_wcpv2.bin" /tmp/uboot_partimg_strings ; then # Cam Pan v2
+   	msg "Camera is currently on Cam Pan v2 stock firmware"
    	current_fw="stock"
 else
    	msg "Camera is currently on OpenIPC firmware"

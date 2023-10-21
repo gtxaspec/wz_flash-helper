@@ -390,7 +390,7 @@ function backup_partition_to_file() {
 }
 
 function backup_full_flash() {
-	case "$current_fw" in
+	case "$current_fw_type" in
 		"stock")
 			dd if=$concat_mtddev of=$stock_backup_dir_path/$stock_full_flash_filename ;;
 		"openipc")
@@ -588,16 +588,16 @@ function detect_chip_and_fw() {
 
 	if grep -q "demo.bin" /tmp/uboot_partimg_strings; then #  Cam v2 & Cam Pan
 	   	msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
-	   	current_fw="stock"
+	   	current_fw_type="stock"
 	elif grep -q "demo_wcv3.bin" /tmp/uboot_partimg_strings; then # Cam v3
 	   	msg "Camera is currently on Cam v3 stock firmware"
-	   	current_fw="stock"
+	   	current_fw_type="stock"
 	elif grep -q "recovery_wcpv2.bin" /tmp/uboot_partimg_strings ; then # Cam Pan v2
 	   	msg "Camera is currently on Cam Pan v2 stock firmware"
-	   	current_fw="stock"
+	   	current_fw_type="stock"
 	else
 	   	msg "Camera is currently on OpenIPC firmware"
-		current_fw="openipc"
+		current_fw_type="openipc"
 	fi
 
 	rm /tmp/uboot_partimg
@@ -652,16 +652,16 @@ function do_backup_operations() {
 		msg
 		msg "---------- Begin of backup operations ----------"
 		backup_full_flash
-		if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
+		if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
 			msg "Backing up stock partitions and config for T20 camera"
 			backup_t20_stock_parts
 			backup_t20_stock_config
 			backup_t20_stock_para
-		elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
+		elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
 			msg "Backing up stock partitions and config for T31 camera"
 			backup_t31_stock_parts
 			backup_t31_stock_config
-		elif [[ "$current_fw" == "openipc" ]]; then
+		elif [[ "$current_fw_type" == "openipc" ]]; then
 			msg "Backing up OpenIPC partitions"
 			backup_openipc_parts
 		fi

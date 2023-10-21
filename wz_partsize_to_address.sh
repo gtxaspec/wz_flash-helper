@@ -15,7 +15,7 @@ function make_a_table() {
 
 	echo -e "PART,SIZE(dec),START(dec),START(hex)"
 	for part_num in $(seq 0 ${part_count_total});do
-	#	echo "${part_name[${part_num}]}" "${part_size[${part_num}]}"
+		# echo "${part_name[${part_num}]}" "${part_size[${part_num}]}"
 		part_start=0
 		part_num_new=$(( ${part_num} - 1)) # Do this because array counts from 0
 		for part_count_start_add in $(seq 0 ${part_num_new}); do
@@ -38,17 +38,12 @@ function import_vars_t31_stock() {
 	part_size=(256 1984 3904 3904 1984 3904 384 64)
 }
 
-function import_vars_t20_openipc() {
+function import_vars_openipc() {
 	## Pan v1, v2
 	part_name=(boot env kernel rootfs rootfs-data)
 	part_size=(256 64 3072 10240 2752)
 }
 
-function import_vars_t31_openipc() {
-	## Pan v2, v3, Floodlight
-	part_name=(boot env kernel rootfs rootfs-data)
-	part_size=(256 64 3072 10240 2752)
-}
 
 
 
@@ -65,18 +60,10 @@ make_a_table > /tmp/t31_stock_addresses
 column -s, -t < /tmp/t31_stock_addresses
 rm /tmp/t31_stock_addresses
 
-
 echo
-echo "---------- T20 OpenIPC ----------"
-import_vars_t20_openipc
-make_a_table > /tmp/t20_openipc_addresses
-column -s, -t < /tmp/t20_openipc_addresses
-rm /tmp/t20_openipc_addresses
+echo "---------- T20 & T31 OpenIPC ----------"
+import_vars_openipc
+make_a_table > /tmp/openipc_addresses
+column -s, -t < /tmp/openipc_addresses
+rm /tmp/openipc_addresses
 
-
-echo
-echo "---------- T31 OpenIPC ----------"
-import_vars_t31_openipc
-make_a_table > /tmp/t31_openipc_addresses
-column -s, -t < /tmp/t31_openipc_addresses
-rm /tmp/t31_openipc_addresses

@@ -375,7 +375,7 @@ function backup_t20_stock_partitions() {
 }
 
 function backup_t20_stock_config() {
-
+	msg "Executing backup_t20_stock_config"
 }
 
 function backup_t31_stock_partitions() {
@@ -383,7 +383,7 @@ function backup_t31_stock_partitions() {
 }
 
 function backup_t31_stock_config() {
-
+	msg "Executing backup_t31_stock_config"
 }
 
 function restore_t20_stock_partitions() {

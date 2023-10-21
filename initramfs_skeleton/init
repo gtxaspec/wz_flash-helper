@@ -214,25 +214,25 @@ function get_openipc_partsize() {
 function get_t20_stock_partimgfile() {
 	case "$1" in
 		"boot")
-			echo -n "$boot_filename" ;;
+			echo -n "stock_boot" ;;
 		"kernel" )
-			echo -n "$kernel_filename" ;;
+			echo -n "stock_kernel" ;;
 		"root" )
-			echo -n "$root_filename" ;;
+			echo -n "stock_root" ;;
 		"driver" )
-			echo -n "$driver_filename" ;;
+			echo -n "stock_driver" ;;
 		"appfs" )
-			echo -n "$appfs_filename" ;;
+			echo -n "stock_appfs" ;;
 		"backupk" )
-			echo -n "$backupk_filename" ;;
+			echo -n "stock_backupk" ;;
 		"backupd" )
-			echo -n "$backupd_filename" ;;
+			echo -n "stock_backupd" ;;
 		"backupa" )
-			echo -n "$backupa_filename" ;;
+			echo -n "stock_backupa" ;;
 		"config" )
-			echo -n "$config_filename" ;;
+			echo -n "stock_config" ;;
 		"para" )
-			echo -n "$para_filename" ;;
+			echo -n "stock_para" ;;
 	esac
 }
 
@@ -240,34 +240,34 @@ function get_t20_stock_partimgfile() {
 function get_t31_stock_partimgfile() {
 	case "$1" in
 		"kernel" )
-			echo -n "$kernel_filename" ;;
+			echo -n "stock_kernel" ;;
 		"rootfs" )
-			echo -n "$rootfs_filename" ;;
+			echo -n "stock_rootfs" ;;
 		"app" )
-			echo -n "$app_filename" ;;
+			echo -n "stock_app" ;;
 		"kback" )
-			echo -n "$kback_filename" ;;
+			echo -n "stock_kback" ;;
 		"aback" )
-			echo -n "$aback_filename" ;;
+			echo -n "stock_aback" ;;
 		"cfg" )
-			echo -n "$cfg_filename" ;;
+			echo -n "stock_cfg" ;;
 		"para" )
-			echo -n "$para_filename" ;;
+			echo -n "stock_para" ;;
 	esac
 }
 
 function get_openipc_partimgfile() {
 	case "$1" in
 		"boot")
-			echo -n "$boot_filename" ;;
+			echo -n "openipc_boot" ;;
 		"env" )
-			echo -n "$env_filename" ;;
+			echo -n "openipc_env" ;;
 		"kernel" )
-			echo -n "$kernel_filename" ;;
+			echo -n "openipc_kernel" ;;
 		"rootfs" )
-			echo -n "$rootfs_filename" ;;
+			echo -n "openipc_rootfs" ;;
 		"rootfs-data" )
-			echo -n "$rootfs_data_filename" ;;
+			echo -n "openipc_rootfs-data" ;;
 	esac
 }
 
@@ -460,6 +460,7 @@ else
 	current_fw="openipc"
 fi
 
+rm /tmp/uboot_partimg
 
 ##### INITIALIZE GPIO #####
 [[ "chip_family" == "T20" ]] && initialize_t20_gpio_sdcard

@@ -50,7 +50,8 @@ mount -t sysfs sysfs /sys
 sleep 1
 
 
-function msg() {     # Allow output messages to be both displayed serial terminal and written on log file
+function msg() {
+# Descritpion: Allow output messages to be both displayed serial terminal and written on log file
 	message="$1"
 	echo "$message"
 	echo "$message" > /dev/console
@@ -63,12 +64,14 @@ function msg_nonewline() {
 }
 
 function initialize_t20_gpio_sdcard() {
+# Description: T20 cameras need this to get SD card detected
 	echo 43 > /sys/class/gpio/export
 	echo in > /sys/class/gpio/gpio43/direction
 	sleep 3 # Required delay for SD card init on T20
 }
 
 function initialize_gpio_leds() {
+# Description: Export LEDs GPIO pins if they don't exist
 	if [ ! -d /sys/class/gpio/gpio38 ]; then
 		echo 38 > /sys/class/gpio/export
 		echo out > /sys/class/gpio/gpio38/direction
@@ -83,6 +86,8 @@ function initialize_gpio_leds() {
 }
 
 function get_t20_stock_partstartaddr() {
+# Description: Return start address of a given partition name on T20 cameras stock firmware
+# Syntax: get_t20_stock_partstartaddr <partname>
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
@@ -108,6 +113,8 @@ function get_t20_stock_partstartaddr() {
 }
 
 function get_t31_stock_partstartaddr() {
+# Description: Return start address of a given partition name on T31 cameras stock firmware
+# Syntax: get_t31_stock_partstartaddr <partname>
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
@@ -129,6 +136,8 @@ function get_t31_stock_partstartaddr() {
 }
 
 function get_openipc_partstartaddr() {
+# Description: Return start address of a given partition name on OpenIPC firmware
+# Syntax: get_openipc_partstartaddr <partname>
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
@@ -144,6 +153,8 @@ function get_openipc_partstartaddr() {
 }
 
 function get_t20_stock_partsize() {
+# Description: Return partition size of a given partition name on T20 cameras stock firmware
+# Syntax: get_t20_stock_partsize <partname>
 	case "$1" in
 		"boot")
 			echo -n "256" ;;
@@ -169,6 +180,8 @@ function get_t20_stock_partsize() {
 }
 
 function get_t31_stock_partsize() {
+# Description: Return partition size of a given partition name on T31 cameras stock firmware
+# Syntax: get_t31_stock_partsize <partname>
 	case "$1" in
 		"boot")
 			echo -n "256" ;;
@@ -190,6 +203,8 @@ function get_t31_stock_partsize() {
 }
 
 function get_openipc_partsize() {
+# Description: Return partition size of a given partition name on OpenIPC firmware
+# Syntax: get_openipc_partsize <partname>
 	case "$1" in
 		"boot")
 			echo -n "256" ;;
@@ -205,6 +220,8 @@ function get_openipc_partsize() {
 }
 
 function get_t20_stock_partimgfile() {
+# Description: Return filename for the partition used for backup/restore of a given partition name on T20 stock firmware
+# Syntax: get_t20_stock_partimgfile <partname>
 	case "$1" in
 		"boot")
 			echo -n "t20_stock_boot" ;;
@@ -231,6 +248,8 @@ function get_t20_stock_partimgfile() {
 
 
 function get_t31_stock_partimgfile() {
+# Description: Return filename for the partition used for backup/restore of a given partition name on T31 stock firmware
+# Syntax: get_t31_stock_partimgfile <partname>
 	case "$1" in
 		"kernel" )
 			echo -n "t31_stock_kernel" ;;
@@ -250,6 +269,8 @@ function get_t31_stock_partimgfile() {
 }
 
 function get_openipc_partimgfile() {
+# Description: Return filename for the partition used for backup/restore of a given partition name on OpenIPC firmware
+# Syntax: get_openipc_partimgfile <partname>
 	case "$1" in
 		"boot")
 			echo -n "openipc_boot" ;;
@@ -265,6 +286,8 @@ function get_openipc_partimgfile() {
 }
 
 function get_t20_stock_restore_opt_value() {
+# Description: Return user option to decide if a given partition is restored or not on T20 stock firmware
+# Syntax: get_t20_stock_restore_opt_value <partname>
 	case "$1" in
 		"boot")
 			echo -n "$t20_restore_boot" ;;
@@ -290,6 +313,8 @@ function get_t20_stock_restore_opt_value() {
 }
 
 function get_t31_stock_restore_opt_value() {
+# Description: Return user option to decide if a given partition is restored or not on T31 stock firmware
+# Syntax: get_t31_stock_restore_opt_value <partname>
 	case "$1" in
 		"kernel" )
 			echo -n "$t31_restore_kernel" ;;
@@ -309,6 +334,8 @@ function get_t31_stock_restore_opt_value() {
 }
 
 function get_openipc_restore_opt_value() {
+# Description: Return user option to decide if a given partition is restored or not on OpenIPC firmware
+# Syntax: get_openipc_restore_opt_value <partname>
 	case "$1" in
 		"boot")
 			echo -n "$openipc_restore_boot" ;;
@@ -363,6 +390,7 @@ function write_partition_to_file() {
 }
 
 function backup_t20_stock_parts() {
+# Description: Create partition images of all stock partitions on T20 flash chip
 	[ ! -d $backup_dir_path/stock ] && mkdir $backup_dir_path/stock
 	
 	for partname in $t20_stock_partname_list; do
@@ -375,11 +403,27 @@ function backup_t20_stock_parts() {
 }
 
 function backup_t20_stock_config() {
+# Description: Create tar.gz archive for config partition on T20 flash chip
 	msg "Executing backup_t20_stock_config"
-	msg "Not implemented yet"
+	mkdir /t20_stock_config
+	mount -t jffs2 $t20_config_mtddev /t20_stock_config
+	tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config
+	sync
+	umount /t20_stock_config
+}
+
+function backup_t20_stock_para() {
+# Description: Create tar.gz archive for para partition on T20 flash chip
+	msg "Executing backup_t20_stock_para"
+	mkdir /t20_stock_para
+	mount -t jffs2 $t20_para_mtddev /t20_stock_para
+	tar -cvf $stock_backup_dir_path/para.tar.gz /t20_stock_para
+	sync
+	umount /t20_stock_para
 }
 
 function backup_t31_stock_parts() {
+# Description: Create partition images of all stock partitions on T31 flash chip
 	msg "Executing backup_t31_stock_parts"
 	[ ! -d $backup_dir_path/stock ] && mkdir $backup_dir_path/stock
 	
@@ -393,11 +437,17 @@ function backup_t31_stock_parts() {
 }
 
 function backup_t31_stock_config() {
-	msg "Executing backup_t31_stock_config"
-	msg "Not implemented yet"
+# Description: Create tar.gz archive for config partition on T31 flash chip
+	msg "Executing backup_t20_stock_config"
+	mkdir /t31_stock_config
+	mount -t jffs2 $t31_config_mtddev /t31_stock_config
+	tar -cvf $stock_backup_dir_path/configs.tar.gz /t31_stock_config
+	sync
+	umount /t31_stock_config
 }
 
 function backup_openipc_parts() {
+# Description: Create partition images of all OpenIPC partitions on T31 flash chip
 	msg "Executing backup_openipc_parts"
 	[ ! -d $backup_dir_path/openipc ] && mkdir $backup_dir_path/openipc
 	
@@ -411,21 +461,64 @@ function backup_openipc_parts() {
 }
 
 function restore_t20_stock_parts() {
+# Description: Restore stock partitions from partition images on T20 flash chip
 	msg "Executing backup_t31_stock_parts"
-	msg "Not implemented yet"
+	for partname in $t20_stock_partname_list; do
+		local in_file=$(get_t20_stock_partimgfile $partname)
+		local start_addr=$(get_t20_stock_partstartaddr $partname)
+		local restore_opt_value=$(get_t20_stock_restore_opt_value $partname)
+
+		msg "- Restore: $partname from file $in_file"
+		if [[ "$restore_opt_value" == "yes" ]]; then
+
+			msg " + restore_$partname value is Yes"
+			write_file_to_partition $partname $filename $start_addr || { msg "Restore $in_file to $partname partition failed" ; exit_init ; }
+		else
+			msg " + restore_$partname value is No"
+		fi
+	done
 }
 
 function restore_t31_stock_parts() {
+# Description: Restore stock partitions from partition images on T31 flash chip
 	msg "Executing backup_t31_stock_parts"
-	msg "Not implemented yet"
+	for partname in $t31_stock_partname_list; do
+		local in_file=$(get_t31_stock_partimgfile $partname)
+		local start_addr=$(get_t31_stock_partstartaddr $partname)
+		local restore_opt_value=$(get_t31_stock_restore_opt_value $partname)
+
+		msg "- Restore: $partname from file $in_file"
+		if [[ "$restore_opt_value" == "yes" ]]; then
+
+			msg " + restore_$partname value is Yes"
+			write_file_to_partition $partname $filename $start_addr || { msg "Restore $in_file to $partname partition failed" ; exit_init ; }
+		else
+			msg " + restore_$partname value is No"
+		fi
+	done
 }
 
 function restore_openipc_parts() {
-	msg "Executing backup_t31_stock_parts"
-	msg "Not implemented yet"
+# Description: Restore OpenIPC partitions from partition images on T20 flash chip
+	msg "Executing restore_openipc_parts"
+	for partname in $openipc_partname_list; do
+		local in_file=$(get_openipc_partimgfile $partname)
+		local start_addr=$(get_openipc_partstartaddr $partname)
+		local restore_opt_value=$(get_openipc_restore_opt_value $partname)
+
+		msg "- Restore: $partname from file $in_file"
+		if [[ "$restore_opt_value" == "yes" ]]; then
+
+			msg " + restore_$partname value is Yes"
+			write_file_to_partition $partname $filename $start_addr || { msg "Restore $in_file to $partname partition failed" ; exit_init ; }
+		else
+			msg " + restore_$partname value is No"
+		fi
+	done
 }
 
 function exit_init() {
+# Description: Rename SD card boot image to avoid infinite boot loop and move initramfs log to SD card
 	msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$installer_name"
 	mv /sdcard/factory_t31_ZMC6tiIDQN /sdcard/factory_t31_ZMC6tiIDQN.$installer_name
 
@@ -463,10 +556,15 @@ function set_vaviables() {
 	t31_stock_partname_list="boot kernel rootfs app kback aback config para"
 	openipc_partname_list="boot env kernel rootfs rootfs-data"
 
-	concat_mtddev="/dev/mtd2"
+	boot_mtddev="/dev/mtd0"
+	t20_config_mtddev="/dev/mtd1"
+	t20_para_mtddev="/dev/mtd2"
+	t31_config_mtddev="/dev/mtd3"
+	concat_mtddev="/dev/mtd4"
 }
 
 function detect_chip_and_fw() {
+# Description: Detect chip family and current firmware to do later operations correctly
 	chip_name=`ipcinfo-mips32 --chip-name`
 	chip_family=`ipcinfo-mips32 --family`
 	msg "Detected chip name: $chip_name, chip family: $chip_family"
@@ -492,6 +590,7 @@ function detect_chip_and_fw() {
 }
 
 initialize_gpio() {
+# Description: Initialize GPIO for LEDs and SD card on T20 cameras
 	[[ "chip_family" == "T20" ]] && initialize_t20_gpio_sdcard
 	initialize_gpio_leds
 }
@@ -529,6 +628,7 @@ check_config_errors() {
 }
 
 function do_backup_operations() {
+# Description: Create partition images of flash partition. If current firmware stock, create extra backup for device-specific information on config and para partitions
 	if [[ "${backup_partitions}" == "yes" ]]; then
 		msg "backup_partitions value is Yes"
 		/blink_blue_led.sh &
@@ -539,6 +639,7 @@ function do_backup_operations() {
 			msg "Backing up stock partitions and config for T20 camera"
 			backup_t20_stock_parts
 			backup_t20_stock_config
+			backup_t20_stock_para
 		elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
 			msg "Backing up stock partitions and config for T31 camera"
 			backup_t31_stock_parts
@@ -556,6 +657,7 @@ function do_backup_operations() {
 }
 
 function do_restore_operations() {
+# Description: Restore flash partitions using partion images
 	if [[ "$restore_partitions" == "yes" ]]; then
 		msg "restore_partitions value is Yes"
 
@@ -587,6 +689,7 @@ function do_restore_operations() {
 }
 
 function execute_custom_script() {
+# Description: Execute user custom script if it exists
 	msg "custom_script value is set to \"$custom_script\""
 	if [ -f /sdcard/$custom_script ]; then
 		msg "Custom script is found"

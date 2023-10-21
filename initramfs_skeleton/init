@@ -150,8 +150,6 @@ function get_openipc_partsize() {
 	esac
 }
 
-
-
 function get_t20_stock_partstart() {
 	case "$1" in
 		"boot")
@@ -372,13 +370,20 @@ function restore_partition() {
 	fi
 }
 
-
 function backup_t20_stock_partitions() {
 	msg "Executing backup_t20_stock_partitions"
 }
 
+function backup_t20_stock_config() {
+
+}
+
 function backup_t31_stock_partitions() {
 	msg "Executing backup_t31_stock_partitions"
+}
+
+function backup_t31_stock_config() {
+
 }
 
 function restore_t20_stock_partitions() {
@@ -417,6 +422,9 @@ function exit_init() {
 	sleep 1
 	reboot
 }
+
+
+
 
 installer_name="wz_flash-helper"
 backup_dir_name="backup"
@@ -478,8 +486,10 @@ if [[ "${backup_partitions}" == "yes" ]]; then
 	msg "---------- Begin of backup operations ----------"
 	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
 		backup_t20_stock_partitions
+		backup_t20_stock_config
 	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
 		backup_t31_stock_partitions
+		backup_t31_stock_config
 	elif [[ "$current_fw" == "openipc" ]]; then
 		backup_openipc_partitions
 	fi

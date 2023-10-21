@@ -350,9 +350,9 @@ function get_openipc_restore_opt_value() {
 	esac
 }
 
-function write_file_to_partition() {
+function restore_file_to_partition() {
 # Description: Write from <input file> to <concatenated mtd device> at <start address in decimal>
-# Syntax: write_file_to_partition <partition name> <input file> <start address in decimal>
+# Syntax: restore_file_to_partition <partition name> <input file> <start address in decimal>
 	local partname="$1"
 	local in_partimg="$2"
 	local start_addr="$3"
@@ -368,9 +368,9 @@ function write_file_to_partition() {
 	fi
 }
 
-function write_partition_to_file() {
+function backup_partition_to_file() {
 # Description: Backup partition with <start address> and <1k size in decimal> from <concatenated mtd device> to <output file>
-# Syntax: write_partition_to_file <partition name> <start address in decimal> <1k size in decimal> <output file>
+# Syntax: backup_partition_to_file <partition name> <start address in decimal> <1k size in decimal> <output file>
 	local partname="$1"
 	local start_addr="$2"
 	local read_size="$3"
@@ -407,7 +407,7 @@ function backup_t20_stock_parts() {
 		local out_file=$(get_t20_stock_partimgfile $partname)
 		local out_partimg=$stock_backup_dir_path/$out_file
 		msg "- Backup: $partname to file $out_file ---"
-		write_partition_to_file $partname $start_addr $read_size $out_partimg || { msg "Backup $partname partition to $out_partimg failed" ; exit_init ; }
+		backup_partition_to_file $partname $start_addr $read_size $out_partimg || { msg "Backup $partname partition to $out_partimg failed" ; exit_init ; }
 	done
 }
 
@@ -441,7 +441,7 @@ function backup_t31_stock_parts() {
 		local out_file=$(get_t31_stock_partimgfile $partname)
 		local out_partimg=$stock_backup_dir_path/$out_file
 		msg "- Backup: $partname to file $out_file ---"
-		write_partition_to_file $partname $start_addr $read_size $out_partimg || { msg "Backup $partname partition to $out_partimg failed" ; exit_init ; }
+		backup_partition_to_file $partname $start_addr $read_size $out_partimg || { msg "Backup $partname partition to $out_partimg failed" ; exit_init ; }
 	done
 }
 
@@ -465,7 +465,7 @@ function backup_openipc_parts() {
 		local out_file=$(get_openipc_partimgfile $partname)
 		local out_partimg=$openipc_backup_dir_path/$out_file
 		msg "- Backup: $partname to file $out_file ---"
-		write_partition_to_file $partname $start_addr $read_size $out_partimg || { msg "Backup $partname partition to $out_partimg failed" ; exit_init ; }
+		backup_partition_to_file $partname $start_addr $read_size $out_partimg || { msg "Backup $partname partition to $out_partimg failed" ; exit_init ; }
 	done
 }
 
@@ -481,7 +481,7 @@ function restore_t20_stock_parts() {
 		if [[ "$restore_opt_value" == "yes" ]]; then
 
 			msg " + restore_$partname value is Yes"
-			write_file_to_partition $partname $filename $start_addr || { msg "Restore $in_file to $partname partition failed" ; exit_init ; }
+			restore_file_to_partition $partname $filename $start_addr || { msg "Restore $in_file to $partname partition failed" ; exit_init ; }
 		else
 			msg " + restore_$partname value is No"
 		fi
@@ -500,7 +500,7 @@ function restore_t31_stock_parts() {
 		if [[ "$restore_opt_value" == "yes" ]]; then
 
 			msg " + restore_$partname value is Yes"
-			write_file_to_partition $partname $filename $start_addr || { msg "Restore $in_file to $partname partition failed" ; exit_init ; }
+			restore_file_to_partition $partname $filename $start_addr || { msg "Restore $in_file to $partname partition failed" ; exit_init ; }
 		else
 			msg " + restore_$partname value is No"
 		fi
@@ -519,7 +519,7 @@ function restore_openipc_parts() {
 		if [[ "$restore_opt_value" == "yes" ]]; then
 
 			msg " + restore_$partname value is Yes"
-			write_file_to_partition $partname $filename $start_addr || { msg "Restore $in_file to $partname partition failed" ; exit_init ; }
+			restore_file_to_partition $partname $filename $start_addr || { msg "Restore $in_file to $partname partition failed" ; exit_init ; }
 		else
 			msg " + restore_$partname value is No"
 		fi
@@ -630,7 +630,7 @@ check_init_interrupt() {
 	echo "Action has timed out" > /dev/console
 }
 
-check_config_errors() {
+import_config() {
 	if [ ! -f $config_file ]; then
 		{ msg "$config_file file is missing" ; mv /tmp/initramfs.log /tmp/initramfs_no-config-error.log ; exit_init ; }
 	else
@@ -725,7 +725,7 @@ function main() {
 	welcome_msg
 	
 	check_init_interrupt
-	check_config_errors
+	import_config
 	do_backup_operations
 	# do_restore_operations
 	execute_custom_script

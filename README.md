@@ -1,16 +1,23 @@
 ## Still under development, you can not use this yet until there is a release
 
 # wz_flash-helper
-Automatic parttion backup/restore tool for T20/T31 cameras, works with both stock and OpenIPC firmware
+Automatic parttion backup/restore tool for T20/T31 cameras, works with both stock and OpenIPC firmware.
 
 You can also switch between stock and OpenIPC firmware without a scratch
 
+## Supported cameras
+- Wyze Cam Pan
+- Wyze Cam v2
+- Wyze Cam v2 Pan
+- Wyze Cam v3
+- Wyze Cam Floodlight
+
 ## Feature list
-- No serial connection or SSH is required, only with SD card.
+- No serial connection or SSH is needed! only SD card.
 - Custom script to run after backup/restore.
 - Dry run option for safety and debugging.
-- Seamless transition to a new boot image on SD card after backup/restore
-- Initramfs shell is available if you have a serial connection.
+- Seamless transition to a new boot image on SD card after backup/restore.
+- Initramfs shell for manual debugging is available if you have a serial connection.
 
 ## How to backup your stock partitions - Read this if this is your first use
 1. Download [lastest release](https://github.com/archandanime/wz_flash-helper/releases/latest) then extract the `wz_flash-helper` directory and `factory_t31_ZMC6tiIDQN` to your SD card.

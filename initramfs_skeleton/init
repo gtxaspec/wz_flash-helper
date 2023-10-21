@@ -1,0 +1,540 @@
+#!/bin/sh
+#
+# PART: Partition name
+# START: Partition start address
+# END: Partition end address
+# SIZE: Partition size(in 1k block)
+#
+# Partition names are taken from mtdparts parameter on the kernel
+#
+#---------- T20 stock ----------
+#PART     SIZE(dec)  START(dec)  START(hex)
+#boot     256        0           0x0
+#kernel   2048       256         0x40000
+#root     3392       2304        0x240000
+#driver   640        5696        0x590000
+#appfs    4736       6336        0x630000
+#backupk  2048       11072       0xad0000
+#backupd  640        13120       0xcd0000
+#backupa  2048       13760       0xd70000
+#config   256        15808       0xf70000
+#para     256        16064       0xfb0000
+
+#---------- T31 stock ----------
+#PART    SIZE(dec)  START(dec)  START(hex)
+#boot    256        0           0x0
+#kernel  1984       256         0x40000
+#rootfs  3904       2240        0x230000
+#app     3904       6144        0x600000
+#kback   1984       10048       0x9d0000
+#aback   3904       12032       0xbc0000
+#cfg     384        15936       0xf90000
+#para    64         16320       0xff0000
+#
+#---------- T20 OpenIPC ----------
+#PART         SIZE(dec)  START(dec)  START(hex)
+#boot         256        0           0x0
+#env          64         256         0x40000
+#kernel       3072       320         0x50000
+#rootfs       10240      3392        0x350000
+#rootfs-data  2752       13632       0xd50000
+#
+#---------- T31 OpenIPC ----------
+#PART         SIZE(dec)  START(dec)  START(hex)
+#boot         256        0           0x0
+#env          64         256         0x40000
+#kernel       3072       320         0x50000
+#rootfs       10240      3392        0x350000
+#rootfs-data  2752       13632       0xd50000
+
+exec > /tmp/initramfs.log 2>&1
+
+
+mount -t devtmpfs devtmpfs /dev
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+
+sleep 1
+
+
+function msg() {
+	message="$1"
+	echo "$message"
+	echo "$message" > /dev/console
+}
+
+function msg_nonewline() {
+	message="$1"
+	echo -n "$message"
+	echo -n "$message" > /dev/console
+}
+
+function initialize_t20_gpio_sdcard() {
+	echo 43 > /sys/class/gpio/export
+	echo in > /sys/class/gpio/gpio43/direction
+	sleep 3 # Required delay for SD card init on T20
+}
+
+function initialize_gpio_leds() {
+	if ! [ -d /sys/class/gpio/gpio38 ]; then
+		echo 38 > /sys/class/gpio/export
+		echo out > /sys/class/gpio/gpio38/direction
+		echo 1 > /sys/class/gpio/gpio38/value
+	fi
+
+	if ! [ -d /sys/class/gpio/gpio39 ]; then
+		echo 39 > /sys/class/gpio/export
+		echo out > /sys/class/gpio/gpio39/direction
+		echo 1 > /sys/class/gpio/gpio39/value
+	fi
+}
+
+function get_t20_stock_partsize() {
+	case "$1" in
+		"boot")
+			echo -n "256" ;;
+		"kernel" )
+			echo -n "2048" ;;
+		"root" )
+			echo -n "3392" ;;
+		"driver" )
+			echo -n "640" ;;
+		"appfs" )
+			echo -n "4736" ;;
+		"backupk" )
+			echo -n "2048" ;;
+		"backupd" )
+			echo -n "640" ;;
+		"backupa" )
+			echo -n "2048" ;;
+		"config" )
+			echo -n "256" ;;
+		"para" )
+			echo -n "256" ;;
+	esac
+}
+
+function get_t31_stock_partsize() {
+	case "$1" in
+		"boot")
+			echo -n "256" ;;
+		"kernel" )
+			echo -n "1984" ;;
+		"rootfs" )
+			echo -n "3904" ;;
+		"app" )
+			echo -n "3904" ;;
+		"kback" )
+			echo -n "1984" ;;
+		"aback" )
+			echo -n "3904" ;;
+		"cfg" )
+			echo -n "384" ;;
+		"para" )
+			echo -n "64" ;;
+	esac
+}
+
+function get_openipc_partsize() {
+	case "$1" in
+		"boot")
+			echo -n "256" ;;
+		"env" )
+			echo -n "64" ;;
+		"kernel" )
+			echo -n "3072" ;;
+		"rootfs" )
+			echo -n "10240" ;;
+		"rootfs-data" )
+			echo -n "2752" ;;
+	esac
+}
+
+
+
+function get_t20_stock_partstart() {
+	case "$1" in
+		"boot")
+			echo -n "0" ;;
+		"kernel" )
+			echo -n "256" ;;
+		"root" )
+			echo -n "2304" ;;
+		"driver" )
+			echo -n "5696" ;;
+		"appfs" )
+			echo -n "6336" ;;
+		"backupk" )
+			echo -n "11072" ;;
+		"backupd" )
+			echo -n "13120" ;;
+		"backupa" )
+			echo -n "13760" ;;
+		"config" )
+			echo -n "15808" ;;
+		"para" )
+			echo -n "16064" ;;
+	esac
+}
+
+function get_t31_stock_partstart() {
+	case "$1" in
+		"boot")
+			echo -n "0" ;;
+		"kernel" )
+			echo -n "256" ;;
+		"rootfs" )
+			echo -n "2240" ;;
+		"app" )
+			echo -n "6144" ;;
+		"kback" )
+			echo -n "10048" ;;
+		"aback" )
+			echo -n "12032" ;;
+		"cfg" )
+			echo -n "15936" ;;
+		"para" )
+			echo -n "16320" ;;
+	esac
+}
+
+function get_openipc_partstart() {
+	case "$1" in
+		"boot")
+			echo -n "0" ;;
+		"env" )
+			echo -n "256" ;;
+		"kernel" )
+			echo -n "320" ;;
+		"rootfs" )
+			echo -n "3392" ;;
+		"rootfs-data" )
+			echo -n "13632" ;;
+	esac
+}
+
+function get_t20_stock_filename() {
+	case "$1" in
+		"boot")
+			echo -n "$boot_filename" ;;
+		"kernel" )
+			echo -n "$kernel_filename" ;;
+		"root" )
+			echo -n "$root_filename" ;;
+		"driver" )
+			echo -n "$driver_filename" ;;
+		"appfs" )
+			echo -n "$appfs_filename" ;;
+		"backupk" )
+			echo -n "$backupk_filename" ;;
+		"backupd" )
+			echo -n "$backupd_filename" ;;
+		"backupa" )
+			echo -n "$backupa_filename" ;;
+		"config" )
+			echo -n "$config_filename" ;;
+		"para" )
+			echo -n "$para_filename" ;;
+	esac
+}
+
+
+function get_t31_stock_filename() {
+	case "$1" in
+		"kernel" )
+			echo -n "$kernel_filename" ;;
+		"rootfs" )
+			echo -n "$rootfs_filename" ;;
+		"app" )
+			echo -n "$app_filename" ;;
+		"kback" )
+			echo -n "$kback_filename" ;;
+		"aback" )
+			echo -n "$aback_filename" ;;
+		"cfg" )
+			echo -n "$cfg_filename" ;;
+		"para" )
+			echo -n "$para_filename" ;;
+	esac
+}
+
+function get_openipc_filename() {
+	case "$1" in
+		"boot")
+			echo -n "$boot_filename" ;;
+		"env" )
+			echo -n "$env_filename" ;;
+		"kernel" )
+			echo -n "$kernel_filename" ;;
+		"rootfs" )
+			echo -n "$rootfs_filename" ;;
+		"rootfs-data" )
+			echo -n "$rootfs_data_filename" ;;
+	esac
+}
+
+function get_t20_stock_restore_opt_value() {
+	case "$1" in
+		"boot")
+			echo -n "$restore_boot" ;;
+		"kernel" )
+			echo -n "$restore_kernel" ;;
+		"root" )
+			echo -n "$retore_root" ;;
+		"driver" )
+			echo -n "$restore_driver" ;;
+		"appfs" )
+			echo -n "$restore_appfs" ;;
+		"backupk" )
+			echo -n "$restore_backupk" ;;
+		"backupd" )
+			echo -n "$restore_backupd" ;;
+		"backupa" )
+			echo -n "$restore_backupa" ;;
+		"config" )
+			echo -n "$restore_config" ;;
+		"para" )
+			echo -n "$restore_para" ;;
+	esac
+}
+
+function get_t31_stock_restore_opt_value() {
+	case "$1" in
+		"kernel" )
+			echo -n "$restore_kernel" ;;
+		"rootfs" )
+			echo -n "$restore_rootfs" ;;
+		"app" )
+			echo -n "$restore_app" ;;
+		"kback" )
+			echo -n "$restore_kback" ;;
+		"aback" )
+			echo -n "$restore_aback" ;;
+		"cfg" )
+			echo -n "$restore_cfg" ;;
+		"para" )
+			echo -n "$restore_para" ;;
+	esac
+}
+
+function get_openipc_restore_opt_value() {
+	case "$1" in
+		"boot")
+			echo -n "$restore_boot" ;;
+		"env" )
+			echo -n "$restore_env" ;;
+		"kernel" )
+			echo -n "$restore_kernel" ;;
+		"rootfs" )
+			echo -n "$restore_rootfs" ;;
+		"rootfs-data" )
+			echo -n "$restore_rootfs_data" ;;
+	esac
+}
+
+function backup_partition() {
+# Description: Backup partition with <start address> and <1k size in decimal> from <mtd device> to <output file>
+# Syntax backup_partition <partition name> <start address in decimal> <1k size in decimal> <mtd device> <output file>
+	local part_name="$1"
+	local start_addr="$2"
+	local read_size="$3"
+	local mtd_device="$4"
+	local out_part_img="$5"
+
+	[ ! -f $out_part_img ] && { msg " + $out_part_img exists" ; return 1 ; }
+	msg " + Making backup for $part_name partition"
+	if [[ "$dry_run" == "yes" ]]; then
+		msg " + (this command is not run) dd if=$mtd_device of=$out_part_img skip=$start_addr count=$read_size"
+		msg " + (this command is not run) md5sum $out_part_img > $out_part_img.md5sum"
+	else
+		dd if=$mtd_device of=$out_part_img skip=$start_addr count=$read_size || { msg " + Failed to back up $part_name partition" ; return 1 ; }
+		md5sum $out_part_img > $out_part_img.md5sum
+	fi
+	msg
+}
+
+function restore_partition() {
+# Description: Write from <input file> to <mtd device> at <start address in decimal>
+# Syntax restore_partition <partition name> <input file> <start address in decimal> <mtd device>
+	local part_name="$1"
+	local in_part_img="$2"
+	local start_addr="$3"
+	local mtd_device="$4"
+
+	[ ! -f $in_part_img ] && { msg " + $in_part_img is missing" ; return 1 ; }
+	msg " + Restoring $part_name partition"
+	if [[ "$dry_run" == "yes" ]]; then
+		msg_nonewline " + Checking md5 of $in_part_img: "
+		md5sum -c $in_part_img.md5sum && msg " + (this command is not run) dd if=$in_part_img of=$mtd_device skip=$start_addr"
+	else
+		msg_nonewline " + Checking md5 of $restore_file: "
+		md5sum -c $in_part_img.md5sum && dd if=$in_part_img of=$mtd_device skip=$start_addr || { msg " + md5 checksum for $in_part_img failed" ; return 1 ; }
+	fi
+}
+
+
+function backup_t20_stock_partitions() {
+	msg "Executing backup_t20_stock_partitions"
+}
+
+function backup_t31_stock_partitions() {
+	msg "Executing backup_t31_stock_partitions"
+}
+
+function restore_t20_stock_partitions() {
+	msg "Executing backup_t31_stock_partitions"
+}
+
+function restore_t31_stock_partitions() {
+	msg "Executing backup_t31_stock_partitions"
+}
+
+function backup_openipc_partitions() {
+	msg "Executing backup_t31_stock_partitions"
+}
+
+function restore_openipc_partitions() {
+	msg "Executing backup_t31_stock_partitions"
+}
+
+function exit_init() {
+	msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$installer_name"
+	mv /sdcard/factory_t31_ZMC6tiIDQN /sdcard/factory_t31_ZMC6tiIDQN.$installer_name
+
+	if [[ -f /sdcard/$continue_boot_img_filename ]]; then
+		msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_t31_ZMC6tiIDQN"
+		mv /sdcard/$continue_boot_img_filename /sdcard/factory_t31_ZMC6tiIDQN
+	else
+		msg "/sdcard/$continue_boot_img_filename file is missing"
+	fi
+
+	msg
+	msg "Initramfs init is finished! Exiting now"
+	[[ -f /tmp/initramfs.log ]] && cp /tmp/initramfs.log $log_file
+	[[ -f /tmp/initramfs_no-config-error.log ]] && cp /tmp/initramfs.log $log_file_fallback
+	sync
+	umount /sdcard
+	sleep 1
+	reboot
+}
+
+installer_name="wz_flash-helper"
+backup_dir_name="backup"
+backup_dir_path="/sdcard/wz_flash-helper/backup/"
+restore_dir_name="restore"
+restore_dir_path="/sdcard/wz_flash-helper/restore/"
+config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
+log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
+log_file_fallback="/sdcard/wz_flash-helper_no-config-error.log"
+
+
+chip_name=`ipcinfo-mips32 --chip-name`
+chip_family=`ipcinfo-mips32 --family`
+msg "Found chip: $chipname, family: $chip_family"
+
+[[ "chip_family" == "T20" ]] && function initialize_t20_gpio_sdcard
+initialize_gpio_leds
+
+
+
+##### DEBUG #####
+msg
+msg
+echo "Press any key to interupt init" > /dev/console
+msg
+msg
+exec 0< /dev/console
+read -r -s -n 1 -t 3
+if [[ "$?" -eq 0 ]]; then
+	echo "Dropping a shell"
+	exec 1> /dev/console
+	exec 2> /dev/console
+	exec /bin/sh
+fi
+echo "Action has timed out" > /dev/console
+msg
+msg
+msg
+msg "Welcome to $installer_name!"
+
+
+##### CHECK FOR ERRORS #####
+if [ ! -f $config_file ]; then
+	{ msg "$config_file file is missing" ; mv /tmp/initramfs.log /tmp/initramfs_no-config-error.log ; exit_init ; }
+else
+	msg "$config_file file is found"
+fi
+
+dos2unix $config_file
+source $config_file || { msg "$config_file file is invalid" ; exit_init ; }
+
+
+##### BACKUP #####
+if [[ "${backup_partitions}" == "yes" ]]; then
+	msg "backup_partitions value is Yes"
+	/blink_blue_led.sh &
+	blue_led_pid="$!"
+	msg
+	msg "---------- Begin of backup operations ----------"
+	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
+		backup_t20_stock_partitions
+	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
+		backup_t31_stock_partitions
+	elif [[ "$current_fw" == "openipc" ]]; then
+		backup_openipc_partitions
+	fi
+	kill $red_led_pid
+else
+	msg "backup_partitions value is No"
+fi
+
+
+###### RESTORE #####
+msg
+msg
+if [[ "$restore_partitions" == "yes" ]]; then
+	msg "restore_partitions value is Yes"
+
+	if [[ ! -d $restore_dir_path ]]; then
+		{ msg "$restore_dir_path directory is missing" ; exit_init ; }
+	else
+		msg "$restore_dir_path directory is found"
+	fi
+
+	cp -r $restore_dir_path /$restore_dir_name
+	cd /$restore_dir_name
+
+	/blink_red_led.sh &
+	red_led_pid="$!"
+	msg
+	msg "---------- Begin of restore operations ----------"
+	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
+		restore_t20_stock_partitions
+	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
+		restore_t31_stock_partitions
+	elif [[ "$current_fw" == "openipc" ]]; then
+		restore_openipc_partitions
+	fi
+	kill $red_led_pid
+else
+	msg "restore_partitions value is No"
+fi
+
+
+##### CUSTOM SCRIPT #####
+msg
+msg
+msg "custom_script is set to \"$custom_script\""
+if [[ -f /sdcard/$custom_script ]]; then
+	msg "Custom script is found"
+	if [[ "$dry_run" == "yes" ]]; then
+		msg "Custom script does not run when dry mode is active"
+	else
+		msg "Executing custom script"
+		/sdcard/$custom_script || { msg "Custom script did not run properly" ; exit_init ; }
+	fi
+else
+	msg "Custom script is missing"
+fi
+
+exit_init

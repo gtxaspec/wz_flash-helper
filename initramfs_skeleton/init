@@ -274,59 +274,59 @@ function get_openipc_partimgfile() {
 function get_t20_stock_restore_opt_value() {
 	case "$1" in
 		"boot")
-			echo -n "$restore_boot" ;;
+			echo -n "$t20_restore_boot" ;;
 		"kernel" )
-			echo -n "$restore_kernel" ;;
+			echo -n "$t20_restore_kernel" ;;
 		"root" )
-			echo -n "$retore_root" ;;
+			echo -n "$t20_restore_root" ;;
 		"driver" )
-			echo -n "$restore_driver" ;;
+			echo -n "$t20_restore_driver" ;;
 		"appfs" )
-			echo -n "$restore_appfs" ;;
+			echo -n "$t20_restore_appfs" ;;
 		"backupk" )
-			echo -n "$restore_backupk" ;;
+			echo -n "$t20_restore_backupk" ;;
 		"backupd" )
-			echo -n "$restore_backupd" ;;
+			echo -n "$t20_restore_backupd" ;;
 		"backupa" )
-			echo -n "$restore_backupa" ;;
+			echo -n "$t20_restore_backupa" ;;
 		"config" )
-			echo -n "$restore_config" ;;
+			echo -n "$t20_restore_config" ;;
 		"para" )
-			echo -n "$restore_para" ;;
+			echo -n "$t20_restore_para" ;;
 	esac
 }
 
 function get_t31_stock_restore_opt_value() {
 	case "$1" in
 		"kernel" )
-			echo -n "$restore_kernel" ;;
+			echo -n "$t31_restore_kernel" ;;
 		"rootfs" )
-			echo -n "$restore_rootfs" ;;
+			echo -n "$t31_restore_rootfs" ;;
 		"app" )
-			echo -n "$restore_app" ;;
+			echo -n "$t31_restore_app" ;;
 		"kback" )
-			echo -n "$restore_kback" ;;
+			echo -n "$t31_restore_kback" ;;
 		"aback" )
-			echo -n "$restore_aback" ;;
+			echo -n "$t31_restore_aback" ;;
 		"cfg" )
-			echo -n "$restore_cfg" ;;
+			echo -n "$t31_restore_cfg" ;;
 		"para" )
-			echo -n "$restore_para" ;;
+			echo -n "$t31_restore_para" ;;
 	esac
 }
 
 function get_openipc_restore_opt_value() {
 	case "$1" in
 		"boot")
-			echo -n "$restore_boot" ;;
+			echo -n "$openipc_restore_boot" ;;
 		"env" )
-			echo -n "$restore_env" ;;
+			echo -n "$openipc_restore_env" ;;
 		"kernel" )
-			echo -n "$restore_kernel" ;;
+			echo -n "$openipc_restore_kernel" ;;
 		"rootfs" )
-			echo -n "$restore_rootfs" ;;
+			echo -n "$openipc_restore_rootfs" ;;
 		"rootfs-data" )
-			echo -n "$restore_rootfs_data" ;;
+			echo -n "$openipc_restore_rootfs_data" ;;
 	esac
 }
 
@@ -446,7 +446,7 @@ log_file_fallback="/sdcard/wz_flash-helper_no-config-error.log"
 ##### DETECT CHIP AND CURRENT FIRMWARE ######
 chip_name=`ipcinfo-mips32 --chip-name`
 chip_family=`ipcinfo-mips32 --family`
-msg "Detected chip name: $chipname, chip family: $chip_family"
+msg "Detected chip name: $chip_name, chip family: $chip_family"
 
 dd if=/dev/mtdblock1 of=/tmp/uboot_partimg
 strings /tmp/uboot_partimg > /tmp/uboot_partimg_strings
@@ -561,7 +561,7 @@ fi
 ##### CUSTOM SCRIPT #####
 msg
 msg
-msg "custom_script is set to \"$custom_script\""
+msg "custom_script value is set to \"$custom_script\""
 if [[ -f /sdcard/$custom_script ]]; then
 	msg "Custom script is found"
 	if [[ "$dry_run" == "yes" ]]; then

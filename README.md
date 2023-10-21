@@ -56,9 +56,9 @@ If you are using wz_mini_hacks with stock firmware, you can rename wz_mini's boo
 
 ## Warning
 ```
-I am not responsible for bricking someone's camera.
-Though it has been tested carefully, the bootloader partition won't ever be touched.
-It is still possible to hardbrick the camera with your custom script or command injection in the config file.
+I am not responsible for bricking someone's cameras.
+DO NOT DISCONNECT POWER when restore operations are going on specially when uboot is being flashed, this would hardbrick your camera(unless you know how to remove the flash chip and use SPI programmer).
+It is also possible to hardbrick the camera with your custom script or you inject commands to the config file.
 Dry run first is highly recommended, unless you are confident.
 ```
 

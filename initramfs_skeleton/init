@@ -502,7 +502,7 @@ welcome_msg() {
 	msg "Welcome to $installer_name!"
 }
 
-check_for_init_interrupt() {
+check_init_interrupt() {
 	msg
 	msg
 	echo "Press any key to interrupt init" > /dev/console
@@ -612,11 +612,13 @@ function main() {
 	set_variables
 	detect_chip_and_fw
 	welcome_msg
-	check_for_init_interrupt
+	
+	check_init_interrupt
 	check_config_errors
 	do_backup_operations
-	do_restore_operations
+	# do_restore_operations
 	execute_custom_script
+
 	exit_init
 }
 

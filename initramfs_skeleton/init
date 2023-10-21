@@ -413,7 +413,7 @@ function backup_t20_stock_parts() {
 
 function backup_t20_stock_config() {
 # Description: Create tar.gz archive for config partition on T20 flash chip
-	msg "Executing backup_t20_stock_config"
+	msg "Creating archive file for files on config partition on T20 camera"
 	mkdir /t20_stock_config
 	mount -t jffs2 $t20_config_mtddev /t20_stock_config
 	tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config
@@ -423,7 +423,7 @@ function backup_t20_stock_config() {
 
 function backup_t20_stock_para() {
 # Description: Create tar.gz archive for para partition on T20 flash chip
-	msg "Executing backup_t20_stock_para"
+	msg "Creating archive file for files on para partition on T20 camera"
 	mkdir /t20_stock_para
 	mount -t jffs2 $t20_para_mtddev /t20_stock_para
 	tar -cvf $stock_backup_dir_path/para.tar.gz /t20_stock_para
@@ -447,7 +447,7 @@ function backup_t31_stock_parts() {
 
 function backup_t31_stock_config() {
 # Description: Create tar.gz archive for config partition on T31 flash chip
-	msg "Executing backup_t20_stock_config"
+	msg "Creating archive file for files on config partition on T31 camera"
 	mkdir /t31_stock_config
 	mount -t jffs2 $t31_config_mtddev /t31_stock_config
 	tar -cvf $stock_backup_dir_path/configs.tar.gz /t31_stock_config
@@ -526,8 +526,8 @@ function restore_openipc_parts() {
 	done
 }
 
-function exit_init() {
-# Description: Rename SD card boot image to avoid infinite boot loop and move initramfs log to SD card
+function move_boot_img_files() {
+# Description: Rename SD card boot image to avoid infinite boot loop and remane SD card boot image to be booted next boot
 	case "$current_fw_type" in
 		"stock")
 			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$installer_name"
@@ -549,8 +549,10 @@ function exit_init() {
 			mv /sdcard/$continue_boot_img_filename /sdcard/factory_0P3N1PC_kernel
 			;;
 	esac
+}
 
-	msg
+function exit_init() {
+# Move initramfs log to SD card and reboot
 	msg "Initramfs init is finished! Exiting now"
 	[ -f /tmp/initramfs.log ] && cp /tmp/initramfs.log $log_file
 	[ -f /tmp/initramfs_missing-config-file.log ] && cp /tmp/initramfs_missing-config-file.log $log_file_fallback
@@ -738,6 +740,7 @@ function main() {
 	# do_restore_operations
 	execute_custom_script
 
+	move_boot_img_files
 	exit_init
 }
 

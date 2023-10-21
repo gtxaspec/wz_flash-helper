@@ -428,10 +428,15 @@ function exit_init() {
 
 
 installer_name="wz_flash-helper"
-backup_dir_name="backup"
+
+stock_backup_dir_name="stock"
+openipc_backup_dir_name="openipc"
 backup_dir_path="/sdcard/wz_flash-helper/backup/"
-restore_dir_name="restore"
+
+stock_restore_dir_name="stock"
+openipc_restore_dir_name="openipc"
 restore_dir_path="/sdcard/wz_flash-helper/restore/"
+
 config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
 log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
 log_file_fallback="/sdcard/wz_flash-helper_no-config-error.log"

@@ -150,7 +150,7 @@ function get_openipc_partsize() {
 	esac
 }
 
-function get_t20_stock_partstart() {
+function get_t20_stock_partstartaddr() {
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
@@ -175,7 +175,7 @@ function get_t20_stock_partstart() {
 	esac
 }
 
-function get_t31_stock_partstart() {
+function get_t31_stock_partstartaddr() {
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
@@ -196,7 +196,7 @@ function get_t31_stock_partstart() {
 	esac
 }
 
-function get_openipc_partstart() {
+function get_openipc_partstartaddr() {
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
@@ -330,7 +330,7 @@ function get_openipc_restore_opt_value() {
 	esac
 }
 
-function backup_partition() {
+function write_file_to_partition() {
 # Description: Backup partition with <start address> and <1k size in decimal> from <mtd device> to <output file>
 # Syntax backup_partition <partition name> <start address in decimal> <1k size in decimal> <mtd device> <output file>
 	local part_name="$1"
@@ -351,7 +351,7 @@ function backup_partition() {
 	msg
 }
 
-function restore_partition() {
+function write_partition_to_file() {
 # Description: Write from <input file> to <mtd device> at <start address in decimal>
 # Syntax restore_partition <partition name> <input file> <start address in decimal> <mtd device>
 	local part_name="$1"
@@ -370,7 +370,7 @@ function restore_partition() {
 	fi
 }
 
-function backup_t20_stock_partitions() {
+function backup_t20_stock_parts() {
 	msg "Executing backup_t20_stock_partitions"
 }
 
@@ -378,7 +378,7 @@ function backup_t20_stock_config() {
 	msg "Executing backup_t20_stock_config"
 }
 
-function backup_t31_stock_partitions() {
+function backup_t31_stock_parts() {
 	msg "Executing backup_t31_stock_partitions"
 }
 
@@ -386,19 +386,19 @@ function backup_t31_stock_config() {
 	msg "Executing backup_t31_stock_config"
 }
 
-function restore_t20_stock_partitions() {
+function restore_t20_stock_parts() {
 	msg "Executing backup_t31_stock_partitions"
 }
 
-function restore_t31_stock_partitions() {
+function restore_t31_stock_parts() {
 	msg "Executing backup_t31_stock_partitions"
 }
 
-function backup_openipc_partitions() {
+function backup_openipc_parts() {
 	msg "Executing backup_t31_stock_partitions"
 }
 
-function restore_openipc_partitions() {
+function restore_openipc_parts() {
 	msg "Executing backup_t31_stock_partitions"
 }
 

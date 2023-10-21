@@ -9,7 +9,7 @@ You can also switch between stock and OpenIPC firmware without a scratch
 - No serial connection or SSH is required, only with SD card.
 - Custom script to run after backup/restore.
 - Dry run option for safety and debugging.
-- Seamless transition to a new boot image on SD card after backup/restore(useful if you use wz_mini_hacks with stock firmware)
+- Seamless transition to a new boot image on SD card after backup/restore
 - Initramfs shell is available if you have a serial connection.
 
 ## How to backup your stock partitions - Read this if this is your first use

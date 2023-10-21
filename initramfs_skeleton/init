@@ -613,7 +613,7 @@ welcome_msg() {
 	msg "Welcome to $installer_name!"
 }
 
-check_init_interrupt() {
+wait_init_interrupt() {
 	msg
 	msg
 	echo "Press any key to interrupt init" > /dev/console
@@ -630,7 +630,7 @@ check_init_interrupt() {
 	echo "Action has timed out" > /dev/console
 }
 
-import_config() {
+import_config_vars() {
 	if [ ! -f $config_file ]; then
 		{ msg "$config_file file is missing" ; mv /tmp/initramfs.log /tmp/initramfs_no-config-error.log ; exit_init ; }
 	else
@@ -724,8 +724,8 @@ function main() {
 	detect_chip_and_fw
 	welcome_msg
 	
-	check_init_interrupt
-	import_config
+	wait_init_interrupt
+	import_config_vars
 	do_backup_operations
 	# do_restore_operations
 	execute_custom_script

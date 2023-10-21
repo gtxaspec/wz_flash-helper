@@ -211,7 +211,7 @@ function get_openipc_partsize() {
 	esac
 }
 
-function get_t20_stock_filename() {
+function get_t20_stock_partimgfile() {
 	case "$1" in
 		"boot")
 			echo -n "$boot_filename" ;;
@@ -237,7 +237,7 @@ function get_t20_stock_filename() {
 }
 
 
-function get_t31_stock_filename() {
+function get_t31_stock_partimgfile() {
 	case "$1" in
 		"kernel" )
 			echo -n "$kernel_filename" ;;
@@ -256,7 +256,7 @@ function get_t31_stock_filename() {
 	esac
 }
 
-function get_openipc_filename() {
+function get_openipc_partimgfile() {
 	case "$1" in
 		"boot")
 			echo -n "$boot_filename" ;;
@@ -386,15 +386,15 @@ function backup_t31_stock_config() {
 	msg "Executing backup_t31_stock_config"
 }
 
+function backup_openipc_parts() {
+	msg "Executing backup_t31_stock_partitions"
+}
+
 function restore_t20_stock_parts() {
 	msg "Executing backup_t31_stock_partitions"
 }
 
 function restore_t31_stock_parts() {
-	msg "Executing backup_t31_stock_partitions"
-}
-
-function backup_openipc_parts() {
 	msg "Executing backup_t31_stock_partitions"
 }
 

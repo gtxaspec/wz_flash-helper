@@ -76,13 +76,13 @@ function initialize_t20_gpio_sdcard() {
 }
 
 function initialize_gpio_leds() {
-	if ! [ -d /sys/class/gpio/gpio38 ]; then
+	if [ ! -d /sys/class/gpio/gpio38 ]; then
 		echo 38 > /sys/class/gpio/export
 		echo out > /sys/class/gpio/gpio38/direction
 		echo 1 > /sys/class/gpio/gpio38/value
 	fi
 
-	if ! [ -d /sys/class/gpio/gpio39 ]; then
+	if [ ! -d /sys/class/gpio/gpio39 ]; then
 		echo 39 > /sys/class/gpio/export
 		echo out > /sys/class/gpio/gpio39/direction
 		echo 1 > /sys/class/gpio/gpio39/value
@@ -331,8 +331,8 @@ function get_openipc_restore_opt_value() {
 }
 
 function write_file_to_partition() {
-# Description: Backup partition with <start address> and <1k size in decimal> from <mtd device> to <output file>
-# Syntax backup_partition <partition name> <start address in decimal> <1k size in decimal> <mtd device> <output file>
+# Description: Backup partition with <start address> and <1k size in decimal> from <concatenated mtd device> to <output file>
+# Syntax backup_partition <partition name> <start address in decimal> <1k size in decimal> <concatenated mtd device> <output file>
 	local part_name="$1"
 	local start_addr="$2"
 	local read_size="$3"
@@ -352,8 +352,8 @@ function write_file_to_partition() {
 }
 
 function write_partition_to_file() {
-# Description: Write from <input file> to <mtd device> at <start address in decimal>
-# Syntax restore_partition <partition name> <input file> <start address in decimal> <mtd device>
+# Description: Write from <input file> to <concatenated mtd device> at <start address in decimal>
+# Syntax restore_partition <partition name> <input file> <start address in decimal> <concatenated mtd device>
 	local part_name="$1"
 	local in_part_img="$2"
 	local start_addr="$3"
@@ -371,7 +371,7 @@ function write_partition_to_file() {
 }
 
 function backup_t20_stock_parts() {
-	msg "Executing backup_t20_stock_partitions"
+	msg "Executing backup_t20_stock_parts"
 }
 
 function backup_t20_stock_config() {
@@ -379,27 +379,28 @@ function backup_t20_stock_config() {
 }
 
 function backup_t31_stock_parts() {
-	msg "Executing backup_t31_stock_partitions"
+	msg "Executing backup_t31_stock_parts"
 }
 
 function backup_t31_stock_config() {
 	msg "Executing backup_t31_stock_config"
+	dd if=
 }
 
 function backup_openipc_parts() {
-	msg "Executing backup_t31_stock_partitions"
+	msg "Executing backup_t31_stock_parts"
 }
 
 function restore_t20_stock_parts() {
-	msg "Executing backup_t31_stock_partitions"
+	msg "Executing backup_t31_stock_parts"
 }
-
+c
 function restore_t31_stock_parts() {
-	msg "Executing backup_t31_stock_partitions"
+	msg "Executing backup_t31_stock_parts"
 }
 
 function restore_openipc_parts() {
-	msg "Executing backup_t31_stock_partitions"
+	msg "Executing backup_t31_stock_parts"
 }
 
 function exit_init() {
@@ -420,7 +421,7 @@ function exit_init() {
 	sync
 	umount /sdcard
 	sleep 1
-	reboot
+	# reboot
 }
 
 
@@ -436,13 +437,29 @@ log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
 log_file_fallback="/sdcard/wz_flash-helper_no-config-error.log"
 
 
+
+##### DETECT CHIP AND CURRENT FIRMWARE ######
 chip_name=`ipcinfo-mips32 --chip-name`
 chip_family=`ipcinfo-mips32 --family`
 msg "Found chip: $chipname, family: $chip_family"
 
-[[ "chip_family" == "T20" ]] && function initialize_t20_gpio_sdcard
-initialize_gpio_leds
+dd if=/dev/mtdblock1 of=/tmp/uboot_partimg
+uboot_strings=`strings /tmp/uboot_partimg`
 
+if [ echo "${uboot_strings}" | grep -q "demo.bin" ] || \ # Cam v2 & Cam Pan
+   [ echo "${uboot_strings}" | grep -q "demo_wcv3.bin" ] || \ # Cam v3
+   [ echo "${uboot_strings}" | grep -q "recovery_wcpv2.bin" ]; then # Cam Pan v2
+   	msg "The camera is currently on stock firmware"
+   	current_fw="stock"
+else
+   	msg "The camera is currently on OpenIPC firmware"
+	current_fw="openipc"
+fi
+
+
+##### INITIALIZE GPIO #####
+[[ "chip_family" == "T20" ]] && initialize_t20_gpio_sdcard
+initialize_gpio_leds
 
 
 ##### DEBUG #####
@@ -485,13 +502,13 @@ if [[ "${backup_partitions}" == "yes" ]]; then
 	msg
 	msg "---------- Begin of backup operations ----------"
 	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
-		backup_t20_stock_partitions
+		backup_t20_stock_parts
 		backup_t20_stock_config
 	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
-		backup_t31_stock_partitions
+		backup_t31_stock_parts
 		backup_t31_stock_config
 	elif [[ "$current_fw" == "openipc" ]]; then
-		backup_openipc_partitions
+		backup_openipc_parts
 	fi
 	kill $red_led_pid
 else
@@ -519,11 +536,11 @@ if [[ "$restore_partitions" == "yes" ]]; then
 	msg
 	msg "---------- Begin of restore operations ----------"
 	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
-		restore_t20_stock_partitions
+		restore_t20_stock_parts
 	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
-		restore_t31_stock_partitions
+		restore_t31_stock_parts
 	elif [[ "$current_fw" == "openipc" ]]; then
-		restore_openipc_partitions
+		restore_openipc_parts
 	fi
 	kill $red_led_pid
 else

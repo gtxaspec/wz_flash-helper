@@ -389,6 +389,15 @@ function write_partition_to_file() {
 
 }
 
+function backup_full_flash() {
+	case "$current_fw" in
+		"stock")
+			dd if=$concat_mtddev of=$stock_backup_dir_path/$stock_full_flash_filename ;;
+		"openipc")
+			dd if=$concat_mtddev of=$openipc_backup_dir_path/$openipc_full_flash_filename ;;
+	esac
+}
+
 function backup_t20_stock_parts() {
 # Description: Create partition images of all stock partitions on T20 flash chip
 	[ ! -d $backup_dir_path/stock ] && mkdir $backup_dir_path/stock
@@ -545,6 +554,9 @@ function set_vaviables() {
 	stock_backup_dir_path="/sdcard/Wyze_factory_backup/"
 	openipc_backup_dir_path="/sdcard/wz_flash-helper/backup/openipc"
 
+	stock_full_flash_filename="stock_fullflash"
+	openipc_full_flash_filename="openipc_fullflash"
+	
 	stock_restore_dir_path="/sdcard/wz_flash-helper/restore/stock"
 	openipc_restore_dir_path="/sdcard/wz_flash-helper/restore/openipc"
 
@@ -635,6 +647,7 @@ function do_backup_operations() {
 		blue_led_pid="$!"
 		msg
 		msg "---------- Begin of backup operations ----------"
+		backup_full_flash
 		if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
 			msg "Backing up stock partitions and config for T20 camera"
 			backup_t20_stock_parts
@@ -663,7 +676,7 @@ function do_restore_operations() {
 
 		[ ! -d $restore_dir_path ] && { msg "$restore_dir_path directory is missing" ; exit_init ; }
 
-		cp -r $restore_dir_path /$restore_dir_name
+		cp -r $restore_dir_path /$restore_dir_name # Copy restore directory to RAM in case the SD card is defected
 		cd /$restore_dir_name
 
 		/blink_red_led.sh &

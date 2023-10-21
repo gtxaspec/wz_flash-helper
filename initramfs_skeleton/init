@@ -5,7 +5,7 @@
 # END: Partition end address
 # SIZE: Partition size(in 1k block)
 #
-# Partition names are taken from mtdparts parameter on the kernel
+# Used partition names are the as mtdparts parameter on the kernel
 #
 #---------- T20 stock ----------
 #PART     SIZE(dec)  START(dec)  START(hex)
@@ -19,7 +19,7 @@
 #backupa  2048       13760       0xd70000
 #config   256        15808       0xf70000
 #para     256        16064       0xfb0000
-
+#
 #---------- T31 stock ----------
 #PART    SIZE(dec)  START(dec)  START(hex)
 #boot    256        0           0x0
@@ -324,76 +324,105 @@ function get_openipc_restore_opt_value() {
 }
 
 function write_file_to_partition() {
-# Description: Backup partition with <start address> and <1k size in decimal> from <concatenated mtd device> to <output file>
-# Syntax backup_partition <partition name> <start address in decimal> <1k size in decimal> <concatenated mtd device> <output file>
-	local part_name="$1"
+# Description: Write from <input file> to <concatenated mtd device> at <start address in decimal>
+# Syntax: write_file_to_partition <partition name> <input file> <start address in decimal>
+	local partname="$1"
 	local start_addr="$2"
 	local read_size="$3"
-	local mtd_device="$4"
-	local out_part_img="$5"
+	local in_partimg="$2"
 
-	[ ! -f $out_part_img ] && { msg " + $out_part_img exists" ; return 1 ; }
-	msg " + Making backup for $part_name partition"
+	[ ! -f $in_partimg ] && { msg " + $in_partimg is missing" ; return 1 ; }
+	msg " + Making backup for $partname partition"
 	if [[ "$dry_run" == "yes" ]]; then
-		msg " + (this command is not run) dd if=$mtd_device of=$out_part_img skip=$start_addr count=$read_size"
-		msg " + (this command is not run) md5sum $out_part_img > $out_part_img.md5sum"
+		msg " + (this command is not run) dd if=$mtd_device of=$out_partimg bs=1k skip=$start_addr count=$read_size"
+		msg " + (this command is not run) md5sum $out_partimg > $out_partimg.md5sum"
 	else
-		dd if=$mtd_device of=$out_part_img skip=$start_addr count=$read_size || { msg " + Failed to back up $part_name partition" ; return 1 ; }
-		md5sum $out_part_img > $out_part_img.md5sum
+		dd if=$concat_mtddev of=$out_partimg bs=1k skip=$start_addr count=$read_size || { msg " + Failed to back up $partname partition" ; return 1 ; }
+		md5sum $out_partimg > $out_partimg.md5sum
 	fi
 	msg
 }
 
 function write_partition_to_file() {
-# Description: Write from <input file> to <concatenated mtd device> at <start address in decimal>
-# Syntax restore_partition <partition name> <input file> <start address in decimal> <concatenated mtd device>
-	local part_name="$1"
-	local in_part_img="$2"
+# Description: Backup partition with <start address> and <1k size in decimal> from <concatenated mtd device> to <output file>
+# Syntax: write_partition_to_file <partition name> <start address in decimal> <1k size in decimal>
+	local partname="$1"
 	local start_addr="$3"
-	local mtd_device="$4"
-
-	[ ! -f $in_part_img ] && { msg " + $in_part_img is missing" ; return 1 ; }
-	msg " + Restoring $part_name partition"
+	local out_partimg="$5"
+	
+	[ ! -f $out_partimg ] && { msg " + $out_partimg exists" ; return 1 ; }
+	msg " + Restoring $partname partition"
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_nonewline " + Checking md5 of $in_part_img: "
-		md5sum -c $in_part_img.md5sum && msg " + (this command is not run) dd if=$in_part_img of=$mtd_device skip=$start_addr"
+		msg_nonewline " + Checking md5 of $in_partimg: "
+		md5sum -c $in_partimg.md5sum && msg " + (this command is not run) dd if=$in_partimg of=$mtd_device skip=$start_addr"
 	else
 		msg_nonewline " + Checking md5 of $restore_file: "
-		md5sum -c $in_part_img.md5sum && dd if=$in_part_img of=$mtd_device skip=$start_addr || { msg " + md5 checksum for $in_part_img failed" ; return 1 ; }
+		md5sum -c $in_partimg.md5sum && dd if=$in_partimg of=$concat_mtddev skip=$start_addr || { msg " + md5 checksum for $in_partimg failed" ; return 1 ; }
 	fi
 }
 
+
 function backup_t20_stock_parts() {
-	msg "Executing backup_t20_stock_parts"
+	[[ ! -d $backup_dir_path/stock ]] && mkdir $backup_dir_path/stock
+	
+	for partname in $t20_stock_partname_list; do
+		local start_addr=$(get_t20_stock_partstartaddr $partname)
+		out_file=$(get_t20_stock_partimgfile $partname)
+		local out_partimg=$backup_dir_path/stock/$out_file
+		msg "- Backup: $partname to file $out_file ---"
+		write_partition_to_file $partname $out_partimg || { msg "Backup $partname partition to $out_partimg failed" ; exit_init ; }
+	done
 }
 
 function backup_t20_stock_config() {
 	msg "Executing backup_t20_stock_config"
+	msg "Not implemented yet"
 }
 
 function backup_t31_stock_parts() {
 	msg "Executing backup_t31_stock_parts"
+	[[ ! -d $backup_dir_path/stock ]] && mkdir $backup_dir_path/stock
+	
+	for partname in $t31_stock_partname_list; do
+		local start_addr=$(get_t31_stock_partstartaddr $partname)
+		out_file=$(get_t31_stock_partimgfile $partname)
+		local out_partimg=$backup_dir_path/stock/$out_file
+		msg "- Backup: $partname to file $out_file ---"
+		write_partition_to_file $partname $out_partimg || { msg "Backup $partname partition to $out_partimg failed" ; exit_init ; }
+	done
 }
 
 function backup_t31_stock_config() {
 	msg "Executing backup_t31_stock_config"
-	dd if=
+	msg "Not implemented yet"
 }
 
 function backup_openipc_parts() {
-	msg "Executing backup_t31_stock_parts"
+	msg "Executing backup_openipc_parts"
+	[[ ! -d $backup_dir_path/openipc ]] && mkdir $backup_dir_path/openipc
+	
+	for partname in $openipc_partname_list; do
+		local start_addr=$(get_openipc_partstartaddr $partname)
+		out_file=$(get_openipc_partimgfile $partname)
+		local out_partimg=$backup_dir_path/stock/$out_file
+		msg "- Backup: $partname to file $out_file ---"
+		write_partition_to_file $partname $out_partimg || { msg "Backup $partname partition to $out_partimg failed" ; exit_init ; }
+	done
 }
 
 function restore_t20_stock_parts() {
 	msg "Executing backup_t31_stock_parts"
+	msg "Not implemented yet"
 }
 c
 function restore_t31_stock_parts() {
 	msg "Executing backup_t31_stock_parts"
+	msg "Not implemented yet"
 }
 
 function restore_openipc_parts() {
 	msg "Executing backup_t31_stock_parts"
+	msg "Not implemented yet"
 }
 
 function exit_init() {
@@ -434,6 +463,11 @@ config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
 log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
 log_file_fallback="/sdcard/wz_flash-helper_no-config-error.log"
 
+t20_stock_partname_list="boot kernel root driver appfs backupk backupd backupa config para"
+t31_stock_partname_list="boot kernel rootfs app kback aback config para"
+openipc_partname_list="boot env kernel rootfs rootfs-data"
+
+concat_mtddev="/dev/mtd2"
 
 
 ##### DETECT CHIP AND CURRENT FIRMWARE ######
@@ -505,13 +539,18 @@ if [[ "${backup_partitions}" == "yes" ]]; then
 	msg
 	msg "---------- Begin of backup operations ----------"
 	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
+		msg "Backing up stock partitions and config for T20 camera"
 		backup_t20_stock_parts
 		backup_t20_stock_config
 	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
+		msg "Backing up stock partitions and config for T31 camera"
 		backup_t31_stock_parts
 		backup_t31_stock_config
 	elif [[ "$current_fw" == "openipc" ]]; then
+		msg "Backing up OpenIPC partitions"
 		backup_openipc_parts
+	else
+		msg "Invalid firmware type value restore_fw_type"
 	fi
 	kill $red_led_pid
 else
@@ -539,11 +578,16 @@ if [[ "$restore_partitions" == "yes" ]]; then
 	msg
 	msg "---------- Begin of restore operations ----------"
 	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
+		msg "Restoring stock partitions for T20 camera"
 		restore_t20_stock_parts
 	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
+		msg "Restoring stock partitions for T31 camera"
 		restore_t31_stock_parts
 	elif [[ "$current_fw" == "openipc" ]]; then
+		msg "Restoring OpenIPC partitions for T20 camera"
 		restore_openipc_parts
+	else
+		msg "Invalid firmware type value restore_fw_type"
 	fi
 	kill $red_led_pid
 else

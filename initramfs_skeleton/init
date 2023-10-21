@@ -573,6 +573,8 @@ function set_vaviables() {
 	t20_para_mtddev="/dev/mtd2"
 	t31_config_mtddev="/dev/mtd3"
 	concat_mtddev="/dev/mtd4"
+	
+	boot_mtdblockdev="/dev/mtdblock0"
 }
 
 function detect_chip_and_fw() {
@@ -581,7 +583,7 @@ function detect_chip_and_fw() {
 	chip_family=`ipcinfo-mips32 --family`
 	msg "Detected chip name: $chip_name, chip family: $chip_family"
 
-	dd if=/dev/mtdblock1 of=/tmp/uboot_partimg
+	dd if=$boot_mtdblockdev of=/tmp/uboot_partimg
 	strings /tmp/uboot_partimg > /tmp/uboot_partimg_strings
 
 	if grep -q "demo.bin" /tmp/uboot_partimg_strings; then #  Cam v2 & Cam Pan

@@ -224,25 +224,25 @@ function get_t20_stock_partimgfile() {
 # Syntax: get_t20_stock_partimgfile <partname>
 	case "$1" in
 		"boot")
-			echo -n "t20_stock_boot" ;;
+			echo -n "t20_stock_boot.bin" ;;
 		"kernel" )
-			echo -n "t20_stock_kernel" ;;
+			echo -n "t20_stock_kernel.bin" ;;
 		"root" )
-			echo -n "t20_stock_root" ;;
+			echo -n "t20_stock_root.bin" ;;
 		"driver" )
-			echo -n "t20_stock_driver" ;;
+			echo -n "t20_stock_driver.bin" ;;
 		"appfs" )
-			echo -n "t20_stock_appfs" ;;
+			echo -n "t20_stock_appfs.bin" ;;
 		"backupk" )
-			echo -n "t20_stock_backupk" ;;
+			echo -n "t20_stock_backupk.bin" ;;
 		"backupd" )
-			echo -n "t20_stock_backupd" ;;
+			echo -n "t20_stock_backupd.bin" ;;
 		"backupa" )
-			echo -n "t20_stock_backupa" ;;
+			echo -n "t20_stock_backupa.bin" ;;
 		"config" )
-			echo -n "t20_stock_config" ;;
+			echo -n "t20_stock_config.bin" ;;
 		"para" )
-			echo -n "t20_stock_para" ;;
+			echo -n "t20_stock_para.bin" ;;
 	esac
 }
 
@@ -252,19 +252,19 @@ function get_t31_stock_partimgfile() {
 # Syntax: get_t31_stock_partimgfile <partname>
 	case "$1" in
 		"kernel" )
-			echo -n "t31_stock_kernel" ;;
+			echo -n "t31_stock_kernel.bin" ;;
 		"rootfs" )
-			echo -n "t31_stock_rootfs" ;;
+			echo -n "t31_stock_rootfs.bin" ;;
 		"app" )
-			echo -n "t31_stock_app" ;;
+			echo -n "t31_stock_app.bin" ;;
 		"kback" )
-			echo -n "t31_stock_kback" ;;
+			echo -n "t31_stock_kback.bin" ;;
 		"aback" )
-			echo -n "t31_stock_aback" ;;
+			echo -n "t31_stock_aback.bin" ;;
 		"cfg" )
-			echo -n "t31_stock_cfg" ;;
+			echo -n "t31_stock_cfg.bin" ;;
 		"para" )
-			echo -n "t31_stock_para" ;;
+			echo -n "t31_stock_para.bin" ;;
 	esac
 }
 
@@ -273,15 +273,15 @@ function get_openipc_partimgfile() {
 # Syntax: get_openipc_partimgfile <partname>
 	case "$1" in
 		"boot")
-			echo -n "openipc_boot" ;;
+			echo -n "openipc_boot.bin" ;;
 		"env" )
-			echo -n "openipc_env" ;;
+			echo -n "openipc_env.bin" ;;
 		"kernel" )
-			echo -n "openipc_kernel" ;;
+			echo -n "openipc_kernel.bin" ;;
 		"rootfs" )
-			echo -n "openipc_rootfs" ;;
+			echo -n "openipc_rootfs.bin" ;;
 		"rootfs-data" )
-			echo -n "openipc_rootfs-data" ;;
+			echo -n "openipc_rootfs-data.bin" ;;
 	esac
 }
 

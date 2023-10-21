@@ -89,67 +89,6 @@ function initialize_gpio_leds() {
 	fi
 }
 
-function get_t20_stock_partsize() {
-	case "$1" in
-		"boot")
-			echo -n "256" ;;
-		"kernel" )
-			echo -n "2048" ;;
-		"root" )
-			echo -n "3392" ;;
-		"driver" )
-			echo -n "640" ;;
-		"appfs" )
-			echo -n "4736" ;;
-		"backupk" )
-			echo -n "2048" ;;
-		"backupd" )
-			echo -n "640" ;;
-		"backupa" )
-			echo -n "2048" ;;
-		"config" )
-			echo -n "256" ;;
-		"para" )
-			echo -n "256" ;;
-	esac
-}
-
-function get_t31_stock_partsize() {
-	case "$1" in
-		"boot")
-			echo -n "256" ;;
-		"kernel" )
-			echo -n "1984" ;;
-		"rootfs" )
-			echo -n "3904" ;;
-		"app" )
-			echo -n "3904" ;;
-		"kback" )
-			echo -n "1984" ;;
-		"aback" )
-			echo -n "3904" ;;
-		"cfg" )
-			echo -n "384" ;;
-		"para" )
-			echo -n "64" ;;
-	esac
-}
-
-function get_openipc_partsize() {
-	case "$1" in
-		"boot")
-			echo -n "256" ;;
-		"env" )
-			echo -n "64" ;;
-		"kernel" )
-			echo -n "3072" ;;
-		"rootfs" )
-			echo -n "10240" ;;
-		"rootfs-data" )
-			echo -n "2752" ;;
-	esac
-}
-
 function get_t20_stock_partstartaddr() {
 	case "$1" in
 		"boot")
@@ -208,6 +147,67 @@ function get_openipc_partstartaddr() {
 			echo -n "3392" ;;
 		"rootfs-data" )
 			echo -n "13632" ;;
+	esac
+}
+
+function get_t20_stock_partsize() {
+	case "$1" in
+		"boot")
+			echo -n "256" ;;
+		"kernel" )
+			echo -n "2048" ;;
+		"root" )
+			echo -n "3392" ;;
+		"driver" )
+			echo -n "640" ;;
+		"appfs" )
+			echo -n "4736" ;;
+		"backupk" )
+			echo -n "2048" ;;
+		"backupd" )
+			echo -n "640" ;;
+		"backupa" )
+			echo -n "2048" ;;
+		"config" )
+			echo -n "256" ;;
+		"para" )
+			echo -n "256" ;;
+	esac
+}
+
+function get_t31_stock_partsize() {
+	case "$1" in
+		"boot")
+			echo -n "256" ;;
+		"kernel" )
+			echo -n "1984" ;;
+		"rootfs" )
+			echo -n "3904" ;;
+		"app" )
+			echo -n "3904" ;;
+		"kback" )
+			echo -n "1984" ;;
+		"aback" )
+			echo -n "3904" ;;
+		"cfg" )
+			echo -n "384" ;;
+		"para" )
+			echo -n "64" ;;
+	esac
+}
+
+function get_openipc_partsize() {
+	case "$1" in
+		"boot")
+			echo -n "256" ;;
+		"env" )
+			echo -n "64" ;;
+		"kernel" )
+			echo -n "3072" ;;
+		"rootfs" )
+			echo -n "10240" ;;
+		"rootfs-data" )
+			echo -n "2752" ;;
 	esac
 }
 

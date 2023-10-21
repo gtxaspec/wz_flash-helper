@@ -414,7 +414,7 @@ function restore_t20_stock_parts() {
 	msg "Executing backup_t31_stock_parts"
 	msg "Not implemented yet"
 }
-c
+
 function restore_t31_stock_parts() {
 	msg "Executing backup_t31_stock_parts"
 	msg "Not implemented yet"
@@ -557,7 +557,6 @@ function do_backup_operations() {
 	fi
 }
 
-
 function do_restore_operations() {
 	if [[ "$restore_partitions" == "yes" ]]; then
 		msg "restore_partitions value is Yes"
@@ -603,7 +602,6 @@ function execute_custom_script() {
 		msg "Custom script is missing"
 	fi
 }
-
 
 function main() {
 	set_variables

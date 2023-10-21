@@ -639,6 +639,8 @@ import_config_vars() {
 
 	dos2unix $config_file
 	source $config_file || { msg "$config_file file is invalid" ; exit_init ; }
+	
+	[[ ! "$restore_fw_type" == "stock" ]] || [[ ! "$restore_fw_type" == "openipc" ]] && { msg "Invalid restore firmware type" ; exit_init ; }
 }
 
 function do_backup_operations() {
@@ -662,8 +664,6 @@ function do_backup_operations() {
 		elif [[ "$current_fw" == "openipc" ]]; then
 			msg "Backing up OpenIPC partitions"
 			backup_openipc_parts
-		else
-			msg "Invalid firmware type value restore_fw_type"
 		fi
 		kill $red_led_pid
 	else
@@ -685,17 +685,15 @@ function do_restore_operations() {
 		red_led_pid="$!"
 		msg
 		msg "---------- Begin of restore operations ----------"
-		if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
+		if [[ "$restore_fw_type" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
 			msg "Restoring stock partitions for T20 camera"
 			restore_t20_stock_parts
-		elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
+		elif [[ "$restore_fw_type" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
 			msg "Restoring stock partitions for T31 camera"
 			restore_t31_stock_parts
-		elif [[ "$current_fw" == "openipc" ]]; then
+		elif [[ "$restore_fw_type" == "openipc" ]]; then
 			msg "Restoring OpenIPC partitions for T20 camera"
 			restore_openipc_parts
-		else
-			msg "Invalid firmware type value restore_fw_type"
 		fi
 		kill $red_led_pid
 	else

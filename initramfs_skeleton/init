@@ -31,7 +31,7 @@
 #cfg     384        15936       0xf90000
 #para    64         16320       0xff0000
 #
-#---------- T20 OpenIPC ----------
+#---------- T20 and T31 OpenIPC ----------
 #PART         SIZE(dec)  START(dec)  START(hex)
 #boot         256        0           0x0
 #env          64         256         0x40000
@@ -39,13 +39,6 @@
 #rootfs       10240      3392        0x350000
 #rootfs-data  2752       13632       0xd50000
 #
-#---------- T31 OpenIPC ----------
-#PART         SIZE(dec)  START(dec)  START(hex)
-#boot         256        0           0x0
-#env          64         256         0x40000
-#kernel       3072       320         0x50000
-#rootfs       10240      3392        0x350000
-#rootfs-data  2752       13632       0xd50000
 
 exec > /tmp/initramfs.log 2>&1
 
@@ -214,25 +207,25 @@ function get_openipc_partsize() {
 function get_t20_stock_partimgfile() {
 	case "$1" in
 		"boot")
-			echo -n "stock_boot" ;;
+			echo -n "t20_stock_boot" ;;
 		"kernel" )
-			echo -n "stock_kernel" ;;
+			echo -n "t20_stock_kernel" ;;
 		"root" )
-			echo -n "stock_root" ;;
+			echo -n "t20_stock_root" ;;
 		"driver" )
-			echo -n "stock_driver" ;;
+			echo -n "t20_stock_driver" ;;
 		"appfs" )
-			echo -n "stock_appfs" ;;
+			echo -n "t20_stock_appfs" ;;
 		"backupk" )
-			echo -n "stock_backupk" ;;
+			echo -n "t20_stock_backupk" ;;
 		"backupd" )
-			echo -n "stock_backupd" ;;
+			echo -n "t20_stock_backupd" ;;
 		"backupa" )
-			echo -n "stock_backupa" ;;
+			echo -n "t20_stock_backupa" ;;
 		"config" )
-			echo -n "stock_config" ;;
+			echo -n "t20_stock_config" ;;
 		"para" )
-			echo -n "stock_para" ;;
+			echo -n "t20_stock_para" ;;
 	esac
 }
 
@@ -240,19 +233,19 @@ function get_t20_stock_partimgfile() {
 function get_t31_stock_partimgfile() {
 	case "$1" in
 		"kernel" )
-			echo -n "stock_kernel" ;;
+			echo -n "t31_stock_kernel" ;;
 		"rootfs" )
-			echo -n "stock_rootfs" ;;
+			echo -n "t31_stock_rootfs" ;;
 		"app" )
-			echo -n "stock_app" ;;
+			echo -n "t31_stock_app" ;;
 		"kback" )
-			echo -n "stock_kback" ;;
+			echo -n "t31_stock_kback" ;;
 		"aback" )
-			echo -n "stock_aback" ;;
+			echo -n "t31_stock_aback" ;;
 		"cfg" )
-			echo -n "stock_cfg" ;;
+			echo -n "t31_stock_cfg" ;;
 		"para" )
-			echo -n "stock_para" ;;
+			echo -n "t31_stock_para" ;;
 	esac
 }
 

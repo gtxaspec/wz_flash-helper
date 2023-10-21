@@ -331,7 +331,7 @@ function write_file_to_partition() {
 	local start_addr="$3"
 
 	[ ! -f $in_partimg ] && { msg " + $in_partimg is missing" ; return 1 ; }
-	msg " + Making backup for $partname partition"
+	msg " + Restoring $partname partition"
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_nonewline " + Checking md5 of $in_partimg: "
 		md5sum -c $in_partimg.md5sum && msg " + (this command is not run) dd if=$in_partimg of=$concat_mtddev skip=$start_addr"
@@ -349,9 +349,9 @@ function write_partition_to_file() {
 	local read_size="$3"
 	local out_partimg="$4"
 	
-	[ ! -f $out_partimg ] && { msg " + $out_partimg exists" ; return 1 ; }
-	
-	msg " + Restoring $partname partition"
+	[ -f $out_partimg ] && { msg " + $out_partimg exists" ; return 1 ; }
+
+	msg " + Making backup for $partname partition"	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg " + (this command is not run) dd if=$concat_mtddev of=$out_partimg bs=1k skip=$start_addr count=$read_size"
 		msg " + (this command is not run) md5sum $out_partimg > $out_partimg.md5sum"

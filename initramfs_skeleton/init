@@ -443,172 +443,182 @@ function exit_init() {
 	sync
 	umount /sdcard
 	sleep 1
-	# reboot
+	reboot
+}
+
+function set_vaviables() {
+	installer_name="wz_flash-helper"
+
+	stock_backup_dir_name="stock"
+	openipc_backup_dir_name="openipc"
+	backup_dir_path="/sdcard/wz_flash-helper/backup/"
+
+	stock_restore_dir_name="stock"
+	openipc_restore_dir_name="openipc"
+	restore_dir_path="/sdcard/wz_flash-helper/restore/"
+
+	config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
+	log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
+	log_file_fallback="/sdcard/wz_flash-helper_no-config-error.log"
+
+	t20_stock_partname_list="boot kernel root driver appfs backupk backupd backupa config para"
+	t31_stock_partname_list="boot kernel rootfs app kback aback config para"
+	openipc_partname_list="boot env kernel rootfs rootfs-data"
+
+	concat_mtddev="/dev/mtd2"
+}
+
+function detect_chip_and_fw() {
+	chip_name=`ipcinfo-mips32 --chip-name`
+	chip_family=`ipcinfo-mips32 --family`
+	msg "Detected chip name: $chip_name, chip family: $chip_family"
+
+	dd if=/dev/mtdblock1 of=/tmp/uboot_partimg
+	strings /tmp/uboot_partimg > /tmp/uboot_partimg_strings
+
+	if grep -q "demo.bin" /tmp/uboot_partimg_strings; then #  Cam v2 & Cam Pan
+	   	msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
+	   	current_fw="stock"
+	elif grep -q "demo_wcv3.bin" /tmp/uboot_partimg_strings; then # Cam v3
+	   	msg "Camera is currently on Cam v3 stock firmware"
+	   	current_fw="stock"
+	elif grep -q "recovery_wcpv2.bin" /tmp/uboot_partimg_strings ; then # Cam Pan v2
+	   	msg "Camera is currently on Cam Pan v2 stock firmware"
+	   	current_fw="stock"
+	else
+	   	msg "Camera is currently on OpenIPC firmware"
+		current_fw="openipc"
+	fi
+
+	rm /tmp/uboot_partimg
+}
+
+initialize_gpio() {
+	[[ "chip_family" == "T20" ]] && initialize_t20_gpio_sdcard
+	initialize_gpio_leds
+}
+
+welcome_msg() {
+	msg "Welcome to $installer_name!"
+}
+
+check_for_init_interupt() {
+	msg
+	msg
+	echo "Press any key to interupt init" > /dev/console
+	msg
+	msg
+	exec 0< /dev/console
+	read -r -s -n 1 -t 3
+	if [[ "$?" -eq 0 ]]; then
+		echo "Dropping a shell"
+		exec 1> /dev/console
+		exec 2> /dev/console
+		exec /bin/sh
+	fi
+	echo "Action has timed out" > /dev/console
+}
+
+check_config_errors() {
+	if [ ! -f $config_file ]; then
+		{ msg "$config_file file is missing" ; mv /tmp/initramfs.log /tmp/initramfs_no-config-error.log ; exit_init ; }
+	else
+		msg "$config_file file is found"
+	fi
+
+	dos2unix $config_file
+	source $config_file || { msg "$config_file file is invalid" ; exit_init ; }
+}
+
+function do_backup_operations() {
+	if [[ "${backup_partitions}" == "yes" ]]; then
+		msg "backup_partitions value is Yes"
+		/blink_blue_led.sh &
+		blue_led_pid="$!"
+		msg
+		msg "---------- Begin of backup operations ----------"
+		if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
+			msg "Backing up stock partitions and config for T20 camera"
+			backup_t20_stock_parts
+			backup_t20_stock_config
+		elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
+			msg "Backing up stock partitions and config for T31 camera"
+			backup_t31_stock_parts
+			backup_t31_stock_config
+		elif [[ "$current_fw" == "openipc" ]]; then
+			msg "Backing up OpenIPC partitions"
+			backup_openipc_parts
+		else
+			msg "Invalid firmware type value restore_fw_type"
+		fi
+		kill $red_led_pid
+	else
+		msg "backup_partitions value is No"
+	fi
+}
+
+
+function do_restore_operations() {
+	if [[ "$restore_partitions" == "yes" ]]; then
+		msg "restore_partitions value is Yes"
+
+		[ ! -d $restore_dir_path ] && { msg "$restore_dir_path directory is missing" ; exit_init ; }
+
+		cp -r $restore_dir_path /$restore_dir_name
+		cd /$restore_dir_name
+
+		/blink_red_led.sh &
+		red_led_pid="$!"
+		msg
+		msg "---------- Begin of restore operations ----------"
+		if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
+			msg "Restoring stock partitions for T20 camera"
+			restore_t20_stock_parts
+		elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
+			msg "Restoring stock partitions for T31 camera"
+			restore_t31_stock_parts
+		elif [[ "$current_fw" == "openipc" ]]; then
+			msg "Restoring OpenIPC partitions for T20 camera"
+			restore_openipc_parts
+		else
+			msg "Invalid firmware type value restore_fw_type"
+		fi
+		kill $red_led_pid
+	else
+		msg "restore_partitions value is No"
+	fi
+}
+
+function execute_custom_script() {
+	msg "custom_script value is set to \"$custom_script\""
+	if [[ -f /sdcard/$custom_script ]]; then
+		msg "Custom script is found"
+		if [[ "$dry_run" == "yes" ]]; then
+			msg "Custom script does not run when dry mode is active"
+		else
+			msg "Executing custom script"
+			/sdcard/$custom_script || { msg "Custom script did not run properly" ; exit_init ; }
+		fi
+	else
+		msg "Custom script is missing"
+	fi
 }
 
 
 
 
-installer_name="wz_flash-helper"
 
-stock_backup_dir_name="stock"
-openipc_backup_dir_name="openipc"
-backup_dir_path="/sdcard/wz_flash-helper/backup/"
+function main() {
+	set_variables
+	detect_chip_and_fw
+	welcome_msg
+	check_for_init_interupt
+	check_config_errors
+	do_backup_operations
+	do_restore_operations
+	execute_custom_script
+	exit_init
+}
 
-stock_restore_dir_name="stock"
-openipc_restore_dir_name="openipc"
-restore_dir_path="/sdcard/wz_flash-helper/restore/"
+main
 
-config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
-log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
-log_file_fallback="/sdcard/wz_flash-helper_no-config-error.log"
-
-t20_stock_partname_list="boot kernel root driver appfs backupk backupd backupa config para"
-t31_stock_partname_list="boot kernel rootfs app kback aback config para"
-openipc_partname_list="boot env kernel rootfs rootfs-data"
-
-concat_mtddev="/dev/mtd2"
-
-
-##### DETECT CHIP AND CURRENT FIRMWARE ######
-chip_name=`ipcinfo-mips32 --chip-name`
-chip_family=`ipcinfo-mips32 --family`
-msg "Detected chip name: $chip_name, chip family: $chip_family"
-
-dd if=/dev/mtdblock1 of=/tmp/uboot_partimg
-strings /tmp/uboot_partimg > /tmp/uboot_partimg_strings
-
-if grep -q "demo.bin" /tmp/uboot_partimg_strings; then #  Cam v2 & Cam Pan
-   	msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
-   	current_fw="stock"
-elif grep -q "demo_wcv3.bin" /tmp/uboot_partimg_strings; then # Cam v3
-   	msg "Camera is currently on Cam v3 stock firmware"
-   	current_fw="stock"
-elif grep -q "recovery_wcpv2.bin" /tmp/uboot_partimg_strings ; then # Cam Pan v2
-   	msg "Camera is currently on Cam Pan v2 stock firmware"
-   	current_fw="stock"
-else
-   	msg "Camera is currently on OpenIPC firmware"
-	current_fw="openipc"
-fi
-
-rm /tmp/uboot_partimg
-
-##### INITIALIZE GPIO #####
-[[ "chip_family" == "T20" ]] && initialize_t20_gpio_sdcard
-initialize_gpio_leds
-
-
-##### DEBUG #####
-msg
-msg
-echo "Press any key to interupt init" > /dev/console
-msg
-msg
-exec 0< /dev/console
-read -r -s -n 1 -t 3
-if [[ "$?" -eq 0 ]]; then
-	echo "Dropping a shell"
-	exec 1> /dev/console
-	exec 2> /dev/console
-	exec /bin/sh
-fi
-echo "Action has timed out" > /dev/console
-msg
-msg
-msg
-msg "Welcome to $installer_name!"
-
-
-##### CHECK FOR ERRORS #####
-if [ ! -f $config_file ]; then
-	{ msg "$config_file file is missing" ; mv /tmp/initramfs.log /tmp/initramfs_no-config-error.log ; exit_init ; }
-else
-	msg "$config_file file is found"
-fi
-
-dos2unix $config_file
-source $config_file || { msg "$config_file file is invalid" ; exit_init ; }
-
-
-##### BACKUP #####
-if [[ "${backup_partitions}" == "yes" ]]; then
-	msg "backup_partitions value is Yes"
-	/blink_blue_led.sh &
-	blue_led_pid="$!"
-	msg
-	msg "---------- Begin of backup operations ----------"
-	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
-		msg "Backing up stock partitions and config for T20 camera"
-		backup_t20_stock_parts
-		backup_t20_stock_config
-	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
-		msg "Backing up stock partitions and config for T31 camera"
-		backup_t31_stock_parts
-		backup_t31_stock_config
-	elif [[ "$current_fw" == "openipc" ]]; then
-		msg "Backing up OpenIPC partitions"
-		backup_openipc_parts
-	else
-		msg "Invalid firmware type value restore_fw_type"
-	fi
-	kill $red_led_pid
-else
-	msg "backup_partitions value is No"
-fi
-
-
-###### RESTORE #####
-msg
-msg
-if [[ "$restore_partitions" == "yes" ]]; then
-	msg "restore_partitions value is Yes"
-
-	if [[ ! -d $restore_dir_path ]]; then
-		{ msg "$restore_dir_path directory is missing" ; exit_init ; }
-	else
-		msg "$restore_dir_path directory is found"
-	fi
-
-	cp -r $restore_dir_path /$restore_dir_name
-	cd /$restore_dir_name
-
-	/blink_red_led.sh &
-	red_led_pid="$!"
-	msg
-	msg "---------- Begin of restore operations ----------"
-	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
-		msg "Restoring stock partitions for T20 camera"
-		restore_t20_stock_parts
-	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
-		msg "Restoring stock partitions for T31 camera"
-		restore_t31_stock_parts
-	elif [[ "$current_fw" == "openipc" ]]; then
-		msg "Restoring OpenIPC partitions for T20 camera"
-		restore_openipc_parts
-	else
-		msg "Invalid firmware type value restore_fw_type"
-	fi
-	kill $red_led_pid
-else
-	msg "restore_partitions value is No"
-fi
-
-
-##### CUSTOM SCRIPT #####
-msg
-msg
-msg "custom_script value is set to \"$custom_script\""
-if [[ -f /sdcard/$custom_script ]]; then
-	msg "Custom script is found"
-	if [[ "$dry_run" == "yes" ]]; then
-		msg "Custom script does not run when dry mode is active"
-	else
-		msg "Executing custom script"
-		/sdcard/$custom_script || { msg "Custom script did not run properly" ; exit_init ; }
-	fi
-else
-	msg "Custom script is missing"
-fi
-
-exit_init

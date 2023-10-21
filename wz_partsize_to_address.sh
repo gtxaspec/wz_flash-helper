@@ -14,10 +14,10 @@ function make_a_table() {
 	part_count_total=$(( "${#part_name[@]}" - 1 ))
 
 	echo -e "PART,SIZE(dec),START(dec),START(hex)"
-	for part_num in $(seq 0 ${part_count_total});do
+	for part_num in $(seq 0 ${part_count_total}); do
 		# echo "${part_name[${part_num}]}" "${part_size[${part_num}]}"
 		part_start=0
-		part_num_new=$(( ${part_num} - 1)) # Do this because array counts from 0
+		part_num_new=$(( ${part_num} - 1 )) # Do this because array counts from 0
 		for part_count_start_add in $(seq 0 ${part_num_new}); do
 			part_start_add="${part_size[${part_count_start_add}]}"
 			part_start=$(( ${part_start} + ${part_start_add} ))
@@ -39,7 +39,6 @@ function import_vars_t31_stock() {
 }
 
 function import_vars_openipc() {
-	## Pan v1, v2
 	part_name=(boot env kernel rootfs rootfs-data)
 	part_size=(256 64 3072 10240 2752)
 }

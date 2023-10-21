@@ -441,18 +441,16 @@ log_file_fallback="/sdcard/wz_flash-helper_no-config-error.log"
 ##### DETECT CHIP AND CURRENT FIRMWARE ######
 chip_name=`ipcinfo-mips32 --chip-name`
 chip_family=`ipcinfo-mips32 --family`
-msg "Found chip: $chipname, family: $chip_family"
+msg "Detected chip name: $chipname, chip family: $chip_family"
 
 dd if=/dev/mtdblock1 of=/tmp/uboot_partimg
-uboot_strings=`strings /tmp/uboot_partimg`
+strings /tmp/uboot_partimg > /tmp/uboot_partimg_strings
 
-if [ echo "${uboot_strings}" | grep -q "demo.bin" ] || \ # Cam v2 & Cam Pan
-   [ echo "${uboot_strings}" | grep -q "demo_wcv3.bin" ] || \ # Cam v3
-   [ echo "${uboot_strings}" | grep -q "recovery_wcpv2.bin" ]; then # Cam Pan v2
-   	msg "The camera is currently on stock firmware"
+if grep -q "demo.bin" /tmp/uboot_partimg_strings || grep -q "demo_wcv3.bin" /tmp/uboot_partimg_strings || grep -q "recovery_wcpv2.bin" /tmp/uboot_partimg_strings ; then
+   	msg "Camera is currently on stock firmware"
    	current_fw="stock"
 else
-   	msg "The camera is currently on OpenIPC firmware"
+   	msg "Camera is currently on OpenIPC firmware"
 	current_fw="openipc"
 fi
 

@@ -553,6 +553,7 @@ function move_boot_img_files() {
 
 function exit_init() {
 # Move initramfs log to SD card and reboot
+	move_boot_img_files
 	msg "Initramfs init is finished! Exiting now"
 	[ -f /tmp/initramfs.log ] && cp /tmp/initramfs.log $log_file
 	[ -f /tmp/initramfs_missing-config-file.log ] && cp /tmp/initramfs_missing-config-file.log $log_file_fallback
@@ -740,7 +741,6 @@ function main() {
 	# do_restore_operations
 	execute_custom_script
 
-	move_boot_img_files
 	exit_init
 }
 

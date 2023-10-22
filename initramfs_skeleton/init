@@ -302,10 +302,10 @@ function restore_file_to_partition() {
 	msg " + Restoring $partname partition"
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_nonewline " + Checking md5 of $infile: "
-		md5sum -c $infile.md5sum && msg " + (this command is not run) flashcp $infile $partmtd"
+		md5sum -c $infile.md5sum && msg " + (this command is not run) flash_eraseall $partmtd && flashcp $infile $partmtd"
 	else
 		msg_nonewline " + Checking md5 of $infile: "
-		md5sum -c $infile.md5sum && flashcp $infile $partmtd || { msg " + md5 checksum for $infile failed" ; return 1 ; }
+		md5sum -c $infile.md5sum && flash_eraseall $partmtd && flashcp $infile $partmtd || { msg " + md5 checksum for $infile failed" ; return 1 ; }
 	fi
 }
 

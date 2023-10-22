@@ -18,7 +18,7 @@ mount -t sysfs sysfs /sys
 sleep 1
 
 function msg() {
-# Description: Allow output messages to be both displayed serial terminal and written on log file
+# Description: Allow output messages to be both displayed on the serial terminal and written to the log file
 	message="$1"
 	echo "$message"
 	echo "$message" > /dev/console
@@ -34,7 +34,7 @@ function initialize_t20_gpio_sdcard() {
 # Description: T20 cameras need this to get SD card detected
 	echo 43 > /sys/class/gpio/export
 	echo in > /sys/class/gpio/gpio43/direction
-	sleep 3 # Required delay for SD card init on T20
+	sleep 3 # Required delay interval for SD card init on T20
 }
 
 function initialize_gpio_leds() {
@@ -109,7 +109,7 @@ function move_continue_boot_img_file() {
 }
 
 function move_flash_tool_boot_img_file() {
-# Description: Rename SD card boot image to avoid infinite boot loop
+# Description: Rename the SD card boot image to avoid infinite boot loop
 	case "$current_fw_type" in
 		"stock")
 			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name"
@@ -473,7 +473,7 @@ function do_restore_operations() {
 
 	[ ! -d $restore_dir_path ] && { msg "$restore_dir_path directory is missing" ; exit_init ; }
 
-	cp -r $restore_dir_path /$restore_dir_name # Copy restore directory to RAM in case of defected SD card
+	cp -r $restore_dir_path /$restore_dir_name # Copy the restore directory to RAM in case of defective SD card
 	cd /$restore_dir_name
 
 	/blink_red_led.sh &
@@ -561,7 +561,7 @@ function main() {
 	fi
 
 	if [[ "$restore_partitions" == "yes" ]] && [[ "$switch_fw" == "yes" ]]; then
-		{ msg "Restore and Switch_fw operations are conflicted, please enable only one" ; exit_init ; }
+		{ msg "Restore and Switch_fw operations are conflicted, please enable only one option at a time" ; exit_init ; }
 	fi
 
 	if [[ "$restore_partitions" == "yes" ]]; then

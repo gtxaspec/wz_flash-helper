@@ -477,8 +477,26 @@ function restore_openipc_parts() {
 	done
 }
 
-function move_boot_img_files() {
+function move_continue_boot_img_file() {
 # Description: Rename SD card boot image to avoid infinite boot loop and remane SD card boot image to be booted next boot
+	if [[ "$enable_continue_boot_img" == "yes" ]]; then
+		echo "enable_continue_boot_img value is Yes"
+		case "$current_fw_type" in
+			"stock")
+				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_t31_ZMC6tiIDQN"
+				mv /sdcard/$continue_boot_img_filename /sdcard/factory_t31_ZMC6tiIDQN
+				;;
+			"openipc")
+				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_0P3N1PC_kernel"
+				mv /sdcard/$continue_boot_img_filename /sdcard/factory_0P3N1PC_kernel
+				;;
+		esac
+	else
+		echo "enable_continue_boot_img value is No"
+	fi
+}
+
+function move_flash_tool_boot_img_file() {
 	case "$current_fw_type" in
 		"stock")
 			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$installer_name"
@@ -489,22 +507,12 @@ function move_boot_img_files() {
 			mv /sdcard/factory_0P3N1PC_kernel /sdcard/factory_0P3N1PC_kernel.$installer_name
 			;;
 	esac
-
-	case "$current_fw_type" in
-		"stock")
-			msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_t31_ZMC6tiIDQN"
-			mv /sdcard/$continue_boot_img_filename /sdcard/factory_t31_ZMC6tiIDQN
-			;;
-		"openipc")
-			msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_0P3N1PC_kernel"
-			mv /sdcard/$continue_boot_img_filename /sdcard/factory_0P3N1PC_kernel
-			;;
-	esac
 }
 
 function exit_init() {
 # Move initramfs log to SD card and reboot
-	move_boot_img_files
+	move_continue_boot_img_file
+	move_flash_tool_boot_img_file
 	msg "Initramfs init is finished! Exiting now"
 	[ -f /tmp/initramfs.log ] && cp /tmp/initramfs.log $log_file
 	[ -f /tmp/initramfs_missing-config-file.log ] && cp /tmp/initramfs_missing-config-file.log $log_file_fallback
@@ -535,7 +543,10 @@ function set_vaviables() {
 	openipc_partname_list="boot env kernel rootfs rootfs-data"
 
 	concat_mtddev="/dev/mtd21"
-	stock_full_flash_filename="all.bin"
+	stock_full_flash_filename="stock_all.bin"
+	openipc_full_flash_filename="openipc_all.bin"
+
+	boot_mtdblockdev="/dev/mtdblock0"
 }
 
 function detect_chip_and_fw() {
@@ -550,20 +561,24 @@ function detect_chip_and_fw() {
 	if grep -q "demo.bin" /tmp/uboot_partimg_strings; then #  Cam v2 & Cam Pan
 	   	msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
 	   	current_fw_type="stock"
+
 	elif grep -q "demo_wcv3.bin" /tmp/uboot_partimg_strings; then # Cam v3
 	   	msg "Camera is currently on Cam v3 stock firmware"
 	   	current_fw_type="stock"
+
 	elif grep -q "recovery_wcpv2.bin" /tmp/uboot_partimg_strings ; then # Cam Pan v2
 	   	msg "Camera is currently on Cam Pan v2 stock firmware"
 	   	current_fw_type="stock"
+
 	elif grep -q "factory_0P3N1PC_kernel" /tmp/uboot_partimg_strings ; then
 	   	msg "Camera is currently on OpenIPC firmware"
 		current_fw_type="openipc"
+
 	else
 		{ msg "Can not detect current firmware type" ; exit_init ; }
 	fi
 
-	rm /tmp/uboot_partimg
+	rm /tmp/uboot_partimg /tmp/uboot_partimg_strings
 }
 
 initialize_gpio() {
@@ -611,16 +626,22 @@ function do_backup_operations() {
 	backup_full_flash
 	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
 		msg "Backing up stock partitions and config for T20 camera"
+		mkdir -p $stock_backup_dir_path
 		backup_t20_stock_parts
 		backup_t20_stock_config
 		backup_t20_stock_para
+		
 	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
+		mkdir -p $stock_backup_dir_path
 		msg "Backing up stock partitions and config for T31 camera"
 		backup_t31_stock_parts
 		backup_t31_stock_config
+		
 	elif [[ "$current_fw_type" == "openipc" ]]; then
 		msg "Backing up OpenIPC partitions"
+		mkdir -p $openipc_backup_dir_path
 		backup_openipc_parts
+		
 	fi
 	kill $red_led_pid
 }
@@ -651,11 +672,17 @@ function do_restore_operations() {
 
 function execute_custom_script() {
 # Description: Execute user custom script
-	if [[ "$dry_run" == "yes" ]]; then
-		msg "Custom script does not run when dry mode is active"
+	msg "custom_script value is set to \"$custom_script\""
+	
+	if [ -f /sdcard/$custom_script ]; then
+		if [[ "$dry_run" == "yes" ]]; then
+			msg "Custom script does not run when dry mode is active"
+		else
+			msg "Executing custom script"
+			/sdcard/$custom_script || { msg "Custom script did not run properly" ; exit_init ; }
+		fi
 	else
-		msg "Executing custom script"
-		/sdcard/$custom_script || { msg "Custom script did not run properly" ; exit_init ; }
+		msg "Custom script file is missing"
 	fi
 }
 
@@ -675,23 +702,29 @@ function main() {
 
 	if [[ "$restore_partitions" == "yes" ]] && [[ "$switch_fw" == "yes" ]]; then
 		{ echo "Restore and Switch_fw operations are conflicted, please enable only one" ; exit_init ; }
-	elif [[ "$restore_partitions" == "yes" ]] && [[ "$switch_fw" == "no" ]]; then
+	fi
+
+	if [[ "$restore_partitions" == "yes" ]]; then
 		msg "restore_partitions value is Yes"
-		msg "switch_fw value is No"
 		do_restore_operations
-	elif [[ "$restore_partitions" == "no" ]] && [[ "$switch_fw" == "yes" ]]; then
-		msg "restore_partitions value is NO"
-		msg "switch_fw value is Yes"
-		do_switch_fw_operations
-	elif
-	
-	msg "custom_script value is set to \"$custom_script\""
-	if [ -f /sdcard/$custom_script ]; then
-		execute_custom_script
 	else
-		msg "Custom script file is missing"
+		msg "restore_partitions value is No"
 	fi
 	
+	if [[ "$switch_fw" == "yes" ]]; then
+		msg "switch_fw value is Yes"
+		do_switch_fw_operations
+	else
+		msg "switch_fw value is No"
+	if
+
+	if [[ "$enable_custom_script" == "yes" ]]; then
+		msg "enable_custom_script value is Yes"
+		execute_custom_script
+	else
+		msg "enable_custom_script value is Yes"
+	fi
+
 	exit_init
 }
 

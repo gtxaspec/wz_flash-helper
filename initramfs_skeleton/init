@@ -48,7 +48,6 @@ function initialize_gpio_leds() {
 	fi
 }
 
-
 function restore_file_to_partition() {
 # Description: Restore partition from <infile> to <partmtd>
 # Syntax: restore_file_to_partition <partname> <infile> <partname>
@@ -57,13 +56,13 @@ function restore_file_to_partition() {
 	local partmtd="$3"
 
 	[ ! -f $infile ] && { msg " + $infile is missing" ; return 1 ; }
-	
+
 	msg " + Restoring $partname partition"
-		msg_nonewline " + Checking md5 of $infile: "
+	msg_nonewline " + Checking md5 of $infile: "
 	if [[ "$dry_run" == "yes" ]]; then
 		md5sum -c $infile.md5sum && msg " + (this command is not run) flash_eraseall $partmtd && flashcp $infile $partmtd"
 	else
-		md5sum -c $infile.md5sum && flash_eraseall $partmtd && flashcp $infile $partmtd || { msg " + md5 checksum for $infile failed" ; return 1 ; }
+		md5sum -c $infile.md5sum && { flash_eraseall $partmtd ; flashcp $infile $partmtd ; } || { msg " + md5 checksum for $infile failed" ; return 1 ; }
 	fi
 }
 
@@ -73,36 +72,36 @@ function backup_partition_to_file() {
 	local partname="$1"
 	local partmtd="$2"
 	local outfile="$3"
-	
+
 	[ -f $outfile ] && { msg " + $outfile exists" ; return 1 ; }
 
 	msg " + Making backup for $partname partition"	
 	if [[ "$dry_run" == "yes" ]]; then
-		msg " + (this command is not run) flashcp $partmtd $outfile"
+		msg " + (this command is not run) dd if=$partmtd of=$outfile"
 		msg " + (this command is not run) md5sum $outfile > $outfile.md5sum"
 	else
-		flashcp $partmtd $outfile || { msg " + Failed to back up $partname partition" ; return 1 ; }
+		dd if=$partmtd of=$outfile || { msg " + Failed to backup $partname partition" ; return 1 ; }
 		md5sum $outfile > $outfile.md5sum
 	fi
-
 }
 
 function backup_full_flash() {
-	case "$current_fw_type" in
-		"stock")
-			if [[ "$chip_family" == "T20" ]]; then
-				flashcp $concat_mtdpart $stock_backup_dir_path/$t20_stock_full_flash_filename
-				md5sum $stock_backup_dir_path/$t20_stock_full_flash_filename > $stock_backup_dir_path/$t20_stock_full_flash_filename.md5sum
-			elif [[ "$chip_family" == "T31" ]]; then
-				flashcp $concat_mtdpart $stock_backup_dir_path/$t31_stock_full_flash_filename
-				md5sum $stock_backup_dir_path/$t31_stock_full_flash_filename > $stock_backup_dir_path/$t31_stock_full_flash_filename.md5sum
-			fi
-			;;
-		"openipc")
-			flashcp $concat_mtdpart $openipc_backup_dir_path/$openipc_full_flash_filename
-			md5sum $openipc_backup_dir_path/$openipc_full_flash_filename > $openipc_backup_dir_path/$openipc_full_flash_filename.md5sum
-			;;
-	esac
+# Description: Backup the whole flash to a file
+	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "T20" ]]; then
+		full_flash_backup_file=$stock_backup_dir_path/$t20_stock_full_flash_filename
+	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "T31" ]]; then
+		full_flash_backup_file=$stock_backup_dir_path/$t31_stock_full_flash_filename
+	elif [[ "$current_fw_type" == "openipc" ]]; then
+		full_flash_backup_file=$openipc_backup_dir_path/$openipc_full_flash_filename
+	fi
+
+	if [[ "$dry_run" == "yes" ]]; then
+		echo " + (this command is not run) dd if=$concat_partmtd of=$full_flash_backup_file"
+		echo " + (this command is not run) md5sum $full_flash_backup_file > full_flash_backup_file.md5sum"
+	else
+		dd if=$concat_partmtd of=$full_flash_backup_file
+		md5sum $full_flash_backup_file > $full_flash_backup_file.md5sum
+	fi
 }
 
 function backup_t20_stock_parts() {
@@ -119,24 +118,24 @@ function backup_t20_stock_parts() {
 }
 
 function backup_t20_stock_config() {
-# Description: Create tar.gz archive for config partition on T20 flash chip
+# Description: Create .tar.gz archive for config partition files on T20 flash chip
 	msg "Creating archive file for files on config partition on T20 camera"
-	
+
 	mkdir /t20_stock_config
 	t20_config_partmtd=$(get_t20_stock_partmtd "config")
-	mount -t jffs2 $t20_config_partmtd /t20_stock_config
+	mount -t jffs2 $t20_config_partmtd /t20_stock_config || { msg "Mount config partition files failed" ; exit_init ; }
 	tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config
 	sync
 	umount /t20_stock_config && rmdir /t20_stock_config
 }
 
 function backup_t20_stock_para() {
-# Description: Create tar.gz archive for para partition on T20 flash chip
+# Description: Create .tar.gz archive for para partition files on T20 flash chip
 	msg "Creating archive file for files on para partition on T20 camera"
 	
 	mkdir /t20_stock_para
 	t20_config_partmtd=$(get_t20_stock_partmtd "para")
-	mount -t jffs2 $t20_para_partmtd /t20_stock_para
+	mount -t jffs2 $t20_para_partmtd /t20_stock_para || { msg "Mount para partition files failed" ; exit_init ; }
 	tar -cvf $stock_backup_dir_path/para.tar.gz /t20_stock_para
 	sync
 	umount /t20_stock_para && rmdir /t20_stock_para
@@ -144,7 +143,7 @@ function backup_t20_stock_para() {
 
 function backup_t31_stock_parts() {
 # Description: Create partition images of all stock partitions on T31 flash chip
-	msg "Executing backup_t31_stock_parts"
+	msg "Backing up T31 stock partitions"
 	
 	for partname in $t31_stock_partname_list; do
 		local partmtd=$(get_t31_stock_partmtd $partname)
@@ -156,12 +155,12 @@ function backup_t31_stock_parts() {
 }
 
 function backup_t31_stock_config() {
-# Description: Create tar.gz archive for config partition on T31 flash chip
+# Description: Create .tar.gz archive for config partition files on T31 flash chip
 	msg "Creating archive file for files on config partition on T31 camera"
 	
 	mkdir /t31_stock_config
 	t31_config_partmtd=$(get_t31_stock_partmtd "cfg")
-	mount -t jffs2 $t31_config_partmtd /t31_stock_config
+	mount -t jffs2 $t31_config_partmtd /t31_stock_config || { msg "Mount configs partition files failed" ; exit_init ; }
 	tar -cvf $stock_backup_dir_path/configs.tar.gz /t31_stock_config
 	sync
 	umount /t31_stock_config && rmdir /t31_stock_config
@@ -169,8 +168,8 @@ function backup_t31_stock_config() {
 
 function backup_openipc_parts() {
 # Description: Create partition images of all OpenIPC partitions on T31 flash chip
-	msg "Executing backup_openipc_parts"
-	
+	msg "Backing up OpenIPC partitions"
+
 	for partname in $openipc_partname_list; do
 		local partmtd=$(get_openipc_partmtd $partname)
 		local outfile_name=$(get_openipc_partimg $partname)
@@ -182,7 +181,7 @@ function backup_openipc_parts() {
 
 function restore_t20_stock_parts() {
 # Description: Restore stock partitions from partition images on T20 flash chip
-	msg "Executing backup_t31_stock_parts"
+	msg "Restoring T20 stock partitions"
 
 	for partname in $t20_stock_partname_list; do
 		local infile_name=$(get_t20_stock_partimg $partname)
@@ -202,7 +201,7 @@ function restore_t20_stock_parts() {
 
 function restore_t31_stock_parts() {
 # Description: Restore stock partitions from partition images on T31 flash chip
-	msg "Executing backup_t31_stock_parts"
+	msg "Restoring T31 stock partitions"
 	
 	for partname in $t31_stock_partname_list; do
 		local infile_name=$(get_t31_stock_partimg $partname)
@@ -222,7 +221,7 @@ function restore_t31_stock_parts() {
 
 function restore_openipc_parts() {
 # Description: Restore OpenIPC partitions from partition images on T20 flash chip
-	msg "Executing restore_openipc_parts"
+	msg "Restoring OpenIPC partitions"
 
 	for partname in $openipc_partname_list; do
 		local infile_name=$(get_openipc_partimg $partname)
@@ -262,12 +261,12 @@ function move_continue_boot_img_file() {
 function move_flash_tool_boot_img_file() {
 	case "$current_fw_type" in
 		"stock")
-			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$installer_name"
-			mv /sdcard/factory_t31_ZMC6tiIDQN /sdcard/factory_t31_ZMC6tiIDQN.$installer_name
+			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name"
+			mv /sdcard/factory_t31_ZMC6tiIDQN /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name
 			;;
 		"openipc")
-			msg "Renaming /sdcard/factory_0P3N1PC_kernel to /sdcard/factory_0P3N1PC_kernel.$installer_name"
-			mv /sdcard/factory_0P3N1PC_kernel /sdcard/factory_0P3N1PC_kernel.$installer_name
+			msg "Renaming /sdcard/factory_0P3N1PC_kernel to /sdcard/factory_0P3N1PC_kernel.$flash_tool_name"
+			mv /sdcard/factory_0P3N1PC_kernel /sdcard/factory_0P3N1PC_kernel.$flash_tool_name
 			;;
 	esac
 }
@@ -295,7 +294,7 @@ function detect_chip_and_fw() {
 	chip_family=`ipcinfo-mips32 --family`
 	msg "Detected chip name: $chip_name, chip family: $chip_family"
 
-	dd if=$boot_mtdblockdev of=/tmp/uboot_partimg
+	dd if=$boot_mtddev of=/tmp/uboot_partimg
 	strings /tmp/uboot_partimg > /tmp/uboot_partimg_strings
 
 	if grep -q "demo.bin" /tmp/uboot_partimg_strings; then #  Cam v2 & Cam Pan
@@ -328,7 +327,7 @@ function initialize_gpio() {
 }
 
 function welcome_msg() {
-	msg "Welcome to $installer_name!"
+	msg "Welcome to $flash_tool_name!"
 }
 
 function wait_init_interrupt() {
@@ -348,8 +347,8 @@ function wait_init_interrupt() {
 	echo "Action has timed out" > /dev/console
 }
 
-function import_mtdpart_info() {
-	source /init_mtdpart_info.sh
+function import_partmtd_info() {
+	source /init_partmtd_info.sh
 }
 
 function import_config_vars() {
@@ -360,6 +359,7 @@ function import_config_vars() {
 	
 	[[ ! "$restore_fw_type" == "stock" ]] || [[ ! "$restore_fw_type" == "openipc" ]] && { msg "Invalid restore firmware type" ; exit_init ; }
 }
+
 
 function do_backup_operations() {
 # Description: Create partition images of flash partition. If current firmware stock, create extra backup for device-specific information on config and para partitions
@@ -507,7 +507,7 @@ function main() {
 	
 	wait_init_interrupt
 	
-	import_mtdpart_info
+	import_partmtd_info
 	import_config_vars
 	
 	if [[ "${backup_partitions}" == "yes" ]]; then

@@ -17,7 +17,7 @@ switch_fw="yes"
 switch_fw_to="stock"
 ```
 
-Conditions for switch operations to work:
+Conditions for switch firmware operation to work:
 1. Current firmware type must be different from `restore_fw_type` value
 2. All partition images of the firmware types that you want to switch to must present in either:
 - `(SD card)/wz_flash-helper/restore/stock` or
@@ -26,4 +26,4 @@ Conditions for switch operations to work:
 
 **Note:**
 - `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_fw`are enabled, both operations would not be executed.
-- During switch firmware operations, both the blue LED and the red LED would be blinking.
+- During switch firmware operation, both the blue LED and the red LED would be blinking.

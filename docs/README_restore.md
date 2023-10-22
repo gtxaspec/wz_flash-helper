@@ -7,7 +7,7 @@
 - If your camera is T20 on stock firmware, edit options start with `t20_restore_`
 - If your camera is T31 on stock firmware, edit options start with `t31_restore_`
 - If your camera is on OpenIPC firmware, edit options start with `openipc_restore_`
-3. Edit `wz_flash-helper.conf` to enable restore operations:
+3. Edit `wz_flash-helper.conf` to enable restore operation:
 ```
 switch_fw="no"
 restore_partitions="yes"
@@ -19,4 +19,4 @@ restore_partitions="yes"
 - Flash tool automatically detect camera SoC type and firmware type to use the correct options.
 - `switch_fw` option must be disabled like the above configurations. If both `restore_partitions` and `switch_fw`are enabled, both operations would not be executed.
 - All partition images must come with their md5sum file in <partition image>.md5sum
-- During restore operations, the red LED would be blinking.
+- During restore operation, the red LED would be blinking.

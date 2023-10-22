@@ -9,6 +9,7 @@ With the `custom_script` option, you can write a script and this script will be 
 
 
 **Note:**
+- If you are on OpenIPC firmware, boot image specified with `continue_boot_img_filename` will be renamed to `factory_0P3N1PC_kernel` instead.
 - Custom script is not run if `dry_run` is set to `yes`.
 - Custom script does not necessarily have to be on the SD Card top directory, you can put its path on the option to make it run from somewhere else.
 

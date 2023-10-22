@@ -164,12 +164,13 @@ function backup_t20_stock_parts() {
 
 function backup_t20_stock_config() {
 # Description: Create .tar.gz archive for config partition files on T20 flash chip
-	msg "Creating archive file for files on config partition on T20 camera"
+	local outfile=$stock_backup_dir_path/config.tar.gz
+	msg "- Backup: $partname files to file $outfile ---"
 
 	mkdir /t20_stock_config
 	mount -t jffs2 $config_t20_stock_partmtdblock /t20_stock_config || { msg "Mount config partition failed" ; exit_init ; }
 	if [[ "dry_run" == "yes" ]]; then
-		msg " + (this command is not run)tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config"
+		msg " + (this command is not run) tar -cvf $outfile /t20_stock_config"
 	else
 		tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config
 	fi
@@ -179,12 +180,13 @@ function backup_t20_stock_config() {
 
 function backup_t20_stock_para() {
 # Description: Create .tar.gz archive for para partition files on T20 flash chip
-	msg "Creating archive file for files on para partition on T20 camera"
+	local outfile=$stock_backup_dir_path/para.tar.gz
+	msg "- Backup: $partname files to file $outfile ---"
 	
 	mkdir /t20_stock_para
 	mount -t jffs2 $para_t20_stock_partmtdblock /t20_stock_para || { msg "Mount para partition failed" ; exit_init ; }
 	if [[ "dry_run" == "yes" ]]; then
-		msg " + (this command is not run) tar -cvf $stock_backup_dir_path/para.tar.gz /t20_stock_para"
+		msg " + (this command is not run) tar -cvf $outfile /t20_stock_para"
 	else
 		tar -cvf $stock_backup_dir_path/para.tar.gz /t20_stock_para
 	fi
@@ -207,12 +209,13 @@ function backup_t31_stock_parts() {
 
 function backup_t31_stock_config() {
 # Description: Create .tar.gz archive for config partition files on T31 flash chip
-	msg "Creating archive file for files on config partition on T31 camera"
+	local outfile=$stock_backup_dir_path/config.tar.gz
+	msg "- Backup: $partname files to file $outfile ---"
 	
 	mkdir /t31_stock_config
 	mount -t jffs2 $cfg_t31_stock_partmtdblock /t31_stock_config || { msg "Mount configs partition failed" ; exit_init ; }
 	if [[ "dry_run" == "yes" ]]; then
-		msg " + (this command is not run) tar -cvf $stock_backup_dir_path/configs.tar.gz /t31_stock_config"
+		msg " + (this command is not run) tar -cvf $outfile /t31_stock_config"
 	else
 		tar -cvf $stock_backup_dir_path/configs.tar.gz /t31_stock_config
 	fi

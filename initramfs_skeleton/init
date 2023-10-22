@@ -167,10 +167,9 @@ function backup_t20_stock_config() {
 	msg "Creating archive file for files on config partition on T20 camera"
 
 	mkdir /t20_stock_config
-	t20_config_partmtd=$(get_t20_stock_partmtd "config")
-	mount -t jffs2 $t20_config_partmtd /t20_stock_config || { msg "Mount config partition files failed" ; exit_init ; }
+	mount -t jffs2 $config_t20_stock_partmtdblock /t20_stock_config || { msg "Mount config partition failed" ; exit_init ; }
 	if [[ "dry_run" == "yes" ]]; then
-		msg " + (this command is not run) tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config"
+		msg " + (this command is not run)tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config"
 	else
 		tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config
 	fi
@@ -183,8 +182,7 @@ function backup_t20_stock_para() {
 	msg "Creating archive file for files on para partition on T20 camera"
 	
 	mkdir /t20_stock_para
-	t20_config_partmtd=$(get_t20_stock_partmtd "para")
-	mount -t jffs2 $t20_para_partmtd /t20_stock_para || { msg "Mount para partition files failed" ; exit_init ; }
+	mount -t jffs2 $para_t20_stock_partmtdblock /t20_stock_para || { msg "Mount para partition failed" ; exit_init ; }
 	if [[ "dry_run" == "yes" ]]; then
 		msg " + (this command is not run) tar -cvf $stock_backup_dir_path/para.tar.gz /t20_stock_para"
 	else
@@ -212,8 +210,7 @@ function backup_t31_stock_config() {
 	msg "Creating archive file for files on config partition on T31 camera"
 	
 	mkdir /t31_stock_config
-	t31_config_partmtd=$(get_t31_stock_partmtd "cfg")
-	mount -t jffs2 $t31_config_partmtd /t31_stock_config || { msg "Mount configs partition files failed" ; exit_init ; }
+	mount -t jffs2 $cfg_t31_stock_partmtdblock /t31_stock_config || { msg "Mount configs partition failed" ; exit_init ; }
 	if [[ "dry_run" == "yes" ]]; then
 		msg " + (this command is not run) tar -cvf $stock_backup_dir_path/configs.tar.gz /t31_stock_config"
 	else
@@ -536,6 +533,7 @@ function do_switch_fw_operation() {
 
 function execute_custom_script() {
 # Description: Execute user custom script
+	msg "---------- Exit init ----------"
 	msg "custom_script value is set to \"$custom_script\""
 	
 	if [ -f /sdcard/$custom_script ]; then

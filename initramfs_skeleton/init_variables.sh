@@ -20,7 +20,7 @@ openipc_switch_fw_dir_path="/sdcard/wz_flash-helper/switch_fw/openipc"
 
 ## List of partitions for T20, T31, OpenIPC firmware
 t20_stock_partname_list="boot kernel root driver appfs backupk backupd backupa config para"
-t31_stock_partname_list="boot kernel rootfs app kback aback config para"
+t31_stock_partname_list="boot kernel rootfs app kback aback cfg para"
 openipc_partname_list="boot env kernel rootfs rootfs-data"
 
 ## Names of full flash dump file

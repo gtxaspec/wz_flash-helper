@@ -498,8 +498,11 @@ function do_switch_fw_operations() {
 # Description: Switch firmware by flashing all needed partitions
 	if [[ "$current_fw_type" == "$switch_fw_to" ]]; then
 		{ msg "switch_fw_to value is same as current firmware type, aborting firmware switch" ; exit 1 ; }
+	fi
 
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
+	/blink_red_and_blue_leds.sh &
+	red_and_blue_leds_pid="$!"
+	if [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
 		msg "Switching from stock firmware to OpenIPC"
 		switch_fw_stock_to_openipc
 
@@ -512,6 +515,7 @@ function do_switch_fw_operations() {
 		switch_fw_openipc_to_t31_stock
 
 	fi
+	kill $red_and_blue_leds_pid
 }
 
 function execute_custom_script() {

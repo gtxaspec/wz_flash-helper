@@ -132,17 +132,17 @@ function move_flash_tool_boot_img_file() {
 
 function backup_full_flash() {
 # Description: Backup the whole flash to a file
-	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "T20" ]]; then
+	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
 		full_flash_backup_file=$stock_backup_dir_path/$t20_stock_full_flash_filename
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "T31" ]]; then
+	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
 		full_flash_backup_file=$stock_backup_dir_path/$t31_stock_full_flash_filename
 	elif [[ "$current_fw_type" == "openipc" ]]; then
 		full_flash_backup_file=$openipc_backup_dir_path/$openipc_full_flash_filename
 	fi
-
+	msg "- Backup: whole flash content to file $outfile ---"
 	if [[ "$dry_run" == "yes" ]]; then
 		msg " + (this command is not run) dd if=$concat_partmtd of=$full_flash_backup_file"
-		msg " + (this command is not run) md5sum $full_flash_backup_file > full_flash_backup_file.md5sum"
+		msg " + (this command is not run) md5sum $full_flash_backup_file > $full_flash_backup_file.md5sum"
 	else
 		dd if=$concat_partmtd of=$full_flash_backup_file
 		md5sum $full_flash_backup_file > $full_flash_backup_file.md5sum
@@ -151,7 +151,7 @@ function backup_full_flash() {
 
 function backup_t20_stock_parts() {
 # Description: Create partition images of all stock partitions on T20 flash chip
-	msg "Executing backup_t20_stock_parts"
+	msg "Backing up T20 stock partitions"
 	
 	for partname in $t20_stock_partname_list; do
 		local partmtd=$(get_t20_stock_partmtd $partname)
@@ -169,7 +169,11 @@ function backup_t20_stock_config() {
 	mkdir /t20_stock_config
 	t20_config_partmtd=$(get_t20_stock_partmtd "config")
 	mount -t jffs2 $t20_config_partmtd /t20_stock_config || { msg "Mount config partition files failed" ; exit_init ; }
-	tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config
+	if [[ "dry_run" == "yes" ]]; then
+		msg " + (this command is not run) tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config"
+	else
+		tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config
+	fi
 	sync
 	umount /t20_stock_config && rmdir /t20_stock_config
 }
@@ -181,7 +185,11 @@ function backup_t20_stock_para() {
 	mkdir /t20_stock_para
 	t20_config_partmtd=$(get_t20_stock_partmtd "para")
 	mount -t jffs2 $t20_para_partmtd /t20_stock_para || { msg "Mount para partition files failed" ; exit_init ; }
-	tar -cvf $stock_backup_dir_path/para.tar.gz /t20_stock_para
+	if [[ "dry_run" == "yes" ]]; then
+		msg " + (this command is not run) tar -cvf $stock_backup_dir_path/para.tar.gz /t20_stock_para"
+	else
+		tar -cvf $stock_backup_dir_path/para.tar.gz /t20_stock_para
+	fi
 	sync
 	umount /t20_stock_para && rmdir /t20_stock_para
 }
@@ -206,7 +214,11 @@ function backup_t31_stock_config() {
 	mkdir /t31_stock_config
 	t31_config_partmtd=$(get_t31_stock_partmtd "cfg")
 	mount -t jffs2 $t31_config_partmtd /t31_stock_config || { msg "Mount configs partition files failed" ; exit_init ; }
-	tar -cvf $stock_backup_dir_path/configs.tar.gz /t31_stock_config
+	if [[ "dry_run" == "yes" ]]; then
+		msg " + (this command is not run) tar -cvf $stock_backup_dir_path/configs.tar.gz /t31_stock_config"
+	else
+		tar -cvf $stock_backup_dir_path/configs.tar.gz /t31_stock_config
+	fi
 	sync
 	umount /t31_stock_config && rmdir /t31_stock_config
 }
@@ -359,7 +371,7 @@ function switch_fw_openipc_to_t31_stock() {
 
 function initialize_gpio() {
 # Description: Initialize GPIO for LEDs and SD card on T20 cameras
-	[[ "chip_family" == "T20" ]] && initialize_t20_gpio_sdcard
+	[[ "chip_family" == "t20" ]] && initialize_t20_gpio_sdcard
 	initialize_gpio_leds
 }
 
@@ -432,11 +444,10 @@ function import_config_file_vars() {
 
 	dos2unix $config_file # Fix MS-DOS newline import issue
 	source $config_file || { msg "$config_file file is invalid" ; exit_init ; }
-	
-	[[ ! "$restore_fw_type" == "stock" ]] || [[ ! "$restore_fw_type" == "openipc" ]] && { msg "Invalid restore firmware type" ; exit_init ; }
 }
 
 function mount_sdcard() {
+	msg "Mounting SD card"
 	mkdir -p /sdcard
 	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000
 }
@@ -448,16 +459,15 @@ function do_backup_operation() {
 	msg
 	msg "---------- Begin of backup operation ----------"
 	backup_full_flash
-	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
+	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "t20" ]]; then
 		msg "Backing up stock partitions and config for T20 camera"
 		mkdir -p $stock_backup_dir_path
 		backup_t20_stock_parts
 		backup_t20_stock_config
 		backup_t20_stock_para
 		
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
+	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "t31" ]]; then
 		mkdir -p $stock_backup_dir_path
-		msg "Backing up stock partitions and config for T31 camera"
 		backup_t31_stock_parts
 		backup_t31_stock_config
 		
@@ -486,10 +496,10 @@ function do_restore_operation() {
 	red_led_pid="$!"
 	msg
 	msg "---------- Begin of restore operation ----------"
-	if [[ "$restore_fw_type" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
+	if [[ "$restore_fw_type" == "stock" ]] && [[ "$chip_family" = "t20" ]]; then
 		msg "Restoring stock partitions for T20 camera"
 		restore_t20_stock_parts
-	elif [[ "$restore_fw_type" == "stock" ]] && [[ "$chip_family" = "T31" ]]; then
+	elif [[ "$restore_fw_type" == "stock" ]] && [[ "$chip_family" = "t31" ]]; then
 		msg "Restoring stock partitions for T31 camera"
 		restore_t31_stock_parts
 	elif [[ "$restore_fw_type" == "openipc" ]]; then
@@ -512,11 +522,11 @@ function do_switch_fw_operation() {
 		msg "Switching from stock firmware to OpenIPC"
 		switch_fw_stock_to_openipc
 
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "T20" ]]; then
+	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
 		msg "Switching from OpenIPC firmware to T20 stock"
 		switch_fw_openipc_to_t20_stock
 
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "T31" ]]; then
+	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
 		msg "Switching from OpenIPC firmware to T31 stock"
 		switch_fw_openipc_to_t31_stock
 
@@ -560,12 +570,14 @@ function main() {
 
 	wait_init_interrupt
 
+	mount_sdcard
 	import_partmtd_info
 	import_config_file_vars
-	detect_chip_and_fw
-	
-	mount_sdcard
-	if [[ "${backup_partitions}" == "yes" ]]; then
+
+
+	detect_chip_and_fw	
+
+	if [[ "$backup_partitions" == "yes" ]]; then
 		{ msg "backup_partitions value is Yes" ; do_backup_operation ; }
 	else
 		msg "backup_partitions value is No"

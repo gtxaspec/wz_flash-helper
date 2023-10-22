@@ -48,8 +48,12 @@
 #
 #
 
+boot_partmtd="/dev/mtd0"
+concat_partmtd="/dev/mtd21"
+
+
 function get_t20_stock_partmtd() {
-# Description: Return MTD device of a given partition name on T20 cameras stock firmware
+# Description: Return mtd device of a given partition name on T20 cameras stock firmware
 # Syntax: get_t20_stock_partmtd <partname>
 	case "$1" in
 		"boot")
@@ -76,7 +80,7 @@ function get_t20_stock_partmtd() {
 }
 
 function get_t31_stock_partmtd() {
-# Description: Return MTD device of a given partition name on T31 cameras stock firmware
+# Description: Return mtd device of a given partition name on T31 cameras stock firmware
 # Syntax: get_t31_stock_partmtd <partname>
 	case "$1" in
 		"boot")
@@ -99,7 +103,7 @@ function get_t31_stock_partmtd() {
 }
 
 function get_openipc_partmtd() {
-# Description: Return MTD device of a given partition name on OpenIPC firmware
+# Description: Return mtd device of a given partition name on OpenIPC firmware
 # Syntax: get_openipc_partmtd <partname>
 	case "$1" in
 		"boot")
@@ -244,4 +248,3 @@ function get_openipc_restore_opt_value() {
 			echo -n "$openipc_restore_rootfs_data" ;;
 	esac
 }
-

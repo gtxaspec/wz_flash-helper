@@ -95,3 +95,4 @@ Using dry_run first is highly recommended, unless you are confident.
 ## Credits
 - Gtxaspec with his ideas, tips and hard work on OpenIPC drivers and uboot SD card booting.
 - Mnakada with their docker image to build the boot image from [their repo](https://github.com/mnakada/atomcam_tools)
+- [OpenIPC](https://github.com/OpenIPC) project with their tools, firmware and help.

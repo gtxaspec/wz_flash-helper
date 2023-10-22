@@ -1,4 +1,4 @@
-[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | **Restore** | [Switch firmware](README_switch_fw.md) | [Other options](README_boot_img_next_boot.md)
+[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | **Restore** | [Switch firmware](README_switch_fw.md) | [Other options](README_other_options.md)
 
 ## Restore partitions guide
 

@@ -1,4 +1,4 @@
-[Introduction](README.md) | **Setup** | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_fw.md) | [Other options](README_boot_img_next_boot.md)
+[Introduction](README.md) | **Setup** | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_fw.md) | [Other options](README_other_options.md)
 
 ## Setup guide
 

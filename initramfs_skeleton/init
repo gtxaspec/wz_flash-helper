@@ -1,6 +1,11 @@
 #!/bin/sh
 #
-# wz_flash-helper init
+#                          ,---.,--.               ,--.            ,--.            ,--.                      
+# ,--.   ,--.,-----.      /  .-'|  | ,--,--. ,---. |  ,---. ,-----.|  ,---.  ,---. |  | ,---.  ,---. ,--.--. 
+# |  |.'.|  |`-.  /       |  `-,|  |' ,-.  |(  .-' |  .-.  |'-----'|  .-.  || .-. :|  || .-. || .-. :|  .--' 
+# |   .'.   | /  `-.,----.|  .-'|  |\ '-'  |.-'  `)|  | |  |       |  | |  |\   --.|  || '-' '\   --.|  |    
+# '--'   '--'`-----''----'`--'  `--' `--`--'`----' `--' `--'       `--' `--' `----'`--'|  |-'  `----'`--'    
+#                                                                                     `--'                  
 #
 
 exec > /tmp/initramfs.log 2>&1
@@ -11,7 +16,6 @@ mount -t proc proc /proc
 mount -t sysfs sysfs /sys
 
 sleep 1
-
 
 function msg() {
 # Descritpion: Allow output messages to be both displayed serial terminal and written on log file
@@ -48,24 +52,6 @@ function initialize_gpio_leds() {
 	fi
 }
 
-function restore_file_to_partition() {
-# Description: Restore partition from <infile> to <partmtd>
-# Syntax: restore_file_to_partition <partname> <infile> <partname>
-	local partname="$1"
-	local infile="$2"
-	local partmtd="$3"
-
-	[ ! -f $infile ] && { msg " + $infile is missing" ; return 1 ; }
-
-	msg " + Restoring $partname partition"
-	msg_nonewline " + Checking md5 of $infile: "
-	if [[ "$dry_run" == "yes" ]]; then
-		md5sum -c $infile.md5sum && msg " + (this command is not run) flash_eraseall $partmtd && flashcp $infile $partmtd"
-	else
-		md5sum -c $infile.md5sum && { flash_eraseall $partmtd ; flashcp $infile $partmtd ; } || { msg " + md5 checksum for $infile failed" ; return 1 ; }
-	fi
-}
-
 function backup_partition_to_file() {
 # Description: Backup partition <partmtd> to <outfile>
 # Syntax: backup_partition_to_file <partname> <partmtd> <outfile>
@@ -84,6 +70,64 @@ function backup_partition_to_file() {
 		md5sum $outfile > $outfile.md5sum
 	fi
 }
+
+function restore_file_to_partition() {
+# Description: Restore partition from <infile> to <partmtd>
+# Syntax: restore_file_to_partition <partname> <infile> <partname>
+	local partname="$1"
+	local infile="$2"
+	local partmtd="$3"
+
+	[ ! -f $infile ] && { msg " + $infile is missing" ; return 1 ; }
+
+	msg " + Restoring $partname partition"
+	msg_nonewline " + Checking md5 of $infile: "
+	if [[ "$dry_run" == "yes" ]]; then
+		md5sum -c $infile.md5sum && msg " + (this command is not run) flash_eraseall $partmtd && flashcp $infile $partmtd"
+	else
+		md5sum -c $infile.md5sum && { flash_eraseall $partmtd ; flashcp $infile $partmtd ; } || { msg " + md5 checksum for $infile failed" ; return 1 ; }
+	fi
+}
+
+function move_continue_boot_img_file() {
+# Description: Rename SD card boot image to avoid infinite boot loop and remane SD card boot image to be booted next boot
+	if [[ "$enable_continue_boot_img" == "yes" ]]; then
+		echo "enable_continue_boot_img value is Yes"
+		case "$current_fw_type" in
+			"stock")
+				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_t31_ZMC6tiIDQN"
+				mv /sdcard/$continue_boot_img_filename /sdcard/factory_t31_ZMC6tiIDQN
+				;;
+			"openipc")
+				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_0P3N1PC_kernel"
+				mv /sdcard/$continue_boot_img_filename /sdcard/factory_0P3N1PC_kernel
+				;;
+		esac
+	else
+		echo "enable_continue_boot_img value is No"
+	fi
+}
+
+function move_flash_tool_boot_img_file() {
+	case "$current_fw_type" in
+		"stock")
+			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name"
+			mv /sdcard/factory_t31_ZMC6tiIDQN /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name
+			;;
+		"openipc")
+			msg "Renaming /sdcard/factory_0P3N1PC_kernel to /sdcard/factory_0P3N1PC_kernel.$flash_tool_name"
+			mv /sdcard/factory_0P3N1PC_kernel /sdcard/factory_0P3N1PC_kernel.$flash_tool_name
+			;;
+	esac
+}
+
+
+#    ____             _                   __                  _   _                 
+#   | __ )  __ _  ___| | ___   _ _ __    / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
+#   |  _ \ / _` |/ __| |/ / | | | '_ \  | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+#   | |_) | (_| | (__|   <| |_| | |_) | |  _| |_| | | | | (__| |_| | (_) | | | \__ \
+#   |____/ \__,_|\___|_|\_\\__,_| .__/  |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+#                               |_|                                                 
 
 function backup_full_flash() {
 # Description: Backup the whole flash to a file
@@ -179,6 +223,13 @@ function backup_openipc_parts() {
 	done
 }
 
+
+#    ____           _                    __                  _   _                 
+#   |  _ \ ___  ___| |_ ___  _ __ ___   / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
+#   | |_) / _ \/ __| __/ _ \| '__/ _ \ | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+#   |  _ <  __/\__ \ || (_) | | |  __/ |  _| |_| | | | | (__| |_| | (_) | | | \__ \
+#   |_| \_\___||___/\__\___/|_|  \___| |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+                                                                       
 function restore_t20_stock_parts() {
 # Description: Restore stock partitions from partition images on T20 flash chip
 	msg "Restoring T20 stock partitions"
@@ -239,52 +290,98 @@ function restore_openipc_parts() {
 	done
 }
 
-function move_continue_boot_img_file() {
-# Description: Rename SD card boot image to avoid infinite boot loop and remane SD card boot image to be booted next boot
-	if [[ "$enable_continue_boot_img" == "yes" ]]; then
-		echo "enable_continue_boot_img value is Yes"
-		case "$current_fw_type" in
-			"stock")
-				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_t31_ZMC6tiIDQN"
-				mv /sdcard/$continue_boot_img_filename /sdcard/factory_t31_ZMC6tiIDQN
-				;;
-			"openipc")
-				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_0P3N1PC_kernel"
-				mv /sdcard/$continue_boot_img_filename /sdcard/factory_0P3N1PC_kernel
-				;;
-		esac
-	else
-		echo "enable_continue_boot_img value is No"
+
+#    ____          _ _       _          __             __                  _   _                 
+#   / ___|_      _(_) |_ ___| |__      / _|_      __  / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
+#   \___ \ \ /\ / / | __/ __| '_ \    | |_\ \ /\ / / | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+#    ___) \ V  V /| | || (__| | | |   |  _|\ V  V /  |  _| |_| | | | | (__| |_| | (_) | | | \__ \
+#   |____/ \_/\_/ |_|\__\___|_| |_|___|_|   \_/\_/   |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+#                                |_____|                                                         
+
+function switch_fw_stock_to_openipc() {
+	cp -r $stock_switch_fw_dir_path /switch_fw_stock_to_openipc
+	cd /switch_fw_stock_to_openipc
+	for partname in $openipc_partname_list; do
+		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
+	done
+
+	for partname in $openipc_partname_list; do
+		local infile=$(get_openipc_partimg $partname)
+		local partmtd=$(get_openipc_partmtd $partname)
+		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
+	done
+	rm -r switch_fw_stock_to_openipc
+}
+
+function switch_fw_openipc_to_t20_stock() {
+	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t20_stock
+	cd /switch_fw_openipc_to_t20_stock
+	for partname in $t20_stock_partname_list; do
+		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
+	done
+
+	for partname in $t20_stock_partname_list; do
+		local infile=$(get_t20_stock_partimg $partname)
+		local partmtd=$(get_t20_stock_partmtd $partname)
+		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
+	done
+	rm -r /switch_fw_openipc_to_t20_stock
+{
+
+function switch_fw_openipc_to_t31_stock() {
+	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t31_stock
+	cd /switch_fw_openipc_to_t31_stock
+	for partname in $t31_stock_partname_list; do
+		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
+	done
+
+	for partname in $t31_stock_partname_list; do
+		local infile=$(get_t31_stock_partimg $partname)
+		local partmtd=$(get_t31_stock_partmtd $partname)
+		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
+	done
+	rm -r /switch_fw_openipc_to_t31_stock
+}
+
+
+#
+#   __  __       _          __                  _   _                 
+#  |  \/  | __ _(_)_ __    / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
+#  | |\/| |/ _` | | '_ \  | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+#  | |  | | (_| | | | | | |  _| |_| | | | | (__| |_| | (_) | | | \__ \
+#  |_|  |_|\__,_|_|_| |_| |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+#
+#
+
+function initialize_gpio() {
+# Description: Initialize GPIO for LEDs and SD card on T20 cameras
+	[[ "chip_family" == "T20" ]] && initialize_t20_gpio_sdcard
+	initialize_gpio_leds
+}
+
+function welcome_msg() {
+	msg "Welcome to $flash_tool_name!"
+}
+
+function wait_init_interrupt() {
+# Description: Allow user to access initramfs shell
+	msg
+	msg
+	echo "Press any key to interrupt init" > /dev/console
+	msg
+	msg
+	exec 0< /dev/console
+	read -r -s -n 1 -t 3
+	if [[ "$?" -eq 0 ]]; then
+		echo "Dropping a shell"
+		exec 1> /dev/console
+		exec 2> /dev/console
+		exec /bin/sh
 	fi
+	echo "Action has timed out" > /dev/console
 }
 
-function move_flash_tool_boot_img_file() {
-	case "$current_fw_type" in
-		"stock")
-			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name"
-			mv /sdcard/factory_t31_ZMC6tiIDQN /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name
-			;;
-		"openipc")
-			msg "Renaming /sdcard/factory_0P3N1PC_kernel to /sdcard/factory_0P3N1PC_kernel.$flash_tool_name"
-			mv /sdcard/factory_0P3N1PC_kernel /sdcard/factory_0P3N1PC_kernel.$flash_tool_name
-			;;
-	esac
-}
-
-function exit_init() {
-# Move initramfs log to SD card and reboot
-	move_continue_boot_img_file
-	move_flash_tool_boot_img_file
-	msg "Initramfs init is finished! Exiting now"
-	[ -f /tmp/initramfs.log ] && cp /tmp/initramfs.log $log_file
-	[ -f /tmp/initramfs_missing-config-file.log ] && cp /tmp/initramfs_missing-config-file.log $log_file_fallback
-	sync
-	umount /sdcard
-	sleep 1
-	reboot
-}
-
-function set_variables() {
+function import_init_variables() {
 	source /init_variables.sh
 }
 
@@ -320,38 +417,12 @@ function detect_chip_and_fw() {
 	rm /tmp/uboot_partimg /tmp/uboot_partimg_strings
 }
 
-function initialize_gpio() {
-# Description: Initialize GPIO for LEDs and SD card on T20 cameras
-	[[ "chip_family" == "T20" ]] && initialize_t20_gpio_sdcard
-	initialize_gpio_leds
-}
-
-function welcome_msg() {
-	msg "Welcome to $flash_tool_name!"
-}
-
-function wait_init_interrupt() {
-	msg
-	msg
-	echo "Press any key to interrupt init" > /dev/console
-	msg
-	msg
-	exec 0< /dev/console
-	read -r -s -n 1 -t 3
-	if [[ "$?" -eq 0 ]]; then
-		echo "Dropping a shell"
-		exec 1> /dev/console
-		exec 2> /dev/console
-		exec /bin/sh
-	fi
-	echo "Action has timed out" > /dev/console
-}
-
 function import_partmtd_info() {
 	source /init_partmtd_info.sh
 }
 
-function import_config_vars() {
+function import_config_file_vars() {
+# Description: Import wz_flasher-helper.conf from SD card
 	[ ! -f $config_file ] && { msg "$config_file file is missing" ; mv /tmp/initramfs.log /tmp/initramfs_missing-config-file.log ; exit_init ; }
 
 	dos2unix $config_file # Fix MS-DOS newline import issue
@@ -359,7 +430,6 @@ function import_config_vars() {
 	
 	[[ ! "$restore_fw_type" == "stock" ]] || [[ ! "$restore_fw_type" == "openipc" ]] && { msg "Invalid restore firmware type" ; exit_init ; }
 }
-
 
 function do_backup_operations() {
 # Description: Create partition images of flash partition. If current firmware stock, create extra backup for device-specific information on config and para partitions
@@ -420,52 +490,8 @@ function do_restore_operations() {
 	rm -r /$restore_dir_name
 }
 
-function switch_fw_stock_to_openipc() {
-	cp -r $stock_switch_fw_dir_path /switch_fw_stock_to_openipc
-	cd /switch_fw_stock_to_openipc
-	for partname in $openipc_partname_list; do
-		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-
-	for partname in $openipc_partname_list; do
-		local infile=$(get_openipc_partimg $partname)
-		local partmtd=$(get_openipc_partmtd $partname)
-		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-	rm -r switch_fw_stock_to_openipc
-}
-
-function switch_fw_openipc_to_t20_stock() {
-	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t20_stock
-	cd /switch_fw_openipc_to_t20_stock
-	for partname in $t20_stock_partname_list; do
-		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-
-	for partname in $t20_stock_partname_list; do
-		local infile=$(get_t20_stock_partimg $partname)
-		local partmtd=$(get_t20_stock_partmtd $partname)
-		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-	rm -r /switch_fw_openipc_to_t20_stock
-{
-
-function switch_fw_openipc_to_t31_stock() {
-	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t31_stock
-	cd /switch_fw_openipc_to_t31_stock
-	for partname in $t31_stock_partname_list; do
-		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-
-	for partname in $t31_stock_partname_list; do
-		local infile=$(get_t31_stock_partimg $partname)
-		local partmtd=$(get_t31_stock_partmtd $partname)
-		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-	rm -r /switch_fw_openipc_to_t31_stock
-{
-
 function do_switch_fw_operations() {
+# Description: Switch firmware by flashing all needed partitions
 	if [[ "$current_fw_type" == "$switch_fw_to" ]]; then
 		{ msg "switch_fw_to value is same as current firmware type, aborting firmware switch" ; exit 1 ; }
 
@@ -500,16 +526,30 @@ function execute_custom_script() {
 	fi
 }
 
+function exit_init() {
+# Move initramfs log to SD card and reboot
+	move_continue_boot_img_file
+	move_flash_tool_boot_img_file
+	msg "Initramfs init is finished! Exiting now"
+	[ -f /tmp/initramfs.log ] && cp /tmp/initramfs.log $log_file
+	[ -f /tmp/initramfs_missing-config-file.log ] && cp /tmp/initramfs_missing-config-file.log $log_file_fallback
+	sync
+	umount /sdcard
+	sleep 1
+	reboot
+}
+
 function main() {
-	set_variables
-	detect_chip_and_fw
+	initialize_gpio
 	welcome_msg
-	
+
 	wait_init_interrupt
 	
+	import_init_variables
+	detect_chip_and_fw	
 	import_partmtd_info
-	import_config_vars
-	
+	import_config_file_vars
+
 	if [[ "${backup_partitions}" == "yes" ]]; then
 		{ msg "backup_partitions value is Yes" ; do_backup_operations ; }
 	else

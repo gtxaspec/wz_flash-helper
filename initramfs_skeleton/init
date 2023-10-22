@@ -584,17 +584,17 @@ function detect_chip_and_fw() {
 	rm /tmp/uboot_partimg /tmp/uboot_partimg_strings
 }
 
-initialize_gpio() {
+function initialize_gpio() {
 # Description: Initialize GPIO for LEDs and SD card on T20 cameras
 	[[ "chip_family" == "T20" ]] && initialize_t20_gpio_sdcard
 	initialize_gpio_leds
 }
 
-welcome_msg() {
+function welcome_msg() {
 	msg "Welcome to $installer_name!"
 }
 
-wait_init_interrupt() {
+function wait_init_interrupt() {
 	msg
 	msg
 	echo "Press any key to interrupt init" > /dev/console
@@ -611,7 +611,7 @@ wait_init_interrupt() {
 	echo "Action has timed out" > /dev/console
 }
 
-import_config_vars() {
+function import_config_vars() {
 	[ ! -f $config_file ] && { msg "$config_file file is missing" ; mv /tmp/initramfs.log /tmp/initramfs_missing-config-file.log ; exit_init ; }
 
 	dos2unix $config_file # Fix MS-DOS newline import issue
@@ -689,7 +689,7 @@ function switch_fw_stock_to_openipc() {
 	for partname in $openipc_partname_list; do
 		local infile=$(get_openipc_partimg $partname)
 		local partmtd=$(get_openipc_partmtd $partname)
-		flashcp $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
+		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
 	done
 	rm -r switch_fw_stock_to_openipc
 }
@@ -704,7 +704,7 @@ function switch_fw_openipc_to_t20_stock() {
 	for partname in $t20_stock_partname_list; do
 		local infile=$(get_t20_stock_partimg $partname)
 		local partmtd=$(get_t20_stock_partmtd $partname)
-		flashcp $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
+		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
 	done
 	rm -r /switch_fw_openipc_to_t20_stock
 {
@@ -719,7 +719,7 @@ function switch_fw_openipc_to_t31_stock() {
 	for partname in $t31_stock_partname_list; do
 		local infile=$(get_t31_stock_partimg $partname)
 		local partmtd=$(get_t31_stock_partmtd $partname)
-		flashcp $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
+		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
 	done
 	rm -r /switch_fw_openipc_to_t31_stock
 {

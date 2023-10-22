@@ -51,6 +51,10 @@
 boot_partmtd="/dev/mtd0"
 concat_partmtd="/dev/mtd21"
 
+config_t20_stock_partmtdblock="/dev/mtdblock8"
+para_t20_stock_partmtdblock="/dev/mtdblock9"
+cfg_t31_stock_partmtdblock="/dev/mtdblock15"
+
 
 function get_t20_stock_partmtd() {
 # Description: Return mtd device of a given partition name on T20 cameras stock firmware

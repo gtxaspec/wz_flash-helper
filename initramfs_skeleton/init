@@ -18,7 +18,7 @@ mount -t sysfs sysfs /sys
 sleep 1
 
 function msg() {
-# Descritpion: Allow output messages to be both displayed serial terminal and written on log file
+# Description: Allow output messages to be both displayed serial terminal and written on log file
 	message="$1"
 	echo "$message"
 	echo "$message" > /dev/console
@@ -90,9 +90,9 @@ function restore_file_to_partition() {
 }
 
 function move_continue_boot_img_file() {
-# Description: Rename SD card boot image to avoid infinite boot loop and remane SD card boot image to be booted next boot
+# Description: Remane SD card boot image to be booted next boot
 	if [[ "$enable_continue_boot_img" == "yes" ]]; then
-		echo "enable_continue_boot_img value is Yes"
+		msg "enable_continue_boot_img value is Yes"
 		case "$current_fw_type" in
 			"stock")
 				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_t31_ZMC6tiIDQN"
@@ -104,11 +104,12 @@ function move_continue_boot_img_file() {
 				;;
 		esac
 	else
-		echo "enable_continue_boot_img value is No"
+		msg "enable_continue_boot_img value is No"
 	fi
 }
 
 function move_flash_tool_boot_img_file() {
+# Description: Rename SD card boot image to avoid infinite boot loop
 	case "$current_fw_type" in
 		"stock")
 			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name"
@@ -140,8 +141,8 @@ function backup_full_flash() {
 	fi
 
 	if [[ "$dry_run" == "yes" ]]; then
-		echo " + (this command is not run) dd if=$concat_partmtd of=$full_flash_backup_file"
-		echo " + (this command is not run) md5sum $full_flash_backup_file > full_flash_backup_file.md5sum"
+		msg " + (this command is not run) dd if=$concat_partmtd of=$full_flash_backup_file"
+		msg " + (this command is not run) md5sum $full_flash_backup_file > full_flash_backup_file.md5sum"
 	else
 		dd if=$concat_partmtd of=$full_flash_backup_file
 		md5sum $full_flash_backup_file > $full_flash_backup_file.md5sum
@@ -218,6 +219,7 @@ function backup_openipc_parts() {
 		local partmtd=$(get_openipc_partmtd $partname)
 		local outfile_name=$(get_openipc_partimg $partname)
 		local outfile=$openipc_backup_dir_path/$outfile_name
+		
 		msg "- Backup: $partname to file $outfile ---"
 		backup_partition_to_file $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; exit_init ; }
 	done
@@ -301,6 +303,7 @@ function restore_openipc_parts() {
 function switch_fw_stock_to_openipc() {
 	cp -r $stock_switch_fw_dir_path /switch_fw_stock_to_openipc
 	cd /switch_fw_stock_to_openipc
+
 	for partname in $openipc_partname_list; do
 		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
 	done
@@ -316,6 +319,7 @@ function switch_fw_stock_to_openipc() {
 function switch_fw_openipc_to_t20_stock() {
 	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t20_stock
 	cd /switch_fw_openipc_to_t20_stock
+
 	for partname in $t20_stock_partname_list; do
 		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
 	done
@@ -326,11 +330,12 @@ function switch_fw_openipc_to_t20_stock() {
 		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
 	done
 	rm -r /switch_fw_openipc_to_t20_stock
-{
+}
 
 function switch_fw_openipc_to_t31_stock() {
 	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t31_stock
 	cd /switch_fw_openipc_to_t31_stock
+
 	for partname in $t31_stock_partname_list; do
 		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
 	done
@@ -394,11 +399,11 @@ function detect_chip_and_fw() {
 	dd if=$boot_mtddev of=/tmp/uboot_partimg
 	strings /tmp/uboot_partimg > /tmp/uboot_partimg_strings
 
-	if grep -q "demo.bin" /tmp/uboot_partimg_strings; then #  Cam v2 & Cam Pan
+	if grep -q "demo.bin" /tmp/uboot_partimg_strings ; then #  Cam v2 & Cam Pan
 	   	msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
 	   	current_fw_type="stock"
 
-	elif grep -q "demo_wcv3.bin" /tmp/uboot_partimg_strings; then # Cam v3
+	elif grep -q "demo_wcv3.bin" /tmp/uboot_partimg_strings ; then # Cam v3
 	   	msg "Camera is currently on Cam v3 stock firmware"
 	   	current_fw_type="stock"
 
@@ -499,11 +504,11 @@ function do_switch_fw_operations() {
 		msg "Switching from stock firmware to OpenIPC"
 		switch_fw_stock_to_openipc
 
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "T20" ]] then
+	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "T20" ]]; then
 		msg "Switching from OpenIPC firmware to T20 stock"
 		switch_fw_openipc_to_t20_stock
 
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "T31" ]] then
+	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "T31" ]]; then
 		msg "Switching from OpenIPC firmware to T31 stock"
 		switch_fw_openipc_to_t31_stock
 
@@ -527,7 +532,7 @@ function execute_custom_script() {
 }
 
 function exit_init() {
-# Move initramfs log to SD card and reboot
+# Description: Move initramfs log to SD card and reboot
 	move_continue_boot_img_file
 	move_flash_tool_boot_img_file
 	msg "Initramfs init is finished! Exiting now"
@@ -557,7 +562,7 @@ function main() {
 	fi
 
 	if [[ "$restore_partitions" == "yes" ]] && [[ "$switch_fw" == "yes" ]]; then
-		{ echo "Restore and Switch_fw operations are conflicted, please enable only one" ; exit_init ; }
+		{ msg "Restore and Switch_fw operations are conflicted, please enable only one" ; exit_init ; }
 	fi
 
 	if [[ "$restore_partitions" == "yes" ]]; then
@@ -572,7 +577,7 @@ function main() {
 		do_switch_fw_operations
 	else
 		msg "switch_fw value is No"
-	if
+	fi
 
 	if [[ "$enable_custom_script" == "yes" ]]; then
 		msg "enable_custom_script value is Yes"

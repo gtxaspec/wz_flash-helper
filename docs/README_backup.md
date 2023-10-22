@@ -17,4 +17,6 @@ custom_script=""
 6. Do Steps 3 and 4 again, then check your SD card, there should be a `wz_flash-helper/backup/stock` directory where backups of your stock partitions are stored. Copy it to a safe place in case you need it for recovery.
 
 
-**Notes:** Backup operations will automatically generate md5sum files for backed up partition images.
+**Notes:**
+- Backup operations will automatically generate md5sum files for backed up partition images.
+- During backup operations, the blue LED would be blinking.

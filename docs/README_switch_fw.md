@@ -17,7 +17,7 @@ switch_fw="yes"
 switch_fw_to="stock"
 ```
 
-**IMPORTANT:** DO NOT DISCONNECT POWER when switch firmware operation is going on. This would brick your camera.
+**WARNING:** DO NOT DISCONNECT POWER when switch firmware operation is going on. This would brick your camera.
 
 Conditions for switch firmware operation to work:
 1. Current firmware type must be different from `restore_fw_type` value

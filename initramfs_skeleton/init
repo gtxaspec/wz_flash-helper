@@ -435,12 +435,12 @@ function import_config_file_vars() {
 	[[ ! "$restore_fw_type" == "stock" ]] || [[ ! "$restore_fw_type" == "openipc" ]] && { msg "Invalid restore firmware type" ; exit_init ; }
 }
 
-function do_backup_operations() {
+function do_backup_operation() {
 # Description: Create partition images of flash partition. If current firmware stock, create extra backup for device-specific information on config and para partitions
 	/blink_blue_led.sh &
 	blue_led_pid="$!"
 	msg
-	msg "---------- Begin of backup operations ----------"
+	msg "---------- Begin of backup operation ----------"
 	backup_full_flash
 	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
 		msg "Backing up stock partitions and config for T20 camera"
@@ -464,7 +464,7 @@ function do_backup_operations() {
 	kill $red_led_pid
 }
 
-function do_restore_operations() {
+function do_restore_operation() {
 # Description: Restore flash partitions using partion images
 	case "$current_fw_type" in
 		"stock") restore_dir_path="$stock_restore_dir_path" ;;
@@ -479,7 +479,7 @@ function do_restore_operations() {
 	/blink_red_led.sh &
 	red_led_pid="$!"
 	msg
-	msg "---------- Begin of restore operations ----------"
+	msg "---------- Begin of restore operation ----------"
 	if [[ "$restore_fw_type" == "stock" ]] && [[ "$chip_family" = "T20" ]]; then
 		msg "Restoring stock partitions for T20 camera"
 		restore_t20_stock_parts
@@ -494,7 +494,7 @@ function do_restore_operations() {
 	rm -r /$restore_dir_name
 }
 
-function do_switch_fw_operations() {
+function do_switch_fw_operation() {
 # Description: Switch firmware by flashing all needed partitions
 	if [[ "$current_fw_type" == "$switch_fw_to" ]]; then
 		{ msg "switch_fw_to value is same as current firmware type, aborting firmware switch" ; exit 1 ; }
@@ -559,25 +559,25 @@ function main() {
 	import_config_file_vars
 
 	if [[ "${backup_partitions}" == "yes" ]]; then
-		{ msg "backup_partitions value is Yes" ; do_backup_operations ; }
+		{ msg "backup_partitions value is Yes" ; do_backup_operation ; }
 	else
 		msg "backup_partitions value is No"
 	fi
 
 	if [[ "$restore_partitions" == "yes" ]] && [[ "$switch_fw" == "yes" ]]; then
-		{ msg "Restore and Switch_fw operations are conflicted, please enable only one option at a time" ; exit_init ; }
+		{ msg "Restore and Switch_fw operation are conflicted, please enable only one option at a time" ; exit_init ; }
 	fi
 
 	if [[ "$restore_partitions" == "yes" ]]; then
 		msg "restore_partitions value is Yes"
-		do_restore_operations
+		do_restore_operation
 	else
 		msg "restore_partitions value is No"
 	fi
 	
 	if [[ "$switch_fw" == "yes" ]]; then
 		msg "switch_fw value is Yes"
-		do_switch_fw_operations
+		do_switch_fw_operation
 	else
 		msg "switch_fw value is No"
 	fi

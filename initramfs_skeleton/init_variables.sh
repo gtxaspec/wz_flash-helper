@@ -1,6 +1,6 @@
 #!/bin/sh
 
-flasher_tool_name="wz_flash-helper"
+flash_tool_name="wz_flash-helper"
 
 config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
 log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"

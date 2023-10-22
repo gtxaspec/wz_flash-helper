@@ -9,7 +9,7 @@
 #
 
 exec > /tmp/initramfs.log 2>&1
-
+set -x
 
 mount -t devtmpfs devtmpfs /dev
 mount -t proc proc /proc
@@ -372,8 +372,7 @@ function wait_init_interrupt() {
 	msg
 	msg
 	echo "Press any key to interrupt init" > /dev/console
-	msg
-	msg
+
 	exec 0< /dev/console
 	read -r -s -n 1 -t 3
 	if [[ "$?" -eq 0 ]]; then
@@ -383,6 +382,8 @@ function wait_init_interrupt() {
 		exec /bin/sh
 	fi
 	echo "Action has timed out" > /dev/console
+	msg
+	msg
 }
 
 function import_init_variables() {
@@ -395,22 +396,22 @@ function detect_chip_and_fw() {
 	chip_family=`ipcinfo-mips32 --family`
 	msg "Detected chip name: $chip_name, chip family: $chip_family"
 
-	dd if=$boot_mtddev of=/tmp/uboot_partimg
-	strings /tmp/uboot_partimg > /tmp/uboot_partimg_strings
+	dd if=$boot_partmtd of=/tmp/boot_partimg
+	strings /tmp/boot_partimg > /tmp/boot_partimg_strings
 
-	if grep -q "demo.bin" /tmp/uboot_partimg_strings ; then #  Cam v2 & Cam Pan
+	if grep -q "demo.bin" /tmp/boot_partimg_strings ; then #  Cam v2 & Cam Pan
 	   	msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
 	   	current_fw_type="stock"
 
-	elif grep -q "demo_wcv3.bin" /tmp/uboot_partimg_strings ; then # Cam v3
+	elif grep -q "demo_wcv3.bin" /tmp/boot_partimg_strings ; then # Cam v3
 	   	msg "Camera is currently on Cam v3 stock firmware"
 	   	current_fw_type="stock"
 
-	elif grep -q "recovery_wcpv2.bin" /tmp/uboot_partimg_strings ; then # Cam Pan v2
+	elif grep -q "recovery_wcpv2.bin" /tmp/boot_partimg_strings ; then # Cam Pan v2
 	   	msg "Camera is currently on Cam Pan v2 stock firmware"
 	   	current_fw_type="stock"
 
-	elif grep -q "factory_0P3N1PC_kernel" /tmp/uboot_partimg_strings ; then
+	elif grep -q "factory_0P3N1PC_kernel" /tmp/boot_partimg_strings ; then
 	   	msg "Camera is currently on OpenIPC firmware"
 		current_fw_type="openipc"
 
@@ -418,7 +419,7 @@ function detect_chip_and_fw() {
 		{ msg "Can not detect current firmware type" ; exit_init ; }
 	fi
 
-	rm /tmp/uboot_partimg /tmp/uboot_partimg_strings
+	rm /tmp/boot_partimg /tmp/boot_partimg_strings
 }
 
 function import_partmtd_info() {
@@ -433,6 +434,11 @@ function import_config_file_vars() {
 	source $config_file || { msg "$config_file file is invalid" ; exit_init ; }
 	
 	[[ ! "$restore_fw_type" == "stock" ]] || [[ ! "$restore_fw_type" == "openipc" ]] && { msg "Invalid restore firmware type" ; exit_init ; }
+}
+
+function mount_sdcard() {
+	mkdir -p /sdcard
+	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000
 }
 
 function do_backup_operation() {
@@ -549,15 +555,16 @@ function exit_init() {
 
 function main() {
 	initialize_gpio
+	import_init_variables
 	welcome_msg
 
 	wait_init_interrupt
-	
-	import_init_variables
-	detect_chip_and_fw	
+
 	import_partmtd_info
 	import_config_file_vars
-
+	detect_chip_and_fw
+	
+	mount_sdcard
 	if [[ "${backup_partitions}" == "yes" ]]; then
 		{ msg "backup_partitions value is Yes" ; do_backup_operation ; }
 	else

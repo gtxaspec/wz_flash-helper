@@ -25,14 +25,12 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 - Wyze Cam Floodlight
 
 
-**Notes:**
-- You need md5sum files of the partition images that you want to restore in `<partition name>.ms5sum` format. Backup operations will automatically generate md5sum files.
+**Note:**
 - It is highly recommended to enable `dry_run` to check if everything works before doing real operations.
 - Backup is done first, then Restore and followed by Custom script.
-- Custom script is not run if `dry_run` is set to `yes`.
-- Custom script does not necessarily have to be on the SD Card top directory, you can put its path on the option to make it run from somewhere else.
-- During backup operations, the blue LED would be blinking. During restore operations, the red LED would be blinking.
-
+- During backup operations, the blue LED would be blinking.
+- During restore operations, the red LED would be blinking.
+- During switch firmware operations, both the blue LED and the red LED would be blinking.
 
 ## Warning
 ```
@@ -40,7 +38,6 @@ I am not responsible for bricking someone's cameras.
 DO NOT DISCONNECT POWER when restore operations are going on specially when uboot is being flashed,
 this would hardbrick your camera(unless you know how to remove the flash chip and use SPI programmer).
 It is also possible to hardbrick the camera with your custom script or you inject dangerous commands to the config file.
-Using dry_run first is highly recommended, unless you are confident.
 ```
 
 

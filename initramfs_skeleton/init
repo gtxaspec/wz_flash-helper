@@ -4,40 +4,48 @@
 # START: Partition start address
 # END: Partition end address
 # SIZE: Partition size(in 1k block)
+# MTD MAPPING: MTD mapping by the kernel so partitions can be read/written from/to with correct start addresses and size
+# MTD DEVICE: MTD DEVIVE name that has been mapped by the kernel and can perform read/write operations
 #
 # Used partition names are the as mtdparts parameter on the kernel
 #
 #---------- T20 stock ----------
-#PART     SIZE(dec)  START(dec)  START(hex)
-#boot     256        0           0x0
-#kernel   2048       256         0x40000
-#root     3392       2304        0x240000
-#driver   640        5696        0x590000
-#appfs    4736       6336        0x630000
-#backupk  2048       11072       0xad0000
-#backupd  640        13120       0xcd0000
-#backupa  2048       13760       0xd70000
-#config   256        15808       0xf70000
-#para     256        16064       0xfb0000
+#PART     SIZE(dec)  START(dec)  START(hex)     MTD MAPPING               MTD DEVICE
+#boot     256        0           0x0            256K@0(boot)              /dev/mtd0
+#kernel   2048       256         0x40000        2048K@256K(t20_kernel)    /dev/mtd1
+#root     3392       2304        0x240000       3392K@2304K(t20_root)     /dev/mtd2
+#driver   640        5696        0x590000       640K@5696K(t20_driver)    /dev/mtd3
+#appfs    4736       6336        0x630000       4736K@6336K(t20_apps)     /dev/mtd4
+#backupk  2048       11072       0xad0000       2048K@11072K(t20_backupk) /dev/mtd5
+#backupd  640        13120       0xcd0000       640K@13120K(t20_backupd)  /dev/mtd6
+#backupa  2048       13760       0xd70000       2048K@13760K(t20_backupa) /dev/mtd7
+#config   256        15808       0xf70000       256K@15808K(t20_config)   /dev/mtd8
+#para     256        16064       0xfb0000       256K@16064K(t20_pata)     /dev/mtd9
 #
 #---------- T31 stock ----------
-#PART    SIZE(dec)  START(dec)  START(hex)
-#boot    256        0           0x0
-#kernel  1984       256         0x40000
-#rootfs  3904       2240        0x230000
-#app     3904       6144        0x600000
-#kback   1984       10048       0x9d0000
-#aback   3904       12032       0xbc0000
-#cfg     384        15936       0xf90000
-#para    64         16320       0xff0000
+#PART    SIZE(dec)  START(dec)  START(hex)     MTD MAPPING                MTD DEVICE
+#boot    256        0           0x0            256K@0(boot)               /dev/mtd0
+#kernel  1984       256         0x40000        1984K@256K(t31_kernel)     /dev/mtd10
+#rootfs  3904       2240        0x230000       3904K@2240K(t31_rootfs)    /dev/mtd11
+#app     3904       6144        0x600000       3904K@6144K(t31_app)       /dev/mtd12
+#kback   1984       10048       0x9d0000       1984K@10084K(t31_kback)    /dev/mtd13
+#aback   3904       12032       0xbc0000       3904K@12032K(t31_aback)    /dev/mtd14
+#cfg     384        15936       0xf90000       384K@15936K(t31_cfg)       /dev/mtd15
+#para    64         16320       0xff0000       64K@16320K(t31_para)       /dev/mtd16
 #
 #---------- T20 and T31 OpenIPC ----------
-#PART         SIZE(dec)  START(dec)  START(hex)
-#boot         256        0           0x0
-#env          64         256         0x40000
-#kernel       3072       320         0x50000
-#rootfs       10240      3392        0x350000
-#rootfs-data  2752       13632       0xd50000
+#PART         SIZE(dec)  START(dec)  START(hex) MTD MAPPING                       MTD DEVICE
+#boot         256        0           0x0        256K@0(boot)                      /dev/mtd0
+#env          64         256         0x40000    64K@256K(openipc_env)             /dev/mtd17
+#kernel       3072       320         0x50000    3072K@320K(openipc_kernel)        /dev/mtd18
+#rootfs       10240      3392        0x350000   10240K@3392K(openipc_rootfs)      /dev/mtd19
+#rootfs-data  2752       13632       0xd50000   2752K@13632K(openipc_rootfs-data) /dev/mtd20
+#
+#Full flash mapping                            2752K@13632K,16384k@0(all)         /dev/mtd21
+#
+# MTD mapping with kernel commandline:
+# CONFIG_CMDLINE="console=ttyS1,115200n8 mem=100M@0x0 rmem=28M@0x5000000 rdinit=/init mtdparts=jz_sfc:256K@0(boot),2048K@256K(t20_kernel),3392K@2304K(t20_root),640K@5696K(t20_driver),4736K@6336K(t20_apps),2048K@11072K(t20_backupk),640K@13120K(t20_backupd),2048K@13760K(t20_backupa),256K@15808K(t20_config),256K@16064K(t20_pata),1984K@256K(t31_kernel),3904K@2240K(t31_rootfs),3904K@6144K(t31_app),1984K@10084K(t31_kback),3904K@12032K(t31_aback),384K@15936K(t31_cfg),64K@16320K(t31_para),64K@256K(openipc_env),3072K@320K(openipc_kernel),10240K@3392K(openipc_rootfs),2752K@13632K,16384k@0(all)"
+#
 #
 
 exec > /tmp/initramfs.log 2>&1
@@ -85,137 +93,70 @@ function initialize_gpio_leds() {
 	fi
 }
 
-function get_t20_stock_partstartaddr() {
-# Description: Return start address of a given partition name on T20 cameras stock firmware
-# Syntax: get_t20_stock_partstartaddr <partname>
+function get_t20_stock_partmtddev() {
+# Description: Return MTD device of a given partition name on T20 cameras stock firmware
+# Syntax: get_t20_stock_partmtddev <partname>
 	case "$1" in
 		"boot")
-			echo -n "0" ;;
+			echo -n "/dev/mtd0" ;;
 		"kernel")
-			echo -n "256" ;;
+			echo -n "/dev/mtd1" ;;
 		"root")
-			echo -n "2304" ;;
+			echo -n "/dev/mtd2" ;;
 		"driver")
-			echo -n "5696" ;;
+			echo -n "/dev/mtd3" ;;
 		"appfs")
-			echo -n "6336" ;;
+			echo -n "/dev/mtd4" ;;
 		"backupk")
-			echo -n "11072" ;;
+			echo -n "/dev/mtd5" ;;
 		"backupd")
-			echo -n "13120" ;;
+			echo -n "/dev/mtd6" ;;
 		"backupa")
-			echo -n "13760" ;;
+			echo -n "/dev/mtd7" ;;
 		"config")
-			echo -n "15808" ;;
+			echo -n "/dev/mtd8" ;;
 		"para")
-			echo -n "16064" ;;
+			echo -n "/dev/mtd9" ;;
 	esac
 }
 
-function get_t31_stock_partstartaddr() {
-# Description: Return start address of a given partition name on T31 cameras stock firmware
-# Syntax: get_t31_stock_partstartaddr <partname>
+function get_t31_stock_partmtddev() {
+# Description: Return MTD device of a given partition name on T31 cameras stock firmware
+# Syntax: get_t31_stock_partmtddev <partname>
 	case "$1" in
 		"boot")
-			echo -n "0" ;;
+			echo -n "/dev/mtd0" ;;
 		"kernel")
-			echo -n "256" ;;
+			echo -n "/dev/mtd10" ;;
 		"rootfs")
-			echo -n "2240" ;;
+			echo -n "/dev/mtd11" ;;
 		"app")
-			echo -n "6144" ;;
+			echo -n "/dev/mtd12" ;;
 		"kback")
-			echo -n "10048" ;;
+			echo -n "/dev/mtd13" ;;
 		"aback")
-			echo -n "12032" ;;
+			echo -n "/dev/mtd14" ;;
 		"cfg")
-			echo -n "15936" ;;
+			echo -n "/dev/mtd15" ;;
 		"para")
-			echo -n "16320" ;;
+			echo -n "/dev/mtd16" ;;
 	esac
 }
 
-function get_openipc_partstartaddr() {
-# Description: Return start address of a given partition name on OpenIPC firmware
-# Syntax: get_openipc_partstartaddr <partname>
+function get_openipc_partmtddev() {
+# Description: Return MTD device of a given partition name on OpenIPC firmware
+# Syntax: get_openipc_partmtddev <partname>
 	case "$1" in
 		"boot")
-			echo -n "0" ;;
+			echo -n "/dev/mtd0" ;;
 		"env")
-			echo -n "256" ;;
+			echo -n "/dev/mtd17" ;;
 		"kernel")
-			echo -n "320" ;;
+			echo -n "/dev/mtd18" ;;
 		"rootfs")
-			echo -n "3392" ;;
+			echo -n "/dev/mtd19" ;;
 		"rootfs-data")
-			echo -n "13632" ;;
-	esac
-}
-
-function get_t20_stock_partsize() {
-# Description: Return partition size of a given partition name on T20 cameras stock firmware
-# Syntax: get_t20_stock_partsize <partname>
-	case "$1" in
-		"boot")
-			echo -n "256" ;;
-		"kernel")
-			echo -n "2048" ;;
-		"root")
-			echo -n "3392" ;;
-		"driver")
-			echo -n "640" ;;
-		"appfs")
-			echo -n "4736" ;;
-		"backupk")
-			echo -n "2048" ;;
-		"backupd")
-			echo -n "640" ;;
-		"backupa")
-			echo -n "2048" ;;
-		"config")
-			echo -n "256" ;;
-		"para")
-			echo -n "256" ;;
-	esac
-}
-
-function get_t31_stock_partsize() {
-# Description: Return partition size of a given partition name on T31 cameras stock firmware
-# Syntax: get_t31_stock_partsize <partname>
-	case "$1" in
-		"boot")
-			echo -n "256" ;;
-		"kernel")
-			echo -n "1984" ;;
-		"rootfs")
-			echo -n "3904" ;;
-		"app")
-			echo -n "3904" ;;
-		"kback")
-			echo -n "1984" ;;
-		"aback")
-			echo -n "3904" ;;
-		"cfg")
-			echo -n "384" ;;
-		"para")
-			echo -n "64" ;;
-	esac
-}
-
-function get_openipc_partsize() {
-# Description: Return partition size of a given partition name on OpenIPC firmware
-# Syntax: get_openipc_partsize <partname>
-	case "$1" in
-		"boot")
-			echo -n "256" ;;
-		"env")
-			echo -n "64" ;;
-		"kernel")
-			echo -n "3072" ;;
-		"rootfs")
-			echo -n "10240" ;;
-		"rootfs-data")
-			echo -n "2752" ;;
+			echo -n "/dev/mtd20" ;;
 	esac
 }
 
@@ -245,7 +186,6 @@ function get_t20_stock_partimgfile() {
 			echo -n "t20_stock_para.bin" ;;
 	esac
 }
-
 
 function get_t31_stock_partimgfile() {
 # Description: Return filename for the partition used for backup/restore of a given partition name on T31 stock firmware
@@ -375,7 +315,7 @@ function backup_partition_to_file() {
 	local start_addr="$2"
 	local read_size="$3"
 	local out_partimg="$4"
-	
+
 	[ -f $out_partimg ] && { msg " + $out_partimg exists" ; return 1 ; }
 
 	msg " + Making backup for $partname partition"	
@@ -736,10 +676,10 @@ function main() {
 	welcome_msg
 	
 	wait_init_interrupt
-	import_config_vars
-	do_backup_operations
+#	import_config_vars
+#	do_backup_operations
 	# do_restore_operations
-	execute_custom_script
+#	execute_custom_script
 
 	exit_init
 }

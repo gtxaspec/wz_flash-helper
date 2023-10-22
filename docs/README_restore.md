@@ -19,3 +19,4 @@ restore_partitions="yes"
 - Flash tool automatically detect camera SoC type and firmware type to use the correct options.
 - `switch_fw` option must be disabled like the above configurations. If both `restore_partitions` and `switch_fw`are enabled, both operations would not be executed.
 - All partition images must come with their md5sum file in <partition image>.md5sum
+- During restore operations, the red LED would be blinking.

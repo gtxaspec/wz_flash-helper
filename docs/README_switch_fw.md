@@ -24,4 +24,6 @@ Conditions for switch operations to work:
 - `(SD card)/wz_flash-helper/restore/openipc`
 3. All partition images must come with their md5sum file in <partition image>.md5sum
 
-**Note:** `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_fw`are enabled, both operations would not be executed.
+**Note:**
+- `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_fw`are enabled, both operations would not be executed.
+- During switch firmware operations, both the blue LED and the red LED would be blinking.

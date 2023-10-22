@@ -11,10 +11,12 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 
 ## Features
 - No serial connection or SSH is needed! only SD card.
-- Custom script to run after backup/restore.
+- Backup partitions
+- Restore partitions
+- Switch between stock and OpenIPC firmware
 - Dry run option for safety and debugging.
-- Seamless transition to a new boot image on SD card after backup/restore.
-- Initramfs shell for manual debugging is available if you have a serial connection.
+- Initramfs shell for manual debugging if you have a serial connection.
+- Other features with [extra options](README_boot_img_next_boot.md)
 
 
 ## Supported cameras
@@ -27,10 +29,7 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 
 **Note:**
 - It is highly recommended to enable `dry_run` to check if everything works before doing real operations.
-- Backup is done first, then Restore and followed by Custom script.
-- During backup operations, the blue LED would be blinking.
-- During restore operations, the red LED would be blinking.
-- During switch firmware operations, both the blue LED and the red LED would be blinking.
+- Backup is done first, then Restore, then Switch firmware and followed by Custom script.
 
 ## Warning
 ```

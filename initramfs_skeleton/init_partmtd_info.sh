@@ -192,8 +192,6 @@ function get_t20_stock_restore_opt_value() {
 # Description: Return user option to decide if a given partition is restored or not on T20 stock firmware
 # Syntax: get_t20_stock_restore_opt_value <partname>
 	case "$1" in
-		"boot")
-			echo -n "$t20_restore_boot" ;;
 		"kernel")
 			echo -n "$t20_restore_kernel" ;;
 		"root")
@@ -240,8 +238,6 @@ function get_openipc_restore_opt_value() {
 # Description: Return user option to decide if a given partition is restored or not on OpenIPC firmware
 # Syntax: get_openipc_restore_opt_value <partname>
 	case "$1" in
-		"boot")
-			echo -n "$openipc_restore_boot" ;;
 		"env")
 			echo -n "$openipc_restore_env" ;;
 		"kernel")

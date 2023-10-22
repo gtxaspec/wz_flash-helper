@@ -137,7 +137,7 @@ function backup_full_flash() {
 	elif [[ "$current_fw_type" == "openipc" ]]; then
 		full_flash_backup_file=$openipc_backup_dir_path/$openipc_full_flash_filename
 	fi
-	msg "- Backup: whole flash content to file $outfile ---"
+	msg "- Backup: whole flash content to file $full_flash_backup_file ---"
 	if [[ "$dry_run" == "yes" ]]; then
 		msg " + (this command is not run) dd if=$concat_partmtd of=$full_flash_backup_file"
 		msg " + (this command is not run) md5sum $full_flash_backup_file > $full_flash_backup_file.md5sum"
@@ -151,7 +151,7 @@ function backup_t20_stock_parts() {
 # Description: Create partition images of all stock partitions on T20 flash chip
 	msg "Backing up T20 stock partitions"
 	
-	for partname in $t20_stock_partname_list; do
+	for partname in $t20_stock_backup_partname_list; do
 		local partmtd=$(get_t20_stock_partmtd $partname)
 		local outfile_name=$(get_t20_stock_partimg $partname)
 		local outfile=$stock_backup_dir_path/$outfile_name
@@ -196,7 +196,7 @@ function backup_t31_stock_parts() {
 # Description: Create partition images of all stock partitions on T31 flash chip
 	msg "Backing up T31 stock partitions"
 	
-	for partname in $t31_stock_partname_list; do
+	for partname in $t31_stock_backup_partname_list; do
 		local partmtd=$(get_t31_stock_partmtd $partname)
 		local outfile_name=$(get_t31_stock_partimg $partname)
 		local outfile=$stock_backup_dir_path/$outfile_name
@@ -225,7 +225,7 @@ function backup_openipc_parts() {
 # Description: Create partition images of all OpenIPC partitions on T31 flash chip
 	msg "Backing up OpenIPC partitions"
 
-	for partname in $openipc_partname_list; do
+	for partname in $openipc_backup_partname_list; do
 		local partmtd=$(get_openipc_partmtd $partname)
 		local outfile_name=$(get_openipc_partimg $partname)
 		local outfile=$openipc_backup_dir_path/$outfile_name
@@ -247,7 +247,7 @@ function restore_t20_stock_parts() {
 # Description: Restore stock partitions from partition images on T20 flash chip
 	msg "Restoring T20 stock partitions"
 
-	for partname in $t20_stock_partname_list; do
+	for partname in $t20_stock_restore_partname_list; do
 		local infile_name=$(get_t20_stock_partimg $partname)
 		local infile=$stock_restore_dir_path/$infile_name
 		local partmtd=$(get_t20_stock_partmtd $partname)
@@ -267,7 +267,7 @@ function restore_t31_stock_parts() {
 # Description: Restore stock partitions from partition images on T31 flash chip
 	msg "Restoring T31 stock partitions"
 	
-	for partname in $t31_stock_partname_list; do
+	for partname in $t31_stock_restore_partname_list; do
 		local infile_name=$(get_t31_stock_partimg $partname)
 		local infile=$stock_restore_dir_path/$infile_name
 		local partmtd=$(get_t31_stock_partmtd $partname)
@@ -287,7 +287,7 @@ function restore_openipc_parts() {
 # Description: Restore OpenIPC partitions from partition images on T20 flash chip
 	msg "Restoring OpenIPC partitions"
 
-	for partname in $openipc_partname_list; do
+	for partname in $openipc_restore_partname_list; do
 		local infile_name=$(get_openipc_partimg $partname)
 		local infile=$openipc_restore_dir_path/$infile_name
 		local partmtd=$(get_openipc_partmtd $partname)
@@ -315,11 +315,11 @@ function switch_fw_stock_to_openipc() {
 	cp -r $stock_switch_fw_dir_path /switch_fw_stock_to_openipc
 	cd /switch_fw_stock_to_openipc
 
-	for partname in $openipc_partname_list; do
+	for partname in $openipc_backup_partname_list; do
 		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
 	done
 
-	for partname in $openipc_partname_list; do
+	for partname in $openipc_backup_partname_list; do
 		local infile=$(get_openipc_partimg $partname)
 		local partmtd=$(get_openipc_partmtd $partname)
 		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
@@ -331,11 +331,11 @@ function switch_fw_openipc_to_t20_stock() {
 	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t20_stock
 	cd /switch_fw_openipc_to_t20_stock
 
-	for partname in $t20_stock_partname_list; do
+	for partname in $t20_stock_backup_partname_list; do
 		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
 	done
 
-	for partname in $t20_stock_partname_list; do
+	for partname in $t20_stock_backup_partname_list; do
 		local infile=$(get_t20_stock_partimg $partname)
 		local partmtd=$(get_t20_stock_partmtd $partname)
 		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
@@ -347,11 +347,11 @@ function switch_fw_openipc_to_t31_stock() {
 	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t31_stock
 	cd /switch_fw_openipc_to_t31_stock
 
-	for partname in $t31_stock_partname_list; do
+	for partname in $t31_stock_backup_partname_list; do
 		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
 	done
 
-	for partname in $t31_stock_partname_list; do
+	for partname in $t31_stock_backup_partname_list; do
 		local infile=$(get_t31_stock_partimg $partname)
 		local partmtd=$(get_t31_stock_partmtd $partname)
 		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
@@ -534,7 +534,6 @@ function do_switch_fw_operation() {
 
 function execute_custom_script() {
 # Description: Execute user custom script
-	msg "---------- Exit init ----------"
 	msg "custom_script value is set to \"$custom_script\""
 	
 	if [ -f /sdcard/$custom_script ]; then
@@ -551,6 +550,7 @@ function execute_custom_script() {
 
 function exit_init() {
 # Description: Move initramfs log to SD card and reboot
+	msg "---------- Exit init ----------"
 	move_continue_boot_img_file
 	move_flash_tool_boot_img_file
 	msg "Initramfs init is finished! Exiting now"

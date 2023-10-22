@@ -18,10 +18,15 @@ openipc_restore_dir_path="/sdcard/wz_flash-helper/restore/openipc"
 stock_switch_fw_dir_path="/sdcard/wz_flash-helper/switch_fw/stock"
 openipc_switch_fw_dir_path="/sdcard/wz_flash-helper/switch_fw/openipc"
 
-## List of partitions for T20, T31, OpenIPC firmware
-t20_stock_partname_list="boot kernel root driver appfs backupk backupd backupa config para"
-t31_stock_partname_list="boot kernel rootfs app kback aback cfg para"
-openipc_partname_list="boot env kernel rootfs rootfs-data"
+## List of partitions for T20, T31, OpenIPC firmware for backup operation
+t20_stock_backup_partname_list="boot kernel root driver appfs backupk backupd backupa config para"
+t31_stock_backup_partname_list="boot kernel rootfs app kback aback cfg para"
+openipc_backup_partname_list="boot env kernel rootfs rootfs-data"
+
+## List of partitions for T20, T31, OpenIPC firmware for restore operation
+t20_stock_restore_partname_list="kernel root driver appfs backupk backupd backupa config para"
+t31_stock_restore_partname_list="kernel rootfs app kback aback cfg para"
+openipc_restore_partname_list="env kernel rootfs rootfs-data"
 
 ## Names of full flash dump file
 t20_stock_full_flash_filename="t20_stock_all.bin"

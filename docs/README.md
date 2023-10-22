@@ -33,7 +33,7 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 ## Warning
 ```
 I am not responsible for bricking someone's cameras.
-DO NOT DISCONNECT POWER when restore or switch firmware operations are going on specially when uboot is being flashed,
+DO NOT DISCONNECT POWER when restore(with) or switch firmware operations are going on specially when uboot is being flashed,
 this would hardbrick your camera(unless you know how to remove the flash chip and use SPI programmer).
 It is also possible to hardbrick the camera with your custom script or you inject dangerous commands to the config file.
 ```
@@ -42,4 +42,4 @@ It is also possible to hardbrick the camera with your custom script or you injec
 ## Credits
 - Gtxaspec with his ideas, tips and hard work on OpenIPC drivers and uboot SD card booting.
 - Mnakada with their docker image to build the boot image from [their repo](https://github.com/mnakada/atomcam_tools)
-- [OpenIPC](https://github.com/OpenIPC) project with their tools, firmware and tips.
+- [OpenIPC project](https://github.com/OpenIPC) with their tools, firmware and tips.

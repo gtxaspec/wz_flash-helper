@@ -17,12 +17,15 @@ switch_fw="yes"
 switch_fw_to="stock"
 ```
 
+**IMPORTANT:** DO NOT DISCONNECT POWER when switch firmware operation is going on. This would brick your camera.
+
 Conditions for switch firmware operation to work:
 1. Current firmware type must be different from `restore_fw_type` value
 2. All partition images of the firmware types that you want to switch to must present in either:
 - `(SD card)/wz_flash-helper/restore/stock` or
 - `(SD card)/wz_flash-helper/restore/openipc`
 3. All partition images must come with their md5sum file in <partition image>.md5sum
+
 
 **Note:**
 - `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_fw`are enabled, both operations would not be executed.

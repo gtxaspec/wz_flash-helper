@@ -33,7 +33,7 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 ## Warning
 ```
 I am not responsible for bricking someone's cameras.
-DO NOT DISCONNECT POWER when restore(with) or switch firmware operations are going on specially when uboot is being flashed,
+DO NOT DISCONNECT POWER when switch firmware operation is going on,
 this would hardbrick your camera(unless you know how to remove the flash chip and use SPI programmer).
 It is also possible to hardbrick the camera with your custom script or you inject dangerous commands to the config file.
 ```

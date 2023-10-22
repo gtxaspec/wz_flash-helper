@@ -15,9 +15,6 @@ restore_partitions="yes"
 4. Insert your SD card into your camera and reboot.
 
 
-
-**IMPORTANT:** DO NOT DISCONNECT POWER when restore operation is going on if restore option for uboot is enabled. This would brick your camera.
-
 **Note:**
 - Flash tool automatically detect camera SoC type and firmware type to use the correct options.
 - `switch_fw` option must be disabled like the above configurations. If both `restore_partitions` and `switch_fw`are enabled, both operations would not be executed.

@@ -22,7 +22,7 @@ function msg() {
 	message="$1"
 	echo "$message"
 	echo "$message" > /dev/console
-	echo "$message" > /tmp/initramfs_simple.log
+	echo "$message" > /tmp/initramfs_serial.log
 }
 
 function msg_dry_run() {
@@ -30,13 +30,14 @@ function msg_dry_run() {
 	message="$1"
 	echo " + (this command is not run) $message"
 	echo " + (this command is not run) $message" > /dev/console
-	echo " + (this command is not run) $message" > /tmp/initramfs_simple.log
+	echo " + (this command is not run) $message" > /tmp/initramfs_serial.log
 }
 
 function msg_nonewline() {
 	message="$1"
 	echo -n "$message"
 	echo -n "$message" > /dev/console
+	echo -n "$message" > /tmp/initramfs_serial.log
 }
 
 function initialize_t20_gpio_sdcard() {
@@ -569,7 +570,7 @@ function exit_init() {
 	move_flash_tool_boot_img_file
 	msg "Initramfs init is finished! Exiting now"
 	[ -f /tmp/initramfs.log ] && cp /tmp/initramfs.log $log_file
-	[ -f /tmp/initramfs_simple.log ] && cp /tmp/initramfs_simple.log $log_file_simple
+	[ -f /tmp/initramfs_serial.log ] && cp /tmp/initramfs_serial.log $log_file_serial
 	[ -f /tmp/initramfs_missing-config-file.log ] && cp /tmp/initramfs_missing-config-file.log $log_file_fallback
 	sync
 	umount /sdcard

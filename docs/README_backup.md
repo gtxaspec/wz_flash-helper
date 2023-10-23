@@ -18,4 +18,5 @@ restore_partitions="no"
 
 **Notes:**
 - Backup operation will automatically generate md5sum files for backed up partition images.
-- During backup operation, the blue LED would be blinking.
+- During backup operation, the blue LED would be blinking every second.
+- Typically backup operation takes about 30 seconds(for reference it takes 25 seconds on Wyze Cam v3)

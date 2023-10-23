@@ -12,8 +12,9 @@ stock_backup_dir_path="/sdcard/Wyze_factory_backup"
 openipc_backup_dir_path="/sdcard/wz_flash-helper/backup/openipc"
 
 ## Restore directories
-stock_restore_dir_path="/sdcard/wz_flash-helper/restore/stock"
-openipc_restore_dir_path="/sdcard/wz_flash-helper/restore/openipc"
+restore_dir_path="/sdcard/wz_flash-helper/restore/"
+stock_restore_dir_name="stock"
+openipc_restore_dir_name="openipc"
 
 ## Switch_fw directories
 stock_switch_fw_dir_path="/sdcard/wz_flash-helper/switch_fw/stock"

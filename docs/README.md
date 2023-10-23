@@ -29,6 +29,7 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 ## Notes
 - It is highly recommended to enable `dry_run` to check if everything works before doing real operations.
 - Backup is done first, then Restore, then Switch firmware and followed by Custom script.
+- If one task fails, the flash tool init would exit immediately without doing the remaining operations.
 
 ## Warning
 ```

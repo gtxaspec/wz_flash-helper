@@ -19,4 +19,5 @@ restore_partitions="yes"
 - Flash tool automatically detect camera SoC type and firmware type to use the correct options.
 - `switch_fw` option must be disabled like the above configurations. If both `restore_partitions` and `switch_fw`are enabled, both operations would not be executed.
 - All partition images must come with their md5sum file in <partition image>.md5sum
-- During restore operation, the red LED would be blinking.
+- During restore operation, the red LED would be blinking every second.
+- Typically restore operation takes about 2 minutes(for reference it takes 2 minutes 15 seconds on Wyze Cam v3)

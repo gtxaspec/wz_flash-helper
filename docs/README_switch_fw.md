@@ -24,7 +24,7 @@ Conditions for switch firmware operation to work:
 2. All partition images of the firmware types that you want to switch to must present in either:
 - `(SD card)/wz_flash-helper/restore/stock` or
 - `(SD card)/wz_flash-helper/restore/openipc`
-3. All partition images must come with their md5sum file in <partition image>.md5sum
+3. All partition images must come with their md5sum file in `<partition image>.md5sum` format
 
 
 **Note:**

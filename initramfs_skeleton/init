@@ -579,6 +579,10 @@ function do_backup_operation() {
 
 function do_restore_operation() {
 # Description: Restore flash partitions using partition images
+	if [[ ! "$current_fw_type" == "$restore_fw_type" ]]; then
+		{ msg "restore_fw_type mismatches with current firmware type, aborting" ; exit_init ; }
+	fi
+	
 	case "$current_fw_type" in
 		"stock") restore_dir_path="$stock_restore_dir_path" ;;
 		"openipc") restore_dir_path="$stock_restore_dir_path" ;;

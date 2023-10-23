@@ -87,6 +87,26 @@ function restore_file_to_partition() {
 	fi
 }
 
+function backup_stock_config_part_files_to_archive() {
+# Description: Backup all files from a JFFS2 partition to .tar.gz file
+# Syntax: backup_stock_config_part_files_to_archive <partname> <partblockmtd> <outfile>
+	local partname="$1"
+	local partblockmtd="$2"
+	local outfile="$3"
+
+	local outfile=$stock_backup_dir_path/config.tar.gz
+	msg "- Backup: $partname partition files to file $outfile ---"
+
+	mkdir -p /$partname-stock_config
+	mount -t jffs2 $partblockmtd /$partname-stock_config_path || { msg "Mount $partname partition failed" ; exit_init ; }
+	if [[ "$dry_run" == "yes" ]]; then
+		msg " + (this command is not run) tar -cvf $outfile /$partname-stock_config"
+	else
+		tar -cvf $outfile /$partname-stock_config
+	fi
+	sync
+	umount /$partname-stock_config && rmdir /$partname-stock_config
+}
 
 #    ____             _                   __                  _   _                 
 #   | __ )  __ _  ___| | ___   _ _ __    / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
@@ -129,34 +149,20 @@ function backup_t20_stock_parts() {
 
 function backup_t20_stock_config() {
 # Description: Create .tar.gz archive for config partition files on T20 flash chip
-	local outfile=$stock_backup_dir_path/config.tar.gz
-	msg "- Backup: config partition files to file $outfile ---"
+	local partname="config"
+	local partmtdblock="$config_t20_stock_partmtdblock"
+	local outfile=$stock_backup_dir_path/$partname.tar.gz
 
-	mkdir /t20_stock_config
-	mount -t jffs2 $config_t20_stock_partmtdblock /t20_stock_config || { msg "Mount config partition failed" ; exit_init ; }
-	if [[ "$dry_run" == "yes" ]]; then
-		msg " + (this command is not run) tar -cvf $outfile /t20_stock_config"
-	else
-		tar -cvf $stock_backup_dir_path/config.tar.gz /t20_stock_config
-	fi
-	sync
-	umount /t20_stock_config && rmdir /t20_stock_config
+	backup_stock_config_part_files_to_archive $partname $partmtdblock $outfile
 }
 
 function backup_t20_stock_para() {
 # Description: Create .tar.gz archive for para partition files on T20 flash chip
-	local outfile=$stock_backup_dir_path/para.tar.gz
-	msg "- Backup: para partition files to file $outfile ---"
-	
-	mkdir /t20_stock_para
-	mount -t jffs2 $para_t20_stock_partmtdblock /t20_stock_para || { msg "Mount para partition failed" ; exit_init ; }
-	if [[ "$dry_run" == "yes" ]]; then
-		msg " + (this command is not run) tar -cvf $outfile /t20_stock_para"
-	else
-		tar -cvf $stock_backup_dir_path/para.tar.gz /t20_stock_para
-	fi
-	sync
-	umount /t20_stock_para && rmdir /t20_stock_para
+	local partname="para"
+	local partmtdblock="$para_t20_stock_partmtdblock"
+	local outfile=$stock_backup_dir_path/$partname.tar.gz
+
+	backup_stock_config_part_files_to_archive $partname $partmtdblock $outfile
 }
 
 function backup_t31_stock_parts() {
@@ -174,18 +180,11 @@ function backup_t31_stock_parts() {
 
 function backup_t31_stock_config() {
 # Description: Create .tar.gz archive for config partition files on T31 flash chip
-	local outfile=$stock_backup_dir_path/config.tar.gz
-	msg "- Backup: cfg partition files to file $outfile ---"
-	
-	mkdir /t31_stock_config
-	mount -t jffs2 $cfg_t31_stock_partmtdblock /t31_stock_config || { msg "Mount configs partition failed" ; exit_init ; }
-	if [[ "$dry_run" == "yes" ]]; then
-		msg " + (this command is not run) tar -cvf $outfile /t31_stock_config"
-	else
-		tar -cvf $stock_backup_dir_path/configs.tar.gz /t31_stock_config
-	fi
-	sync
-	umount /t31_stock_config && rmdir /t31_stock_config
+	local partname="cfg"
+	local partmtdblock="$config_t31_stock_partmtdblock"
+	local outfile=$stock_backup_dir_path/$partname.tar.gz
+
+	backup_stock_config_part_files_to_archive $partname $partmtdblock $outfile
 }
 
 function backup_openipc_parts() {

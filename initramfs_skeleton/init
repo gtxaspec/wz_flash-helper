@@ -381,31 +381,38 @@ function move_flash_tool_boot_img_file() {
 	esac
 }
 
-function rollback_stock_boot_part() {
-	flashcp /boot_partimg $boot_partmtd
+
+function get_boot_part_hash() {
+	dd if=$boot_partmtd of=/boot_partimg_new
+	boot_partimg_md5_new=$(md5sum /tmp/boot_partimg_new)
 }
 
 function check_valid_openipc_boot_part() {
 	msg "Checking if your bootloader is corrupted"
-	dd if=$boot_partmtd of=/boot_partimg_new
-	boot_partimg_md5_new=$(md5sum /tmp/boot_partimg_new)
 
 	case "$chip_family" in
 		"t20") openipc_good_boot_hash_list="$t20_valid_hashes" ;;
 		"t31") openipc_good_boot_hash_list="$t31_valid_hashes" ;;
 	esac
 	
+	get_boot_part_hash
 	if $(echo "$openipc_good_boot_hash_list" | grep -q $boot_partimg_md5_new ); then
 		return 0
 	elif $(echo "$openipc_good_boot_hash_list" | grep -q $boot_partimg_md5_new ); then
 		msg "md5 check for valid openipc boot failed"
+		get_boot_part_hash
 	elif $(echo "$openipc_good_boot_hash_list" | grep -q $boot_partimg_md5_new ); then
 		msg "md5 check for valid openipc boot failed second time"
+		get_boot_part_hash
 	elif $(echo "$openipc_good_boot_hash_list" | grep -q $boot_partimg_md5_new ); then
 		{ msg "md5 check for valid openipc boot failed third time" ; return 1 ; }
 	else
 		return 0
 	fi
+}
+
+function rollback_stock_boot_part() {
+	flashcp /boot_partimg $boot_partmtd
 }
 
 function failsafe_openipc_valid_boot_part() {

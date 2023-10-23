@@ -25,6 +25,14 @@ function msg() {
 	echo "$message" > /tmp/initramfs_simple.log
 }
 
+function msg_dry_run() {
+# Description: Allow output messages to be both displayed on the serial terminal and written to the log file
+	message="$1"
+	echo " + (this command is not run) $message"
+	echo " + (this command is not run) $message" > /dev/console
+	echo " + (this command is not run) $message" > /tmp/initramfs_simple.log
+}
+
 function msg_nonewline() {
 	message="$1"
 	echo -n "$message"
@@ -63,8 +71,8 @@ function backup_partition_to_file() {
 	[ -f $outfile ] && { msg " + $outfile exists" ; return 1 ; }
 	
 	if [[ "$dry_run" == "yes" ]]; then
-		msg " + (this command is not run) dd if=$partmtd of=$outfile"
-		msg " + (this command is not run) md5sum $outfile > $outfile.md5sum"
+		msg_dry_run "dd if=$partmtd of=$outfile"
+		msg_dry_run "md5sum $outfile > $outfile.md5sum"
 	else
 		dd if=$partmtd of=$outfile || { msg " + Failed to backup $partname partition" ; return 1 ; }
 		md5sum $outfile > $outfile.md5sum
@@ -82,7 +90,7 @@ function restore_file_to_partition() {
 	
 	msg_nonewline " + Checking md5 of $infile: "
 	if [[ "$dry_run" == "yes" ]]; then
-		md5sum -c $infile.md5sum && msg " + (this command is not run) flash_eraseall $partmtd && flashcp $infile $partmtd"
+		md5sum -c $infile.md5sum && msg_dry_run "flash_eraseall $partmtd && flashcp $infile $partmtd"
 	else
 		md5sum -c $infile.md5sum && { flash_eraseall $partmtd ; flashcp $infile $partmtd ; } || { msg " + md5 checksum for $infile failed" ; return 1 ; }
 	fi
@@ -101,7 +109,7 @@ function backup_stock_config_part_files_to_archive() {
 	mkdir -p /$partname-stock_config
 	mount -t jffs2 $partblockmtd /$partname-stock_config_path || { msg "Mount $partname partition failed" ; exit_init ; }
 	if [[ "$dry_run" == "yes" ]]; then
-		msg " + (this command is not run) tar -cvf $outfile /$partname-stock_config"
+		msg_dry_run "tar -cvf $outfile /$partname-stock_config"
 	else
 		tar -cvf $outfile /$partname-stock_config
 	fi
@@ -125,14 +133,12 @@ function backup_full_flash() {
 	elif [[ "$current_fw_type" == "openipc" ]]; then
 		full_flash_backup_file=$openipc_backup_dir_path/$openipc_full_flash_filename
 	fi
-	msg "- Backup: whole flash content to file $full_flash_backup_file ---"
-	if [[ "$dry_run" == "yes" ]]; then
-		msg " + (this command is not run) dd if=$concat_partmtd of=$full_flash_backup_file"
-		msg " + (this command is not run) md5sum $full_flash_backup_file > $full_flash_backup_file.md5sum"
-	else
-		dd if=$concat_partmtd of=$full_flash_backup_file
-		md5sum $full_flash_backup_file > $full_flash_backup_file.md5sum
-	fi
+	
+	local partname="all_flash"
+	local partmtd="$concat_partmtd"
+	local outfile="$full_flash_backup_file"
+	
+	backup_partition_to_file $partname $partmtd $outfile
 }
 
 function backup_t20_stock_parts() {
@@ -417,7 +423,7 @@ function detect_chip_and_fw() {
 	dd if=$boot_partmtd of=/tmp/boot_partimg
 	strings /tmp/boot_partimg > /tmp/boot_partimg_strings
 	
-	if grep -q "demo.bin" /tmp/boot_partimg_strings ; then #  Cam v2 & Cam Pan
+	if grep -q "demo.bin" /tmp/boot_partimg_strings ; then # Cam v2 & Cam Pan
 		msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
 		current_fw_type="stock"
 	

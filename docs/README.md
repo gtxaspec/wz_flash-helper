@@ -5,7 +5,7 @@
 
 # wz_flash-helper
 
-Automatic parttion backup/restore tool for T20/T31 cameras, works with both stock and OpenIPC firmware.
+Automatic partitions backup/restore tool for T20/T31 cameras, works with both stock and OpenIPC firmware.
 You can also switch between stock and OpenIPC firmware without a scratch.
 
 ## Features
@@ -26,7 +26,7 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 - Wyze Cam Floodlight
 
 
-**Note:**
+## Notes
 - It is highly recommended to enable `dry_run` to check if everything works before doing real operations.
 - Backup is done first, then Restore, then Switch firmware and followed by Custom script.
 

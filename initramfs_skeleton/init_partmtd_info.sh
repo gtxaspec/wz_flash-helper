@@ -154,6 +154,8 @@ function get_t31_stock_partimg() {
 # Description: Return filename for the partition used for backup/restore of a given partition name on T31 stock firmware
 # Syntax: get_t31_stock_partimg <partname>
 	case "$1" in
+		"boot")
+			echo -n "t31_stock_boot.bin" ;;
 		"kernel")
 			echo -n "t31_stock_kernel.bin" ;;
 		"rootfs")

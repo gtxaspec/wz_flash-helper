@@ -4,6 +4,7 @@ flash_tool_name="wz_flash-helper"
 
 config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
 log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
+log_file_simple="/sdcard/wz_flash-helper/wz_flash-helper_simple.log"
 log_file_fallback="/sdcard/wz_flash-helper_no-config-error.log"
 
 ## Backup directories

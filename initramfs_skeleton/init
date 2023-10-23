@@ -34,6 +34,7 @@ function msg_dry_run() {
 }
 
 function msg_nonewline() {
+# Description: same as msg but without newline
 	message="$1"
 	echo -n "$message"
 	echo -n "$message" > /dev/console
@@ -290,6 +291,7 @@ function restore_openipc_parts() {
 #
                                                                                             
 function switch_fw_stock_to_openipc() {
+# Description: Switch from stock to OpenIPC firmware by flashing all partitions OpenIPC partition images
 	cp -r $stock_switch_fw_dir_path /switch_fw_stock_to_openipc
 	cd /switch_fw_stock_to_openipc
 	
@@ -307,6 +309,7 @@ function switch_fw_stock_to_openipc() {
 }
 
 function switch_fw_openipc_to_t20_stock() {
+# Description: Switch from OpenIPC to stock firmware on T20 by flashing all partitions stock partition images
 	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t20_stock
 	cd /switch_fw_openipc_to_t20_stock
 	
@@ -324,6 +327,7 @@ function switch_fw_openipc_to_t20_stock() {
 }
 
 function switch_fw_openipc_to_t31_stock() {
+# Description: Switch from OpenIPC to stock firmware on T31 by flashing all partitions stock partition images
 	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t31_stock
 	cd /switch_fw_openipc_to_t31_stock
 	
@@ -383,12 +387,14 @@ function move_flash_tool_boot_img_file() {
 
 
 function get_boot_part_hash() {
+# Description: Calculate md5 hash of current boot partition
 	dd if=$boot_partmtd of=/boot_partimg_new
 	boot_partimg_md5_new=$(md5sum /tmp/boot_partimg_new)
 	rm /boot_partimg_new
 }
 
 function check_valid_openipc_boot_part() {
+# Description: Check if flashed OpenIPC boot partition hash is on the valid hash list
 	msg "Checking if your boot partitiion is corrupted"
 
 	case "$chip_family" in
@@ -419,10 +425,12 @@ function check_valid_openipc_boot_part() {
 }
 
 function rollback_stock_boot_part() {
+# Description: Flash boot partition with old boot image
 	flashcp /boot_partimg $boot_partmtd
 }
 
 function rollback_stock_boot_part_if_openipc_boot_flash_fails() {
+# Description: Check if flashed OpenIPC boot partition is valid, if not, rollback to stock boot image
 	if ! check_valid_openipc_boot_part ; then
 		msg "ATTENTION! ATTENTION! ATTENTION!"
 		msg "ATTENTION! ATTENTION! ATTENTION!"

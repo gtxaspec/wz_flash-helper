@@ -87,39 +87,6 @@ function restore_file_to_partition() {
 	fi
 }
 
-function move_continue_boot_img_file() {
-# Description: Remane SD card boot image to be booted next boot
-	if [[ "$enable_continue_boot_img" == "yes" ]]; then
-		msg "enable_continue_boot_img value is Yes"
-		case "$current_fw_type" in
-			"stock")
-				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_t31_ZMC6tiIDQN"
-				mv /sdcard/$continue_boot_img_filename /sdcard/factory_t31_ZMC6tiIDQN
-				;;
-			"openipc")
-				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_0P3N1PC_kernel"
-				mv /sdcard/$continue_boot_img_filename /sdcard/factory_0P3N1PC_kernel
-				;;
-		esac
-	else
-		msg "enable_continue_boot_img value is No"
-	fi
-}
-
-function move_flash_tool_boot_img_file() {
-# Description: Rename the SD card boot image to avoid infinite boot loop
-	case "$current_fw_type" in
-		"stock")
-			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name"
-			mv /sdcard/factory_t31_ZMC6tiIDQN /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name
-			;;
-		"openipc")
-			msg "Renaming /sdcard/factory_0P3N1PC_kernel to /sdcard/factory_0P3N1PC_kernel.$flash_tool_name"
-			mv /sdcard/factory_0P3N1PC_kernel /sdcard/factory_0P3N1PC_kernel.$flash_tool_name
-			;;
-	esac
-}
-
 
 #    ____             _                   __                  _   _                 
 #   | __ )  __ _  ___| | ___   _ _ __    / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
@@ -357,6 +324,47 @@ function switch_fw_openipc_to_t31_stock() {
 		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
 	done
 	rm -r /switch_fw_openipc_to_t31_stock
+}
+
+
+#   __  __ _             __                  _   _                 
+#  |  \/  (_)___  ___   / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
+#  | |\/| | / __|/ __| | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
+#  | |  | | \__ \ (__  |  _| |_| | | | | (__| |_| | (_) | | | \__ \
+#  |_|  |_|_|___/\___| |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+#                                                                 
+
+function move_continue_boot_img_file() {
+# Description: Remane SD card boot image to be booted next boot
+	if [[ "$enable_continue_boot_img" == "yes" ]]; then
+		msg "enable_continue_boot_img value is Yes"
+		case "$current_fw_type" in
+			"stock")
+				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_t31_ZMC6tiIDQN"
+				mv /sdcard/$continue_boot_img_filename /sdcard/factory_t31_ZMC6tiIDQN
+				;;
+			"openipc")
+				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_0P3N1PC_kernel"
+				mv /sdcard/$continue_boot_img_filename /sdcard/factory_0P3N1PC_kernel
+				;;
+		esac
+	else
+		msg "enable_continue_boot_img value is No"
+	fi
+}
+
+function move_flash_tool_boot_img_file() {
+# Description: Rename the SD card boot image to avoid infinite boot loop
+	case "$current_fw_type" in
+		"stock")
+			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name"
+			mv /sdcard/factory_t31_ZMC6tiIDQN /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name
+			;;
+		"openipc")
+			msg "Renaming /sdcard/factory_0P3N1PC_kernel to /sdcard/factory_0P3N1PC_kernel.$flash_tool_name"
+			mv /sdcard/factory_0P3N1PC_kernel /sdcard/factory_0P3N1PC_kernel.$flash_tool_name
+			;;
+	esac
 }
 
 

@@ -9,20 +9,9 @@
 
 function move_continue_boot_img_file() {
 # Description: Rename SD card boot image that will be booted next boot
-	if [[ "$enable_continue_boot_img" == "yes" ]]; then
-		msg "enable_continue_boot_img value is Yes"
-		case "$current_fw_type" in
-			"stock")
-				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_t31_ZMC6tiIDQN"
-				mv /sdcard/$continue_boot_img_filename /sdcard/factory_t31_ZMC6tiIDQN
-				;;
-			"openipc")
-				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_0P3N1PC_kernel"
-				mv /sdcard/$continue_boot_img_filename /sdcard/factory_0P3N1PC_kernel
-				;;
-		esac
-	else
-		msg "enable_continue_boot_img value is No"
+	if [[ ! "$switch_fw" == "yes" ]]; then
+		msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_t31_ZMC6tiIDQN"
+		mv /sdcard/$continue_boot_img_filename /sdcard/factory_t31_ZMC6tiIDQN
 	fi
 }
 

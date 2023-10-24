@@ -20,13 +20,13 @@ sleep 1
 function msg() {
 # Description: Allow output messages to be both displayed on the serial terminal and written to the log file
 	message="$1"
-	echo "$message"
-	echo "$message" > /dev/console
-	echo "$message" >> /tmp/initramfs_serial.log
+	echo "$message" # Print to log file
+	echo "$message" > /dev/console # Print on serial terminal
+	echo "$message" >> /tmp/initramfs_serial.log # Print to an extra log file, it is exactly the same as on serial terminal
 }
 
 function msg_dry_run() {
-# Description: Print out commands when dry run is enabled
+# Description: Print out commands instead of executing them when dry run is enabled
 	cmd="$1"
 	echo " + (this command is not run) $cmd"
 	echo " + (this command is not run) $cmd" > /dev/console
@@ -34,42 +34,52 @@ function msg_dry_run() {
 }
 
 function msg_nonewline() {
-# Description: same as msg but without newline
+# Description: Same as msg but without newline
 	message="$1"
 	echo -n "$message"
 	echo -n "$message" > /dev/console
 	echo -n "$message" >> /tmp/initramfs_serial.log
 }
 
-function initialize_gpio() {
-# Description: Initialize GPIO for LEDs and SD card on T20 cameras
-	source /init_functions_gpio.sh
-	[[ "chip_family" == "t20" ]] && initialize_t20_gpio_sdcard
-	initialize_gpio_leds
+function detect_chip_and_fw() {
+# Description: Detect chip family and current firmware to run later operations correctly
+	chip_name=$(ipcinfo-mips32 --chip-name)
+	chip_family=$(ipcinfo-mips32 --family)
+	msg "Detected chip name: $chip_name, chip family: $chip_family"
+	
+	dd if=/dev/mtd0 of=/boot_backup.img
+	strings /boot_backup.img > /boot_backup_strings.txt
+	
+	if grep -q "demo.bin" /boot_backup_strings.txt ; then # Cam v2 & Cam Pan
+		msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
+		current_fw="stock"
+	
+	elif grep -q "demo_wcv3.bin" /boot_backup_strings.txt ; then # Cam v3
+		msg "Camera is currently on Cam v3 stock firmware"
+		current_fw="stock"
+	
+	elif grep -q "recovery_wcpv2.bin" /boot_backup_strings.txt ; then # Cam Pan v2
+		msg "Camera is currently on Cam Pan v2 stock firmware"
+		current_fw="stock"
+	
+	elif grep -q "factory_0P3N1PC_kernel" /boot_backup_strings.txt ; then
+		msg "Camera is currently on OpenIPC firmware"
+		current_fw="openipc"
+
+	fi
+	
+	rm /boot_backup_strings.txt
 }
 
-function welcome_msg() {
-	msg "Welcome to $flash_tool_name!"
-}
+function import_functions_and_variables() {
+	prog_name="wz_flash-helper"
 
-function mount_sdcard() {
-	msg "Mounting SD card"
-	mkdir -p /sdcard
-	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000
-	sleep 1
-}
+	prog_dir="/sdcard/wz_flash-helper"
+	
+	prog_config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
+	prog_log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
+	prog_log_file_serial="/sdcard/wz_flash-helper/wz_flash-helper_serial.log"
 
-function import_files_and_variables() {
-
-	flash_tool_name="wz_flash-helper"
-
-	config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
-	log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
-	log_file_serial="/sdcard/wz_flash-helper/wz_flash-helper_serial.log"
-	log_file_fallback="/sdcard/wz_flash-helper_no-config-error.log"
-
-	boot_partmtd="/dev/mtd0"
-	boot_part_backup="/boot_backup"
 	concat_partmtd="/dev/mtd21"
 	
 	source /init_functions_backup.sh
@@ -77,45 +87,168 @@ function import_files_and_variables() {
 	source /init_functions_switch_fw.sh
 	source /init_functions_misc.sh
 
-	source /init_function_detect_chip_and_fw.sh
-	source /init_function_wait_init_interrupt.sh
-	source /init_function_execute_custom_script.sh
-	source /init_function_exit_init.sh
-	
-	source /init_fw_info_t20_stock.sh
-	source /init_fw_info_t31_stock.sh
-	source /init_fw_info_openipc.sh
-
-	source /init_variables_valid_openipc_boot_hashes.sh
 	source /init_msg_main.sh
+	source /init_function_execute_custom_script.sh
+	
+	source /init_fw_info_openipc.sh
+	case "$chip_family" in
+		"t20") source /init_fw_info_t20_stock.sh ;;
+		"t30") source /init_fw_info_t31_stock.sh ;;
+	esac
 
-	[ ! -f $config_file ] && { msg "$config_file file is missing" ; mv /tmp/initramfs.log /tmp/initramfs_missing-config-file.log ; exit_init ; }
-	dos2unix $config_file # Fix import config file issue with MS-DOS newline
-	source $config_file || { msg "$config_file file is invalid" ; exit_init ; }
+	if [[ "$chip_family" == "t20" ]] && [[ "$current_fw" == "stock" ]]; then
+		sdcard_boot_img_name="factory_t31_ZMC6tiIDQN"
+		
+	elif [[ "$chip_family" == "t31" ]] && [[ "$current_fw" == "stock" ]]; then
+		sdcard_boot_img_name="factory_ZMC6tiIDQN"
+
+	elif [[ "$current_fw" == "openipc" ]]; then
+		sdcard_boot_img_name="factory_0P3N1PC_kernel"
+
+	fi
+
+}
+
+function initialize_gpio() {
+# Description: Initialize GPIO for LEDs and SD card on T20 cameras
+	msg "Exporting GPIO pins for LEDs"
+	if [ ! -d /sys/class/gpio/gpio38 ]; then # Export LEDs GPIO pins if they don't exist to enable LEDs
+		echo 38 > /sys/class/gpio/export
+		echo out > /sys/class/gpio/gpio38/direction
+		echo 1 > /sys/class/gpio/gpio38/value
+	fi
+	
+	if [ ! -d /sys/class/gpio/gpio39 ]; then
+		echo 39 > /sys/class/gpio/export
+		echo out > /sys/class/gpio/gpio39/direction
+		echo 1 > /sys/class/gpio/gpio39/value
+	fi
+
+	if [[ "$chip_family" == "t20" ]]; then # T20 cameras need this to get SD card detected
+		msg "Exporting GPIO pin to detect SD card on T20 cameras"
+		echo 43 > /sys/class/gpio/export
+		echo in > /sys/class/gpio/gpio43/direction
+		sleep 3 # Required delay interval for SD card init on T20
+	fi
+}
+
+function welcome_msg() {
+	msg "Welcome to $prog_name!"
+}
+
+function wait_init_interrupt() {
+# Description: Allow user to access initramfs shell
+	msg
+	msg
+	echo "Press any key to interrupt init" > /dev/console
+	
+	exec 0< /dev/console
+	read -r -s -n 1 -t 3
+	if [[ "$?" -eq 0 ]]; then
+		msg "Dropping a shell"
+		msg "You can read /tmp/initramfs.log to see previously run commands"
+		exec 1> /dev/console
+		exec 2> /dev/console
+		exec /bin/sh
+	fi
+	echo "Action has timed out" > /dev/console
+	msg
+	msg
+}
+
+function mount_sdcard() {
+	msg_nonewlone "Mounting SD card... "
+	mkdir -p /sdcard
+	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg "done" || msg "failed"
+	sleep 1
+}
+
+function import_config_file() {
+	[ ! -d $prog_dir ] && { msg "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; }
+	[ ! -f $config_file ] && { msg "$config_file file is missing. Nothing will be done" ; exit_init ; }
+
+	# Fix import config file with MS-DOS newline issue
+	dos2unix $config_file && source $config_file || { msg "$config_file file is invalid. Nothing will be done" ; exit_init ; }
+}
+
+function exit_init() {
+	msg
+	msg "---------- Exit init ----------"
+	msg
+	msg "Renaming /sdcard/$sdcard_boot_img_name to /sdcard/$sdcard_boot_img_name.$prog_name"
+	mv /sdcard/$sdcard_boot_img_name /sdcard/$sdcard_boot_img_name.$prog_name
+
+	if [[ "$switch_fw" == "yes" ]] && [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
+		check_and_fix_invalid_openipc_boot_part
+	fi
+	
+	msg "Initramfs init is finished! Exiting now"
+
+	cp /tmp/initramfs.log $prog_log_file
+	cp /tmp/initramfs_serial.log $prog_log_file_serial
+
+	sync
+	umount /sdcard
+	
+	sleep 1
+	#reboot -f # Reboot immediately to prevent init from continuing
+	sleep 10 # This prevents init from continuing after exit_init is finished but the camera has not rebooted immediately
 }
 
 function main() {
+	detect_chip_and_fw
+	import_functions_and_variables
 	initialize_gpio
+
 	welcome_msg
 	
 	wait_init_interrupt
 	
 	mount_sdcard
-	import_files_and_variables
+	import_config_file
 	
-	detect_chip_and_fw
-
-	msg
 	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no"
-	msg
-	[[ "$backup_partitions" == "yes" ]] && { msg "$backup_partitions_yes" ; do_backup_operation ; } || msg "$backup_partitions_no"
-	msg
-	[[ "$restore_partitions" == "yes" ]] && { msg "$restore_partitions_yes" ; do_restore_operation ; } || msg "$restore_partitions_no"
-	msg
-	[[ "$switch_fw" == "yes" ]]; { msg "$switch_fw_yes" ; do_switch_fw_operation ; } || msg "$switch_fw_no"
-	msg
-	[[ "$enable_custom_script" == "yes" ]] && { msg "$enable_custom_script_yes" ; execute_custom_script ; } || msg "$enable_custom_script_no"
-	msg
+	
+	#---------- Backup operation ----------
+	if [[ "$backup_partitions" == "yes" ]]; then
+		msg "$backup_partitions_yes"
+		source /init_operation_backup.sh || { msg "$backup_partitions_fail" ; exit_init ; }
+	else
+		msg "$backup_partitions_no"
+	fi
+	
+	#---------- Restore operation ----------
+	if [[ "$restore_partitions" == "yes" ]]; then
+		msg "$restore_partitions_yes"
+		source /init_operation_restore.sh || { msg "$restore_partitions_fail" ; exit_init ; }
+	else
+		msg "$restore_partitions_no"
+	fi
+	
+	#---------- Switch fw operation ----------
+	if [[ "$switch_fw" == "yes" ]]; then
+		msg "$switch_fw_yes"
+		source /init_operation_switch_fw.sh || { msg "$switch_fw_fail" ; exit_init ; }
+	else
+		msg "$switch_fw_no"
+	fi
+	
+	#---------- Custom script ----------
+	if [[ "$enable_custom_script" == "yes" ]]; then
+		msg "$enable_custom_script_yes"
+		source /init_action_execute_custom_script.sh || { msg "$enable_custom_script_fail" ; exit_init ; }
+	else
+		msg "$enable_custom_script_no"
+	fi
+	
+	#---------- Continue boot image ----------
+	if [[ "$enable_continue_boot_img" == "yes" ]]; then
+		msg "$enable_continue_boot_img_yes"
+		source /init_action_move_continue_boot_img_file.sh || { msg "$enable_continue_boot_img_fail" ; exit_init ; }
+	else
+		msg "$enable_continue_boot_img_no"
+	fi
+	
 	exit_init
 }
 

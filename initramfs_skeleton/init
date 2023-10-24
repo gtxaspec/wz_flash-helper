@@ -75,6 +75,7 @@ function detect_chip_and_fw() {
 }
 
 function import_functions_and_variables() {
+# Description: Set needed files and paths variables for this program, source functions for later operations and set extra variables based on detected current system info
 	prog_name="wz_flash-helper"
 	
 	prog_dir="/sdcard/wz_flash-helper"
@@ -136,11 +137,12 @@ function initialize_gpio() {
 }
 
 function welcome_msg() {
+# Description: It is nice to let the user know that they are welcome!
 	msg "Welcome to $prog_name!"
 }
 
 function wait_init_interrupt() {
-# Description: Allow user to access initramfs shell
+# Description: Allow the user to access initramfs shell with serial connection
 	msg
 	msg
 	echo "Press any key to interrupt init" > /dev/console
@@ -160,6 +162,7 @@ function wait_init_interrupt() {
 }
 
 function mount_sdcard() {
+# Description: Mount SD card, nothing more
 	msg_nonewlone "Mounting SD card... "
 	mkdir -p /sdcard
 	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg "succeeded" || msg "failed"
@@ -167,14 +170,16 @@ function mount_sdcard() {
 }
 
 function import_config_file() {
+# Description: Source program config file to know and do what the user wants
 	[ ! -d $prog_dir ] && { msg "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; }
 	[ ! -f $config_file ] && { msg "$config_file file is missing. Nothing will be done" ; exit_init ; }
 
-	# Fix import config file with MS-DOS newline issue
+	# Fix source config file with MS-DOS newline issue
 	dos2unix $config_file && source $config_file || { msg "$config_file file is invalid. Nothing will be done" ; exit_init ; }
 }
 
 function exit_init() {
+# Description: Rename SD card boot image to avoid infinite boot loop, check for boot partition corruption if switch firmware, write log files to SD card
 	msg
 	msg "---------- Exit init ----------"
 	msg

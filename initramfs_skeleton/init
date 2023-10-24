@@ -19,7 +19,8 @@ sleep 1
 
 function msg() {
 # Description: Allow output messages to be both displayed on the serial terminal and written to the log file
-	message="$1"
+	local message="$1"
+
 	echo "$message" # Print to log file
 	echo "$message" > /dev/console # Print on serial terminal
 	echo "$message" >> /tmp/initramfs_serial.log # Print to an extra log file, it is exactly the same as on serial terminal
@@ -27,7 +28,8 @@ function msg() {
 
 function msg_dry_run() {
 # Description: Print out commands instead of executing them when dry run is enabled
-	cmd="$1"
+	local cmd="$1"
+
 	echo " + (this command is not run) $cmd"
 	echo " + (this command is not run) $cmd" > /dev/console
 	echo " + (this command is not run) $cmd" >> /tmp/initramfs_serial.log
@@ -35,7 +37,8 @@ function msg_dry_run() {
 
 function msg_nonewline() {
 # Description: Same as msg but without newline
-	message="$1"
+	local message="$1"
+
 	echo -n "$message"
 	echo -n "$message" > /dev/console
 	echo -n "$message" >> /tmp/initramfs_serial.log
@@ -46,10 +49,10 @@ function detect_chip_and_fw() {
 	chip_name=$(ipcinfo-mips32 --chip-name)
 	chip_family=$(ipcinfo-mips32 --family)
 	msg "Detected chip name: $chip_name, chip family: $chip_family"
-	
+
 	dd if=/dev/mtd0 of=/boot_backup.img
 	strings /boot_backup.img > /boot_backup_strings.txt
-	
+
 	if grep -q "demo.bin" /boot_backup_strings.txt ; then # Cam v2 & Cam Pan
 		msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
 		current_fw="stock"
@@ -65,46 +68,46 @@ function detect_chip_and_fw() {
 	elif grep -q "factory_0P3N1PC_kernel" /boot_backup_strings.txt ; then
 		msg "Camera is currently on OpenIPC firmware"
 		current_fw="openipc"
-
-	fi
 	
+	fi
+
 	rm /boot_backup_strings.txt
 }
 
 function import_functions_and_variables() {
 	prog_name="wz_flash-helper"
-
+	
 	prog_dir="/sdcard/wz_flash-helper"
 	
 	prog_config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
 	prog_log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
 	prog_log_file_serial="/sdcard/wz_flash-helper/wz_flash-helper_serial.log"
-
-	concat_partmtd="/dev/mtd21"
 	
+	concat_partmtd="/dev/mtd21"
+
 	source /init_functions_backup.sh
 	source /init_functions_restore.sh
 	source /init_functions_switch_fw.sh
 	source /init_functions_misc.sh
-
+	
 	source /init_msg_main.sh
 	source /init_function_execute_custom_script.sh
 	
 	source /init_fw_info_openipc.sh
 	case "$chip_family" in
 		"t20") source /init_fw_info_t20_stock.sh ;;
-		"t30") source /init_fw_info_t31_stock.sh ;;
+		"t31") source /init_fw_info_t31_stock.sh ;;
 	esac
 
 	if [[ "$chip_family" == "t20" ]] && [[ "$current_fw" == "stock" ]]; then
-		sdcard_boot_img_name="factory_t31_ZMC6tiIDQN"
+		sdcard_boot_img_name="factory_ZMC6tiIDQN"
 		
 	elif [[ "$chip_family" == "t31" ]] && [[ "$current_fw" == "stock" ]]; then
-		sdcard_boot_img_name="factory_ZMC6tiIDQN"
-
+		sdcard_boot_img_name="factory_t31_ZMC6tiIDQN"
+	
 	elif [[ "$current_fw" == "openipc" ]]; then
 		sdcard_boot_img_name="factory_0P3N1PC_kernel"
-
+	
 	fi
 
 }
@@ -159,7 +162,7 @@ function wait_init_interrupt() {
 function mount_sdcard() {
 	msg_nonewlone "Mounting SD card... "
 	mkdir -p /sdcard
-	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg "done" || msg "failed"
+	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg "succeeded" || msg "failed"
 	sleep 1
 }
 
@@ -181,7 +184,7 @@ function exit_init() {
 	if [[ "$switch_fw" == "yes" ]] && [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
 		check_and_fix_invalid_openipc_boot_part
 	fi
-	
+
 	msg "Initramfs init is finished! Exiting now"
 
 	cp /tmp/initramfs.log $prog_log_file
@@ -189,9 +192,9 @@ function exit_init() {
 
 	sync
 	umount /sdcard
-	
+
 	sleep 1
-	#reboot -f # Reboot immediately to prevent init from continuing
+	reboot -f # Reboot immediately to prevent init from continuing
 	sleep 10 # This prevents init from continuing after exit_init is finished but the camera has not rebooted immediately
 }
 
@@ -206,9 +209,9 @@ function main() {
 	
 	mount_sdcard
 	import_config_file
-	
+
 	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no"
-	
+
 	#---------- Backup operation ----------
 	if [[ "$backup_partitions" == "yes" ]]; then
 		msg "$backup_partitions_yes"
@@ -216,7 +219,7 @@ function main() {
 	else
 		msg "$backup_partitions_no"
 	fi
-	
+
 	#---------- Restore operation ----------
 	if [[ "$restore_partitions" == "yes" ]]; then
 		msg "$restore_partitions_yes"
@@ -224,7 +227,7 @@ function main() {
 	else
 		msg "$restore_partitions_no"
 	fi
-	
+
 	#---------- Switch fw operation ----------
 	if [[ "$switch_fw" == "yes" ]]; then
 		msg "$switch_fw_yes"
@@ -232,7 +235,7 @@ function main() {
 	else
 		msg "$switch_fw_no"
 	fi
-	
+
 	#---------- Custom script ----------
 	if [[ "$enable_custom_script" == "yes" ]]; then
 		msg "$enable_custom_script_yes"
@@ -240,7 +243,7 @@ function main() {
 	else
 		msg "$enable_custom_script_no"
 	fi
-	
+
 	#---------- Continue boot image ----------
 	if [[ "$enable_continue_boot_img" == "yes" ]]; then
 		msg "$enable_continue_boot_img_yes"
@@ -248,7 +251,7 @@ function main() {
 	else
 		msg "$enable_continue_boot_img_no"
 	fi
-	
+
 	exit_init
 }
 

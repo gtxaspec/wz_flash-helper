@@ -1,13 +1,18 @@
 
-PART: Partition name
-START: Partition start address
-END: Partition end address
-SIZE: Partition size(in 1k block)
-MTD MAPPING: MTD mapping by the kernel for partitions with size and offset so they can be read/written correctly
-MTD DEVICE: MTD device name that has been mapped by the kernel and can be performed read/write operations from user space
+**PART:** Partition name.
 
-Used partition names are the as mtdparts parameter on the kernels
+**START:** Partition start address.
 
+**END:** Partition end address.
+
+**SIZE:** Partition size(in 1k block).
+
+**MTD MAPPING:** MTD mapping by the kernel by setting `mtdparts` with `CONFIG_CMDLINE` with partitions size and offset so they can be read/written correctly.
+
+**MTD DEVICE:** MTD device name mapped by the kernel and can be performed read/write operations from user space.
+
+- Used partition names are the as mtdparts parameter on the kernels:
+```
 ---------- T20 stock ----------
 PART     SIZE(dec)  START(dec)  START(hex)     MTD MAPPING               MTD DEVICE
 boot     256        0           0x0            256K@0(boot)              /dev/mtd0
@@ -41,8 +46,10 @@ rootfs       10240      3392        0x350000   10240K@3392K(openipc_rootfs)     
 rootfs-data  2752       13632       0xd50000   2752K@13632K(openipc_rootfs-data) /dev/mtd20
 
 Entire flash mapping                            2752K@13632K,16384k@0(all)         /dev/mtd21
+```
 
-MTD mapping with kernel commandline:
+- MTD mapping with kernel commandline:
+```
 CONFIG_CMDLINE="console=ttyS1,115200n8 mem=100M@0x0 rmem=28M@0x5000000 rdinit=/init mtdparts=jz_sfc:256K@0(boot),2048K@256K(t20_kernel),3392K@2304K(t20_root),640K@5696K(t20_driver),4736K@6336K(t20_apps),2048K@11072K(t20_backupk),40K@13120K(t20_backupd),2048K@13760K(t20_backupa),256K@15808K(t20_config),256K@16064K(t20_parcaa),1984K@256K(t31_kernel),3904K@2240K(t31_rootfs),3904K@6144K(t31_app),1984K@10048K(t31_kback),3904K@12032K(t31_aback),384K@15936K(t31_cfg),4K@16320K(t31_para),64K@256K(openipc_env),3072K@320K(openipc_kernel),10240K@3392K(openipc_rootfs),2752K@13632K(openipc_rootfs-data),16384k@0(all)"
-
+```
 

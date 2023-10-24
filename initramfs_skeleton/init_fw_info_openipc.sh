@@ -2,6 +2,7 @@
 
 
 
+
 openipc_backup_partname_list="boot env kernel rootfs rootfs-data"
 openipc_backup_dir_path="/sdcard/wz_flash-helper/backup/openipc"
 openipc_full_flash_filename="openipc_all.bin"

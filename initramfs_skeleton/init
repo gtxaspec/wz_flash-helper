@@ -8,6 +8,7 @@
 #                                                                                     `--'                  
 #
 
+
 exec > /tmp/initramfs.log 2>&1
 set -x
 
@@ -86,8 +87,8 @@ function import_functions_and_variables() {
 	
 	concat_partmtd="/dev/mtd21"
 
-	source /init_functions_misc.sh	
 	source /init_msg_main.sh
+	source /init_functions_io.sh
 	source /init_fw_info_openipc.sh
 	
 	case "$chip_family" in
@@ -242,7 +243,7 @@ function main() {
 	#---------- Continue boot image ----------
 	if [[ "$enable_continue_boot_img" == "yes" ]]; then
 		msg "$enable_continue_boot_img_yes"
-		source /init_action_move_continue_boot_img_file.sh || { msg "$enable_continue_boot_img_fail" ; exit_init ; }
+		source /init_action_move_continue_boot_img_file.sh
 	else
 		msg "$enable_continue_boot_img_no"
 	fi

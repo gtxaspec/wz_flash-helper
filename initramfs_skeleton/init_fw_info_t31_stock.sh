@@ -2,6 +2,7 @@
 
 
 
+
 t31_stock_backup_partname_list="boot kernel rootfs app kback aback cfg para"
 t31_stock_backup_dir_path="/sdcard/Wyze_factory_backup"
 t31_stock_full_flash_filename="t31_stock_all.bin"

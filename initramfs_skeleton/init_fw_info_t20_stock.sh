@@ -2,6 +2,7 @@
 
 
 
+
 t20_stock_backup_partname_list="boot kernel root driver appfs backupk backupd backupa config para"
 t20_stock_backup_dir_path="/sdcard/Wyze_factory_backup"
 t20_stock_full_flash_filename="t20_stock_all.bin"

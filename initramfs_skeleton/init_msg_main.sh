@@ -2,6 +2,7 @@
 
 
 
+
 dry_run_yes="Dry run mode is Active. Your partitions will not be modified"
 dry_run_no="Dry run mode is Inactive. Your partitions might be modified, depends on your configuration"
 
@@ -21,6 +22,3 @@ enable_custom_script_yes="enable_custom_script value is Yes"
 enable_custom_script_no="enable_custom_script value is No"
 enable_custom_script_fail="Custom script running has failed, exiting..."
 
-enable_continue_boot_img_yes="enable_continue_boot_img value is Yes"
-enable_continue_boot_img_no="enable_continue_boot_img is No"
-enable_continue_boot_img_fail="Moving boot image on SD card for next boot has failed, exiting..."

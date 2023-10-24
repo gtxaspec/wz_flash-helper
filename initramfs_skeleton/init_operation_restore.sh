@@ -57,4 +57,4 @@ function restore_operation() {
 	rm -r /$restore_dir_name
 }
 
-restore_operation
+restore_operation || return 1

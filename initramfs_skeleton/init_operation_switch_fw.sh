@@ -9,94 +9,65 @@
 
 
                     
-function get_boot_part_hash() {
-# Description: Calculate md5 hash of current boot partition
-	dd if=$boot_partmtd of=/boot_partimg_new
-	boot_partimg_md5_new=$(md5sum /tmp/boot_partimg_new)
-	rm /boot_partimg_new
-}
-
-function check_valid_openipc_boot_part() {
-# Description: Check if flashed OpenIPC boot partition hash is on the valid hash list
-	msg "Checking if your boot partitiion is corrupted"
-
-	case "$chip_family" in
-		"t20") openipc_good_boot_hash_list="$t20_valid_hashes" ;;
-		"t31") openipc_good_boot_hash_list="$t31_valid_hashes" ;;
-	esac
-	
-	get_boot_part_hash
-	if echo "$openipc_good_boot_hash_list" | grep -q $boot_partimg_md5_new ; then
-		return 0
-	else
-		msg "md5 check for valid OpenIPC boot partition failed"
-	fi
-	
-	get_boot_part_hash
-	if ! echo "$openipc_good_boot_hash_list" | grep -q $boot_partimg_md5_new ; then
-		msg "md5 check for valid OpenIPC boot partition failed second time"
-	else
-		return 0
-	fi
-	
-	get_boot_part_hash
-	if ! echo "$openipc_good_boot_hash_list" | grep -q $boot_partimg_md5_new ; then
-		{ msg "md5 check for valid OpenIPC boot partition failed third time" ; return 1 ; }
-	else
-		return 0
-	fi
+function flash_backup_stock_boot_part() {
+# Description: Flash boot partition with backup boot image
+	flashcp /boot_backup.img /dev/mtd0
 }
 
 function rollback_stock_boot_part() {
-# Description: Flash boot partition with old boot image
-	flashcp /boot_partimg $boot_partmtd
-}
-
-function rollback_stock_boot_part_if_openipc_boot_flash_fails() {
 # Description: Check if flashed OpenIPC boot partition is valid, if not, rollback to stock boot image
-	if ! check_valid_openipc_boot_part ; then
-		msg "ATTENTION! ATTENTION! ATTENTION!"
-		msg "ATTENTION! ATTENTION! ATTENTION!"
-		msg "ATTENTION! ATTENTION! ATTENTION!"
-		msg
-		msg "It is very likely that your boot partition is corrupted as it hash does not match any of known good OpenIPC boot image hashes"
-		msg "Rolling back boot partition with stock boot image"
-		msg
-		if rollback_boot_part; then
-			msg "Rollback succeeded :) You are safe now!"
-		else
-			msg "Rollback failed :( Trying rolling back one more time"
-			rollback_boot_part || msg "Rollback failed again, sorry, you need to rescure your flash chip with a programmer" && msg "This time rollback succeeded :)"
-		fi
+	msg "ATTENTION! ATTENTION! ATTENTION!"
+	msg "ATTENTION! ATTENTION! ATTENTION!"
+	msg "ATTENTION! ATTENTION! ATTENTION!"
+	msg
+	msg "It is very likely that your boot partition is corrupted as it hash does not match any of known good OpenIPC boot image hashes"
+	msg "Rolling back boot partition with previous stock boot image"
+	msg
+	if flash_backup_stock_boot_part; then
+		msg "Rollback succeeded :) You are safe now!"
 	else
-		msg "Your boot partition is okay :)"
+		msg "Rollback failed :( Trying rolling back one more time"
+		flash_backup_stock_boot_part || msg { "Rollback failed again, sorry" ; return 1 ; } && msg "This time rollback succeeded :)"
 	fi
 }
 
                                                                                             
 function switch_fw_operation() {
-	[[ "$restore_partitions" == "yes" ]] && { msg "Restore and Switch_fw operation are conflicted, please enable only one option at a time" ; exit_init ; }
+	[[ "$restore_partitions" == "yes" ]] && { msg "Restore and Switch_fw operation are conflicted, please enable only one option at a time" ; return 1 ; }
 
-	if [[ "$current_fw_type" == "$switch_fw_to" ]]; then
-		{ msg "switch_fw_to value is same as current firmware type, aborting firmware switch" ; exit_init ; }
+	if [[ "$current_fw" == "$switch_fw_to" ]]; then
+		{ msg "switch_fw_to value is same as current firmware type, aborting switch firmware" ; return 1 ; }
 	fi
 	
 	/blink_led_red_and_blue.sh &
 	red_and_blue_leds_pid="$!"
-	if [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
+	if [[ "$current_fw" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
 		msg "Switching from stock firmware to OpenIPC"
-		switch_fw_stock_to_openipc
+		source /init_operation_switch_fw_openipc_to_t20.sh || return 1
 	
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
+	elif [[ "$current_fw" == "openipc" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
 		msg "Switching from OpenIPC firmware to T20 stock"
-		switch_fw_openipc_to_t20_stock
+		source /init_operation_switch_fw_openipc_to_t20.sh || return 1
 	
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
+	elif [[ "$current_fw" == "openipc" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
 		msg "Switching from OpenIPC firmware to T31 stock"
-		switch_fw_openipc_to_t31_stock
+		source /init_operation_switch_fw_to_openipc.sh || return 1
 	
 	fi
 	kill $red_and_blue_leds_pid
 }
 
-switch_fw_operation
+
+switch_fw_operation || return 1
+
+
+if [[ "$current_fw" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
+	msg "Checking if your OpenIPC boot partitiion is corrupted"
+	source /init_operation_switch_validate_openipc_boot.sh
+	if validate_openipc_boot; then
+		msg "OpenIPC boot partition has been written correctly"
+	else
+		rollback_stock_boot_part || { msg "Your flash chip seems to be corrupted :'(" ; return 1 ; }
+fi
+
+

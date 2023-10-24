@@ -11,7 +11,6 @@ stock_backup_partname_with_contents_list="config para"
 
 stock_restore_partname_list="kernel root driver appfs backupk backupd backupa config para"
 stock_restore_dir_path="/sdcard/wz_flash-helper/restore/"
-stock_restore_stage_dir="/t20_stock_restore"
 
 
 

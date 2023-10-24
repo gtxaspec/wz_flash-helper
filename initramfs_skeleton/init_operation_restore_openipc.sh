@@ -20,3 +20,5 @@ function restore_openipc_parts() {
 		fi
 	done
 }
+
+restore_openipc_parts || return 1

@@ -72,4 +72,4 @@ function backup_operation() {
 	kill $red_led_pid
 }
 
-backup_operation
+backup_operation || return 1

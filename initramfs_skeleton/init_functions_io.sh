@@ -30,23 +30,24 @@ function backup_partition_to_file() {
 	fi
 }
 
-function archive_partition_to_files() {
+function archive_partition_files() {
 # Description: Backup all files from a JFFS2 partition to .tar.gz file
-# Syntax: archive_partition_to_files <partname> <partblockmtd> <outfile>
+# Syntax: archive_partition_files <partname> <partblockmtd> <outfile>
 	local partname="$1"
 	local partblockmtd="$2"
 	local outfile="$3"
-	local mountpoint_dir="/archive_$partname"
+	
+	local archive_mnt_dir="/archive_mnt_$partname"
+	mkdir -p $archive_mnt_dir
 	
 	msg "- Archive: $partname at $partblockmtd files to file $outfile ---"
+	mount -t jffs2 $partblockmtd $archive_mnt_dir || { msg "Mount $partname failed" ; exit_init ; }
 	
-	mkdir -p $mountpoint_dir
-	mount -t jffs2 $partblockmtd $mountpoint_dir || { msg "Mount $partname failed" ; exit_init ; }
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "tar -cvf $outfile -C $mountpoint_dir ."
+		msg_dry_run "tar -cvf $outfile -C $archive_mnt_dir ."
 		msg_dry_run "md5sum $outfile > $outfile.md5sum"
 	else
-		tar -cvf $outfile -C $mountpoint_dir .
+		tar -cvf $outfile -C $archive_mnt_dir .
 		md5sum $outfile > $outfile.md5sum
 	fi
 
@@ -69,7 +70,7 @@ function restore_file_to_partition() {
 	cp $infile $restore_stage_dir/$infile_name || { msg " + $infile_name is missing" ; return 1 ; }
 	cp $infile.md5sum $restore_stage_dir/$infile_name.md5sum || { msg " + $infile_name.md5sum is missing" ; return 1 ; }
 	
-	cd "$restore_stage_dir"
+	cd $restore_stage_dir
 	msg "- Restore: file $infile_name to $partname at $partmtd ---"
 	msg_nonewline " + Checking md5 of $infile_name: "
 	if [[ "$dry_run" == "yes" ]]; then

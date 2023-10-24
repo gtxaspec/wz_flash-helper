@@ -24,3 +24,5 @@ function backup_t31_stock_config() {
 	backup_stock_config_part_files_to_archive $partname $partmtdblock $outfile
 }
 
+backup_t31_stock_parts || return 1
+backup_t31_stock_config || return 1

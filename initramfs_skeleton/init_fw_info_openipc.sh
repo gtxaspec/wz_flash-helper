@@ -9,7 +9,6 @@ openipc_full_flash_filename="openipc_all.bin"
 
 openipc_restore_partname_list="env kernel rootfs rootfs-data"
 openipc_restore_dir_path="/sdcard/wz_flash-helper/restore/"
-openipc_restore_stage_dir="/openipc_restore"
 
 openipc_switch_fw_write_partname_list="boot kernel rootfs"
 openipc_switch_fw_erase_partname_list="env rootfs-data"

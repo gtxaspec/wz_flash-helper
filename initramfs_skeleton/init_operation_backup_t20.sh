@@ -31,3 +31,7 @@ function backup_t20_stock_para() {
 	
 	backup_stock_config_part_files_to_archive $partname $partmtdblock $outfile || return 1
 }
+
+backup_t20_stock_parts || return 1
+backup_t20_stock_config || return 1
+backup_t20_stock_para || return 1

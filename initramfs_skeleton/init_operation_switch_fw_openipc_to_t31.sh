@@ -20,3 +20,5 @@ function switch_fw_openipc_to_t31_stock() {
 	done
 	rm -r /switch_fw_openipc_to_t31_stock
 }
+
+switch_fw_openipc_to_t31_stock || return 1

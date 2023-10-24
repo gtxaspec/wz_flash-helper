@@ -15,3 +15,5 @@ function backup_openipc_parts() {
 		backup_partition_to_file $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; break ; exit_init ; }
 	done
 }
+
+backup_openipc_parts || return 1

@@ -20,3 +20,5 @@ function switch_fw_stock_to_openipc() {
 	done
 	rm -r switch_fw_stock_to_openipc
 }
+
+switch_fw_stock_to_openipc || return 1

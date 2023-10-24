@@ -20,3 +20,5 @@ function restore_t31_stock_parts() {
 		fi
 	done
 }
+
+restore_t31_stock_parts || return 1

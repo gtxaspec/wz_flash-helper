@@ -7,25 +7,7 @@
 #   |_| \_\___||___/\__\___/|_|  \___| |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
 #
 
-function restore_file_to_partition() {
-# Description: Restore partition from <infile> to <partmtd>
-# Syntax: restore_file_to_partition <partname> <restore_stage_dir> <infile> <partname>
-	local partname="$1"
-	local restore_stage_dir="$2"
-	local infile_name="$3"
-	local partmtd="$4"
-	
-	cd "$restore_stage_dir"
-	msg "- Restore: file $outfile to $partname at $partmtd ---"
-	[ ! -f $infile_name ] && { msg " + $infile_name is missing" ; return 1 ; }
-	
-	msg_nonewline " + Checking md5 of $infile_name: "
-	if [[ "$dry_run" == "yes" ]]; then
-		md5sum -c $infile_name.md5sum && { msg "succeeded" ; msg_dry_run "flash_eraseall $partmtd && flashcp $infile_name $partmtd" ; } || { msg "failed" ; return 1 ; }
-	else
-		md5sum -c $infile_name.md5sum && { msg "succeeded" ; flash_eraseall $partmtd && flashcp $infile_name $partmtd && msg " + Restore succeeded" ; } || { msg "failed" ; return 1 ; }
-	fi
-}
+
                                   
 function restore_t20_stock_parts() {
 # Description: Restore stock partitions from partition images on T20 flash chip

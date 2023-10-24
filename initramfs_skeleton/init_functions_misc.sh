@@ -15,21 +15,6 @@ function move_continue_boot_img_file() {
 	fi
 }
 
-function move_flash_tool_boot_img_file() {
-# Description: Rename the SD card boot image to avoid infinite boot loop
-	case "$current_fw_type" in
-		"stock")
-			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name"
-			mv /sdcard/factory_t31_ZMC6tiIDQN /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name
-			;;
-		"openipc")
-			msg "Renaming /sdcard/factory_0P3N1PC_kernel to /sdcard/factory_0P3N1PC_kernel.$flash_tool_name"
-			mv /sdcard/factory_0P3N1PC_kernel /sdcard/factory_0P3N1PC_kernel.$flash_tool_name
-			;;
-	esac
-}
-
-
 function get_boot_part_hash() {
 # Description: Calculate md5 hash of current boot partition
 	dd if=$boot_partmtd of=/boot_partimg_new

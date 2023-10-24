@@ -6,6 +6,8 @@
 #    ___) \ V  V /| | || (__| | | | |  _|\ V  V /  |  _| |_| | | | | (__| |_| | (_) | | | \__ \
 #   |____/ \_/\_/ |_|\__\___|_| |_| |_|   \_/\_/   |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
 #
+            
+            
                                                                                             
 function switch_fw_stock_to_openipc() {
 # Description: Switch from stock to OpenIPC firmware by flashing all partitions OpenIPC partition images

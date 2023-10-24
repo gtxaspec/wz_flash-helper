@@ -92,7 +92,6 @@ function import_functions_and_variables() {
 	source /init_functions_misc.sh
 	
 	source /init_msg_main.sh
-	source /init_function_execute_custom_script.sh
 	
 	source /init_fw_info_openipc.sh
 	case "$chip_family" in

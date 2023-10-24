@@ -3,8 +3,6 @@
 
 **START:** Partition start address.
 
-**END:** Partition end address.
-
 **SIZE:** Partition size(in 1k block).
 
 **MTD MAPPING:** MTD mapping by the kernel by setting `mtdparts` with `CONFIG_CMDLINE` with partitions size and offset so they can be read/written correctly.

@@ -14,7 +14,7 @@ function restore_t20_stock_parts() {
 		msg "- Restore: $partname from file $infile"
 		if [[ "$restore_opt_value" == "yes" ]]; then
 			msg " + t20_restore_$partname value is Yes"
-			restore_file_to_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; exit_init ; }
+			restore_file_to_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
 		else
 			msg " + t20_restore_$partname value is No"
 		fi

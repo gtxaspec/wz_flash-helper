@@ -87,15 +87,15 @@ function import_functions_and_variables() {
 	
 	concat_partmtd="/dev/mtd21"
 
-	source /init_msg_main.sh
-	source /init_functions_io.sh
-	source /init_fw_info_openipc.sh
+	source /variables_msg_main.sh
+	source /functions_io.sh
+	source /funcs_and_vars_openipc.shh
 	
 	case "$chip_family" in
 		"t20")
-			source /init_fw_info_t20_stock.sh ;;
+			source /funcs_and_vars_t20_stock.sh ;;
 		"t31")
-			source /init_fw_info_t31_stock.sh ;;
+			source /funcs_and_vars_t31_stock.sh ;;
 	esac
 
 	if [[ "$chip_family" == "t20" ]] && [[ "$current_fw" == "stock" ]]; then
@@ -213,7 +213,7 @@ function main() {
 	#---------- Backup operation ----------
 	if [[ "$backup_partitions" == "yes" ]]; then
 		msg "$backup_partitions_yes"
-		source /init_operation_backup.sh || { msg "$backup_partitions_fail" ; exit_init ; }
+		source /operation_backup.sh || { msg "$backup_partitions_fail" ; exit_init ; }
 	else
 		msg "$backup_partitions_no"
 	fi
@@ -221,7 +221,7 @@ function main() {
 	#---------- Restore operation ----------
 	if [[ "$restore_partitions" == "yes" ]]; then
 		msg "$restore_partitions_yes"
-		source /init_operation_restore.sh || { msg "$restore_partitions_fail" ; exit_init ; }
+		source /operation_restore.sh || { msg "$restore_partitions_fail" ; exit_init ; }
 	else
 		msg "$restore_partitions_no"
 	fi
@@ -229,7 +229,7 @@ function main() {
 	#---------- Switch fw operation ----------
 	if [[ "$switch_fw" == "yes" ]]; then
 		msg "$switch_fw_yes"
-		source /init_operation_switch_fw.sh || { msg "$switch_fw_fail" ; exit_init ; }
+		source /operation_switch_fw.sh || { msg "$switch_fw_fail" ; exit_init ; }
 	else
 		msg "$switch_fw_no"
 	fi
@@ -237,7 +237,7 @@ function main() {
 	#---------- Custom script ----------
 	if [[ "$enable_custom_script" == "yes" ]]; then
 		msg "$enable_custom_script_yes"
-		source /init_action_execute_custom_script.sh || { msg "$enable_custom_script_fail" ; exit_init ; }
+		source /action_execute_custom_script.sh || { msg "$enable_custom_script_fail" ; exit_init ; }
 	else
 		msg "$enable_custom_script_no"
 	fi
@@ -245,7 +245,7 @@ function main() {
 	#---------- Continue boot image ----------
 	if [[ "$enable_continue_boot_img" == "yes" ]]; then
 		msg "$enable_continue_boot_img_yes"
-		source /init_action_move_continue_boot_img_file.sh
+		source /action_move_continue_boot_img_file.sh
 	else
 		msg "$enable_continue_boot_img_no"
 	fi

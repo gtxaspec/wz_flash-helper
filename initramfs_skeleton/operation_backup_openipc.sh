@@ -12,7 +12,7 @@ function backup_openipc_parts() {
 		local outfile_name=$(get_openipc_partimg $partname)
 		local outfile="$openipc_backup_dir_path/$outfile_name"
 		
-		backup_partition_to_file $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; break ; exit_init ; }
+		backup_partition_to_file $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; break ; return 1 ; }
 	done
 }
 

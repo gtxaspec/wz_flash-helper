@@ -41,7 +41,7 @@ function archive_partition_files() {
 	mkdir -p $archive_mnt_dir
 	
 	msg "- Archive: $partname at $partblockmtd files to file $outfile ---"
-	mount -t jffs2 $partblockmtd $archive_mnt_dir || { msg "Mount $partname failed" ; exit_init ; }
+	mount -t jffs2 $partblockmtd $archive_mnt_dir || { msg "Mount $partname failed" ; return 1 ; }
 	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "tar -cvf $outfile -C $archive_mnt_dir ."

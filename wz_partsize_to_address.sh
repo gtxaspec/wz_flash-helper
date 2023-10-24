@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Description: This script calculates start addresses of each partition given their sizes
-# It is useful to write partitions to correct addresses in a new firmware with different mtd mapping without changing kernel cmdline
+# It is used to map partitions in a new firmware with different mtd mapping by changing kernel cmdline
 #
 
 function addr_dec_1K_to_hex() {

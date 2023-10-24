@@ -92,8 +92,10 @@ function import_functions_and_variables() {
 	source /init_fw_info_openipc.sh
 	
 	case "$chip_family" in
-		"t20") source /init_fw_info_t20_stock.sh ;;
-		"t31") source /init_fw_info_t31_stock.sh ;;
+		"t20")
+			source /init_fw_info_t20_stock.sh ;;
+		"t31")
+			source /init_fw_info_t31_stock.sh ;;
 	esac
 
 	if [[ "$chip_family" == "t20" ]] && [[ "$current_fw" == "stock" ]]; then

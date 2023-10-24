@@ -30,9 +30,9 @@ function backup_partition_to_file() {
 	fi
 }
 
-function archive_stock_config_part_files() {
+function archive_part_to_files() {
 # Description: Backup all files from a JFFS2 partition to .tar.gz file
-# Syntax: backup_stock_config_part_files_to_archive <partname> <partblockmtd> <outfile>
+# Syntax: archive_part_to_files <partname> <partblockmtd> <outfile>
 	local partname="$1"
 	local partblockmtd="$2"
 	local outfile="$3"
@@ -74,3 +74,18 @@ function restore_file_to_partition() {
 		md5sum -c $infile_name.md5sum && { msg "succeeded" ; flash_eraseall $partmtd && flashcp $infile_name $partmtd && msg " + Restore succeeded" ; } || { msg "failed" ; return 1 ; }
 	fi
 }
+
+function erase_partition() {
+# Description: Erase a partition using flash_eraseall
+# Syntax: <partname> <partmtd>
+	local partname="$1"
+	local partmtd="$2"
+
+	msg_nonewline "- Erase: $partname at $partmtd ---"
+	if [[ "$dry_run" == "yes" ]]; then
+		msg_dry_run "flash_eraseall $partmtd" && msg "succeeded"
+	else
+		flash_eraseall $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; }
+	fi
+}
+

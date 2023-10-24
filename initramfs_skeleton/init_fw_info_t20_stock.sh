@@ -3,22 +3,21 @@
 
 
 
-t20_stock_backup_partname_list="boot kernel root driver appfs backupk backupd backupa config para"
-t20_stock_backup_dir_path="/sdcard/Wyze_factory_backup"
-t20_stock_full_flash_filename="t20_stock_all.bin"
+stock_backup_partname_list="boot kernel root driver appfs backupk backupd backupa config para"
+stock_backup_dir_path="/sdcard/Wyze_factory_backup"
+stock_backup_full_flash_filename="t20_stock_all.bin"
 
-t20_stock_restore_partname_list="kernel root driver appfs backupk backupd backupa config para"
-t20_stock_restore_dir_path="/sdcard/wz_flash-helper/restore/"
-t20_stock_restore_stage_dir="/t20_stock_restore"
+stock_backup_partname_with_contents_list="config para"
 
-t20_stock_config_partmtdblock="/dev/mtdblock8"
-t20_stock_para_partmtdblock="/dev/mtdblock9"
-
+stock_restore_partname_list="kernel root driver appfs backupk backupd backupa config para"
+stock_restore_dir_path="/sdcard/wz_flash-helper/restore/"
+stock_restore_stage_dir="/t20_stock_restore"
 
 
-function get_t20_stock_partmtd() {
-# Description: Return mtd device of a given partition name on T20 cameras stock firmware
-# Syntax: get_t20_stock_partmtd <partname>
+
+function get_stock_partmtd() {
+# Description: Return mtd device of a given partition name
+# Syntax: get_stock_partmtd <partname>
 	case "$1" in
 		"boot")
 			echo -n "/dev/mtd0" ;;
@@ -43,9 +42,20 @@ function get_t20_stock_partmtd() {
 	esac
 }
 
-function get_t20_stock_partimg() {
-# Description: Return filename for the partition used for backup/restore of a given partition name on T20 stock firmware
-# Syntax: get_t20_stock_partimg <partname>
+function get_stock_partmtdblock() {
+# Description: Return mtdblock device of a given partition name, only used if the partition needs to be mounted
+# Syntax: get_stock_partmtdblock <partname>
+	case "$1" in
+		"config")
+			echo -n "/dev/mtdblock8" ;;
+		"para")
+			echo -n "/dev/mtdblock9" ;;
+	esac
+}
+
+function get_stock_partimg() {
+# Description: Return filename for the partition used for backup/restore of a given partition name
+# Syntax: get_stock_partimg <partname>
 	case "$1" in
 		"boot")
 			echo -n "t20_stock_boot.bin" ;;
@@ -70,9 +80,9 @@ function get_t20_stock_partimg() {
 	esac
 }
 
-function get_t20_stock_restore_opt_value() {
-# Description: Return user option to decide if a given partition is restored or not on T20 stock firmware
-# Syntax: get_t20_stock_restore_opt_value <partname>
+function get_stock_restore_opt_value() {
+# Description: Return user option to decide if a given partition is restored or not
+# Syntax: get_restore_opt_value <partname>
 	case "$1" in
 		"kernel")
 			echo -n "$t20_restore_kernel" ;;

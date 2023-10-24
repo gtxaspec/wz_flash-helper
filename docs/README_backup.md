@@ -2,6 +2,8 @@
 
 ## Backup partitions guide
 
+
+### Backup stock partitions
 1. [Setup](README_setup.md)
 2. Edit the config file `wz_flash-helper.conf` with:
 ```
@@ -11,6 +13,11 @@ restore_partitions="no"
 3. Insert your SD card and power on your camera.
 4. Wait for the camera to restart after backup operation is finished. 
 5. Check your SD card, there should be a `wz_flash-helper/backup/stock` or `wz_flash-helper/backup/openipc` directory where backup of camera partitions are stored.
+
+
+### Backup OpenIPC partitions
+Like with stock partitions, OpenIPC partitions can also be backed up with the above procedure.
+
 
 **WARNING:**
 - Backup your stock partitions first and copy it to a safe place in case you need them for later recovery.

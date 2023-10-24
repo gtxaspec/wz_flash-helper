@@ -26,20 +26,20 @@ function restore_operation() {
 	
 	case "$current_fw_type" in
 		"stock")
-			restore_dir_name="$stock_restore_dir_name"
+			local restore_dir_name="$stock_restore_dir_name"
 			;;
 		"openipc")
-			restore_dir_name="$openipc_restore_dir_name"
+			local restore_dir_name="$openipc_restore_dir_name"
 			;;
 	esac
 
-	restore_dir="$restore_dir_path/$restore_dir_name"
+	local restore_dir="$restore_dir_path/$restore_dir_name"
 	[ ! -d $restore_dir ] && { msg "$restore_dir directory is missing" ; return 1 ; }
 	
 	cp -r $restore_dir /$restore_dir_name # Copy the restore directory to RAM in case of defective SD card
 	
 	/blink_led_red.sh &
-	red_led_pid="$!"
+	local red_led_pid="$!"
 	msg
 	msg "---------- Begin of restore operation ----------"
 	if [[ "$restore_fw_type" == "stock" ]] && [[ "$chip_family" = "t20" ]]; then

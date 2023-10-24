@@ -40,7 +40,7 @@ function switch_fw_operation() {
 	fi
 	
 	/blink_led_red_and_blue.sh &
-	red_and_blue_leds_pid="$!"
+	local red_and_blue_leds_pid="$!"
 	if [[ "$current_fw" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
 		msg "Switching from stock firmware to OpenIPC"
 		source /init_operation_switch_fw_openipc_to_t20.sh || return 1

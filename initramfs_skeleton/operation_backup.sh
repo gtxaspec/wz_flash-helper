@@ -22,13 +22,13 @@ esac
 function backup_full_flash() {
 # Description: Backup the whole flash to a file
 	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
-		full_flash_backup_file=$stock_backup_dir_path/$t20_stock_full_flash_filename
+		local full_flash_backup_file=$stock_backup_dir_path/$t20_stock_full_flash_filename
 	
 	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
-		full_flash_backup_file=$stock_backup_dir_path/$t31_stock_full_flash_filename
+		local full_flash_backup_file=$stock_backup_dir_path/$t31_stock_full_flash_filename
 	
 	elif [[ "$current_fw_type" == "openipc" ]]; then
-		full_flash_backup_file=$openipc_backup_dir_path/$openipc_full_flash_filename
+		local full_flash_backup_file=$openipc_backup_dir_path/$openipc_full_flash_filename
 	
 	fi
 	
@@ -43,7 +43,7 @@ function backup_full_flash() {
 
 function backup_operation() {
 	/blinkled_led_blue.sh &
-	blue_led_pid="$!"
+	local blue_led_pid="$!"
 	msg
 	msg "---------- Begin of backup operation ----------"
 	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "t20" ]]; then

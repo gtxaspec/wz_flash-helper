@@ -19,7 +19,7 @@ mount -t sysfs sysfs /sys
 sleep 1
 
 function msg() {
-# Description: Allow output messages to be both displayed on the serial terminal and written to the log file
+# Description: Allow output messages to be both displayed on the serial terminal and written to the log files
 	local message="$1"
 
 	echo "$message" # Print to log file
@@ -130,14 +130,14 @@ function initialize_gpio() {
 		msg "Exporting GPIO pin to detect SD card on T20 cameras"
 		echo 43 > /sys/class/gpio/export
 		echo in > /sys/class/gpio/gpio43/direction
-		sleep 3 # Required delay interval for SD card init on T20
+		sleep 3 # Required delay interval for SD card init on T20 cameras
 	fi
 }
 
 function welcome_msg() {
 # Description: It is nice to let the user know that they are welcome!
 	msg
-	msg "Welcome to $prog_name!"
+	msg "Welcome to $prog_name init!"
 	msg
 }
 
@@ -171,12 +171,12 @@ function import_config_file() {
 	[ ! -d $prog_dir ] && { msg "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; exit_init ; }
 	[ ! -f $prog_config_file ] && { msg "$prog_config_file file is missing. Nothing will be done" ; exit_init ; }
 
-	# Fix source config file with MS-DOS newline issue
+	# Fix issue that config file failed to be sourced if it contains MS-DOS newline
 	dos2unix $prog_config_file && source $prog_config_file || { msg "$prog_config_file file is invalid. Nothing will be done" ; exit_init ; }
 }
 
 function exit_init() {
-# Description: Rename SD card boot image to avoid infinite boot loop, check for boot partition corruption if switch firmware, write log files to SD card
+# Description: Rename SD card boot image to avoid infinite boot loop
 	msg
 	msg "---------- Exit init ----------"
 	msg
@@ -192,7 +192,7 @@ function exit_init() {
 	umount /sdcard
 
 	sleep 1
-	exit # Crash init to reboot immediately and prevent init from continuing
+	exit # Crash init to reboot immediately
 	sleep 10 # This prevents init from continuing after exit_init is finished but the camera has not rebooted immediately
 }
 

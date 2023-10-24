@@ -168,7 +168,7 @@ function mount_sdcard() {
 
 function import_config_file() {
 # Description: Source program config file to know and do what the user wants
-	[ ! -d $prog_dir ] && { msg "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; }
+	[ ! -d $prog_dir ] && { msg "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; exit_init ; }
 	[ ! -f $prog_config_file ] && { msg "$prog_config_file file is missing. Nothing will be done" ; exit_init ; }
 
 	# Fix source config file with MS-DOS newline issue

@@ -16,5 +16,3 @@ else
 	msg "Custom script file is missing"
 fi
 
-
-

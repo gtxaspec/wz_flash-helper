@@ -30,15 +30,15 @@ function backup_partition_to_file() {
 	fi
 }
 
-function archive_part_to_files() {
+function archive_partition_to_files() {
 # Description: Backup all files from a JFFS2 partition to .tar.gz file
-# Syntax: archive_part_to_files <partname> <partblockmtd> <outfile>
+# Syntax: archive_partition_to_files <partname> <partblockmtd> <outfile>
 	local partname="$1"
 	local partblockmtd="$2"
 	local outfile="$3"
-	local mountpoint_dir="$4"
+	local mountpoint_dir="/archive_$partname"
 	
-	msg "- Backup: $partname files to file $outfile ---"
+	msg "- Archive: $partname at $partblockmtd files to file $outfile ---"
 	
 	mkdir -p $mountpoint_dir
 	mount -t jffs2 $partblockmtd $mountpoint_dir || { msg "Mount $partname failed" ; exit_init ; }
@@ -56,17 +56,21 @@ function archive_part_to_files() {
 }
 
 function restore_file_to_partition() {
-# Description: Restore partition from <infile> to <partmtd>
+# Description: Restore partition from <infile> to <partmtd>, <infile> and its md5sum file will be copied to stage directory before proceed restoring
 # Syntax: restore_file_to_partition <partname> <restore_stage_dir> <infile> <partname>
 	local partname="$1"
-	local restore_stage_dir="$2"
-	local infile_name="$3"
-	local partmtd="$4"
+	local infile="$2"
+	local partmtd="$3"
+
+	local infile_name=$(basename $infile)
+	local restore_stage_dir="/restore_stage_dir"
+	
+	mkdir -p $restore_stage_dir
+	cp $infile $restore_stage_dir/$infile_name || { msg " + $infile_name is missing" ; return 1 ; }
+	cp $infile.md5sum $restore_stage_dir/$infile_name.md5sum || { msg " + $infile_name.md5sum is missing" ; return 1 ; }
 	
 	cd "$restore_stage_dir"
-	msg "- Restore: file $outfile to $partname at $partmtd ---"
-	[ ! -f $infile_name ] && { msg " + $infile_name is missing" ; return 1 ; }
-	
+	msg "- Restore: file $infile_name to $partname at $partmtd ---"
 	msg_nonewline " + Checking md5 of $infile_name: "
 	if [[ "$dry_run" == "yes" ]]; then
 		md5sum -c $infile_name.md5sum && { msg "succeeded" ; msg_dry_run "flash_eraseall $partmtd && flashcp $infile_name $partmtd" ; } || { msg "failed" ; return 1 ; }

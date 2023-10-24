@@ -40,7 +40,7 @@ function backup_full_flash() {
 
 
 
-backup_operation() {
+function backup_operation() {
 	/blinkled_led_blue.sh &
 	blue_led_pid="$!"
 	msg

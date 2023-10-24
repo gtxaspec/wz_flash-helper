@@ -86,14 +86,10 @@ function import_functions_and_variables() {
 	
 	concat_partmtd="/dev/mtd21"
 
-	source /init_functions_backup.sh
-	source /init_functions_restore.sh
-	source /init_functions_switch_fw.sh
-	source /init_functions_misc.sh
-	
+	source /init_functions_misc.sh	
 	source /init_msg_main.sh
-	
 	source /init_fw_info_openipc.sh
+	
 	case "$chip_family" in
 		"t20") source /init_fw_info_t20_stock.sh ;;
 		"t31") source /init_fw_info_t31_stock.sh ;;
@@ -183,10 +179,6 @@ function exit_init() {
 	msg
 	msg "Renaming /sdcard/$sdcard_boot_img_name to /sdcard/$sdcard_boot_img_name.$prog_name"
 	mv /sdcard/$sdcard_boot_img_name /sdcard/$sdcard_boot_img_name.$prog_name
-
-	if [[ "$switch_fw" == "yes" ]] && [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
-		check_and_fix_invalid_openipc_boot_part
-	fi
 
 	msg "Initramfs init is finished! Exiting now"
 

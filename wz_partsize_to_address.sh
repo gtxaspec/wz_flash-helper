@@ -26,13 +26,16 @@ function make_a_table() {
 		done
 
 		local PART="${part_name[${part_num}]}"
-		local SIZE="${part_size[${part_num}]}K"
-		local START_DEC="${part_start}K"
-		[[ "$START_DEC" == "0K" ]] && START_DEC="0"
+		local SIZE="${part_size[${part_num}]}"
+		local START_DEC="${part_start}"
+		[[ ! "${START_DEC}" == "0" ]] && START_DEC="${START_DEC}K"
 		local START_HEX="0x$(addr_dec_1K_to_hex ${part_start})"
-		local MTD_MAPPING=` echo -n "$SIZE@$START_DEC($device_name\_$PART)" | tr -d '\\\\'`
-		[[ "$PART" == "boot" ]] && local MTD_MAPPING=` echo -n "$SIZE@$START_DEC($PART)" | tr -d '\\\\'`
-		echo -e "$PART,$SIZE,$START_DEC,$START_HEX,$MTD_MAPPING"
+		if [[ "${PART}" == "boot" ]]; then
+			local MTD_MAPPING="${SIZE}@${START_DEC}(${PART})"
+		else
+			local MTD_MAPPING="${SIZE}@${START_DEC}(${device_name}_${PART})"
+		fi
+		echo -e "${PART},${SIZE},${START_DEC},${START_HEX},${MTD_MAPPING}"
 	done
 }
 

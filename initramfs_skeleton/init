@@ -107,9 +107,9 @@ function main() {
 
 	msg
 	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no"
-	msg	
+	msg
 	[[ "$backup_partitions" == "yes" ]] && { msg "$backup_partitions_yes" ; do_backup_operation ; } || msg "$backup_partitions_no"
-	msg	
+	msg
 	[[ "$restore_partitions" == "yes" ]] && { msg "$restore_partitions_yes" ; do_restore_operation ; } || msg "$restore_partitions_no"
 	msg
 	[[ "$switch_fw" == "yes" ]]; { msg "$switch_fw_yes" ; do_switch_fw_operation ; } || msg "$switch_fw_no"

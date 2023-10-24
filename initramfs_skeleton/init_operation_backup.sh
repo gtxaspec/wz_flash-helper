@@ -8,6 +8,7 @@
 #                             |_|           |_|                                     
 
 
+
 case "$current_fw" in
 	"t20")
 		source /init_operation_backup_t20.sh ;;

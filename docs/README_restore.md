@@ -12,12 +12,20 @@
 switch_fw="no"
 restore_partitions="yes"
 ```
-4. Insert your SD card into your camera and reboot.
+4. Depens on what firmware your camera is running, with `wz_flash-helper.conf` with:
+```
+restore_fw_type="stock"
+```
+or
+```
+restore_fw_type="openipc"
+```
+5. Insert your SD card into your camera and reboot.
 
 
 **Note:**
-- Flash tool automatically detect camera SoC type and firmware type to use the correct options.
 - `switch_fw` option must be disabled like the above configurations. If both `restore_partitions` and `switch_fw`are enabled, both operations would not be executed.
 - All partition images must come with their md5sum file in <partition image>.md5sum
 - During restore operation, the red LED would be blinking every second.
 - Typically restore operation takes about 2 minutes(for reference it takes 2 minutes 15 seconds on Wyze Cam v3)
+

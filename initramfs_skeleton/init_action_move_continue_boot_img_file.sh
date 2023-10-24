@@ -2,6 +2,7 @@
 # Description: Rename SD card boot image that will be booted next boot
 
 
+
 if [ ! -f /sdcard/$continue_boot_img_filename ]; then
 	if [[ ! "$switch_fw" == "yes" ]]; then
 		msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/$sdcard_boot_img_name"

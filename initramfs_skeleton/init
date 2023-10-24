@@ -88,7 +88,7 @@ function import_functions_and_variables() {
 	concat_partmtd="/dev/mtd21"
 
 	source /variables_msg_main.sh
-	source /functions_io.sh
+	source /variables_init_msg.sh
 	source /funcs_and_vars_openipc.shh
 	
 	case "$chip_family" in
@@ -245,7 +245,7 @@ function main() {
 	#---------- Continue boot image ----------
 	if [[ "$enable_continue_boot_img" == "yes" ]]; then
 		msg "$enable_continue_boot_img_yes"
-		source /action_move_continue_boot_img_file.sh
+		source /action_move_continue_boot_img_file.sh || { msg "$enable_continue_boot_img_fail" ; exit_init ; }
 	else
 		msg "$enable_continue_boot_img_no"
 	fi

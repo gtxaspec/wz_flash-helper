@@ -183,6 +183,17 @@ function import_config_file() {
 	dos2unix $prog_config_file && source $prog_config_file || { msg "$prog_config_file file is invalid. Nothing will be done" ; exit_init ; }
 }
 
+function emulate_chip_family_and_fw () {
+# Description: Emulate chip family and firmware for testing, only!
+	dry_run="yes" # Override config file option so nothing is actually done
+
+	chip_family=""
+	current_fw=""
+
+	msg "Emulation mode: chip_family: $chip_family, current_fw: $current_fw"	
+	msg "Dry run mode is forcibly Enabled. No modification will be made."
+}
+
 function exit_init() {
 # Description: Rename SD card boot image to avoid infinite boot loop
 	msg
@@ -215,6 +226,7 @@ function main() {
 	rename_prog_sdcard_boot_img
 	
 	import_config_file
+	# emulate_chip_family_and_fw
 
 	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no"
 

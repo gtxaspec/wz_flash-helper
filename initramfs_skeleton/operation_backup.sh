@@ -10,7 +10,7 @@
 
 
 function backup_full_flash() {
-# Description: Backup the whole flash to a file
+# Description: Backup the entire flash to a file
 	local partname="entire_flash"
 	local partmtd="$concat_partmtd"
 	local outfile="$full_flash_backup_file"
@@ -21,7 +21,7 @@ function backup_full_flash() {
 
 
 function backup_operation() {
-# Description: Create partition images of all partitions and the whole flash. If current firmware is stock, create extra archives from config partitions
+# Description: Create partition images of all partitions and the entire flash. If current firmware is stock, create extra archives from config partitions
 	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
 		local full_flash_backup_file="$stock_backup_dir_path/$t20_stock_backup_full_flash_filename"
 	

@@ -4,7 +4,7 @@
 
 
 dry_run_yes="Dry run mode is Active. Your partitions will not be modified"
-dry_run_no="WARNING!!! Dry run mode is Inactive. Your partitions might be modified, depends on your configuration"
+dry_run_no="WARNING!!! Dry run mode is Inactive. Your partitions might be modified, depends on your configuration. Stay safe!"
 
 backup_partitions_yes="backup_partition value is Yes"
 backup_partitions_no="backup_partition value is No"

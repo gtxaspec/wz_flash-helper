@@ -11,11 +11,11 @@
                     
 function flash_backup_stock_boot_part() {
 # Description: Flash boot partition with backup boot image
-	flashcp /boot_backup.img /dev/mtd0
+	flashcp /boot_backup.img /dev/mtd0 || return 1
 }
 
 function rollback_stock_boot_part() {
-# Description: Check if flashed OpenIPC boot partition is valid, if not, rollback to stock boot image
+# Description: Check if written OpenIPC boot partition is valid, if not, rollback to stock boot image
 	msg "ATTENTION! ATTENTION! ATTENTION!"
 	msg "ATTENTION! ATTENTION! ATTENTION!"
 	msg "ATTENTION! ATTENTION! ATTENTION!"
@@ -31,9 +31,17 @@ function rollback_stock_boot_part() {
 	fi
 }
 
+function switch_fw_openipc_failsafe() {
+	msg "Checking if your OpenIPC boot partitiion is corrupted"
+	source /init_operation_switch_validate_openipc_boot.sh
+	if validate_openipc_boot; then
+		msg "OpenIPC boot partition has been written correctly"
+	else
+		rollback_stock_boot_part || { msg "Your flash chip seems to be corrupted :'(" ; return 1 ; }
+}
                                                                                             
 function switch_fw_operation() {
-	[[ "$restore_partitions" == "yes" ]] && { msg "Restore and Switch_fw operation are conflicted, please enable only one option at a time" ; return 1 ; }
+	[[ "$restore_partitions" == "yes" ]] && { msg "Restore and Switch_fw operations are conflicted, please enable only one option at a time" ; return 1 ; }
 
 	if [[ "$current_fw" == "$switch_fw_to" ]]; then
 		{ msg "switch_fw_to value is same as current firmware type, aborting switch firmware" ; return 1 ; }
@@ -56,21 +64,17 @@ function switch_fw_operation() {
 		source /init_operation_switch_fw_openipc_to_t31.sh || return 1
 	
 	fi
+	
+	if [[ "$current_fw" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
+		if [[ "$dry_run" == "yes" ]]; then
+			"No need to check for OpenIPC boot partition curruption on dry run mode"
+		else
+			switch_fw_openipc_failsafe
+	fi
 	kill $red_and_blue_leds_pid
 	msg
 }
 
 
 switch_fw_operation && msg "Switch_fw operation succeeded" || return 1
-
-
-if [[ "$current_fw" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
-	msg "Checking if your OpenIPC boot partitiion is corrupted"
-	source /init_operation_switch_validate_openipc_boot.sh
-	if validate_openipc_boot; then
-		msg "OpenIPC boot partition has been written correctly"
-	else
-		rollback_stock_boot_part || { msg "Your flash chip seems to be corrupted :'(" ; return 1 ; }
-fi
-
 

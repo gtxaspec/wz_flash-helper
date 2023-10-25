@@ -15,4 +15,6 @@ blink_led_red_and_blue() {
 	sleep 1
 }
 
-blink_led_red_and_blue
+while true; do
+	blink_led_red_and_blue
+done

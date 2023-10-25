@@ -4,14 +4,14 @@
 
 
 openipc_backup_dir_path="/sdcard/wz_flash-helper/backup/openipc"
-openipc_backup_partname_list="boot env kernel rootfs rootfs-data"
+openipc_backup_partname_list="boot env kernel rootfs rootfs_data"
 openipc_backup_full_flash_filename="openipc_all.bin"
 
-openipc_restore_partname_list="env kernel rootfs rootfs-data"
+openipc_restore_partname_list="env kernel rootfs rootfs_data"
 openipc_restore_dir_path="/sdcard/wz_flash-helper/restore/openipc"
 
 openipc_switch_fw_write_partname_list="boot kernel rootfs"
-openipc_switch_fw_erase_partname_list="env rootfs-data"
+openipc_switch_fw_erase_partname_list="env rootfs_data"
 
 
 
@@ -27,7 +27,7 @@ function get_openipc_partmtd() {
 			echo -n "/dev/mtd18" ;;
 		"rootfs")
 			echo -n "/dev/mtd19" ;;
-		"rootfs-data")
+		"rootfs_data")
 			echo -n "/dev/mtd20" ;;
 	esac
 }
@@ -44,8 +44,8 @@ function get_openipc_partimg() {
 			echo -n "openipc_kernel.bin" ;;
 		"rootfs")
 			echo -n "openipc_rootfs.bin" ;;
-		"rootfs-data")
-			echo -n "openipc_rootfs-data.bin" ;;
+		"rootfs_data")
+			echo -n "openipc_rootfs_data.bin" ;;
 	esac
 }
 
@@ -59,7 +59,7 @@ function get_openipc_restore_opt_value() {
 			echo -n "$openipc_restore_kernel" ;;
 		"rootfs")
 			echo -n "$openipc_restore_rootfs" ;;
-		"rootfs-data")
+		"rootfs_data")
 			echo -n "$openipc_restore_rootfs_data" ;;
 	esac
 }

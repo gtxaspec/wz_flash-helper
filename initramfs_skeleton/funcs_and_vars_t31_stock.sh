@@ -11,7 +11,6 @@ t31_stock_backup_partname_with_contents_list="cfg"
 
 stock_restore_dir_path="/sdcard/wz_flash-helper/restore/stock"
 t31_stock_restore_partname_list="kernel rootfs app kback aback cfg para"
-t31_stock_restore_stage_dir="/t31_stock_restore"
 
 
 

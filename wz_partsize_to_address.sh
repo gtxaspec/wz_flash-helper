@@ -6,13 +6,12 @@
 
 function addr_dec_1K_to_hex() {
 # Syntax addr_dec_1K_to_hex <address in decimal, 1K block>
-	local dec_addr_1K="$1"
+	dec_addr_1K="$1"
 	printf '%x' $(( ${dec_addr_1K} * 1024 ))
 }
 
 function make_a_table() {
-# Syntax: make_a_table <device name> 
-	local device_name="$1"
+	local devname="$1"
 	local part_count_total=$(( "${#part_name[@]}" - 1 ))
 
 	echo -e "PART,SIZE(dec),START(dec),START(hex),MTD MAPPING"
@@ -21,21 +20,27 @@ function make_a_table() {
 		local part_start=0
 		local part_num_new=$(( ${part_num} - 1 )) # Do this because array counts from 0
 		for part_count_start_add in $(seq 0 ${part_num_new}); do
-			local part_start_add="${part_size[${part_count_start_add}]}"
-			local part_start=$(( ${part_start} + ${part_start_add} ))
+			part_start_add="${part_size[${part_count_start_add}]}"
+			part_start=$(( ${part_start} + ${part_start_add} ))
 		done
+	
+	local PART="${part_name[${part_num}]}"
+	local SIZE_DEC="${part_size[${part_num}]}"
+	local START_DEC="${part_start}"
+	local START_HEX="0x$(addr_dec_1K_to_hex ${part_start})"
+	
+	local MTD_SIZE="${SIZE_DEC}K"
+	local MTD_START="${START_DEC}K"
+	[[ "${MTD_START}" == "0K" ]] && MTD_START="0"
+	
+	local MTD_PART="${devname}_${PART}"
+	[[ "${PART}" == "boot" ]] && MTD_PART="boot"
+	
+	local MTD_MAPPING="${MTD_SIZE}@${MTD_START}(${MTD_PART})"
+	
+	echo -e "${PART},${SIZE_DEC},${START_DEC},${START_HEX},${MTD_MAPPING}"
 
-		local PART="${part_name[${part_num}]}"
-		local SIZE="${part_size[${part_num}]}"
-		local START_DEC="${part_start}"
-		[[ ! "${START_DEC}" == "0" ]] && START_DEC="${START_DEC}K"
-		local START_HEX="0x$(addr_dec_1K_to_hex ${part_start})"
-		if [[ "${PART}" == "boot" ]]; then
-			local MTD_MAPPING="${SIZE}@${START_DEC}(${PART})"
-		else
-			local MTD_MAPPING="${SIZE}@${START_DEC}(${device_name}_${PART})"
-		fi
-		echo -e "${PART},${SIZE},${START_DEC},${START_HEX},${MTD_MAPPING}"
+
 	done
 }
 

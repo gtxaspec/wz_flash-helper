@@ -29,4 +29,5 @@ Conditions for switch firmware operation to work:
 
 **Note:**
 - `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_fw`are enabled, both operations would not be executed.
+- All partition images are verified with their md5sum files before switch_fw operation starts, no need to worry a currupted partition image.
 - During switch firmware operation, both the blue LED and the red LED would be blinking.

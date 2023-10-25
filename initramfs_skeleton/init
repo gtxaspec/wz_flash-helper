@@ -6,7 +6,8 @@
 # |   .'.   | /  `-.,----.|  .-'|  |\ '-'  |.-'  `)|  | |  |'-----'|  | |  |\   --.|  || '-' '\   --.|  |    
 # '--'   '--'`-----''----'`--'  `--' `--`--'`----' `--' `--'       `--' `--' `----'`--'|  |-'  `----'`--'    
 #                                                                                     `--'                  
-#
+
+
 
 exec > /tmp/initramfs.log 2>&1
 set -x
@@ -18,39 +19,105 @@ mount -t sysfs sysfs /sys
 sleep 1
 
 function msg() {
-# Description: Allow output messages to be both displayed on the serial terminal and written to the log file
-	message="$1"
-	echo "$message"
-	echo "$message" > /dev/console
-	echo "$message" >> /tmp/initramfs_serial.log
+# Description: Allow output messages to be both displayed on the serial terminal and written to the log files
+	local message="$1"
+
+	echo "$message" # Print to log file
+	echo "$message" > /dev/console # Print on serial terminal
+	echo "$message" >> /tmp/initramfs_serial.log # Print to an extra log file, it is exactly the same as on serial terminal
 }
 
 function msg_dry_run() {
-# Description: Print out commands when dry mode is enabled
-	cmd="$1"
+# Description: Print out commands instead of executing them when dry run is enabled
+	local cmd="$1"
+
 	echo " + (this command is not run) $cmd"
 	echo " + (this command is not run) $cmd" > /dev/console
 	echo " + (this command is not run) $cmd" >> /tmp/initramfs_serial.log
 }
 
 function msg_nonewline() {
-# Description: same as msg but without newline
-	message="$1"
+# Description: Same as msg but without newline
+	local message="$1"
+
 	echo -n "$message"
 	echo -n "$message" > /dev/console
 	echo -n "$message" >> /tmp/initramfs_serial.log
 }
 
-function initialize_t20_gpio_sdcard() {
-# Description: T20 cameras need this to get SD card detected
-	echo 43 > /sys/class/gpio/export
-	echo in > /sys/class/gpio/gpio43/direction
-	sleep 3 # Required delay interval for SD card init on T20
+function detect_chip_and_fw() {
+# Description: Detect chip family and current firmware to run later operations correctly
+	chip_name=$(ipcinfo-mips32 --chip-name)
+	chip_family=$(ipcinfo-mips32 --family)
+	msg "Detected chip name: $chip_name, chip family: $chip_family"
+
+	dd if=/dev/mtd0 of=/boot_backup.img
+	strings /boot_backup.img > /boot_backup_strings.txt
+
+	if grep -q "demo.bin" /boot_backup_strings.txt ; then # Cam v2 & Cam Pan
+		msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
+		current_fw="stock"
+	
+	elif grep -q "demo_wcv3.bin" /boot_backup_strings.txt ; then # Cam v3
+		msg "Camera is currently on Cam v3 stock firmware"
+		current_fw="stock"
+	
+	elif grep -q "recovery_wcpv2.bin" /boot_backup_strings.txt ; then # Cam Pan v2
+		msg "Camera is currently on Cam Pan v2 stock firmware"
+		current_fw="stock"
+	
+	elif grep -q "factory_0P3N1PC_kernel" /boot_backup_strings.txt ; then
+		msg "Camera is currently on OpenIPC firmware"
+		current_fw="openipc"
+	
+	else
+		{ msg "Unable to detect current firmware" ; exit_init ; }
+	
+	fi
+
+	rm /boot_backup_strings.txt
 }
 
-function initialize_gpio_leds() {
-# Description: Export LEDs GPIO pins if they don't exist to enable LEDs
-	if [ ! -d /sys/class/gpio/gpio38 ]; then
+function import_functions_and_variables() {
+# Description: Set needed files and paths variables for this program, source functions for later operations and set extra variables based on detected current system info
+	prog_name="wz_flash-helper"
+	prog_version="v0.2.0-alpha"
+	
+	prog_dir="/sdcard/wz_flash-helper"
+	
+	prog_config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
+	prog_log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
+	prog_log_file_serial="/sdcard/wz_flash-helper/wz_flash-helper_serial.log"
+	
+	concat_partmtd="/dev/mtd21"
+	
+	source /functions_io.sh
+	source /variables_init_msg.sh
+	source /funcs_and_vars_openipc.sh
+	
+	case "$chip_family" in
+		"t20")
+			source /funcs_and_vars_t20_stock.sh ;;
+		"t31")
+			source /funcs_and_vars_t31_stock.sh ;;
+	esac
+
+	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
+		sdcard_boot_img_name="factory_ZMC6tiIDQN"
+		
+	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
+		sdcard_boot_img_name="factory_t31_ZMC6tiIDQN"
+	
+	elif [[ "$current_fw" == "openipc" ]]; then
+		sdcard_boot_img_name="factory_0P3N1PC_kernel"
+	
+	fi
+}
+
+function initialize_gpio() {
+# Description: Initialize GPIO for LEDs and SD card on T20 camera
+	msg "Exporting GPIO pins for LEDs"
+	if [ ! -d /sys/class/gpio/gpio38 ]; then # Export LEDs GPIO pins if they don't exist to enable LEDs
 		echo 38 > /sys/class/gpio/export
 		echo out > /sys/class/gpio/gpio38/direction
 		echo 1 > /sys/class/gpio/gpio38/value
@@ -61,675 +128,136 @@ function initialize_gpio_leds() {
 		echo out > /sys/class/gpio/gpio39/direction
 		echo 1 > /sys/class/gpio/gpio39/value
 	fi
-}
 
-function backup_partition_to_file() {
-# Description: Backup partition <partmtd> to <outfile>
-# Syntax: backup_partition_to_file <partname> <partmtd> <outfile>
-	local partname="$1"
-	local partmtd="$2"
-	local outfile="$3"
-	
-	[ -f $outfile ] && { msg " + $outfile exists" ; return 1 ; }
-	
-	msg "- Backup: $partname to file $outfile ---"
-	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "dd if=$partmtd of=$outfile"
-		msg_dry_run "md5sum $outfile > $outfile.md5sum"
-		msg_dry_run "local outfile_dir=$(dirname $outfile) && sed -i \"s|\$outfile_dir/||g\" $outfile.md5sum"
-	else
-		dd if=$partmtd of=$outfile || { msg " + Failed to backup $partname partition" ; return 1 ; } && msg " + backup succeeded"
-		md5sum $outfile > $outfile.md5sum
-		local outfile_dir=$(dirname $outfile) && sed -i "s|$outfile_dir/||g" $outfile.md5sum # Remove path of files from .md5sum files
+	if [[ "$chip_family" == "t20" ]]; then # T20 camera need this to get SD card detected
+		msg "Exporting GPIO pin to detect SD card on T20 camera"
+		echo 43 > /sys/class/gpio/export
+		echo in > /sys/class/gpio/gpio43/direction
+		sleep 3 # Required delay interval for SD card init on T20 camera
 	fi
-}
-
-function restore_file_to_partition() {
-# Description: Restore partition from <infile> to <partmtd>
-# Syntax: restore_file_to_partition <partname> <infile> <partname>
-	local partname="$1"
-	local infile="$2"
-	local partmtd="$3"
-	
-	local infile_name=$(basename $infile)
-	[ ! -f $infile ] && { msg " + $infile is missing" ; return 1 ; }
-	
-	msg_nonewline " + Checking md5 of $infile_name: "
-	cd /$restore_dir_name
-	if [[ "$dry_run" == "yes" ]]; then
-		md5sum -c $infile_name.md5sum && { msg "succeeded" ; msg_dry_run "flash_eraseall $partmtd && flashcp $infile_name $partmtd" ; } || { msg "failed" ; return 1 ; }
-	else
-		md5sum -c $infile_name.md5sum && { msg "succeeded" ; flash_eraseall $partmtd && flashcp $infile_name $partmtd && msg " + Restore succeeded" ; } || { msg "failed" ; return 1 ; }
-	fi
-}
-
-function backup_stock_config_part_files_to_archive() {
-# Description: Backup all files from a JFFS2 partition to .tar.gz file
-# Syntax: backup_stock_config_part_files_to_archive <partname> <partblockmtd> <outfile>
-	local partname="$1"
-	local partblockmtd="$2"
-	local outfile="$3"
-	local mountpoint_dir="/mnt_$partname"
-	
-	msg "- Backup: $partname partition files to file $outfile ---"
-	
-	mkdir -p $mountpoint_dir
-	mount -t jffs2 $partblockmtd $mountpoint_dir || { msg "Mount $partname partition failed" ; exit_init ; }
-	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "tar -cvf $outfile -C $mountpoint_dir ."
-		msg_dry_run "md5sum $outfile > $outfile.md5sum"
-	else
-		tar -cvf $outfile -C $mountpoint_dir .
-		md5sum $outfile > $outfile.md5sum
-	fi
-
-	sync
-	umount $mountpoint_dir && rmdir $mountpoint_dir
-	msg " + backup succeeded"
-}
-
-#    ____             _                   __                  _   _                 
-#   | __ )  __ _  ___| | ___   _ _ __    / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
-#   |  _ \ / _` |/ __| |/ / | | | '_ \  | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
-#   | |_) | (_| | (__|   <| |_| | |_) | |  _| |_| | | | | (__| |_| | (_) | | | \__ \
-#   |____/ \__,_|\___|_|\_\\__,_| .__/  |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
-#                               |_|                                                 
-
-function backup_full_flash() {
-# Description: Backup the whole flash to a file
-	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
-		full_flash_backup_file=$stock_backup_dir_path/$t20_stock_full_flash_filename
-		
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
-		full_flash_backup_file=$stock_backup_dir_path/$t31_stock_full_flash_filename
-		
-	elif [[ "$current_fw_type" == "openipc" ]]; then
-		full_flash_backup_file=$openipc_backup_dir_path/$openipc_full_flash_filename
-	
-	fi
-	
-	local partname="entire_flash"
-	local partmtd="$concat_partmtd"
-	local outfile="$full_flash_backup_file"
-	
-	backup_partition_to_file $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; exit_init ; }
-}
-
-function backup_t20_stock_parts() {
-# Description: Create partition images of all stock partitions on T20 flash chip
-	for partname in $t20_stock_backup_partname_list; do
-		local partmtd=$(get_t20_stock_partmtd $partname)
-		local outfile_name=$(get_t20_stock_partimg $partname)
-		local outfile="$stock_backup_dir_path/$outfile_name"
-		
-		backup_partition_to_file $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; break ; exit_init ; }
-	done
-}
-
-function backup_t20_stock_config() {
-# Description: Create .tar.gz archive for config partition files on T20 flash chip
-	local partname="config"
-	local partmtdblock="$config_t20_stock_partmtdblock"
-	local outfile="$stock_backup_dir_path/t20_stock_$partname.tar.gz"
-	
-	backup_stock_config_part_files_to_archive $partname $partmtdblock $outfile
-}
-
-function backup_t20_stock_para() {
-# Description: Create .tar.gz archive for para partition files on T20 flash chip
-	local partname="para"
-	local partmtdblock="$para_t20_stock_partmtdblock"
-	local outfile="$stock_backup_dir_path/t20_stock_$partname.tar.gz"
-	
-	backup_stock_config_part_files_to_archive $partname $partmtdblock $outfile
-}
-
-function backup_t31_stock_parts() {
-# Description: Create partition images of all stock partitions on T31 flash chip
-	
-	for partname in $t31_stock_backup_partname_list; do
-		local partmtd=$(get_t31_stock_partmtd $partname)
-		local outfile_name=$(get_t31_stock_partimg $partname)
-		local outfile="$stock_backup_dir_path/$outfile_name"
-		
-		backup_partition_to_file $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; break ; exit_init ; }
-	done
-}
-
-function backup_t31_stock_config() {
-# Description: Create .tar.gz archive for config partition files on T31 flash chip
-	local partname="cfg"
-	local partmtdblock="$cfg_t31_stock_partmtdblock"
-	local outfile="$stock_backup_dir_path/t31_stock_$partname.tar.gz"
-	
-	backup_stock_config_part_files_to_archive $partname $partmtdblock $outfile
-}
-
-function backup_openipc_parts() {
-# Description: Create partition images of all OpenIPC partitions on T31 flash chip
-	msg "Backing up OpenIPC partitions"
-	
-	for partname in $openipc_backup_partname_list; do
-		local partmtd=$(get_openipc_partmtd $partname)
-		local outfile_name=$(get_openipc_partimg $partname)
-		local outfile="$openipc_backup_dir_path/$outfile_name"
-		
-		backup_partition_to_file $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; break ; exit_init ; }
-	done
-}
-
-
-#    ____           _                    __                  _   _                 
-#   |  _ \ ___  ___| |_ ___  _ __ ___   / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
-#   | |_) / _ \/ __| __/ _ \| '__/ _ \ | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
-#   |  _ <  __/\__ \ || (_) | | |  __/ |  _| |_| | | | | (__| |_| | (_) | | | \__ \
-#   |_| \_\___||___/\__\___/|_|  \___| |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
-#
-                                                                       
-function restore_t20_stock_parts() {
-# Description: Restore stock partitions from partition images on T20 flash chip
-	for partname in $t20_stock_restore_partname_list; do
-		local infile_name=$(get_t20_stock_partimg $partname)
-		local infile="$restore_dir/$infile_name"
-		local partmtd=$(get_t20_stock_partmtd $partname)
-		local restore_opt_value=$(get_t20_stock_restore_opt_value $partname)
-		
-		msg "- Restore: $partname from file $infile"
-		if [[ "$restore_opt_value" == "yes" ]]; then
-			msg " + t20_restore_$partname value is Yes"
-			restore_file_to_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; exit_init ; }
-		else
-			msg " + t20_restore_$partname value is No"
-		fi
-	done
-}
-
-function restore_t31_stock_parts() {
-# Description: Restore stock partitions from partition images on T31 flash chip	
-	for partname in $t31_stock_restore_partname_list; do
-		local infile_name=$(get_t31_stock_partimg $partname)
-		local infile="$restore_dir/$infile_name"
-		local partmtd=$(get_t31_stock_partmtd $partname)
-		local restore_opt_value=$(get_t31_stock_restore_opt_value $partname)
-		
-		msg "- Restore: $partname from file $infile"
-		if [[ "$restore_opt_value" == "yes" ]]; then
-			msg " + t31_restore_$partname value is Yes"
-			restore_file_to_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; exit_init ; }
-		else
-			msg " + t31_restore_$partname value is No"
-		fi
-	done
-}
-
-function restore_openipc_parts() {
-# Description: Restore OpenIPC partitions from partition images
-	for partname in $openipc_restore_partname_list; do
-		local infile_name=$(get_openipc_partimg $partname)
-		local infile="$restore_dir/$infile_name"
-		local partmtd=$(get_openipc_partmtd $partname)
-		local restore_opt_value=$(get_openipc_restore_opt_value $partname)
-		
-		msg "- Restore: $partname from file $infile"
-		if [[ "$restore_opt_value" == "yes" ]]; then
-			msg " + openipc_restore_$partname value is Yes"
-			restore_file_to_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; exit_init ; }
-		else
-			msg " + openipc_restore_$partname value is No"
-		fi
-	done
-}
-
-
-#    ____          _ _       _        __             __                  _   _                 
-#   / ___|_      _(_) |_ ___| |__    / _|_      __  / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
-#   \___ \ \ /\ / / | __/ __| '_ \  | |_\ \ /\ / / | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
-#    ___) \ V  V /| | || (__| | | | |  _|\ V  V /  |  _| |_| | | | | (__| |_| | (_) | | | \__ \
-#   |____/ \_/\_/ |_|\__\___|_| |_| |_|   \_/\_/   |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
-#
-                                                                                            
-function switch_fw_stock_to_openipc() {
-# Description: Switch from stock to OpenIPC firmware by flashing all partitions OpenIPC partition images
-	cp -r $stock_switch_fw_dir_path /switch_fw_stock_to_openipc
-	cd /switch_fw_stock_to_openipc
-	
-	for partname in $openipc_backup_partname_list; do # Do md5 check for all partitions first to make sure they are all valid before flashing each partition
-		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-	
-	for partname in $openipc_backup_partname_list; do
-		local infile_name=$(get_openipc_partimg $partname)
-		local infile="/switch_fw_stock_to_openipc/$infile_name"
-		local partmtd=$(get_openipc_partmtd $partname)
-		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-	rm -r switch_fw_stock_to_openipc
-}
-
-function switch_fw_openipc_to_t20_stock() {
-# Description: Switch from OpenIPC to stock firmware on T20 by flashing all partitions stock partition images
-	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t20_stock
-	cd /switch_fw_openipc_to_t20_stock
-	
-	for partname in $t20_stock_backup_partname_list; do # Do md5 check for all partitions first to make sure they are all valid before flashing each partition
-		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-	
-	for partname in $t20_stock_backup_partname_list; do
-		local infile_name=$(get_t20_stock_partimg $partname)
-		local infile="/switch_fw_openipc_to_t20_stock/$infile_name"
-		local partmtd=$(get_t20_stock_partmtd $partname)
-		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-	rm -r /switch_fw_openipc_to_t20_stock
-}
-
-function switch_fw_openipc_to_t31_stock() {
-# Description: Switch from OpenIPC to stock firmware on T31 by flashing all partitions stock partition images
-	cp -r $openipc_switch_fw_dir_path /switch_fw_openipc_to_t31_stock
-	cd /switch_fw_openipc_to_t31_stock
-	
-	for partname in $t31_stock_backup_partname_list; do # Do md5 check for all partitions first to make sure they are all valid before flashing each partition
-		md5sum -c $partname.md5sum || { msg "Failed to verify $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-	
-	for partname in $t31_stock_backup_partname_list; do
-		local infile_name=$(get_t31_stock_partimg $partname)
-		local infile="/switch_fw_openipc_to_t31_stock/$infile_name"
-		local partmtd=$(get_t31_stock_partmtd $partname)
-		restore_file_to_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting firmware switch" ; return 1 ; }
-	done
-	rm -r /switch_fw_openipc_to_t31_stock
-}
-
-
-#   __  __ _             __                  _   _                 
-#  |  \/  (_)___  ___   / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
-#  | |\/| | / __|/ __| | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
-#  | |  | | \__ \ (__  |  _| |_| | | | | (__| |_| | (_) | | | \__ \
-#  |_|  |_|_|___/\___| |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
-#                                                                 
-
-function move_continue_boot_img_file() {
-# Description: Rename SD card boot image that will be booted next boot
-	if [[ "$enable_continue_boot_img" == "yes" ]]; then
-		msg "enable_continue_boot_img value is Yes"
-		case "$current_fw_type" in
-			"stock")
-				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_t31_ZMC6tiIDQN"
-				mv /sdcard/$continue_boot_img_filename /sdcard/factory_t31_ZMC6tiIDQN
-				;;
-			"openipc")
-				msg "Renaming /sdcard/$continue_boot_img_filename to /sdcard/factory_0P3N1PC_kernel"
-				mv /sdcard/$continue_boot_img_filename /sdcard/factory_0P3N1PC_kernel
-				;;
-		esac
-	else
-		msg "enable_continue_boot_img value is No"
-	fi
-}
-
-function move_flash_tool_boot_img_file() {
-# Description: Rename the SD card boot image to avoid infinite boot loop
-	case "$current_fw_type" in
-		"stock")
-			msg "Renaming /sdcard/factory_t31_ZMC6tiIDQN to /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name"
-			mv /sdcard/factory_t31_ZMC6tiIDQN /sdcard/factory_t31_ZMC6tiIDQN.$flash_tool_name
-			;;
-		"openipc")
-			msg "Renaming /sdcard/factory_0P3N1PC_kernel to /sdcard/factory_0P3N1PC_kernel.$flash_tool_name"
-			mv /sdcard/factory_0P3N1PC_kernel /sdcard/factory_0P3N1PC_kernel.$flash_tool_name
-			;;
-	esac
-}
-
-
-function get_boot_part_hash() {
-# Description: Calculate md5 hash of current boot partition
-	dd if=$boot_partmtd of=/boot_partimg_new
-	boot_partimg_md5_new=$(md5sum /tmp/boot_partimg_new)
-	rm /boot_partimg_new
-}
-
-function check_valid_openipc_boot_part() {
-# Description: Check if flashed OpenIPC boot partition hash is on the valid hash list
-	msg "Checking if your boot partitiion is corrupted"
-
-	case "$chip_family" in
-		"t20") openipc_good_boot_hash_list="$t20_valid_hashes" ;;
-		"t31") openipc_good_boot_hash_list="$t31_valid_hashes" ;;
-	esac
-	
-	get_boot_part_hash
-	if echo "$openipc_good_boot_hash_list" | grep -q $boot_partimg_md5_new ; then
-		return 0
-	else
-		msg "md5 check for valid OpenIPC boot partition failed"
-	fi
-	
-	get_boot_part_hash
-	if ! echo "$openipc_good_boot_hash_list" | grep -q $boot_partimg_md5_new ; then
-		msg "md5 check for valid OpenIPC boot partition failed second time"
-	else
-		return 0
-	fi
-	
-	get_boot_part_hash
-	if ! echo "$openipc_good_boot_hash_list" | grep -q $boot_partimg_md5_new ; then
-		{ msg "md5 check for valid OpenIPC boot partition failed third time" ; return 1 ; }
-	else
-		return 0
-	fi
-}
-
-function rollback_stock_boot_part() {
-# Description: Flash boot partition with old boot image
-	flashcp /boot_partimg $boot_partmtd
-}
-
-function rollback_stock_boot_part_if_openipc_boot_flash_fails() {
-# Description: Check if flashed OpenIPC boot partition is valid, if not, rollback to stock boot image
-	if ! check_valid_openipc_boot_part ; then
-		msg "ATTENTION! ATTENTION! ATTENTION!"
-		msg "ATTENTION! ATTENTION! ATTENTION!"
-		msg "ATTENTION! ATTENTION! ATTENTION!"
-		msg
-		msg "It is very likely that your boot partition is corrupted as it hash does not match any of known good OpenIPC boot image hashes"
-		msg "Rolling back boot partition with stock boot image"
-		msg
-		if rollback_boot_part; then
-			msg "Rollback succeeded :) You are safe now!"
-		else
-			msg "Rollback failed :( Trying rolling back one more time"
-			rollback_boot_part || msg "Rollback failed again, sorry, you need to rescure your flash chip with a programmer" && msg "This time rollback succeeded :)"
-		fi
-	else
-		msg "Your boot partition is okay :)"
-	fi
-}
-
-#   __  __       _          __                  _   _                 
-#  |  \/  | __ _(_)_ __    / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
-#  | |\/| |/ _` | | '_ \  | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
-#  | |  | | (_| | | | | | |  _| |_| | | | | (__| |_| | (_) | | | \__ \
-#  |_|  |_|\__,_|_|_| |_| |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
-#
-
-function initialize_gpio() {
-# Description: Initialize GPIO for LEDs and SD card on T20 cameras
-	[[ "chip_family" == "t20" ]] && initialize_t20_gpio_sdcard
-	initialize_gpio_leds
-}
-
-function import_init_variables() {
-	source /init_variables.sh
 }
 
 function welcome_msg() {
-	msg "Welcome to $flash_tool_name!"
+# Description: It is nice to let the user know that they are welcome!
+	msg
+	msg "Welcome to $prog_name init $prog_version!"
+	msg
 }
 
 function wait_init_interrupt() {
-# Description: Allow user to access initramfs shell
-	msg
+# Description: Allow the user to access initramfs shell with serial connection
 	msg
 	echo "Press any key to interrupt init" > /dev/console
 	
 	exec 0< /dev/console
 	read -r -s -n 1 -t 3
 	if [[ "$?" -eq 0 ]]; then
-		echo "Dropping a shell"
+		msg "Dropping a shell"
+		msg "You can read /tmp/initramfs.log to see previously run commands"
 		exec 1> /dev/console
 		exec 2> /dev/console
 		exec /bin/sh
 	fi
 	echo "Action has timed out" > /dev/console
 	msg
-	msg
 }
 
 function mount_sdcard() {
-	msg "Mounting SD card"
+# Description: Mount SD card, nothing more
+	msg_nonewline "Mounting SD card... "
 	mkdir -p /sdcard
-	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000
+	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg "succeeded" || msg "failed"
 }
 
-function import_partmtd_info() {
-	source /init_partmtd_info.sh
+function rename_flash_tool_sdcard_boot_img() {
+	msg "Renaming /sdcard/$sdcard_boot_img_name to /sdcard/$sdcard_boot_img_name.$prog_name"
+	mv /sdcard/$sdcard_boot_img_name /sdcard/$sdcard_boot_img_name.$prog_name
 }
 
-function import_config_file_vars() {
-# Description: Import config file from SD card
-	[ ! -f $config_file ] && { msg "$config_file file is missing" ; mv /tmp/initramfs.log /tmp/initramfs_missing-config-file.log ; exit_init ; }
-	
-	dos2unix $config_file # Fix import config file issue with MS-DOS newline
-	source $config_file || { msg "$config_file file is invalid" ; exit_init ; }
-}
+function import_config_file() {
+# Description: Source program config file to know and do what the user wants
+	[ ! -d $prog_dir ] && { msg "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; exit_init ; }
+	[ ! -f $prog_config_file ] && { msg "$prog_config_file file is missing. Nothing will be done" ; exit_init ; }
 
-function import_valid_openipc_boot_hashes() {
-	source /init_valid_openipc_boot_hashes.sh
-}
-
-function detect_chip_and_fw() {
-# Description: Detect chip family and current firmware to run later operations correctly
-	chip_name=$(ipcinfo-mips32 --chip-name)
-	chip_family=$(ipcinfo-mips32 --family)
-	msg "Detected chip name: $chip_name, chip family: $chip_family"
-	
-	dd if=$boot_partmtd of=/boot_partimg
-	strings /boot_partimg > /tmp/boot_partimg_strings
-	
-	if grep -q "demo.bin" /tmp/boot_partimg_strings ; then # Cam v2 & Cam Pan
-		msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
-		current_fw_type="stock"
-	
-	elif grep -q "demo_wcv3.bin" /tmp/boot_partimg_strings ; then # Cam v3
-		msg "Camera is currently on Cam v3 stock firmware"
-		current_fw_type="stock"
-	
-	elif grep -q "recovery_wcpv2.bin" /tmp/boot_partimg_strings ; then # Cam Pan v2
-		msg "Camera is currently on Cam Pan v2 stock firmware"
-		current_fw_type="stock"
-	
-	elif grep -q "factory_0P3N1PC_kernel" /tmp/boot_partimg_strings ; then
-		msg "Camera is currently on OpenIPC firmware"
-		current_fw_type="openipc"
-	
-	else
-		{ msg "Can not detect current firmware type" ; exit_init ; }
-	fi
-	
-	rm /tmp/boot_partimg_strings
-}
-
-function do_backup_operation() {
-# Description: Create partition images of flash partitions. If current firmware stock, create extra archives with files from config and para partitions
-	/blink_blue_led.sh &
-	blue_led_pid="$!"
-	msg
-	msg "---------- Begin of backup operation ----------"
-	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "t20" ]]; then
-		msg "Backing up T20 stock partitions"
-		mkdir -p $stock_backup_dir_path
-		backup_full_flash
-		backup_t20_stock_parts
-		backup_t20_stock_config
-		backup_t20_stock_para
-		
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "t31" ]]; then
-		mkdir -p $stock_backup_dir_path
-		msg "Backing up T31 stock partitions"
-
-		backup_full_flash
-		backup_t31_stock_parts
-		backup_t31_stock_config
-		
-	elif [[ "$current_fw_type" == "openipc" ]]; then
-		msg "Backing up OpenIPC partitions"
-		mkdir -p $openipc_backup_dir_path
-		backup_full_flash
-		backup_openipc_parts
-		
-	fi
-	kill $red_led_pid
-}
-
-function do_restore_operation() {
-# Description: Restore flash partitions using partition images
-	if [[ ! "$current_fw_type" == "$restore_fw_type" ]]; then
-		{ msg "restore_fw_type mismatches with current firmware type, aborting" ; exit_init ; }
-	fi
-	
-	case "$current_fw_type" in
-		"stock")
-			restore_dir_name="$stock_restore_dir_name"
-			;;
-		"openipc")
-			restore_dir_name="$openipc_restore_dir_name"
-			;;
-	esac
-
-	restore_dir="$restore_dir_path/$restore_dir_name"
-	[ ! -d $restore_dir ] && { msg "$restore_dir directory is missing" ; exit_init ; }
-	
-	cp -r $restore_dir /$restore_dir_name # Copy the restore directory to RAM in case of defective SD card
-	
-	/blink_red_led.sh &
-	red_led_pid="$!"
-	msg
-	msg "---------- Begin of restore operation ----------"
-	if [[ "$restore_fw_type" == "stock" ]] && [[ "$chip_family" = "t20" ]]; then
-		msg "Restoring stock partitions for T20 camera"
-		restore_t20_stock_parts
-	elif [[ "$restore_fw_type" == "stock" ]] && [[ "$chip_family" = "t31" ]]; then
-		msg "Restoring stock partitions for T31 camera"
-		restore_t31_stock_parts
-	elif [[ "$restore_fw_type" == "openipc" ]]; then
-		msg "Restoring OpenIPC partitions for T20 camera"
-		restore_openipc_parts
-	fi
-	kill $red_led_pid
-	rm -r /$restore_dir_name
-}
-
-function do_switch_fw_operation() {
-# Description: Switch firmware by flashing all needed partitions
-	if [[ "$current_fw_type" == "$switch_fw_to" ]]; then
-		{ msg "switch_fw_to value is same as current firmware type, aborting firmware switch" ; exit_init ; }
-	fi
-	
-	/blink_red_and_blue_leds.sh &
-	red_and_blue_leds_pid="$!"
-	if [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
-		msg "Switching from stock firmware to OpenIPC"
-		switch_fw_stock_to_openipc
-	
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
-		msg "Switching from OpenIPC firmware to T20 stock"
-		switch_fw_openipc_to_t20_stock
-	
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
-		msg "Switching from OpenIPC firmware to T31 stock"
-		switch_fw_openipc_to_t31_stock
-	
-	fi
-	kill $red_and_blue_leds_pid
-}
-
-function execute_custom_script() {
-# Description: Execute user custom script
-	msg "custom_script value is set to \"$custom_script\""
-	
-	if [ -f /sdcard/$custom_script ]; then
-		if [[ "$dry_run" == "yes" ]]; then
-			msg "Custom script does not run when dry mode is active"
-		else
-			msg "Executing custom script"
-			/sdcard/$custom_script || { msg "Custom script did not run properly" ; exit_init ; }
-		fi
-	else
-		msg "Custom script file is missing"
-	fi
+	# Fix issue that config file failed to be sourced if it contains MS-DOS newline
+	dos2unix $prog_config_file && source $prog_config_file || { msg "$prog_config_file file is invalid. Nothing will be done" ; exit_init ; }
 }
 
 function exit_init() {
-# Description: Move initramfs log to SD card and reboot
+# Description: Rename SD card boot image to avoid infinite boot loop
 	msg
 	msg "---------- Exit init ----------"
-	move_continue_boot_img_file
-	move_flash_tool_boot_img_file
-	if [[ "$switch_fw" == "yes" ]] && [[ "$current_fw_type" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
-		rollback_stock_boot_part_if_openipc_boot_flash_fails
-	fi
+	msg
+
 	msg "Initramfs init is finished! Exiting now"
-	[ -f /tmp/initramfs.log ] && cp /tmp/initramfs.log $log_file
-	[ -f /tmp/initramfs_serial.log ] && cp /tmp/initramfs_serial.log $log_file_serial
-	[ -f /tmp/initramfs_missing-config-file.log ] && cp /tmp/initramfs_missing-config-file.log $log_file_fallback
+
+	cp /tmp/initramfs.log $prog_log_file
+	cp /tmp/initramfs_serial.log $prog_log_file_serial
+
 	sync
 	umount /sdcard
+
 	sleep 1
-	reboot -f # Reboot immediately to prevent init from continuing
+	exit # Crash init to reboot immediately
 	sleep 10 # This prevents init from continuing after exit_init is finished but the camera has not rebooted immediately
 }
 
 function main() {
+	detect_chip_and_fw
+	import_functions_and_variables
 	initialize_gpio
-	import_init_variables
+
 	welcome_msg
 	
 	wait_init_interrupt
 	
 	mount_sdcard
-	msg
-	import_partmtd_info
-	import_config_file_vars
-	import_valid_openipc_boot_hashes
+	rename_flash_tool_sdcard_boot_img
 	
-	detect_chip_and_fw
-	
-	msg
-	if [[ "$dry_run" == "yes" ]]; then
-		msg "Dry run mode is Active. Your partitions will not be modified"
-	else
-		msg "Dry run mode is Inactive. Your partitions might be modified, depends on your configuration"
-	fi
-	msg
-	
+	import_config_file
+
+	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no"
+
+	#---------- Backup operation ----------
 	if [[ "$backup_partitions" == "yes" ]]; then
-		{ msg "backup_partitions value is Yes" ; do_backup_operation ; }
+		msg "$backup_partitions_yes"
+		source /operation_backup.sh || { msg "$backup_partitions_fail" ; exit_init ; }
 	else
-		msg "backup_partitions value is No"
+		msg "$backup_partitions_no"
 	fi
-	
-	if [[ "$restore_partitions" == "yes" ]] && [[ "$switch_fw" == "yes" ]]; then
-		{ msg "Restore and Switch_fw operation are conflicted, please enable only one option at a time" ; exit_init ; }
-	fi
-	msg
-	msg
+
+	#---------- Restore operation ----------
 	if [[ "$restore_partitions" == "yes" ]]; then
-		msg "restore_partitions value is Yes"
-		do_restore_operation
+		msg "$restore_partitions_yes"
+		source /operation_restore.sh || { msg "$restore_partitions_fail" ; exit_init ; }
 	else
-		msg "restore_partitions value is No"
+		msg "$restore_partitions_no"
 	fi
-	msg
-	msg
+
+	#---------- Switch fw operation ----------
 	if [[ "$switch_fw" == "yes" ]]; then
-		msg "switch_fw value is Yes"
-		do_switch_fw_operation
+		msg "$switch_fw_yes"
+		source /operation_switch_fw.sh || { msg "$switch_fw_fail" ; exit_init ; }
 	else
-		msg "switch_fw value is No"
+		msg "$switch_fw_no"
 	fi
-	msg
-	msg
+
+	#---------- Custom script ----------
 	if [[ "$enable_custom_script" == "yes" ]]; then
-		msg "enable_custom_script value is Yes"
-		execute_custom_script
+		msg "$enable_custom_script_yes"
+		source /action_execute_custom_script.sh || { msg "$enable_custom_script_fail" ; exit_init ; }
 	else
-		msg "enable_custom_script value is Yes"
+		msg "$enable_custom_script_no"
 	fi
-	msg
-	msg
+
+	#---------- Continue boot image ----------
+	if [[ "$enable_continue_boot_img" == "yes" ]]; then
+		msg "$enable_continue_boot_img_yes"
+		source /action_move_continue_boot_img_file.sh || { msg "$enable_continue_boot_img_fail" ; exit_init ; }
+	else
+		msg "$enable_continue_boot_img_no"
+	fi
+
 	exit_init
 }
 

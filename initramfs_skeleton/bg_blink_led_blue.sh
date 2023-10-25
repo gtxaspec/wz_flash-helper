@@ -10,4 +10,6 @@ blink_led_blue() {
 	done
 }
 
-blink_led_blue
+while true; do
+	blink_led_blue
+done

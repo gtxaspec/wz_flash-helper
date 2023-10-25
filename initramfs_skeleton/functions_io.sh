@@ -24,8 +24,10 @@ function backup_partition_to_file() {
 		msg_dry_run "md5sum $outfile > $outfile.md5sum"
 		msg_dry_run "local outfile_dir=$(dirname $outfile) && sed -i \"s|\$outfile_dir/||g\" $outfile.md5sum"
 	else
-		dd if=$partmtd of=$outfile || { msg " + Failed to backup $partname" ; return 1 ; } && msg " + backup succeeded"
-		md5sum $outfile > $outfile.md5sum || { msg " + Failed to generate md5sum for $outfile" ; return 1 ; }
+		msg_nonewline " + Backing up... "
+		dd if=$partmtd of=$outfile && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		msg_nonewline " + Generating md5sum file... "
+		md5sum $outfile > $outfile.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
 		local outfile_dir=$(dirname $outfile) && sed -i "s|$outfile_dir/||g" $outfile.md5sum # Remove path of partition images files from their .md5sum files
 	fi
 }
@@ -47,13 +49,14 @@ function archive_partition_files() {
 		msg_dry_run "tar -cvf $outfile -C $archive_mnt_dir ."
 		msg_dry_run "md5sum $outfile > $outfile.md5sum"
 	else
-		tar -cvf $outfile -C $archive_mnt_dir . || { msg " + Failed to generate partiton archive for $partname" ; return 1 ; }
-		md5sum $outfile > $outfile.md5sum || { msg " + Failed to generate md5sum for $outfile" ; return 1 ; }
+		msg_nonewline " + Creating archive file... "
+		tar -cvf $outfile -C $archive_mnt_dir . && msg "succeeded" || { msg "failed" ; return 1 ; }
+		msg_nonewline " + Generating md5sum file... "
+		md5sum $outfile > $outfile.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
 	fi
 
 	sync
 	umount $mountpoint_dir && rmdir $mountpoint_dir
-	msg " + backup succeeded"
 }
 
 function restore_file_to_partition() {
@@ -72,11 +75,15 @@ function restore_file_to_partition() {
 	
 	cd $restore_stage_dir
 	msg "- Restore: file $infile_name to $partname at $partmtd ---"
-	msg_nonewline " + Checking md5 of $infile_name: "
 	if [[ "$dry_run" == "yes" ]]; then
-		md5sum -c $infile_name.md5sum && { msg "succeeded" ; msg_dry_run "flash_eraseall $partmtd && flashcp $infile_name $partmtd" ; } || { msg "failed" ; return 1 ; }
+		msg_nonewline " + Checking md5 of $infile_name... "
+		md5sum -c $infile_name.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; }
+		msg_dry_run "flash_eraseall $partmtd && flashcp $infile_name $partmtd"
 	else
-		md5sum -c $infile_name.md5sum && { msg "succeeded" ; msg_nonewline " + Writing... " ; flash_eraseall $partmtd && flashcp $infile_name $partmtd && msg "succeeded" ; } || { msg "failed" ; return 1 ; }
+		msg_nonewline " + Checking md5 of $infile_name... "
+		md5sum -c $infile_name.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; }
+		msg_nonewline " + Writing... "
+		flash_eraseall $partmtd && flashcp $infile_name $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; }
 	fi
 }
 
@@ -88,8 +95,9 @@ function erase_partition() {
 
 	msg_nonewline "- Erase: $partname at $partmtd ---"
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "flash_eraseall $partmtd" && msg "succeeded"
+		msg_dry_run "flash_eraseall $partmtd"
 	else
+		msg_nonewline "Erasing... "
 		flash_eraseall $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; }
 	fi
 }

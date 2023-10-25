@@ -81,7 +81,7 @@ function detect_chip_and_fw() {
 function import_functions_and_variables() {
 # Description: Set needed files and paths variables for this program, source functions for later operations and set extra variables based on detected current system info
 	prog_name="wz_flash-helper"
-	prog_version="v0.2.0-alpha"
+	prog_version=$(cat /prog_ver.txt)
 	
 	prog_dir="/sdcard/wz_flash-helper"
 	

@@ -22,7 +22,7 @@ function get_new_boot_part_hash() {
 }
 
 validate_openipc_boot() {
-# Description: Check if flashed OpenIPC boot partition hash is on the valid hash list
+# Description: Check if written OpenIPC boot partition hash is on the valid hash list
 	case "$chip_family" in
 		"t20") local openipc_valid_boot_hash_list="$(get_t20_openipc_valid_hashes)" ;;
 		"t31") local openipc_valid_boot_hash_list="$(get_t31_openipc_valid_hashes)" ;;

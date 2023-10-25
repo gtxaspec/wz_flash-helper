@@ -81,7 +81,7 @@ function detect_chip_and_fw() {
 function import_functions_and_variables() {
 # Description: Set needed files and paths variables for this program, source functions for later operations and set extra variables based on detected current system info
 	prog_name="wz_flash-helper"
-	prog_version="v0.2.0-alpha"
+	prog_version=$(cat /prog_ver.txt)
 	
 	prog_dir="/sdcard/wz_flash-helper"
 	
@@ -169,7 +169,7 @@ function mount_sdcard() {
 	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg "succeeded" || msg "failed"
 }
 
-function rename_flash_tool_sdcard_boot_img() {
+function rename_prog_sdcard_boot_img() {
 	msg "Renaming /sdcard/$sdcard_boot_img_name to /sdcard/$sdcard_boot_img_name.$prog_name"
 	mv /sdcard/$sdcard_boot_img_name /sdcard/$sdcard_boot_img_name.$prog_name
 }
@@ -212,7 +212,7 @@ function main() {
 	wait_init_interrupt
 	
 	mount_sdcard
-	rename_flash_tool_sdcard_boot_img
+	rename_prog_sdcard_boot_img
 	
 	import_config_file
 

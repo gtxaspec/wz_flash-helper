@@ -15,7 +15,7 @@ function flash_backup_stock_boot_part() {
 }
 
 function rollback_stock_boot_part() {
-# Description: Check if flashed OpenIPC boot partition is valid, if not, rollback to stock boot image
+# Description: Check if written OpenIPC boot partition is valid, if not, rollback to stock boot image
 	msg "ATTENTION! ATTENTION! ATTENTION!"
 	msg "ATTENTION! ATTENTION! ATTENTION!"
 	msg "ATTENTION! ATTENTION! ATTENTION!"

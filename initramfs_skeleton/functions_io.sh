@@ -25,7 +25,7 @@ function backup_partition_to_file() {
 		msg_dry_run "local outfile_dir=$(dirname $outfile) && sed -i \"s|\$outfile_dir/||g\" $outfile.md5sum"
 	else
 		dd if=$partmtd of=$outfile || { msg " + Failed to backup $partname" ; return 1 ; } && msg " + backup succeeded"
-		md5sum $outfile > $outfile.md5sum
+		md5sum $outfile > $outfile.md5sum || { msg " + Failed to generate md5sum for $outfile" ; return 1 ; }
 		local outfile_dir=$(dirname $outfile) && sed -i "s|$outfile_dir/||g" $outfile.md5sum # Remove path of partition images files from their .md5sum files
 	fi
 }
@@ -41,14 +41,14 @@ function archive_partition_files() {
 	mkdir -p $archive_mnt_dir
 	
 	msg "- Archive: $partname at $partblockmtd files to file $outfile ---"
-	mount -t jffs2 $partblockmtd $archive_mnt_dir || { msg "Mount $partname failed" ; return 1 ; }
+	mount -t jffs2 $partblockmtd $archive_mnt_dir || { msg "Failed to mount mount $partname" ; return 1 ; }
 	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "tar -cvf $outfile -C $archive_mnt_dir ."
 		msg_dry_run "md5sum $outfile > $outfile.md5sum"
 	else
-		tar -cvf $outfile -C $archive_mnt_dir .
-		md5sum $outfile > $outfile.md5sum
+		tar -cvf $outfile -C $archive_mnt_dir . || { msg " + Failed to generate partiton archive for $partname" ; return 1 ; }
+		md5sum $outfile > $outfile.md5sum || { msg " + Failed to generate md5sum for $outfile" ; return 1 ; }
 	fi
 
 	sync

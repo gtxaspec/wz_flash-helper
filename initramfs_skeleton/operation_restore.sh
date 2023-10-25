@@ -11,7 +11,7 @@
 
 function restore_operation() {
 
-	[[ "$switch_fw" == "yes" ]] && { msg "Restore and Switch_fw operation are conflicted, please enable only one option at a time" ; return 1 ; }
+	[[ "$switch_fw" == "yes" ]] && { msg "Restore and Switch_fw operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	
 	[[ ! "$current_fw" == "$restore_fw_type" ]] && { msg "restore_fw_type mismatches with current firmware type, aborting" ; return 1 ; }
 	

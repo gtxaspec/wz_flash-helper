@@ -76,7 +76,7 @@ function restore_file_to_partition() {
 	if [[ "$dry_run" == "yes" ]]; then
 		md5sum -c $infile_name.md5sum && { msg "succeeded" ; msg_dry_run "flash_eraseall $partmtd && flashcp $infile_name $partmtd" ; } || { msg "failed" ; return 1 ; }
 	else
-		md5sum -c $infile_name.md5sum && { msg "succeeded" ; flash_eraseall $partmtd && flashcp $infile_name $partmtd && msg " + Restore succeeded" ; } || { msg "failed" ; return 1 ; }
+		md5sum -c $infile_name.md5sum && { msg "succeeded" ; msg_nonewline " + Writing... " ; flash_eraseall $partmtd && flashcp $infile_name $partmtd && msg "succeeded" ; } || { msg "failed" ; return 1 ; }
 	fi
 }
 

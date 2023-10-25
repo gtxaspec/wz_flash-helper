@@ -11,12 +11,11 @@ function restore_openipc_parts() {
 		local partmtd=$(get_openipc_partmtd $partname)
 		local restore_opt_value=$(get_openipc_restore_opt_value $partname)
 		
-		msg "- Restore: $partname from file $infile"
 		if [[ "$restore_opt_value" == "yes" ]]; then
-			msg " + openipc_restore_$partname value is Yes"
+			msg "openipc_restore_$partname value is Yes"
 			restore_file_to_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
 		else
-			msg " + openipc_restore_$partname value is No"
+			msg "openipc_restore_$partname value is No"
 		fi
 	done
 }

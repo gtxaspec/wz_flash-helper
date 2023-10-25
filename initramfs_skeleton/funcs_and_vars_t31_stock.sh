@@ -3,14 +3,14 @@
 
 
 
+stock_backup_dir_path="/sdcard/Wyze_factory_backup"
 t31_stock_backup_partname_list="boot kernel rootfs app kback aback cfg para"
-t31_stock_backup_dir_path="/sdcard/Wyze_factory_backup"
 t31_stock_backup_full_flash_filename="t31_stock_all.bin"
 
 t31_stock_backup_partname_with_contents_list="cfg"
 
+stock_restore_dir_path="/sdcard/wz_flash-helper/restore/stock"
 t31_stock_restore_partname_list="kernel rootfs app kback aback cfg para"
-t31_stock_restore_dir_path="/sdcard/wz_flash-helper/restore/"
 t31_stock_restore_stage_dir="/t31_stock_restore"
 
 

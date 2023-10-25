@@ -3,14 +3,15 @@
 
 
 
+stock_backup_dir_path="/sdcard/Wyze_factory_backup"
 t20_stock_backup_partname_list="boot kernel root driver appfs backupk backupd backupa config para"
-t20_stock_backup_dir_path="/sdcard/Wyze_factory_backup"
 t20_stock_backup_full_flash_filename="t20_stock_all.bin"
 
 t20_stock_backup_partname_with_contents_list="config para"
 
+stock_restore_dir_path="/sdcard/wz_flash-helper/restore/stock/"
 t20_stock_restore_partname_list="kernel root driver appfs backupk backupd backupa config para"
-t20_stock_restore_dir_path="/sdcard/wz_flash-helper/restore/"
+
 
 
 

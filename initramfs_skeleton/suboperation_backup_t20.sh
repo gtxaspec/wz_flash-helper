@@ -16,22 +16,15 @@ function backup_t20_stock_parts() {
 
 function backup_t20_stock_config() {
 # Description: Create .tar.gz archive for config partition files on T20 flash chip
-	local partname="config"
-	local partmtdblock="$config_t20_stock_partmtdblock"
-	local outfile="$stock_backup_dir_path/t20_stock_$partname.tar.gz"
-	
-	backup_stock_config_part_files_to_archive $partname $partmtdblock $outfile || return 1
+	for partname_config in $t20_stock_backup_partname_with_contents_list; do
+		local partname="$partname_config"
+		local partmtdblock="$(get_t20_stock_partmtdblock $partname_config)"
+		local outfile="$stock_backup_dir_path/t20_stock_$partname.tar.gz"
+		
+		archive_partition_files $partname $partmtdblock $outfile
+	done
 }
 
-function backup_t20_stock_para() {
-# Description: Create .tar.gz archive for para partition files on T20 flash chip
-	local partname="para"
-	local partmtdblock="$para_t20_stock_partmtdblock"
-	local outfile="$stock_backup_dir_path/t20_stock_$partname.tar.gz"
-	
-	backup_stock_config_part_files_to_archive $partname $partmtdblock $outfile || return 1
-}
 
 backup_t20_stock_parts || return 1
 backup_t20_stock_config || return 1
-backup_t20_stock_para || return 1

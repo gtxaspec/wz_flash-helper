@@ -39,11 +39,13 @@ function switch_fw_operation() {
 		{ msg "switch_fw_to value is same as current firmware type, aborting switch firmware" ; return 1 ; }
 	fi
 	
-	/blink_led_red_and_blue.sh &
+	/bg_blink_led_red_and_blue.sh &
 	local red_and_blue_leds_pid="$!"
+	msg
+	msg "---------- Begin of switch fw ----------"
 	if [[ "$current_fw" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
 		msg "Switching from stock firmware to OpenIPC"
-		source /init_operation_switch_fw_openipc_to_t20.sh || return 1
+		source /init_operation_switch_fw_to_openipc.sh || return 1
 	
 	elif [[ "$current_fw" == "openipc" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
 		msg "Switching from OpenIPC firmware to T20 stock"
@@ -51,14 +53,15 @@ function switch_fw_operation() {
 	
 	elif [[ "$current_fw" == "openipc" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
 		msg "Switching from OpenIPC firmware to T31 stock"
-		source /init_operation_switch_fw_to_openipc.sh || return 1
+		source /init_operation_switch_fw_openipc_to_t31.sh || return 1
 	
 	fi
 	kill $red_and_blue_leds_pid
+	msg
 }
 
 
-switch_fw_operation || return 1
+switch_fw_operation && msg "Switch_fw operation succeeded" || return 1
 
 
 if [[ "$current_fw" ]] && [[ "$switch_fw_to" == "openipc" ]]; then

@@ -27,25 +27,23 @@ function rollback_stock_boot_part() {
 		msg "Rollback succeeded :) You are safe now!"
 	else
 		msg "Rollback failed :( Trying rolling back one more time"
-		flash_backup_stock_boot_part || msg { "Rollback failed again, sorry" ; return 1 ; } && msg "This time rollback succeeded :)"
+		flash_backup_stock_boot_part && msg "This time rollback succeeded :)" || { msg "Rollback failed again, sorry" ; return 1 ; }
 	fi
 }
 
 function switch_fw_openipc_failsafe() {
 	msg "Checking if your OpenIPC boot partitiion is corrupted"
-	source /init_operation_switch_validate_openipc_boot.sh
-	if validate_openipc_boot; then
+	if source /suboperation_switch_fw_validate_openipc_boot.sh ; then
 		msg "OpenIPC boot partition has been written correctly"
 	else
 		rollback_stock_boot_part || { msg "Your flash chip seems to be corrupted :'(" ; return 1 ; }
+	fi
 }
                                                                                             
 function switch_fw_operation() {
 	[[ "$restore_partitions" == "yes" ]] && { msg "Restore and Switch_fw operations are conflicted, please enable only one option at a time" ; return 1 ; }
 
-	if [[ "$current_fw" == "$switch_fw_to" ]]; then
-		{ msg "switch_fw_to value is same as current firmware type, aborting switch firmware" ; return 1 ; }
-	fi
+	[[ "$current_fw" == "$switch_fw_to" ]] && { msg "switch_fw_to value is same as current firmware type, aborting switch firmware" ; return 1 ; }
 	
 	/bg_blink_led_red_and_blue.sh &
 	local red_and_blue_leds_pid="$!"
@@ -53,28 +51,28 @@ function switch_fw_operation() {
 	msg "---------- Begin of switch fw ----------"
 	if [[ "$current_fw" == "stock" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
 		msg "Switching from stock firmware to OpenIPC"
-		source /init_operation_switch_fw_to_openipc.sh || return 1
+		source /suboperation_switch_fw_to_openipc.sh || return 1
 	
 	elif [[ "$current_fw" == "openipc" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
 		msg "Switching from OpenIPC firmware to T20 stock"
-		source /init_operation_switch_fw_openipc_to_t20.sh || return 1
+		source /suboperation_switch_fw_openipc_to_t20.sh || return 1
 	
 	elif [[ "$current_fw" == "openipc" ]] && [[ "$switch_fw_to" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
 		msg "Switching from OpenIPC firmware to T31 stock"
-		source /init_operation_switch_fw_openipc_to_t31.sh || return 1
+		source /suboperation_switch_fw_openipc_to_t31.sh || return 1
 	
 	fi
 	
 	if [[ "$current_fw" ]] && [[ "$switch_fw_to" == "openipc" ]]; then
 		if [[ "$dry_run" == "yes" ]]; then
-			"No need to check for OpenIPC boot partition curruption on dry run mode"
+			msg "No need to check for OpenIPC boot partition curruption on dry run mode"
 		else
 			switch_fw_openipc_failsafe
+		fi
 	fi
 	kill $red_and_blue_leds_pid
 	msg
 }
 
-
-switch_fw_operation && msg "Switch_fw operation succeeded" || return 1
+switch_fw_operation || return 1
 

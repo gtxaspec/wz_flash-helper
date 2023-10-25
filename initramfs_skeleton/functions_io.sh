@@ -76,12 +76,12 @@ function restore_file_to_partition() {
 	cd $restore_stage_dir
 	msg "- Restore: file $infile_name to $partname at $partmtd ---"
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_nonewline " + Checking md5 of $infile_name... "
-		md5sum -c $infile_name.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; }
+		msg_nonewline " + Verifying $infile_name... "
+		md5sum -c $infile_name.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
 		msg_dry_run "flash_eraseall $partmtd && flashcp $infile_name $partmtd"
 	else
-		msg_nonewline " + Checking md5 of $infile_name... "
-		md5sum -c $infile_name.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; }
+		msg_nonewline " + Verifying $infile_name... "
+		md5sum -c $infile_name.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
 		msg_nonewline " + Writing... "
 		flash_eraseall $partmtd && flashcp $infile_name $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; }
 	fi
@@ -93,7 +93,7 @@ function erase_partition() {
 	local partname="$1"
 	local partmtd="$2"
 
-	msg_nonewline "- Erase: $partname at $partmtd ---"
+	msg "- Erase: $partname at $partmtd ---"
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "flash_eraseall $partmtd"
 	else

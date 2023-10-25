@@ -48,4 +48,4 @@ function restore_operation() {
 }
 
 
-restore_operation && msg "Restore operation succeeded" || return 1
+restore_operation || return 1

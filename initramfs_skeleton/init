@@ -187,11 +187,19 @@ function emulate_chip_family_and_fw () {
 # Description: Emulate chip family and firmware for testing, only!
 	dry_run="yes" # Override config file option so nothing is actually done
 
-	chip_family=""
-	current_fw=""
+	chip_family="t20"
+	current_fw="openipc"
+	msg
+	msg "### Emulation mode: chip_family: $chip_family, current_fw: $current_fw"	
+	msg "### Dry run mode is forcibly Enabled. No modification will be made."
+	msg
 
-	msg "Emulation mode: chip_family: $chip_family, current_fw: $current_fw"	
-	msg "Dry run mode is forcibly Enabled. No modification will be made."
+	case "$chip_family" in # Source device-dependent script in case it has not been sourced
+		"t20")
+			source /funcs_and_vars_t20_stock.sh ;;
+		"t31")
+			source /funcs_and_vars_t31_stock.sh ;;
+	esac
 }
 
 function exit_init() {
@@ -226,14 +234,15 @@ function main() {
 	rename_prog_sdcard_boot_img
 	
 	import_config_file
-	# emulate_chip_family_and_fw
+
+	emulate_chip_family_and_fw
 
 	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no"
 
 	#---------- Backup operation ----------
 	if [[ "$backup_partitions" == "yes" ]]; then
 		msg "$backup_partitions_yes"
-		source /operation_backup.sh || { msg "$backup_partitions_fail" ; exit_init ; }
+		source /operation_backup.sh && msg "$backup_partitions_succeed" || { msg "$backup_partitions_fail" ; return 1 ; }
 	else
 		msg "$backup_partitions_no"
 	fi
@@ -241,7 +250,7 @@ function main() {
 	#---------- Restore operation ----------
 	if [[ "$restore_partitions" == "yes" ]]; then
 		msg "$restore_partitions_yes"
-		source /operation_restore.sh || { msg "$restore_partitions_fail" ; exit_init ; }
+		source /operation_restore.sh && msg "$restore_partitions_succeed" || { msg "$restore_partitions_fail" ; return 1 ; }
 	else
 		msg "$restore_partitions_no"
 	fi
@@ -249,7 +258,7 @@ function main() {
 	#---------- Switch fw operation ----------
 	if [[ "$switch_fw" == "yes" ]]; then
 		msg "$switch_fw_yes"
-		source /operation_switch_fw.sh || { msg "$switch_fw_fail" ; exit_init ; }
+		source /operation_switch_fw.sh && msg "$switch_fw_succeed" || { msg "$switch_fw_fail" ; return 1 ; }
 	else
 		msg "$switch_fw_no"
 	fi
@@ -257,7 +266,7 @@ function main() {
 	#---------- Custom script ----------
 	if [[ "$enable_custom_script" == "yes" ]]; then
 		msg "$enable_custom_script_yes"
-		source /action_execute_custom_script.sh || { msg "$enable_custom_script_fail" ; exit_init ; }
+		source /action_execute_custom_script.sh && msg "$enable_custom_script_succeed" || { msg "$enable_custom_script_fail" ; return 1 ; }
 	else
 		msg "$enable_custom_script_no"
 	fi
@@ -265,13 +274,13 @@ function main() {
 	#---------- Continue boot image ----------
 	if [[ "$enable_continue_boot_img" == "yes" ]]; then
 		msg "$enable_continue_boot_img_yes"
-		source /action_move_continue_boot_img_file.sh || { msg "$enable_continue_boot_img_fail" ; exit_init ; }
+		source /action_move_continue_boot_img_file.sh && msg "$enable_continue_boot_img_succeed" || { msg "$enable_continue_boot_img_fail" ; return 1 ; }
 	else
 		msg "$enable_continue_boot_img_no"
 	fi
-
-	exit_init
 }
 
 
 main
+exit_init
+

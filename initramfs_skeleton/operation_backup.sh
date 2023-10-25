@@ -63,4 +63,4 @@ function backup_operation() {
 	msg
 }
 
-backup_operation && msg "Backup operation succeeded" || return 1
+backup_operation || return 1

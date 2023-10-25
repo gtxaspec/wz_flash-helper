@@ -3,21 +3,21 @@
 
 
 
-stock_backup_partname_list="boot kernel rootfs app kback aback cfg para"
-stock_backup_dir_path="/sdcard/Wyze_factory_backup"
-stock_backup_full_flash_filename="t31_stock_all.bin"
+t31_stock_backup_partname_list="boot kernel rootfs app kback aback cfg para"
+t31_stock_backup_dir_path="/sdcard/Wyze_factory_backup"
+t31_stock_backup_full_flash_filename="t31_stock_all.bin"
 
-stock_backup_partname_with_contents_list="cfg"
+t31_stock_backup_partname_with_contents_list="cfg"
 
-stock_restore_partname_list="kernel rootfs app kback aback cfg para"
-stock_restore_dir_path="/sdcard/wz_flash-helper/restore/"
-stock_restore_stage_dir="/t31_stock_restore"
+t31_stock_restore_partname_list="kernel rootfs app kback aback cfg para"
+t31_stock_restore_dir_path="/sdcard/wz_flash-helper/restore/"
+t31_stock_restore_stage_dir="/t31_stock_restore"
 
 
 
-function get_stock_partmtd() {
+function get_t31_stock_partmtd() {
 # Description: Return mtd device of a given partition name
-# Syntax: get_stock_partmtd <partname>
+# Syntax: get_t31_stock_partmtd <partname>
 	case "$1" in
 		"boot")
 			echo -n "/dev/mtd0" ;;
@@ -38,18 +38,18 @@ function get_stock_partmtd() {
 	esac
 }
 
-function get_stock_partmtdblock() {
+function get_t31_stock_partmtdblock() {
 # Description: Return mtdblock device of a given partition name, only used if the partition needs to be mounted
-# Syntax: get_stock_partmtdblock <partname>
+# Syntax: get_t31_stock_partmtdblock <partname>
 	case "$1" in
 		"cfg")
 			echo -n "/dev/mtdblock8" ;;
 	esac
 }
 
-function get_stock_partimg() {
+function get_t31_stock_partimg() {
 # Description: Return filename for the partition used for backup/restore of a given partition name
-# Syntax: get_stock_partimg <partname>
+# Syntax: get_t31_stock_partimg <partname>
 	case "$1" in
 		"boot")
 			echo -n "t31_stock_boot.bin" ;;
@@ -70,9 +70,9 @@ function get_stock_partimg() {
 	esac
 }
 
-function get_stock_restore_opt_value() {
+function get_t31_stock_restore_opt_value() {
 # Description: Return user option to decide if a given partition is restored or not
-# Syntax: get_stock_restore_opt_value <partname>
+# Syntax: get_t31_stock_restore_opt_value <partname>
 	case "$1" in
 		"kernel")
 			echo -n "$t31_restore_kernel" ;;

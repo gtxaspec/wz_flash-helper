@@ -9,29 +9,8 @@
 
 
 
-case "$current_fw" in
-	"t20")
-		source /init_operation_backup_t20.sh ;;
-	"t30")
-		source /init_operation_backup_t31.sh ;;
-	"openipc")
-		source /init_operation_backup_openipc.sh ;;
-esac
-
-
 function backup_full_flash() {
 # Description: Backup the whole flash to a file
-	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
-		local full_flash_backup_file=$stock_backup_dir_path/$t20_stock_full_flash_filename
-	
-	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
-		local full_flash_backup_file=$stock_backup_dir_path/$t31_stock_full_flash_filename
-	
-	elif [[ "$current_fw_type" == "openipc" ]]; then
-		local full_flash_backup_file=$openipc_backup_dir_path/$openipc_full_flash_filename
-	
-	fi
-	
 	local partname="entire_flash"
 	local partmtd="$concat_partmtd"
 	local outfile="$full_flash_backup_file"
@@ -42,31 +21,43 @@ function backup_full_flash() {
 
 
 function backup_operation() {
+# Description: Create partition images of all partitions and the whole flash. If current firmware is stock, create extra archives from config partitions
+
+	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
+		local full_flash_backup_file=$stock_backup_dir_path/$t20_stock_full_flash_filename
+	
+	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
+		local full_flash_backup_file=$stock_backup_dir_path/$t31_stock_full_flash_filename
+	
+	elif [[ "$current_fw_type" == "openipc" ]]; then
+		local full_flash_backup_file=$openipc_backup_dir_path/$openipc_full_flash_filename
+	
+	fi
+
 	/blinkled_led_blue.sh &
 	local blue_led_pid="$!"
 	msg
 	msg "---------- Begin of backup operation ----------"
 	if [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "t20" ]]; then
 		msg "Backing up T20 stock partitions"
-		mkdir -p $stock_backup_dir_path
-		backup_full_flash || return 1
-		backup_t20_stock_parts || return 1
-		backup_t20_stock_config || return 1
-		backup_t20_stock_para || return 1
+		
+		mkdir -p $t20_stock_backup_dir_path
+		backup_full_flash "$full_flash_backup_file" || return 1
+		source /suboperation_backup_t20.sh || return 1
 		
 	elif [[ "$current_fw_type" == "stock" ]] && [[ "$chip_family" = "t31" ]]; then
-		mkdir -p $stock_backup_dir_path
 		msg "Backing up T31 stock partitions"
-
-		backup_full_flash || return 1
-		backup_t31_stock_parts || return 1
-		backup_t31_stock_config || return 1
+		
+		mkdir -p $t31_stock_backup_dir_path
+		backup_full_flash "$full_flash_backup_file" || return 1
+		source /suboperation_backup_t20.sh || return 1
 		
 	elif [[ "$current_fw_type" == "openipc" ]]; then
 		msg "Backing up OpenIPC partitions"
+		
 		mkdir -p $openipc_backup_dir_path
-		backup_full_flash || return 1
-		backup_openipc_parts || return 1
+		backup_full_flash "$full_flash_backup_file" || return 1
+		source /suboperation_backup_t20.sh || return 1
 		
 	fi
 	kill $red_led_pid

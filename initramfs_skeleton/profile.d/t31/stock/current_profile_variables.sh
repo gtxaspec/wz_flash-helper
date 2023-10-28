@@ -22,4 +22,4 @@ current_profile_restore_path="/sdcard/wz_flash-helper/restore/stock"
 current_profile_restore_partname_list="kernel rootfs app kback aback cfg para"
 
 ## Name of SD card boot image
-current_profile_sdcard_boot_img_name="factory_t31_ZMC6tiIDQN"
+current_profile_sdcard_bootimg_name="factory_t31_ZMC6tiIDQN"

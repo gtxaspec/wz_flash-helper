@@ -139,6 +139,10 @@ function import_profiles() {
 	fi
 }
 
+function backup_bootpart() {
+	backup_partition "boot" /dev/mtd0 /bootpart_backup.img
+}
+
 function display_info() {
 	msg
 	msg "Program version: $prog_version"
@@ -181,12 +185,13 @@ function main() {
 	import_init_msg
 	import_functions_io
 	import_leds_gpio
-		
+	
 	detect_current_profile || return 1
 	emulate
 	
 	import_profiles
 	
+	backup_bootpart
 	display_info
 	
 	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no"
@@ -226,7 +231,7 @@ function main() {
 	#---------- Continue boot image ----------
 	if [[ "$enable_continue_boot_img" == "yes" ]]; then
 		msg "$enable_continue_boot_img_yes"
-		source /action_copy_continue_boot_img_file.sh && msg "$enable_continue_boot_img_succeed" || { msg "$enable_continue_boot_img_fail" ; return 1 ; }
+		source /action_copy_new_sdcard_bootimg.sh && msg "$enable_continue_boot_img_succeed" || { msg "$enable_continue_boot_img_fail" ; return 1 ; }
 	else
 		msg "$enable_continue_boot_img_no"
 	fi

@@ -43,6 +43,7 @@ function archive_parts() {
 
 function backup_operation() {
 # Description: Create partition images of all partitions, the entire flash and create extra archives from config partitions
+	source /sdcard/$prog_dir/restore/$current_profile.conf
 	backup_entire_flash || return 1
 	backup_openipc_parts || return 1
 	backup_openipc_config || return 1

@@ -64,7 +64,7 @@ function backup_partition() {
 }
 
 function archive_partition() {
-# Description: Backup all files from a JFFS2 partition to .tar.gz file
+# Description: Backup all files from a partition to .tar.gz file
 # Syntax: archive_partition <partname> <partblockmtd> <fstype> <outfile>
 	local partname="$1"
 	local partblockmtd="$2"

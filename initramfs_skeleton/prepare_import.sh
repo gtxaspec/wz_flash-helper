@@ -20,7 +20,7 @@ import_next_profile() {
 
 init_import() {
 	concat_bootpart="/dev/mtd0"
-	concat_partmtd="/dev/mtd21"
+	concat_partmtd="/dev/mtd1"
 	
 	import_current_profile
 	import_next_profile

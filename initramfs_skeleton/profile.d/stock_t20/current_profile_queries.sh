@@ -10,23 +10,23 @@ function get_current_profile_partnum() {
 		"boot")
 			echo -n "0" ;;
 		"kernel")
-			echo -n "1" ;;
-		"root")
 			echo -n "2" ;;
-		"driver")
+		"root")
 			echo -n "3" ;;
-		"appfs")
+		"driver")
 			echo -n "4" ;;
-		"backupk")
+		"appfs")
 			echo -n "5" ;;
-		"backupd")
+		"backupk")
 			echo -n "6" ;;
-		"backupa")
+		"backupd")
 			echo -n "7" ;;
-		"config")
+		"backupa")
 			echo -n "8" ;;
-		"para")
+		"config")
 			echo -n "9" ;;
+		"para")
+			echo -n "10" ;;
 	esac
 }
 

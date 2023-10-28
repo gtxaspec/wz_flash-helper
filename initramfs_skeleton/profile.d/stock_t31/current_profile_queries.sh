@@ -10,19 +10,19 @@ function get_current_profile_partnum() {
 		"boot")
 			echo -n "0" ;;
 		"kernel")
-			echo -n "10" ;;
-		"rootfs")
 			echo -n "11" ;;
-		"app")
+		"rootfs")
 			echo -n "12" ;;
-		"kback")
+		"app")
 			echo -n "13" ;;
-		"aback")
+		"kback")
 			echo -n "14" ;;
-		"cfg")
+		"aback")
 			echo -n "15" ;;
-		"para")
+		"cfg")
 			echo -n "16" ;;
+		"para")
+			echo -n "17" ;;
 	esac
 }
 

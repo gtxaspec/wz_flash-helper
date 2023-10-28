@@ -10,13 +10,13 @@ function get_next_profile_partnum() {
 		"boot")
 			echo -n "0" ;;
 		"env")
-			echo -n "17" ;;
-		"kernel")
 			echo -n "18" ;;
-		"rootfs")
+		"kernel")
 			echo -n "19" ;;
-		"rootfs_data")
+		"rootfs")
 			echo -n "20" ;;
+		"rootfs_data")
+			echo -n "21" ;;
 	esac
 }
 

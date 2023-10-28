@@ -9,12 +9,20 @@ function get_next_profile_partnum() {
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
-		"[partnameA]")
-			echo -n "[1]" ;;
-		"[partnameB]")
-			echo -n "[2]" ;;
-		"[partnameC]")
-			echo -n "[3]" ;;
+		"kernel")
+			echo -n "11" ;;
+		"rootfs")
+			echo -n "12" ;;
+		"app")
+			echo -n "13" ;;
+		"kback")
+			echo -n "14" ;;
+		"aback")
+			echo -n "15" ;;
+		"cfg")
+			echo -n "16" ;;
+		"para")
+			echo -n "17" ;;
 	esac
 }
 

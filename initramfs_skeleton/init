@@ -120,11 +120,11 @@ function exit_init() {
 
 function main() {
 	source /prepare_detect.sh || return 1
-	source /prepare_get_prog_info.sh
+	source /prepare_import_prog_info.sh
 	source /prepare_init_msg.sh
 	source /functions_io.sh
 	
-	source /prepare_initialize_gpio.sh
+	source /initialize_gpio.d/$chip_family.sh
 	
 	welcome_msg
 	

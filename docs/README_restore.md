@@ -1,6 +1,7 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | **Restore** | [Switch firmware](README_switch_fw.md) | [Other options](README_other_options.md)
 
-## Restore partitions guide
+## Restore guide
+
 
 1. [Setup](README_setup.md)
 2. Place your partition restore images at `(SD card)/wz_flash-helper/restore/`

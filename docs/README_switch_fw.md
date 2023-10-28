@@ -1,6 +1,6 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | **Switch firmware** | [Other options](README_other_options.md)
 
-## How to switch between stock and OpenIPC firmware
+## Guide to switch between stock and OpenIPC firmware
 
 
 To switch from stock to OpenIPC firmware, edit `wz_flash-helper.conf` with:
@@ -16,6 +16,7 @@ restore_partitions="no"
 switch_fw="yes"
 switch_fw_to="stock"
 ```
+
 
 **WARNING:** DO NOT DISCONNECT POWER when switch firmware operation is going on. This would brick your camera.
 

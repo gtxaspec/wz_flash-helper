@@ -8,6 +8,7 @@
 Automatic partitions backup/restore tool for T20/T31 cameras, works with both stock and OpenIPC firmware.
 You can also switch between stock and OpenIPC firmware without a scratch.
 
+
 ## Features
 - No serial connection or SSH is needed! only SD card.
 - Backup partitions
@@ -30,6 +31,7 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 - It is highly recommended to enable `dry_run` to check if everything works before doing real operations.
 - Backup is done first, then Restore, then Switch firmware and followed by Custom script.
 - If one task fails, the flash tool init would exit immediately without doing the remaining operations.
+
 
 ## Warning
 ```

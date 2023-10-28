@@ -1,7 +1,7 @@
 #!/bin/sh
-
-
-
+#
+# Description: These messages are used by init script, writing them on a separate file makes it look clean.
+#
 
 dry_run_yes="Dry run mode is Active. Your partitions will not be modified"
 dry_run_no="WARNING!!! Dry run mode is Inactive. Your partitions might be modified, depends on your configuration. Stay safe!"
@@ -16,10 +16,10 @@ restore_partitions_no="restore_partitions value is No"
 restore_partitions_fail="Restore operation failed, exiting..."
 backup_partitions_succeed="Restore operation succeeded"
 
-switch_fw_yes="switch_fw value is Yes"
-switch_fw_no="switch_fw value is No"
-switch_fw_fail="Switch firmware operation failed, exiting..."
-switch_fw_succeed="Switch firmware operation succeeded"
+switch_profile_yes="switch_profile value is Yes"
+switch_profile_no="switch_profile value is No"
+switch_profile_fail="Switch firmware operation failed, exiting..."
+switch_profile_succeed="Switch firmware operation succeeded"
 
 enable_custom_script_yes="enable_custom_script value is Yes"
 enable_custom_script_no="enable_custom_script value is No"

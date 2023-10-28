@@ -9,58 +9,43 @@
 
 
 
-function backup_full_flash() {
-# Description: Backup the entire flash to a file
+function backup_entire_flash() {
+# Description: Dump the entire flash to a file
 	local partname="entire_flash"
 	local partmtd="$concat_partmtd"
-	local outfile="$full_flash_backup_file"
+	local outfile="$entire_flash_backup_file"
 	
-	backup_partition_to_file $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; return 1 ; }
+	backup_partition $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; return 1 ; }
 }
 
+function backup_parts() {
+# Description: Create images for all partitions on current firmware profile
+	for partname in $current_profile_backup_partname_list; do
+		local partmtd=$(get_current_profile_partmtd $partname)
+		local outfile_name=$(get_current_profile_partimg $partname)
+		local outfile="$current_profile_backup_dir_path/$outfile_name"
+		
+		backup_partition $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; break ; return 1 ; }
+	done
+}
 
+function archive_parts() {
+# Description: Create .tar.gz archive for partition files on current firmware profile
+	for partname_archive in $current_profile_archive_partname_list; do
+		local partname="$partname_archive"
+		local partmtdblock="$(get_curent_profile_partmtdblock $partname_config)"
+		local partfstype="$(get_current_profile_partfstype $partname_config)"
+		local outfile="$current_profile_backup_path/${current_profile}_${partname}.tar.gz"
+		
+		archive_partition $partname $partmtdblock $partfstype $outfile
+	done
+}
 
 function backup_operation() {
-# Description: Create partition images of all partitions and the entire flash. If current firmware is stock, create extra archives from config partitions
-	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
-		local full_flash_backup_file="$stock_backup_dir_path/$t20_stock_backup_full_flash_filename"
-	
-	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
-		local full_flash_backup_file="$stock_backup_dir_path/$t31_stock_backup_full_flash_filename"
-	
-	elif [[ "$current_fw" == "openipc" ]]; then
-		local full_flash_backup_file="$openipc_backup_dir_path/$openipc_backup_full_flash_filename"
-	
-	fi
-
-	/bg_blink_led_blue.sh &
-	local blue_led_pid="$!"
-	msg
-	msg "---------- Begin of backup operation ----------"
-	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "t20" ]]; then
-		msg "Backing up T20 stock partitions"
-		
-		mkdir -p $stock_backup_dir_path
-		backup_full_flash "$full_flash_backup_file" || return 1
-		source /suboperation_backup_t20.sh || return 1
-		
-	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" = "t31" ]]; then
-		msg "Backing up T31 stock partitions"
-		
-		mkdir -p $stock_backup_dir_path
-		backup_full_flash "$full_flash_backup_file" || return 1
-		source /suboperation_backup_t31.sh || return 1
-		
-	elif [[ "$current_fw" == "openipc" ]]; then
-		msg "Backing up OpenIPC partitions"
-		
-		mkdir -p $openipc_backup_dir_path
-		backup_full_flash "$full_flash_backup_file" || return 1
-		source /suboperation_backup_openipc.sh || return 1
-		
-	fi
-	kill $blue_led_pid
-	msg
+# Description: Create partition images of all partitions, the entire flash and create extra archives from config partitions
+	backup_entire_flash || return 1
+	backup_openipc_parts || return 1
+	backup_openipc_config || return 1
 }
 
 backup_operation || return 1

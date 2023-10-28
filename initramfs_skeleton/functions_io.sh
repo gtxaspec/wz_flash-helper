@@ -8,42 +8,75 @@
 #
 
 
+function backup_partition_nor() {
+# Description: Backup partition contents to <outfile> on NOR flash
+# Syntax: restore_partition_nor <partmtd> <outfile>
+	local partmtd="$1"
+	local outfile="$2"
+	
+	if [[ "$dry_run" == "yes" ]]; then
+		msg_dry_run "dd if=$partmtd of=$outfile"
+	else
+		msg_nonewline " + Backing up... "
+		dd if=$partmtd of=$outfile && msg "succeeded" || { msg "failed" ; return 1 ; } 
+	fi
+}
 
-function backup_partition_to_file() {
+function backup_partition_nand() {
+# Description: Backup partition contents to <outfile> on NAND flash
+# Syntax: restore_partition_nand <partmtd> <outfile>
+	local partmtd="$1"
+	local outfile="$2"
+	
+	if [[ "$dry_run" == "yes" ]]; then
+		msg_dry_run "nanddump -f $outfile $partmtd"
+	else
+		msg_nonewline " + Backing up... "
+		nanddump -f $outfile $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; } 
+	fi
+}
+
+function backup_partition() {
 # Description: Backup partition <partmtd> to <outfile>
-# Syntax: backup_partition_to_file <partname> <partmtd> <outfile>
+# Syntax: backup_partition <partname> <partmtd> <outfile>
 	local partname="$1"
 	local partmtd="$2"
 	local outfile="$3"
 	
-	msg "- Backup: $partname at $partmtd to file $outfile ---"
+	msg "- Read: $partname at $partmtd to file $outfile ---"
 	[ -f $outfile ] && { msg " + $outfile already exists" ; return 1 ; }
 	
+	case "$flash_type" in
+		"nor")
+			backup_partition_nor || return 1 ;;
+		"nand")
+			backup_partition_nand || return 1;;
+	esac
+	
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "dd if=$partmtd of=$outfile"
 		msg_dry_run "md5sum $outfile > $outfile.md5sum"
 		msg_dry_run "local outfile_dir=$(dirname $outfile) && sed -i \"s|\$outfile_dir/||g\" $outfile.md5sum"
 	else
-		msg_nonewline " + Backing up... "
-		dd if=$partmtd of=$outfile && msg "succeeded" || { msg "failed" ; return 1 ; } 
 		msg_nonewline " + Generating md5sum file... "
 		md5sum $outfile > $outfile.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
 		local outfile_dir=$(dirname $outfile) && sed -i "s|$outfile_dir/||g" $outfile.md5sum # Remove path of partition images files from their .md5sum files
 	fi
 }
 
-function archive_partition_files() {
+function archive_partition() {
 # Description: Backup all files from a JFFS2 partition to .tar.gz file
-# Syntax: archive_partition_files <partname> <partblockmtd> <outfile>
+# Syntax: archive_partition <partname> <partblockmtd> <fstype> <outfile>
 	local partname="$1"
 	local partblockmtd="$2"
-	local outfile="$3"
+	local fstype="$3"
+	local outfile="$4"
 	
 	local archive_mnt_dir="/archive_mnt_$partname"
 	mkdir -p $archive_mnt_dir
 	
 	msg "- Archive: $partname at $partblockmtd files to file $outfile ---"
-	mount -t jffs2 $partblockmtd $archive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
+	
+	mount -t $fstype $partblockmtd $archive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
 	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "tar -cvf $outfile -C $archive_mnt_dir ."
@@ -54,14 +87,43 @@ function archive_partition_files() {
 		msg_nonewline " + Generating md5sum file... "
 		md5sum $outfile > $outfile.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
 	fi
-
+	
 	sync
 	umount $archive_mnt_dir && rmdir $archive_mnt_dir
 }
 
-function restore_file_to_partition() {
+function restore_partition_nor() {
+# Description: Restore partition contents from <infile> on NOR flash
+# Syntax: restore_partition_nor <infile> <partmtd>
+	local infile="$1"
+	local partmtd="$2"
+
+	
+	if [[ "$dry_run" == "yes" ]]; then
+		msg_dry_run "dd if=$partmtd of=$outfile"
+	else
+		msg_nonewline " + Backing up... "
+		dd if=$partmtd of=$outfile && msg "succeeded" || { msg "failed" ; return 1 ; } 
+	fi
+}
+
+function restore_partition_nand() {
+# Description: Restore partition contents from <infile> on NAND flash
+# Syntax: restore_partition_nand <infile> <partmtd>
+	local infile="$1"
+	local partmtd="$2"
+	
+	if [[ "$dry_run" == "yes" ]]; then
+		msg_dry_run "nandwrite -p $partmtd $outfile"
+	else
+		msg_nonewline " + Backing up... "
+		nandwrite -p $partmtd $outfile || { msg "failed" ; return 1 ; } 
+	fi
+}
+
+function restore_partition() {
 # Description: Restore partition from <infile> to <partmtd>, <infile> and its md5sum file will be copied to stage directory before proceed restoring
-# Syntax: restore_file_to_partition <partname> <restore_stage_dir> <infile> <partname>
+# Syntax: restore_partition <partname> <restore_stage_dir> <infile> <partname>
 	local partname="$1"
 	local infile="$2"
 	local partmtd="$3"
@@ -69,27 +131,32 @@ function restore_file_to_partition() {
 	local infile_name=$(basename $infile)
 	local restore_stage_dir="/restore_stage_dir"
 	
+
+	msg "- Write: file $infile_name to $partname at $partmtd ---"
 	mkdir -p $restore_stage_dir
 	cp $infile $restore_stage_dir/$infile_name || { msg " + $infile_name is missing" ; return 1 ; }
 	cp $infile.md5sum $restore_stage_dir/$infile_name.md5sum || { msg " + $infile_name.md5sum is missing" ; return 1 ; }
 	
 	cd $restore_stage_dir
-	msg "- Restore: file $infile_name to $partname at $partmtd ---"
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_nonewline " + Verifying $infile_name... "
 		md5sum -c $infile_name.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
-		msg_dry_run "flash_eraseall $partmtd && flashcp $infile_name $partmtd"
 	else
 		msg_nonewline " + Verifying $infile_name... "
 		md5sum -c $infile_name.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
-		msg_nonewline " + Writing... "
-		flash_eraseall $partmtd && flashcp $infile_name $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; }
 	fi
+
+	case "$flash_type" in
+		"nor")
+			restore_partition_nor || return 1 ;;
+		"nand")
+			restore_partition_nand || return 1;;
+	esac
 }
 
 function erase_partition() {
 # Description: Erase a partition using flash_eraseall
-# Syntax: <partname> <partmtd>
+# Syntax: erase_partition <partname> <partmtd>
 	local partname="$1"
 	local partmtd="$2"
 
@@ -97,8 +164,17 @@ function erase_partition() {
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "flash_eraseall $partmtd"
 	else
-		msg_nonewline "Erasing... "
+		msg_nonewline " + Erasing... "
 		flash_eraseall $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; }
 	fi
 }
 
+function leave_partition() {
+# Description: Do absolutely nothing with the partition :))
+# Syntax: leave_partition <partname> <partmtd>
+	local partname="$1"
+	local partmtd="$2"
+
+	msg "- Leave: $partname at $partmtd ---"
+		msg "Leaving..."
+}

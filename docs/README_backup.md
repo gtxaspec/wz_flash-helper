@@ -1,6 +1,6 @@
 [Introduction](README.md) | [Setup](README_setup.md) | **Backup** | [Restore](README_restore.md) | [Switch firmware](README_switch_fw.md) | [Other options](README_other_options.md)
 
-## Backup partitions guide
+## Backup guide
 
 
 ### Backup stock partitions
@@ -22,6 +22,7 @@ Like with stock partitions, OpenIPC partitions can also be backed up with the ab
 **WARNING:**
 - Backup your stock partitions first and copy it to a safe place in case you need them for later recovery.
 - Do not modify your stock partitions backup, specially boot partition image. Switching from OpenIPC back to stock firmware may brick your camera if you do that.
+
 
 **Notes:**
 - Backup operation will automatically generate md5sum files for partitions backup files.

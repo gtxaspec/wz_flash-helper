@@ -1,0 +1,1 @@
+../../t20/openipc/current_profile_variables.sh

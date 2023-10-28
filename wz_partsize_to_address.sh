@@ -64,7 +64,14 @@ function import_vars_openipc() {
 
 
 
+echo
+echo "---------- OpenIPC ----------"
+import_vars_openipc
+make_a_table "openipc" > /tmp/openipc_addresses
+column -s, -t < /tmp/openipc_addresses
+rm /tmp/openipc_addresses
 
+echo
 echo "---------- T20 stock ----------"
 import_vars_t20_stock
 make_a_table "t20" > /tmp/t20_stock_addresses
@@ -78,10 +85,5 @@ make_a_table "t31" > /tmp/t31_stock_addresses
 column -s, -t < /tmp/t31_stock_addresses
 rm /tmp/t31_stock_addresses
 
-echo
-echo "---------- T20 & T31 OpenIPC ----------"
-import_vars_openipc
-make_a_table "openipc" > /tmp/openipc_addresses
-column -s, -t < /tmp/openipc_addresses
-rm /tmp/openipc_addresses
+
 

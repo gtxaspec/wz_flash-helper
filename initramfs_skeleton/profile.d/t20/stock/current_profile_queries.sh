@@ -9,48 +9,52 @@ function get_current_profile_partnum() {
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
-		"env")
-			echo -n "18" ;;
 		"kernel")
-			echo -n "19" ;;
-		"rootfs")
-			echo -n "20" ;;
-		"rootfs_data")
-			echo -n "21" ;;
-	esac
-}
-
-function get_current_profile_partfstype() {
-# Description: Return fstype of the queried partition name
-	local partname="$1"
-	case "$1" in
-		"boot")
-			echo -n "raw" ;;
-		"env")
-			echo -n "raw" ;;
-		"kernel")
-			echo -n "raw" ;;
-		"rootfs")
-			echo -n "squashfs" ;;
-		"rootfs_data")
-			echo -n "jffs2" ;;
+			echo -n "6" ;;
+		"root")
+			echo -n "7" ;;
+		"driver")
+			echo -n "8" ;;
+		"appfs")
+			echo -n "9" ;;
+		"backupk")
+			echo -n "10" ;;
+		"backupd")
+			echo -n "11" ;;
+		"backupa")
+			echo -n "12" ;;
+		"config")
+			echo -n "13" ;;
+		"para")
+			echo -n "14" ;;
 	esac
 }
 
 function get_current_profile_restore_opt_value() {
 # Description: Return user option to decide if the queried partiton will be restored
-# Do not include boot partition
 # Syntax: get_current_profile_restore_opt_value <partname>
 	local partname="$1"
 	case "$1" in
-		"env")
-			echo -n "$restore_openipc_env" ;;
+		"boot")
+			echo -n "$restore_stock_t20_boot" ;;
 		"kernel")
-			echo -n "$restore_openipc_kernel" ;;
-		"rootfs")
-			echo -n "$restore_openipc_rootfs" ;;
-		"rootf_data")
-			echo -n "$restore_openipc_rootfs_data" ;;
+			echo -n "$restore_stock_t20_kernel" ;;
+		"root")
+			echo -n "$restore_stock_t20_root" ;;
+		"driver")
+			echo -n "$restore_stock_t20_driver" ;;
+		"appfs")
+			echo -n "$restore_stock_t20_appfs" ;;
+		"backupk")
+			echo -n "$restore_stock_t20_backupk" ;;
+		"backupd")
+			echo -n "$restore_stock_t20_backupd" ;;
+		"backupa")
+			echo -n "$restore_stock_t20_backupa" ;;
+		"config")
+			echo -n "$restore_stock_t20_config" ;;
+		"para")
+			echo -n "$restore_stock_t20_para" ;;
 	esac
 }
 

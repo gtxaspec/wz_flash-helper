@@ -9,14 +9,24 @@ function get_next_profile_partnum() {
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
-		"env")
-			echo -n "18" ;;
 		"kernel")
-			echo -n "19" ;;
-		"rootfs")
-			echo -n "20" ;;
-		"rootfs_data")
-			echo -n "21" ;;
+			echo -n "6" ;;
+		"root")
+			echo -n "7" ;;
+		"driver")
+			echo -n "8" ;;
+		"appfs")
+			echo -n "9" ;;
+		"backupk")
+			echo -n "10" ;;
+		"backupd")
+			echo -n "11" ;;
+		"backupa")
+			echo -n "12" ;;
+		"config")
+			echo -n "13" ;;
+		"para")
+			echo -n "14" ;;
 	esac
 }
 

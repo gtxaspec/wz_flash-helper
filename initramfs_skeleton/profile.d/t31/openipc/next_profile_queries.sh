@@ -1,0 +1,1 @@
+../../t20/openipc/next_profile_queries.sh

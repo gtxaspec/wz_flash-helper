@@ -8,7 +8,7 @@
 #                                          |_|                                     
 
 function restore_current_profile_parts() {
-# Description: Restore OpenIPC partitions from partition images
+# Description: Restore partitions from partition images
 	for partname in $current_profile_restore_partname_list; do
 		local infile_name=$(get_current_profile_partimg $partname)
 		local infile="$current_profile_restore_path/$infile_name"
@@ -26,9 +26,10 @@ function restore_current_profile_parts() {
 
 
 function restore_operation() {
-
 	[[ "$switch_profile" == "yes" ]] && { msg "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
+
 	[ ! -d $current_profile_restore_path ] && { msg "$current_profile_restore_path directory is missing" ; return 1 ; }
+
 	[ ! -f $prog_restore_config_file ] && { msg "$prog_restore_config_file file is missing. Nothing more will be done" ; return 1 ; }	
 
 	dos2unix $prog_restore_config_file && source $prog_restore_config_file || { msg "$prog_restore_config_file file is invalid. Nothing will be done" ; return 1 ; }

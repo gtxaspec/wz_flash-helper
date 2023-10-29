@@ -13,4 +13,3 @@ next_profile_all_partname_list="boot env kernel rootfs rootfs_data"
 ## Same as current_profile_restore_path
 next_profile_images_path="/sdcard/wz_flash-helper/restore/openipc"
 
-

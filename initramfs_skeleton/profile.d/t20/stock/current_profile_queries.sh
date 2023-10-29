@@ -57,7 +57,6 @@ function get_current_profile_partfstype() {
 	esac
 }
 
-
 function get_current_profile_restore_opt_value() {
 # Description: Return user option to decide if the queried partiton will be restored
 # Syntax: get_current_profile_restore_opt_value <partname>
@@ -85,7 +84,6 @@ function get_current_profile_restore_opt_value() {
 			echo -n "$restore_stock_para" ;;
 	esac
 }
-
 
 function get_current_profile_partmtd() {
 # Description: Return mtd device of the queried partition name

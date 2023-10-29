@@ -18,8 +18,8 @@ restore_partitions_succeed="Restore operation succeeded"
 
 switch_profile_yes="switch_profile value is Yes"
 switch_profile_no="switch_profile value is No"
-switch_profile_fail="Switch firmware operation failed, exiting..."
-switch_profile_succeed="Switch firmware operation succeeded"
+switch_profile_fail="Switch profile operation failed, exiting..."
+switch_profile_succeed="Switch profile operation succeeded"
 
 enable_custom_script_yes="enable_custom_script value is Yes"
 enable_custom_script_no="enable_custom_script value is No"

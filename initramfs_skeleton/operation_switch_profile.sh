@@ -20,7 +20,7 @@ function validate_restore_partition_images() {
 		fi
 	done
 	
-	if [ -f /profile.d/$next_profile/boot_hashes.txt ]; then
+	if [ -f /profile.d/$next_profile/boot_hashes.txt ]; then # Validate boot image hash if it is among allowed hashes
 		msg "Found valid boot partition image hashes, validating boot"
 		local boot_img_name=$(get_next_profile_partimg boot)
 		local boot_img="$next_profile_restore_dir_path/$boot_img_name"
@@ -43,8 +43,8 @@ function validate_written_bootpart() {
 	return 1
 }
 
-function rollback_stock_boot_part() {
-# Description: Check if written boot partition is valid, if not, rollback to stock boot image
+function rollback_bootpart() {
+# Description: Check if written boot partition is valid, if not, rollback with backup boot image
 	msg
 	msg "ATTENTION! ATTENTION! ATTENTION!"
 	msg "ATTENTION! ATTENTION! ATTENTION!"
@@ -81,6 +81,7 @@ function switch_profile_operation() {
 	msg
 	msg "---------- Begin of switch profile ----------"
 	validate_restore_partition_images || return 1
+	
 	for partname in $next_profile_all_partname_list; do
 		local partname_operation=$(get_next_profile_partoperation $partname)
 		local partmtd=$(get_next_profile_partmtd $partname)

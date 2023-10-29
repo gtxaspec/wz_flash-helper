@@ -116,7 +116,7 @@ function mount_sdcard() {
 }
 
 function rename_prog_sdcard_boot_img() {
-# Description: Rename SD card boot image to avoid infinite boot loop
+# Description: Rename program SD card boot image to avoid infinite boot loop
 	msg "Renaming /sdcard/$current_profile_sdcard_bootimg_name to /sdcard/$current_profile_sdcard_bootimg_name.$prog_name"
 	mv /sdcard/$current_profile_sdcard_bootimg_name /sdcard/$current_profile_sdcard_bootimg_name.$prog_name
 }
@@ -187,8 +187,6 @@ function main() {
 	mount_sdcard || return 1
 	rename_prog_sdcard_boot_img
 	import_prog_config_file || return 1
-	
-	emulate
 
 	display_info
 	

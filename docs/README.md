@@ -1,7 +1,7 @@
-**Introduction** | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [FAQs](README_FAQs.md_)
+**Introduction** | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [FAQs](README_FAQs.md)
 
-## Still under development, you can not use this yet until there is a release
-
+## Still under development, you can not use this yet until there is an official release
+Alpha and beta releases are for testing only, do not use it
 
 # wz_flash-helper
 

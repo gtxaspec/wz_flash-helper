@@ -1,4 +1,4 @@
-[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | **Other options** | [FAQs](README_FAQs.md_)
+[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | **Other options** | [FAQs](README_FAQs.md)
 
 # Guide for other options
 

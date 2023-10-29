@@ -13,13 +13,11 @@ function init_emulate() {
 	chip_family=""
 	flash_type=""
 	current_profile=""
-	next_profile=""
-	switch_profile=""
 
 	msg
 	msg "### Emulation mode is enabled, these variables are forged:"
 	msg "### - Hardware: chip_family: $chip_family, flash_type: $flash_type"
-	msg "### - Profiles: current_profile: $current_profile, next_profile: $next_profile, switch_profile: $switch_profile"
+	msg "### - Current profile: $current_profile"
 	msg "### Dry run is forcibly Enabled. No modification will be made."
 	msg
 }

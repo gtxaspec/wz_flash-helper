@@ -1,4 +1,4 @@
-**Introduction** | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_fw.md) | [Other options](README_other_options.md)
+**Introduction** | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md)
 
 ## Still under development, you can not use this yet until there is a release
 
@@ -7,6 +7,7 @@
 
 Automatic partitions backup/restore tool for T20/T31 cameras, works with both stock and OpenIPC firmware.
 You can also switch between stock and OpenIPC firmware without a scratch.
+
 
 ## Features
 - No serial connection or SSH is needed! only SD card.
@@ -28,8 +29,9 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 
 ## Notes
 - It is highly recommended to enable `dry_run` to check if everything works before doing real operations.
-- Backup is done first, then Restore, then Switch firmware and followed by Custom script.
+- Backup is done first, then Restore, then Switch profile and followed by Custom script.
 - If one task fails, the flash tool init would exit immediately without doing the remaining operations.
+
 
 ## Warning
 ```

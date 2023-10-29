@@ -1,0 +1,7 @@
+#!/bin/sh
+
+
+
+
+blue_led_gpio=""
+red_led_gpio=""

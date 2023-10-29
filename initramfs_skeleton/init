@@ -9,7 +9,7 @@
 
 
 
-exec > /tmp/initramfs.log 2>&1
+# exec > /tmp/initramfs.log 2>&1 # Comment out this line to debug with serial connection
 set -x
 
 mount -t devtmpfs devtmpfs /dev
@@ -31,9 +31,9 @@ function msg_dry_run() {
 # Description: Print out commands instead of executing them when dry run is enabled
 	local cmd="$1"
 
-	echo " + (this command is not run) $cmd"
-	echo " + (this command is not run) $cmd" > /dev/console
-	echo " + (this command is not run) $cmd" >> /tmp/initramfs_serial.log
+	echo " + (dry run) $cmd"
+	echo " + (dry run) $cmd" > /dev/console
+	echo " + (dry run) $cmd" >> /tmp/initramfs_serial.log
 }
 
 function msg_nonewline() {
@@ -45,121 +45,67 @@ function msg_nonewline() {
 	echo -n "$message" >> /tmp/initramfs_serial.log
 }
 
-function detect_chip_and_fw() {
-# Description: Detect chip family and current firmware to run later operations correctly
+function detect_hardware() {
 	chip_name=$(ipcinfo-mips32 --chip-name)
 	chip_family=$(ipcinfo-mips32 --family)
-	msg "Detected chip name: $chip_name, chip family: $chip_family"
-
-	dd if=/dev/mtd0 of=/boot_backup.img
-	strings /boot_backup.img > /boot_backup_strings.txt
-
-	if grep -q "demo.bin" /boot_backup_strings.txt ; then # Cam v2 & Cam Pan
-		msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
-		current_fw="stock"
-	
-	elif grep -q "demo_wcv3.bin" /boot_backup_strings.txt ; then # Cam v3
-		msg "Camera is currently on Cam v3 stock firmware"
-		current_fw="stock"
-	
-	elif grep -q "recovery_wcpv2.bin" /boot_backup_strings.txt ; then # Cam Pan v2
-		msg "Camera is currently on Cam Pan v2 stock firmware"
-		current_fw="stock"
-	
-	elif grep -q "factory_0P3N1PC_kernel" /boot_backup_strings.txt ; then
-		msg "Camera is currently on OpenIPC firmware"
-		current_fw="openipc"
-	
-	else
-		msg "Unable to detect current firmware"
-	
-	fi
-
-	rm /boot_backup_strings.txt
-}
-
-function import_functions_and_variables() {
-# Description: Set needed files and paths variables for this program, source functions for later operations and set extra variables based on detected current system info
-	prog_name="wz_flash-helper"
-	prog_version=$(cat /prog_ver.txt)
-	
-	prog_dir="/sdcard/wz_flash-helper"
-	
-	prog_config_file="/sdcard/wz_flash-helper/wz_flash-helper.conf"
-	prog_log_file="/sdcard/wz_flash-helper/wz_flash-helper.log"
-	prog_log_file_serial="/sdcard/wz_flash-helper/wz_flash-helper_serial.log"
-	
-	concat_partmtd="/dev/mtd21"
-	
-	source /functions_io.sh
-	source /variables_init_msg.sh
-	source /funcs_and_vars_openipc.sh
-	
-	case "$chip_family" in
-		"t20")
-			source /funcs_and_vars_t20_stock.sh ;;
-		"t31")
-			source /funcs_and_vars_t31_stock.sh ;;
-	esac
-
-	if [[ "$current_fw" == "stock" ]] && [[ "$chip_family" == "t20" ]]; then
-		sdcard_boot_img_name="factory_ZMC6tiIDQN"
-		
-	elif [[ "$current_fw" == "stock" ]] && [[ "$chip_family" == "t31" ]]; then
-		sdcard_boot_img_name="factory_t31_ZMC6tiIDQN"
-	
-	elif [[ "$current_fw" == "openipc" ]]; then
-		sdcard_boot_img_name="factory_0P3N1PC_kernel"
-	
-	fi
+	flash_type=$(ipcinfo-mips32 --flash-type)
 }
 
 function initialize_gpio() {
-# Description: Initialize GPIO for LEDs and SD card on T20 camera
-	msg "Exporting GPIO pins for LEDs"
-	if [ ! -d /sys/class/gpio/gpio38 ]; then # Export LEDs GPIO pins if they don't exist to enable LEDs
-		echo 38 > /sys/class/gpio/export
-		echo out > /sys/class/gpio/gpio38/direction
-		echo 1 > /sys/class/gpio/gpio38/value
-	fi
-	
-	if [ ! -d /sys/class/gpio/gpio39 ]; then
-		echo 39 > /sys/class/gpio/export
-		echo out > /sys/class/gpio/gpio39/direction
-		echo 1 > /sys/class/gpio/gpio39/value
-	fi
-
-	if [[ "$chip_family" == "t20" ]]; then # T20 camera need this to get SD card detected
-		msg "Exporting GPIO pin to detect SD card on T20 camera"
-		echo 43 > /sys/class/gpio/export
-		echo in > /sys/class/gpio/gpio43/direction
-		sleep 3 # Required delay interval for SD card init on T20 camera
-	fi
+	source /initialize_gpio.d/$chip_family.sh
 }
 
 function welcome_msg() {
 # Description: It is nice to let the user know that they are welcome!
 	msg
-	msg "Welcome to $prog_name init $prog_version!"
+	msg "Welcome to initramfs init!"
 	msg
 }
 
 function wait_init_interrupt() {
 # Description: Allow the user to access initramfs shell with serial connection
-	msg
+	echo > /dev/console
 	echo "Press any key to interrupt init" > /dev/console
 	
 	exec 0< /dev/console
 	read -r -s -n 1 -t 3
 	if [[ "$?" -eq 0 ]]; then
-		msg "Dropping a shell"
-		msg "You can read /tmp/initramfs.log to see previously run commands"
+		echo "Dropping a shell" > /dev/console
 		exec 1> /dev/console
 		exec 2> /dev/console
+		cd /
 		exec /bin/sh
 	fi
 	echo "Action has timed out" > /dev/console
-	msg
+	echo > /dev/console
+}
+
+function import_init_msg() {
+	source /init_variables_msg.sh
+}
+
+function import_functions_io() {
+	source /functions_io.sh
+}
+
+function import_leds_gpio() {
+	source /leds_gpio.d/$chip_family.sh
+}
+
+function import_prog_info() {
+	source /init_variables_prog_info.sh
+}
+
+function backup_bootpart() {
+	backup_partition "boot" /dev/mtd0 /bootpart_backup.img
+}
+
+function detect_current_profile() {
+	source /profile.d/$chip_family/detect_profile.sh || return 1
+}
+
+function emulate() {
+	source /init_emulate.sh
 }
 
 function mount_sdcard() {
@@ -170,40 +116,35 @@ function mount_sdcard() {
 }
 
 function rename_prog_sdcard_boot_img() {
-	msg "Renaming /sdcard/$sdcard_boot_img_name to /sdcard/$sdcard_boot_img_name.$prog_name"
-	mv /sdcard/$sdcard_boot_img_name /sdcard/$sdcard_boot_img_name.$prog_name
+# Description: Rename SD card boot image to avoid infinite boot loop
+	msg "Renaming /sdcard/$current_profile_sdcard_bootimg_name to /sdcard/$current_profile_sdcard_bootimg_name.$prog_name"
+	mv /sdcard/$current_profile_sdcard_bootimg_name /sdcard/$current_profile_sdcard_bootimg_name.$prog_name
 }
 
-function import_config_file() {
-# Description: Source program config file to know and do what the user wants
-	[ ! -d $prog_dir ] && { msg "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; exit_init ; }
-	[ ! -f $prog_config_file ] && { msg "$prog_config_file file is missing. Nothing will be done" ; exit_init ; }
+function import_prog_config_file() {
+# Description: Source program config files to know and do what the user wants
+	[ ! -d $prog_dir ] && { msg "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; return 1 ; }
+	[ ! -f $prog_config_file ] && { msg "$prog_config_file file is missing. Nothing will be done" ; return 1 ; }
 
 	# Fix issue that config file failed to be sourced if it contains MS-DOS newline
-	dos2unix $prog_config_file && source $prog_config_file || { msg "$prog_config_file file is invalid. Nothing will be done" ; exit_init ; }
+	dos2unix $prog_config_file && source $prog_config_file || { msg "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
 }
 
-function emulate_chip_family_and_fw () {
-# Description: Emulate chip family and firmware for testing, only!
-	dry_run="yes" # Override config file option so nothing is actually done
+function import_current_profile() {
+	source /profile.d/$chip_family/$current_profile/current_profile_variables.sh
+	source /profile.d/$chip_family/$current_profile/current_profile_queries.sh
+}
 
-	chip_family="t20"
-	current_fw="openipc"
-	msg
-	msg "### Emulation mode: chip_family: $chip_family, current_fw: $current_fw"	
-	msg "### Dry run mode is forcibly Enabled. No modification will be made."
-	msg
 
-	case "$chip_family" in # Source device-dependent script in case it has not been sourced
-		"t20")
-			source /funcs_and_vars_t20_stock.sh ;;
-		"t31")
-			source /funcs_and_vars_t31_stock.sh ;;
-	esac
+function display_info() {
+	msg
+	msg "Program version: $prog_version"
+	msg "Hardware: $chip_name, chip family: $chip_family, flash type: $flash_type"
+	msg "Current firmware profile: $current_profile"
+	msg
 }
 
 function exit_init() {
-# Description: Rename SD card boot image to avoid infinite boot loop
 	msg
 	msg "---------- Exit init ----------"
 	msg
@@ -217,26 +158,40 @@ function exit_init() {
 	umount /sdcard
 
 	sleep 1
+	echo "Everything is finished! You can enter initramfs shell again before the program exits, if you wish" > /dev/console
+	wait_init_interrupt
 	exit # Crash init to reboot immediately
-	sleep 10 # This prevents init from continuing after exit_init is finished but the camera has not rebooted immediately
+	sleep 10 # Prevents init from continuing after exit_init is finished but the camera has not rebooted immediately
 }
 
 function main() {
-	detect_chip_and_fw
-	import_functions_and_variables
+	detect_hardware
 	initialize_gpio
-
+			
 	welcome_msg
-	
 	wait_init_interrupt
 	
-	mount_sdcard
-	rename_prog_sdcard_boot_img
+	import_init_msg
+	import_functions_io
+	import_leds_gpio
+
+	backup_bootpart
 	
-	import_config_file
+	detect_current_profile || return 1
+	
+	emulate
+	
+	import_current_profile
+	import_prog_info
+	
+	mount_sdcard || return 1
+	rename_prog_sdcard_boot_img
+	import_prog_config_file || return 1
+	
+	emulate
 
-	emulate_chip_family_and_fw
-
+	display_info
+	
 	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no"
 
 	#---------- Backup operation ----------
@@ -255,12 +210,12 @@ function main() {
 		msg "$restore_partitions_no"
 	fi
 
-	#---------- Switch fw operation ----------
-	if [[ "$switch_fw" == "yes" ]]; then
-		msg "$switch_fw_yes"
-		source /operation_switch_fw.sh && msg "$switch_fw_succeed" || { msg "$switch_fw_fail" ; return 1 ; }
+	#---------- Switch profile operation ----------
+	if [[ "$switch_profile" == "yes" ]]; then
+		msg "$switch_profile_yes"
+		source /operation_switch_profile.sh && msg "$switch_profile_succeed" || { msg "$switch_profile_fail" ; return 1 ; }
 	else
-		msg "$switch_fw_no"
+		msg "$switch_profile_no"
 	fi
 
 	#---------- Custom script ----------
@@ -271,12 +226,12 @@ function main() {
 		msg "$enable_custom_script_no"
 	fi
 
-	#---------- Continue boot image ----------
-	if [[ "$enable_continue_boot_img" == "yes" ]]; then
-		msg "$enable_continue_boot_img_yes"
-		source /action_move_continue_boot_img_file.sh && msg "$enable_continue_boot_img_succeed" || { msg "$enable_continue_boot_img_fail" ; return 1 ; }
+	#---------- New SD card boot image ----------
+	if [[ "$copy_new_sdcard_bootimg" == "yes" ]]; then
+		msg "$copy_new_sdcard_bootimg_no"
+		source /action_copy_new_sdcard_bootimg.sh && msg "$copy_new_sdcard_bootimg_succeed" || { msg "$copy_new_sdcard_bootimg_fail" ; return 1 ; }
 	else
-		msg "$enable_continue_boot_img_no"
+		msg "$copy_new_sdcard_bootimg_no"
 	fi
 }
 

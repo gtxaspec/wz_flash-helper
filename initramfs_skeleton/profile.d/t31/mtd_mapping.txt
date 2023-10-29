@@ -1,0 +1,27 @@
+---------- OpenIPC ----------
+PART         SIZE(dec)  START(dec)  START(hex)  MTD MAPPING                        MTD DEVICE
+boot         256        0           0x0         256K@0(boot)                       /dev/mtd0
+env          64         256         0x40000     64K@256K(openipc_env)              /dev/mtd2
+kernel       3072       320         0x50000     3072K@320K(openipc_kernel)         /dev/mtd3
+rootfs       10240      3392        0x350000    10240K@3392K(openipc_rootfs)       /dev/mtd4
+rootfs-data  2752       13632       0xd50000    2752K@13632K(openipc_rootfs-data)  /dev/mtd5
+
+mtdparts: 256K@0(boot),64K@256K(openipc_env),3072K@320K(openipc_kernel),10240K@3392K(openipc_rootfs),2752K@13632K(openipc_rootfs-data)
+
+---------- Stock ----------
+PART    SIZE(dec)  START(dec)  START(hex)  MTD MAPPING                             MTD DEVICE
+boot    256        0           0x0         256K@0(boot)                            /dev/mtd0
+kernel  1984       256         0x40000     1984K@256K(t31_kernel)                  /dev/mtd6
+rootfs  3904       2240        0x230000    3904K@2240K(t31_rootfs)                 /dev/mtd7
+app     3904       6144        0x600000    3904K@6144K(t31_app)                    /dev/mtd8
+kback   1984       10048       0x9d0000    1984K@10048K(t31_kback)                 /dev/mtd9
+aback   3904       12032       0xbc0000    3904K@12032K(t31_aback)                 /dev/mtd10
+cfg     384        15936       0xf90000    384K@15936K(t31_cfg)                    /dev/mtd11
+para    64         16320       0xff0000    64K@16320K(t31_para)                    /dev/mtd12
+
+mtdparts: 256K@0(boot),2048K@256K(stock_kernel),3392K@2304K(stock_root),640K@5696K(stock_driver),4736K@6336K(stock_appfs),2048K@11072K(stock_backupk),640K@13120K(stock_backupd),2048K@13760K(stock_backupa),256K@15808K(stock_config),256K@16064K(stock_para)
+
+Entire flash mapping                       16384k@0(all)                           /dev/mtd1
+
+-----
+CONFIG_CMDLINE="... init=/init mtdparts=jz_sfc:256K@0(boot),64K@256K(openipc_env),3072K@320K(openipc_kernel),10240K@3392K(openipc_rootfs),2752K@13632K(openipc_rootfs-data),256K@0(boot),2048K@256K(stock_kernel),3392K@2304K(stock_root),640K@5696K(stock_driver),4736K@6336K(stock_appfs),2048K@11072K(stock_backupk),640K@13120K(stock_backupd),2048K@13760K(stock_backupa),256K@15808K(stock_config),256K@16064K(stock_para)"

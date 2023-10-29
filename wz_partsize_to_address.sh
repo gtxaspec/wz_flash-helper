@@ -64,24 +64,32 @@ function import_vars_openipc() {
 
 
 
+echo
+echo "---------- OpenIPC ----------"
+import_vars_openipc
+make_a_table "openipc" > /tmp/openipc_addresses
+column -s, -t < /tmp/openipc_addresses
+echo
+echo "mtdparts: $(cat /tmp/openipc_addresses | cut -d ',' -f5 | tail -n +2 | tr '\n' ',' | sed 's/.$//')"
+rm /tmp/openipc_addresses
 
+echo
 echo "---------- T20 stock ----------"
 import_vars_t20_stock
-make_a_table "t20" > /tmp/t20_stock_addresses
+make_a_table "stock" > /tmp/t20_stock_addresses
 column -s, -t < /tmp/t20_stock_addresses
+echo
+echo "mtdparts: $(cat /tmp/t20_stock_addresses | cut -d ',' -f5 | tail -n +2 | tr '\n' ',' | sed 's/.$//')"
 rm /tmp/t20_stock_addresses
 
 echo
 echo "---------- T31 stock ----------"
 import_vars_t31_stock
-make_a_table "t31" > /tmp/t31_stock_addresses
+make_a_table "stock" > /tmp/t31_stock_addresses
 column -s, -t < /tmp/t31_stock_addresses
+echo
+echo "mtdparts: $(cat /tmp/t31_stock_addresses | cut -d ',' -f5 | tail -n +2 | tr '\n' ',' | sed 's/.$//')"
 rm /tmp/t31_stock_addresses
 
-echo
-echo "---------- T20 & T31 OpenIPC ----------"
-import_vars_openipc
-make_a_table "openipc" > /tmp/openipc_addresses
-column -s, -t < /tmp/openipc_addresses
-rm /tmp/openipc_addresses
+
 

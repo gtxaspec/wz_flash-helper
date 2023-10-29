@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: This script contains variables of the current firmware profile
+# Description: This script contains variables of the current profile
 #
 
 ## List of all partition names

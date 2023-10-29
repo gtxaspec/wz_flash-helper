@@ -4,7 +4,7 @@
 #
 
 function get_next_profile_partoperation() {
-# Description: Return task will be done with queried partition when switching firmware
+# Description: Return task will be done with queried partition when switching profile
 # Syntax: get_next_profile_switch <partname>
 	case "$1" in
 	case "$1" in

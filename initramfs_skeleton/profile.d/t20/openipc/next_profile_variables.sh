@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: This script contains variables of the next firmware profile
+# Description: This script contains variables of the next profile
 #
 
 ## List of supported chip family

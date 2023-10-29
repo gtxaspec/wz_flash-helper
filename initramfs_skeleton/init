@@ -57,7 +57,7 @@ function initialize_gpio() {
 	source /initialize_gpio.d/$chip_family.sh
 }
 
-function welcome_msg() {
+function welcome() {
 # Description: It is nice to let the user know that they are welcome!
 	msg
 	msg "Welcome to initramfs init!"
@@ -98,7 +98,7 @@ function import_leds_gpio() {
 }
 
 function backup_bootpart() {
-# Description: Create backup for boot partition to rollback in case it gets corrupted, and for firmware detection
+# Description: Create backup for boot partition to rollback in case it gets corrupted, and for profile detection
 	backup_partition "boot" /dev/mtd0 /bootpart_backup.img
 }
 
@@ -150,7 +150,7 @@ function display_info() {
 	msg
 	msg "Program version: $prog_version"
 	msg "Hardware: $chip_name, chip family: $chip_family, flash type: $flash_type"
-	msg "Current firmware profile: $current_profile"
+	msg "Current profile: $current_profile"
 	msg
 }
 
@@ -180,7 +180,7 @@ function main() {
 	detect_hardware
 	initialize_gpio
 			
-	welcome_msg
+	welcome
 	wait_init_interrupt
 	
 	import_init_msg

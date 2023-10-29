@@ -45,6 +45,6 @@ function get_next_profile_partimg() {
 	local partname="$1"
 	local current_profile="$2"
 	
-	echo -n "${current_profile}_${partname}.bin"
+	echo -n "${next_profile}_${partname}.bin"
 }
 

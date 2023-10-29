@@ -55,25 +55,19 @@ function get_current_profile_restore_opt_value() {
 	local partname="$1"
 	case "$1" in
 		"kernel")
-			echo -n "/dev/mtd10" ;;
+			echo -n "$restore_stock_kernel" ;;
 		"rootfs")
-			echo -n "/dev/mtd11" ;;
+			echo -n "$restore_stock_rootfs" ;;
 		"app")
-			echo -n "/dev/mtd12" ;;
+			echo -n "$restore_stock_app" ;;
 		"kback")
-			echo -n "/dev/mtd13" ;;
+			echo -n "$restore_stock_kback" ;;
 		"aback")
-			echo -n "/dev/mtd14" ;;
+			echo -n "$restore_stock_aback" ;;
 		"cfg")
-			echo -n "/dev/mtd15" ;;
+			echo -n "$restore_stock_cfg" ;;
 		"para")
-			echo -n "/dev/mtd16" ;;
-		"[partnameA]")
-			echo -n "$restore_[FW_PROFILE]_[partnameA]" ;;
-		"[partnameB]")
-			echo -n "$restore_[FW_partnameB]_[PROFILE]" ;;
-		"[partnameC]")
-			echo -n "$restore_[FW_PROFILE]_[partnameC]" ;;
+			echo -n "$restore_stock_para" ;;
 	esac
 }
 
@@ -100,7 +94,6 @@ function get_current_profile_partimg() {
 # Description: Return filename of the partition image for the queried partition name
 # Syntax: get_openipc_partimg <partname> <>
 	local partname="$1"
-	local current_profile="$2"
 	
 	echo -n "${current_profile}_${partname}.bin"
 }

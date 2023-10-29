@@ -10,11 +10,11 @@
 
 
 function validate_restore_partition_images() {
-	msg " - Making sure that all needed partition images present and are valid"
+	msg "- Making sure that all needed partition images present and are valid"
 	cd $next_profile_images_path
 	for partname in $next_profile_all_partname_list; do # Check md5 for all partitions first to make sure they are all valid before flashing each partition
-		if [[ "$(get_next_profile_switch_profile_all $partname)" == "write" ]]; then
-			local infile_name=$(get_next_profie_partimg $partname)
+		if [[ "$(get_next_profile_partoperation $partname)" == "write" ]]; then
+			local infile_name=$(get_next_profile_partimg $partname)
 			msg_nonewline " + Verifying $infile_name... "
 			md5sum -c $infile_name.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
 		fi
@@ -32,13 +32,13 @@ function validate_restore_partition_images() {
 
 function validate_written_bootpart() {
 # Description: Check 3 times if written boot partition hash is on the valid hash list
-	msg " + Validating written boot partition... "
+	msg "- Validating written boot partition... "
 	for count in 1 2 3; do
 		msg " + Attempt $count: "
 		backup_partition boot /dev/mtd0 /boot_part_check.img
 		local boot_part_hash=$(md5sum /boot_part_check.img | cut -d ' ' -f1)
 		rm /boot_part_check.img
-		echo "$valid_hashes" | grep -q $boot_part_hash && { msg "ok" ; break ; return 0 ; } || msg "failed"
+		echo "$valid_hashes" | grep -q $boot_part_hash && { msg "ok" ; return 0 ; } || msg "failed"
 	done
 	return 1
 }
@@ -56,7 +56,7 @@ function rollback_stock_boot_part() {
 	
 	for count in 1 2; do
 		msg_nonewline " + Rolling back attempt $count... "
-		restore_partition "boot" /bootpart_backup.img /dev/mtd0 && { msg "succeeded :) You are safe now!" ; break ; return 0 ; } || msg "failed"
+		restore_partition "boot" /bootpart_backup.img /dev/mtd0 && { msg "succeeded :) You are safe now!" ; return 0 ; } || msg "failed"
 	done
 		
 	msg "Rollback failed twice, sorry. Probably your flash chip is corrupted"
@@ -66,17 +66,26 @@ function rollback_stock_boot_part() {
 function switch_profile_operation() {
 	[[ "$restore_partitions" == "yes" ]] && { msg "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	[[ "$current_profile" == "$next_profile" ]] && { msg "next_profile value is same as current profile, aborting switch profile" ; return 1 ; }
-
-	/bg_blink_led_red_and_blue.sh &	
+	
+	source /profile.d/$chip_family/$next_profile/next_profile_variables.sh
+	source /profile.d/$chip_family/$next_profile/next_profile_queries.sh
+	
+	if [[ "$switch_profile_with_all_partitions" == "yes" ]]; then
+		source /profile.d/$chip_family/$next_profile/next_profile_switch_allparts.sh
+	else
+		source /profile.d/$chip_family/$next_profile/next_profile_switch_baseparts.sh
+	fi
+	
+	/bg_blink_led_red_and_blue.sh &
 	local red_and_blue_leds_pid="$!"
 	msg
 	msg "---------- Begin of switch profile ----------"
-	validate_restore_partition_images
+	validate_restore_partition_images || return 1
 	for partname in $next_profile_all_partname_list; do
-		local partname_task=$(get_next_profile_partoperation $partname)
+		local partname_operation=$(get_next_profile_partoperation $partname)
 		local partmtd=$(get_next_profile_partmtd $partname)
 		
-		case "$partname_task" in
+		case "$partname_operation" in
 			"write")
 				local infile_name=$(get_next_profile_partimg $partname)
 				local infile="$next_profile_images_path/$infile_name"
@@ -91,9 +100,13 @@ function switch_profile_operation() {
 		esac
 	done
 	
-	[[ "$dry_run" == "yes" ]] && { msg " + No need to check for boot partition curruption on dry run mode" ; return 0 ; }
-	validate_written_bootpart || { 	msg " + Boot partition validation failed" ; rollback_bootpart ; } || return 1
 	kill $red_and_blue_leds_pid
+	
+	if [[ "$dry_run" == "yes" ]]; then
+		msg "- No need to check for boot partition curruption on dry run mode"
+	else
+		validate_written_bootpart || { 	msg " + Boot partition validation failed" ; rollback_bootpart ; } || return 1
+	fi
 }
 
 switch_profile_operation || return 1

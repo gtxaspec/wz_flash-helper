@@ -77,7 +77,6 @@ function get_current_profile_partimg() {
 # Description: Return filename of the partition image for the queried partition name
 # Syntax: get_openipc_partimg <partname> <>
 	local partname="$1"
-	local current_profile="$2"
 	
 	echo -n "${current_profile}_${partname}.bin"
 }

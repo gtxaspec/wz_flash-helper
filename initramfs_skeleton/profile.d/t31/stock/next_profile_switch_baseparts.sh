@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: This script returns "write" task for all queried partitions
+# Description: This script returns tasks of the queried partition that need to be done on a working firmware with minimal written
 #
 
 function get_next_profile_partoperation() {
@@ -16,9 +16,9 @@ function get_next_profile_partoperation() {
 		"app")
 			echo -n "write" ;;
 		"kback")
-			echo -n "write" ;;
+			echo -n "leave" ;;
 		"aback")
-			echo -n "write" ;;
+			echo -n "leave" ;;
 		"cfg")
 			echo -n "write" ;;
 		"para")

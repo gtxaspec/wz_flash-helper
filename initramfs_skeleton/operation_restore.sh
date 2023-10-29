@@ -15,11 +15,11 @@ function restore_current_profile_parts() {
 		local partmtd=$(get_current_profile_partmtd $partname)
 		local restore_opt_value=$(get_current_profile_restore_opt_value $partname)
 		
-		if [[ "${current_profile}_${restore_opt_value}" == "yes" ]]; then
-			msg "${current_profile}_${restore_opt_value} value is Yes"
+		if [[ "$restore_opt_value" == "yes" ]]; then
+			msg "restore_${current_profile}_${partname} value is Yes"
 			restore_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
 		else
-			msg "${current_profile}_${restore_opt_value} value is No"
+			msg "restore_${current_profile}_${partname} value is No"
 		fi
 	done
 }
@@ -28,11 +28,11 @@ function restore_current_profile_parts() {
 function restore_operation() {
 
 	[[ "$switch_profile" == "yes" ]] && { msg "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
-	
-	[[ ! "$current_profile" == "$restore_profile_type" ]] && { msg "restore_profile_type mismatches with current firmware type, aborting" ; return 1 ; }
-
 	[ ! -d $current_profile_restore_path ] && { msg "$current_profile_restore_path directory is missing" ; return 1 ; }
-	
+	[ ! -f $prog_restore_config_file ] && { msg "$prog_restore_config_file file is missing. Nothing more will be done" ; return 1 ; }	
+
+	dos2unix $prog_restore_config_file && source $prog_restore_config_file || { msg "$prog_restore_config_file file is invalid. Nothing will be done" ; return 1 ; }
+
 	/bg_blink_led_red.sh &
 	local red_led_pid="$!"
 	msg

@@ -36,25 +36,25 @@ function get_current_profile_restore_opt_value() {
 	local partname="$1"
 	case "$1" in
 		"boot")
-			echo -n "$restore_stock_t20_boot" ;;
+			echo -n "$restore_stock_boot" ;;
 		"kernel")
-			echo -n "$restore_stock_t20_kernel" ;;
+			echo -n "$restore_stock_kernel" ;;
 		"root")
-			echo -n "$restore_stock_t20_root" ;;
+			echo -n "$restore_stock_root" ;;
 		"driver")
-			echo -n "$restore_stock_t20_driver" ;;
+			echo -n "$restore_stock_driver" ;;
 		"appfs")
-			echo -n "$restore_stock_t20_appfs" ;;
+			echo -n "$restore_stock_appfs" ;;
 		"backupk")
-			echo -n "$restore_stock_t20_backupk" ;;
+			echo -n "$restore_stock_backupk" ;;
 		"backupd")
-			echo -n "$restore_stock_t20_backupd" ;;
+			echo -n "$restore_stock_backupd" ;;
 		"backupa")
-			echo -n "$restore_stock_t20_backupa" ;;
+			echo -n "$restore_stock_backupa" ;;
 		"config")
-			echo -n "$restore_stock_t20_config" ;;
+			echo -n "$restore_stock_config" ;;
 		"para")
-			echo -n "$restore_stock_t20_para" ;;
+			echo -n "$restore_stock_para" ;;
 	esac
 }
 

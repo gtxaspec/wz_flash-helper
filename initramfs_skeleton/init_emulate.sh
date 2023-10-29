@@ -10,11 +10,11 @@ function init_emulate() {
 # For testing, only!
 	dry_run="yes" # Override config file option so nothing is actually done
 
-	chip_family=""
-	flash_type=""
-	current_profile=""
-	next_profile=""
-	switch_profile=""
+	chip_family="t31"
+	flash_type="nor"
+	current_profile="openipc"
+	next_profile="stock"
+	switch_profile="yes"
 
 	msg
 	msg "### Emulation mode is enabled, these variables are forged:"

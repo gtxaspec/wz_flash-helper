@@ -6,8 +6,8 @@
 initialize_gpio() {
 	if [ ! -d /sys/class/gpio/gpio38 ]; then # Export red LED pin
 		echo 38 > /sys/class/gpio/export
-		echo 1 > /sys/class/gpio/gpio38/value
 		echo out > /sys/class/gpio/gpio38/direction
+		echo 1 > /sys/class/gpio/gpio38/value
 	fi
 	
 	if [ ! -d /sys/class/gpio/gpio39 ]; then # Export blue LED pin

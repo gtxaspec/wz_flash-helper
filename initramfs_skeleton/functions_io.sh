@@ -17,7 +17,7 @@ function backup_partition_nor() {
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "dd if=$partmtd of=$outfile"
 	else
-		msg_nonewline " + Backing up... "
+		msg_nonewline " + Reading... "
 		dd if=$partmtd of=$outfile && msg "succeeded" || { msg "failed" ; return 1 ; } 
 	fi
 }
@@ -31,7 +31,7 @@ function backup_partition_nand() {
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "nanddump -f $outfile $partmtd"
 	else
-		msg_nonewline " + Backing up... "
+		msg_nonewline " + Reading... "
 		nanddump -f $outfile $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; } 
 	fi
 }
@@ -43,14 +43,14 @@ function backup_partition() {
 	local partmtd="$2"
 	local outfile="$3"
 	
-	msg "- Read: $partname at $partmtd to file $outfile ---"
+	msg "- Read from flash: $partname at $partmtd to file $outfile ---"
 	[ -f $outfile ] && { msg " + $outfile already exists" ; return 1 ; }
 	
 	case "$flash_type" in
 		"nor")
-			backup_partition_nor || return 1 ;;
+			backup_partition_nor $partmtd $outfile || return 1 ;;
 		"nand")
-			backup_partition_nand || return 1;;
+			backup_partition_nand $partmtd $outfile || return 1;;
 	esac
 	
 	if [[ "$dry_run" == "yes" ]]; then
@@ -74,7 +74,7 @@ function archive_partition() {
 	local archive_mnt_dir="/archive_mnt_$partname"
 	mkdir -p $archive_mnt_dir
 	
-	msg "- Archive: $partname at $partblockmtd files to file $outfile ---"
+	msg "- Archive partition: $partname($partblockmtd) files to file $outfile ---"
 	
 	mount -t $fstype $partblockmtd $archive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
 	
@@ -100,10 +100,10 @@ function restore_partition_nor() {
 
 	
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "dd if=$partmtd of=$outfile"
+		msg_dry_run "dd if=$infile of=$partmtd"
 	else
-		msg_nonewline " + Backing up... "
-		dd if=$partmtd of=$outfile && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		msg_nonewline " + Writing... "
+		dd if=$infile of=$partptd && msg "succeeded" || { msg "failed" ; return 1 ; } 
 	fi
 }
 
@@ -114,10 +114,10 @@ function restore_partition_nand() {
 	local partmtd="$2"
 	
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "nandwrite -p $partmtd $outfile"
+		msg_dry_run "nandwrite -p $partmtd $infile"
 	else
-		msg_nonewline " + Backing up... "
-		nandwrite -p $partmtd $outfile || { msg "failed" ; return 1 ; } 
+		msg_nonewline " + Writing... "
+		nandwrite -p $partmtd $infile || { msg "failed" ; return 1 ; } 
 	fi
 }
 
@@ -132,7 +132,7 @@ function restore_partition() {
 	local restore_stage_dir="/restore_stage_dir"
 	
 
-	msg "- Write: file $infile_name to $partname at $partmtd ---"
+	msg "- Write to flash: file $infile_name to $partname($partmtd) ---"
 	mkdir -p $restore_stage_dir
 	cp $infile $restore_stage_dir/$infile_name || { msg " + $infile_name is missing" ; return 1 ; }
 	cp $infile.md5sum $restore_stage_dir/$infile_name.md5sum || { msg " + $infile_name.md5sum is missing" ; return 1 ; }
@@ -148,9 +148,9 @@ function restore_partition() {
 
 	case "$flash_type" in
 		"nor")
-			restore_partition_nor || return 1 ;;
+			restore_partition_nor $infile $partmtd || return 1 ;;
 		"nand")
-			restore_partition_nand || return 1;;
+			restore_partition_nand $infile $partmtd || return 1 ;;
 	esac
 }
 
@@ -160,7 +160,7 @@ function erase_partition() {
 	local partname="$1"
 	local partmtd="$2"
 
-	msg "- Erase: $partname at $partmtd ---"
+	msg "- Erase partition: $partname($partmtd) ---"
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "flash_eraseall $partmtd"
 	else
@@ -175,6 +175,6 @@ function leave_partition() {
 	local partname="$1"
 	local partmtd="$2"
 
-	msg "- Leave: $partname at $partmtd ---"
+	msg "- Leave partition: $partname($partmtd) ---"
 		msg "Leaving..."
 }

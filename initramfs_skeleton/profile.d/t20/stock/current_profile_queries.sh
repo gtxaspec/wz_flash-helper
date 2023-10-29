@@ -30,6 +30,34 @@ function get_current_profile_partnum() {
 	esac
 }
 
+function get_current_profile_partfstype() {
+# Description: Return fstype of the queried partition name
+	local partname="$1"
+	case "$1" in
+		"boot")
+			echo -n "raw" ;;
+		"kernel")
+			echo -n "raw" ;;
+		"root")
+			echo -n "squashfs" ;;
+		"driver")
+			echo -n "squashfs" ;;
+		"appfs")
+			echo -n "squashfs" ;;
+		"backupk")
+			echo -n "raw" ;;
+		"backupd")
+			echo -n "raw" ;;
+		"backupa")
+			echo -n "raw" ;;
+		"config")
+			echo -n "jffs2" ;;
+		"para")
+			echo -n "jffs2" ;;
+	esac
+}
+
+
 function get_current_profile_restore_opt_value() {
 # Description: Return user option to decide if the queried partiton will be restored
 # Syntax: get_current_profile_restore_opt_value <partname>
@@ -81,7 +109,6 @@ function get_current_profile_partimg() {
 # Description: Return filename of the partition image for the queried partition name
 # Syntax: get_openipc_partimg <partname> <>
 	local partname="$1"
-	local current_profile="$2"
 	
 	echo -n "${current_profile}_${partname}.bin"
 }

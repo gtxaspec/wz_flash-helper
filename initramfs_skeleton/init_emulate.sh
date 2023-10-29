@@ -3,18 +3,18 @@
 #
 #
 
-emulate_mode="yes"
+emulate_mode="no"
 
 function init_emulate() {
 # Description: Emulate various supposed-to-be automatically detected variables.
 # For testing, only!
 	dry_run="yes" # Override config file option so nothing is actually done
 
-	chip_family="t31"
-	flash_type="nor"
-	current_profile="openipc"
-	next_profile="stock"
-	switch_profile="yes"
+	chip_family=""
+	flash_type=""
+	current_profile=""
+	next_profile=""
+	switch_profile=""
 
 	msg
 	msg "### Emulation mode is enabled, these variables are forged:"

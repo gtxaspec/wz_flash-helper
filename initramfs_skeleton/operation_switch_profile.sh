@@ -10,7 +10,7 @@
 
 
 function validate_restore_partition_images() {
-	msg "- Making sure that all needed partition images present and are valid"
+	msg "- Making sure that all needed partition images exist and are valid"
 	cd $next_profile_images_path
 	for partname in $next_profile_all_partname_list; do # Check md5 for all partitions first to make sure they are all valid before flashing each partition
 		if [[ "$(get_next_profile_partoperation $partname)" == "write" ]]; then
@@ -65,7 +65,7 @@ function rollback_stock_boot_part() {
 
 function switch_profile_operation() {
 	[[ "$restore_partitions" == "yes" ]] && { msg "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
-	[[ "$current_profile" == "$next_profile" ]] && { msg "next_profile value is same as current profile, aborting switch profile" ; return 1 ; }
+	[[ "$current_profile" == "$next_profile" ]] && { msg "next_profile value is same as current_profile, aborting switch profile" ; return 1 ; }
 	
 	source /profile.d/$chip_family/$next_profile/next_profile_variables.sh
 	source /profile.d/$chip_family/$next_profile/next_profile_queries.sh
@@ -103,10 +103,11 @@ function switch_profile_operation() {
 	kill $red_and_blue_leds_pid
 	
 	if [[ "$dry_run" == "yes" ]]; then
-		msg "- No need to check for boot partition curruption on dry run mode"
+		msg "- No need to check for boot partition corruption on dry run mode"
 	else
 		validate_written_bootpart || { 	msg " + Boot partition validation failed" ; rollback_bootpart ; } || return 1
 	fi
+	msg
 }
 
 switch_profile_operation || return 1

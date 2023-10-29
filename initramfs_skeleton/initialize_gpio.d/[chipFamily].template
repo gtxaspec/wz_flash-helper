@@ -1,0 +1,10 @@
+#!/bin/sh
+
+
+
+
+initialize_gpio() {
+	...
+}
+
+initialize_gpio || return 1

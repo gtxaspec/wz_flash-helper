@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: This script returns tasks of the queried partition that need to be done on a working firmware with minimal written
+# Description: This script returns tasks of the queried partition that need to be done on a minimal working firmware
 #
 
 function get_next_profile_partoperation() {

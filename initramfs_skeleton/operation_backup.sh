@@ -13,7 +13,7 @@ function backup_entire_flash() {
 # Description: Dump the entire flash to a file
 	local partname="entire_flash"
 	local partmtd="$all_partmtd"
-	local outfile="$current_profile_backup_allparts_filename"
+	local outfile="$current_profile_backup_path/$current_profile_backup_allparts_filename"
 	
 	backup_partition $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; return 1 ; }
 }
@@ -46,7 +46,7 @@ function backup_operation() {
 	mkdir -p $current_profile_backup_path
 	backup_entire_flash || return 1
 	backup_parts || return 1
-	archive_parts || return 1
+#	archive_parts || return 1
 }
 
 backup_operation || return 1

@@ -50,7 +50,9 @@ function backup_partition() {
 		"nor")
 			backup_partition_nor $partmtd $outfile || return 1 ;;
 		"nand")
-			backup_partition_nand $partmtd $outfile || return 1;;
+			backup_partition_nand $partmtd $outfile || return 1 ;;
+		*)
+			msg " + Invalid flash type, are you on emulation mode?" ;;
 	esac
 	
 	if [[ "$dry_run" == "yes" ]]; then
@@ -76,20 +78,21 @@ function archive_partition() {
 	
 	msg "- Archive partition: $partname($partblockmtd) files to file $outfile ---"
 	
-	mount -t $fstype $partblockmtd $archive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
-	
 	if [[ "$dry_run" == "yes" ]]; then
+		msg_dry_run "mount -t $fstype $partblockmtd $archive_mnt_dir"
 		msg_dry_run "tar -cvf $outfile -C $archive_mnt_dir ."
 		msg_dry_run "md5sum $outfile > $outfile.md5sum"
 	else
+		mount -t $fstype $partblockmtd $archive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
 		msg_nonewline " + Creating archive file... "
 		tar -cvf $outfile -C $archive_mnt_dir . && msg "succeeded" || { msg "failed" ; return 1 ; }
 		msg_nonewline " + Generating md5sum file... "
 		md5sum $outfile > $outfile.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		umount $archive_mnt_dir && rmdir $archive_mnt_dir
 	fi
 	
 	sync
-	umount $archive_mnt_dir && rmdir $archive_mnt_dir
+
 }
 
 function restore_partition_nor() {
@@ -151,6 +154,8 @@ function restore_partition() {
 			restore_partition_nor $infile $partmtd || return 1 ;;
 		"nand")
 			restore_partition_nand $infile $partmtd || return 1 ;;
+		*)
+			msg " + Invalid flash type, are you on emulation mode?" ;;
 	esac
 }
 
@@ -176,5 +181,5 @@ function leave_partition() {
 	local partmtd="$2"
 
 	msg "- Leave partition: $partname($partmtd) ---"
-		msg "Leaving..."
+		msg " + Leaving..."
 }

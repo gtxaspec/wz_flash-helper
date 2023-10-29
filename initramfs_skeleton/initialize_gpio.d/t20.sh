@@ -16,11 +16,9 @@ initialize_gpio() {
 		echo 1 > /sys/class/gpio/gpio39/value
 	fi
 
-	if [ ! -d /sys/class/gpio/gpio39 ]; then # Export SD card pin
-		echo 39 > /sys/class/gpio/export
-		echo out > /sys/class/gpio/gpio39/direction
-		echo 1 > /sys/class/gpio/gpio39/value
-	fi
+	echo 43 > /sys/class/gpio/export
+	echo in > /sys/class/gpio/gpio43/direction
+	sleep 3
 }
 
 initialize_gpio || return 1

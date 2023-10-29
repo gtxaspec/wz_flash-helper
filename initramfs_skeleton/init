@@ -19,7 +19,7 @@ mount -t sysfs sysfs /sys
 sleep 1
 
 function msg() {
-# Description: Allow output messages to be both displayed on the serial terminal and written to the log files
+# Description: Allow output messages to be both displayed on the serial terminal and get written to the log files
 	local message="$1"
 
 	echo "$message" # Print to log file
@@ -46,12 +46,14 @@ function msg_nonewline() {
 }
 
 function detect_hardware() {
+# Description: Detect SoC and flash chip type
 	chip_name=$(ipcinfo-mips32 --chip-name)
 	chip_family=$(ipcinfo-mips32 --family)
 	flash_type=$(ipcinfo-mips32 --flash-type)
 }
 
 function initialize_gpio() {
+# Description: Initialize some GPIO pins to enable LEDs, maybe SD card if needed
 	source /initialize_gpio.d/$chip_family.sh
 }
 
@@ -81,31 +83,44 @@ function wait_init_interrupt() {
 }
 
 function import_init_msg() {
+# Description: Place long init messages somewhere else to keep this script clean
 	source /init_variables_msg.sh
 }
 
 function import_functions_io() {
+# Description: Import script which contains functions to read/write on flash chip
 	source /functions_io.sh
 }
 
 function import_leds_gpio() {
+# Description: Import GPIO pin numbers for LEDs
 	source /leds_gpio.d/$chip_family.sh
 }
 
-function import_prog_info() {
-	source /init_variables_prog_info.sh
-}
-
 function backup_bootpart() {
+# Description: Create backup for boot partition to rollback in case it gets corrupted, and for firmware detection
 	backup_partition "boot" /dev/mtd0 /bootpart_backup.img
 }
 
 function detect_current_profile() {
+# Description: Detect current profile to read/write partitions correctly
 	source /profile.d/$chip_family/detect_profile.sh || return 1
 }
 
 function emulate() {
+# Description: Emulate chip family, flash type and current profile for testing
 	source /init_emulate.sh
+}
+
+function import_current_profile() {
+# Description: Import current profile variables and querry script
+	source /profile.d/$chip_family/$current_profile/current_profile_variables.sh
+	source /profile.d/$chip_family/$current_profile/current_profile_queries.sh
+}
+
+function import_prog_info() {
+# Description: Import basic program variables
+	source /init_variables_prog_info.sh
 }
 
 function mount_sdcard() {
@@ -130,13 +145,8 @@ function import_prog_config_file() {
 	dos2unix $prog_config_file && source $prog_config_file || { msg "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
 }
 
-function import_current_profile() {
-	source /profile.d/$chip_family/$current_profile/current_profile_variables.sh
-	source /profile.d/$chip_family/$current_profile/current_profile_queries.sh
-}
-
-
 function display_info() {
+# Description: Let user know system info and current status
 	msg
 	msg "Program version: $prog_version"
 	msg "Hardware: $chip_name, chip family: $chip_family, flash type: $flash_type"
@@ -145,6 +155,7 @@ function display_info() {
 }
 
 function exit_init() {
+# Description: Copy log files to SD card and exit, user can still interupt it for debugging before it actually exits
 	msg
 	msg "---------- Exit init ----------"
 	msg
@@ -160,6 +171,7 @@ function exit_init() {
 	sleep 1
 	echo "Everything is finished! You can enter initramfs shell again before the program exits, if you wish" > /dev/console
 	wait_init_interrupt
+	
 	exit # Crash init to reboot immediately
 	sleep 10 # Prevents init from continuing after exit_init is finished but the camera has not rebooted immediately
 }

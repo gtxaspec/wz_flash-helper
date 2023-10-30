@@ -16,7 +16,7 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 - Switch between stock and OpenIPC firmware
 - Dry run option for safety and debugging.
 - Initramfs shell for manual debugging if you have a serial connection.
-- Seamlessly boots to wz_mini_hack on next boot
+- Seamlessly boots to `wz_mini_hack` on next boot
 - Custom script to customize partitions
 
 
@@ -44,6 +44,6 @@ It is also possible to brick the camera if you corrupt uboot partition with your
 
 
 ## Credits
-- Gtxaspec with his ideas, tips and hard work on OpenIPC drivers and uboot SD card booting.
+- Gtxaspec with his ideas, tips and hard work on OpenIPC drivers, uboot SD card booting and testing.
 - Mnakada with their docker image to build the boot image from [their repo](https://github.com/mnakada/atomcam_tools)
-- [OpenIPC project](https://github.com/OpenIPC) with their tools, profile and tips.
+- [OpenIPC project](https://github.com/OpenIPC) with their tools, firmware and tips.

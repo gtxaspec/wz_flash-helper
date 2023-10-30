@@ -2,8 +2,8 @@
 
 ## Setup guide
 
-1. Download the right release [lastest release](https://github.com/archandanime/wz_flash-helper/releases/latest) with your camera chip and extract to your SD card.
+1. Download the right release [lastest release](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract to your SD card.
 
 2. If your camera is running OpenIPC firmware, rename SD card boot image to `factory_0P3N1PC_kernel`
 
-**Note:** If your camera is Pan v2 or v2, follow [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation) first
+**Note:** If your camera is Pan v2 or v2, you need to update your bootloader to with lastest release using this [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation) first.

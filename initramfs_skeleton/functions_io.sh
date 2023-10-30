@@ -9,7 +9,7 @@
 
 
 function backup_partition_nor() {
-# Description: Backup partition contents to <outfile> on NOR flash
+# Description: Dump partition <partmtd> contents to <outfile> on NOR flash
 # Syntax: restore_partition_nor <partmtd> <outfile>
 	local partmtd="$1"
 	local outfile="$2"
@@ -23,7 +23,7 @@ function backup_partition_nor() {
 }
 
 function backup_partition_nand() {
-# Description: Backup partition contents to <outfile> on NAND flash
+# Description: Dump partition <partmtd> contents to <outfile> on NAND flash
 # Syntax: restore_partition_nand <partmtd> <outfile>
 	local partmtd="$1"
 	local outfile="$2"
@@ -37,7 +37,7 @@ function backup_partition_nand() {
 }
 
 function backup_partition() {
-# Description: Backup partition <partmtd> to <outfile>
+# Description: Dump partition <partmtd> contents to <outfile>
 # Syntax: backup_partition <partname> <partmtd> <outfile>
 	local partname="$1"
 	local partmtd="$2"
@@ -66,7 +66,7 @@ function backup_partition() {
 }
 
 function archive_partition() {
-# Description: Backup all files from a partition to .tar.gz file
+# Description: Create .tar.gz archive from partition <partmtdblock> files
 # Syntax: archive_partition <partname> <partblockmtd> <fstype> <outfile>
 	local partname="$1"
 	local partblockmtd="$2"
@@ -96,7 +96,7 @@ function archive_partition() {
 }
 
 function restore_partition_nor() {
-# Description: Restore partition contents from <infile> on NOR flash
+# Description: Write to <partmtd> partition using <infile> on NOR flash
 # Syntax: restore_partition_nor <infile> <partmtd>
 	local infile="$1"
 	local partmtd="$2"
@@ -111,7 +111,7 @@ function restore_partition_nor() {
 }
 
 function restore_partition_nand() {
-# Description: Restore partition contents from <infile> on NAND flash
+# Description: Write to <partmtd> partition using <infile> on NAND flash
 # Syntax: restore_partition_nand <infile> <partmtd>
 	local infile="$1"
 	local partmtd="$2"
@@ -125,7 +125,7 @@ function restore_partition_nand() {
 }
 
 function restore_partition() {
-# Description: Restore partition from <infile> to <partmtd>, <infile> and its md5sum file will be copied to stage directory before proceed restoring
+# Description: Write to <partmtd> partition using <infile>, <infile> and its md5sum file will be copied to stage directory before proceed writing
 # Syntax: restore_partition <partname> <restore_stage_dir> <infile> <partname>
 	local partname="$1"
 	local infile="$2"
@@ -160,7 +160,7 @@ function restore_partition() {
 }
 
 function erase_partition() {
-# Description: Erase a partition using flash_eraseall
+# Description: Erase partition <partmtd> using flash_eraseall
 # Syntax: erase_partition <partname> <partmtd>
 	local partname="$1"
 	local partmtd="$2"

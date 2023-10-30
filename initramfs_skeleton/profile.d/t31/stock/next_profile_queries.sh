@@ -40,6 +40,6 @@ function get_next_profile_partimg() {
 # Syntax: get_openipc_partimg <partname> <>
 	local partname="$1"
 	
-	echo -n "${next_profile}_${partname}.bin"
+	echo -n "${next_profile}_${chip_group}_${partname}.bin"
 }
 

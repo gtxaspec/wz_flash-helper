@@ -116,6 +116,8 @@ function import_current_profile() {
 # Description: Import current profile variables and querry script
 	source /profile.d/$chip_family/$current_profile/current_profile_variables.sh
 	source /profile.d/$chip_family/$current_profile/current_profile_queries.sh
+	source /profile.d/detect_chip_group.sh || return 1
+	
 }
 
 function import_prog_info() {
@@ -193,7 +195,7 @@ function main() {
 	
 	emulate
 	
-	import_current_profile
+	import_current_profile || return 1
 	import_prog_info
 	
 	mount_sdcard || return 1

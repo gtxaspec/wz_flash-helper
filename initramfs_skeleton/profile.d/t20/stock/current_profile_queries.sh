@@ -108,6 +108,6 @@ function get_current_profile_partimg() {
 # Syntax: get_openipc_partimg <partname> <>
 	local partname="$1"
 	
-	echo -n "${current_profile}_${partname}.bin"
+	echo -n "${current_profile}_${chip_group}_${partname}.bin"
 }
 

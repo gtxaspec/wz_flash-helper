@@ -79,13 +79,13 @@ function archive_partition() {
 	msg "- Archive partition: $partname($partblockmtd) files to file $outfile ---"
 	
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "mount -t $fstype $partblockmtd $archive_mnt_dir"
-		msg_dry_run "tar -cvf $outfile -C $archive_mnt_dir ."
+		msg_dry_run "mount -o ro -t $fstype $partblockmtd $archive_mnt_dir"
+		msg_dry_run "tar -czvf $outfile -C $archive_mnt_dir ."
 		msg_dry_run "md5sum $outfile > $outfile.md5sum"
 	else
-		mount -t $fstype $partblockmtd $archive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
+		mount -o ro -t $fstype $partblockmtd $archive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
 		msg_nonewline " + Creating archive file... "
-		tar -cvf $outfile -C $archive_mnt_dir . && msg "succeeded" || { msg "failed" ; return 1 ; }
+		tar -czvf $outfile -C $archive_mnt_dir . && msg "succeeded" || { msg "failed" ; return 1 ; }
 		msg_nonewline " + Generating md5sum file... "
 		md5sum $outfile > $outfile.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
 		umount $archive_mnt_dir && rmdir $archive_mnt_dir

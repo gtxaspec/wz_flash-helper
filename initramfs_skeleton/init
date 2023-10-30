@@ -9,7 +9,7 @@
 
 
 
-# exec > /tmp/initramfs.log 2>&1 # Comment out this line to debug with serial connection
+exec > /tmp/initramfs.log 2>&1 # Comment out this line to debug with serial connection
 set -x
 
 mount -t devtmpfs devtmpfs /dev

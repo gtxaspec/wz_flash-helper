@@ -16,7 +16,7 @@ This boot image to be booted on the next boot without having to pull the SD card
 ## Run a custom script
 With the `custom_script` option, you can write a script and this script will be executed after backup/restore/switch_profile operations are finished. This is useful if you want to do extra modification from initramfs environment.
 
-
+-----
 **Note:**
 - If you are on OpenIPC profile, boot image specified with `continue_boot_img_filename` will be renamed to `factory_0P3N1PC_kernel` instead.
 - SD card boot image will not be renamed if `dry_run` is set to `yes`.

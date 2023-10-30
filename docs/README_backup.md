@@ -5,13 +5,17 @@
 
 ### Backup stock partitions
 **Step 1:** [Setup](README_setup.md)
+
 **Step 2:** Edit the config file `general.conf` with:
 ```
 backup_partitions="yes"
 restore_partitions="no"
 ```
+
 **Step 3:** Insert your SD card and power on your camera.
+
 **Step 4:** Wait for the camera to restart after backup operation is finished.
+
 **Step 5:** Check your SD card, there should be a `Wyze_factory_backup` and `wz_flash-helper/backup/stock` directores where two copies of stock partitions backup are stored.
 
 
@@ -25,6 +29,6 @@ Like with stock partitions, OpenIPC partitions can also be backed up with the ab
 
 -----
 **Notes:**
-- Backup operation will automatically generate md5sum files for partitions backup files.
+- Backup operation will automatically generate md5sum files for backup partitions images.
 - During backup operation, the blue LED would be blinking every second.
 - Typically backup operation takes about 30 seconds(for reference it takes 25 seconds on Wyze Cam v3)

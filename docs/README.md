@@ -5,7 +5,7 @@ Alpha and beta releases are for testing only, do not use them
 
 # wz_flash-helper
 
-Automatic partitions backup/restore tool for T20/T31 cameras, works with both stock and OpenIPC firmware.
+Automatic partitions backup/restore tool for T20x/T31a/T31x cameras, works with both stock and OpenIPC firmware.
 You can also switch between stock and OpenIPC firmware without a scratch.
 
 
@@ -16,7 +16,7 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 - Switch between stock and OpenIPC firmware
 - Dry run option for safety and debugging.
 - Initramfs shell for manual debugging if you have a serial connection.
-- Seamlessly boots to `wz_mini_hack` on next boot
+- Seamlessly boot to `wz_mini_hack` on next boot
 - Custom script to customize partitions
 
 

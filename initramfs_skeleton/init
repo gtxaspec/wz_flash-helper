@@ -169,7 +169,7 @@ function exit_init() {
 	umount /sdcard
 
 	sleep 1
-	echo "Everything is finished! You can enter initramfs shell again before the program exits, if you wish" > /dev/console
+	msg "Everything is finished! You can enter initramfs shell again before the program exits, if you wish"
 	wait_init_interrupt
 	
 	exit # Crash init to reboot immediately

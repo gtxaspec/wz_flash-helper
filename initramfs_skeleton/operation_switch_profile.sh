@@ -19,27 +19,42 @@ function validate_restore_partition_images() {
 			md5sum -c $infile_name.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
 		fi
 	done
+
+	msg
+	if [ -f /profile.d/$chip_family/$next_profile/boot_hashes.txt ]; then
+		msg " - Valid boot hashes file for next profile is found, validating boot image"
+		local valid_boot_hashes=$(cat /profile.d/$chip_family/$next_profile/boot_hashes.txt)
+		local bootimg_name=$(get_next_profile_partimg "boot")
+		local bootimg="$next_profile_restore_dir_path/$bootimg_name"
+		local bootimg_hash=$(md5sum $bootimg | cut -d ' ' -f1)
 	
-	if [ -f /profile.d/$next_profile/boot_hashes.txt ]; then # Validate boot image hash if it is among allowed hashes
-		msg "Found valid boot partition image hashes, validating boot"
-		local boot_img_name=$(get_next_profile_partimg boot)
-		local boot_img="$next_profile_restore_dir_path/$boot_img_name"
-		local boot_img_hash=$(md5sum $boot_img | cut -d ' ' -f1)
-	
-		echo "$valid_hashes" | grep -q $boot_part_hash && msg "ok" || { msg "failed" ; return 1 ; }
+		echo "$valid_boot_hashes" | grep -q $bootimg_hash && msg "ok" || { msg "failed" ; return 1 ; }
+	else
+		msg "- Valid boot hashes file for next profile is missing, boot image validation will be skipped"
 	fi
+	msg
 }
 
 function validate_written_bootpart() {
 # Description: Check 3 times if written boot partition hash is on the valid hash list
+	msg
 	msg "- Validating written boot partition... "
-	for count in 1 2 3; do
-		msg " + Attempt $count: "
-		backup_partition boot /dev/mtd0 /boot_part_check.img
-		local boot_part_hash=$(md5sum /boot_part_check.img | cut -d ' ' -f1)
-		rm /boot_part_check.img
-		echo "$valid_hashes" | grep -q $boot_part_hash && { msg "ok" ; return 0 ; } || msg "failed"
+	msg
+	for attempt in 1 2 3; do
+		msg "- Validation attempt $attempt: "
+		backup_partition boot /dev/mtd0 /bootpart_check.img
+		local bootpart_hash=$(md5sum /bootpart_check.img | cut -d ' ' -f1)
+		rm /bootpart_check.img /bootpart_check.img.md5sum
+		msg " + Current boot partition hash: $bootpart_hash"
+		
+		local bootimg_name=$(get_next_profile_partimg "boot")
+		local bootimg="$next_profile_images_path/$bootimg_name"
+		local bootimg_hash=$(md5sum $bootimg | cut -d ' ' -f1)
+		msg " + Boot image used to write hash: $bootimg_hash"
+
+		[[ "$bootimg_hash" == "$bootpart_hash" ]] && { msg " + Validation result: ok" ; return 0 ; } || msg " + Validation result: failed"
 	done
+	rm /bootpart_check.img
 	return 1
 }
 
@@ -50,13 +65,13 @@ function rollback_bootpart() {
 	msg "ATTENTION! ATTENTION! ATTENTION!"
 	msg "ATTENTION! ATTENTION! ATTENTION!"
 	msg
-	msg "It is very likely that your boot partition is corrupted as it hash does not match any of known good boot image hashes"
+	msg "It is very likely that your boot partition is corrupted"
 	msg "Rolling back boot partition with previous profile boot image"
 	msg
 	
-	for count in 1 2; do
-		msg_nonewline " + Rolling back attempt $count... "
-		restore_partition "boot" /bootpart_backup.img /dev/mtd0 && { msg "succeeded :) You are safe now!" ; return 0 ; } || msg "failed"
+	for attempt in 1 2; do
+		msg "- Rollback attempt $attempt... "
+		restore_partition "boot" /bootpart_backup.img /dev/mtd0 && { msg " + Rollback result: succeeded :) You are safe now!" ; return 0 ; } || msg " + Rollback result: failed"
 	done
 		
 	msg "Rollback failed twice, sorry. Probably your flash chip is corrupted"
@@ -82,6 +97,7 @@ function switch_profile_operation() {
 	msg "---------- Begin of switch profile ----------"
 	validate_restore_partition_images || return 1
 	
+	msg "- Writing to partition"
 	for partname in $next_profile_all_partname_list; do
 		local partname_operation=$(get_next_profile_partoperation $partname)
 		local partmtd=$(get_next_profile_partmtd $partname)
@@ -103,11 +119,8 @@ function switch_profile_operation() {
 	
 	kill $red_and_blue_leds_pid
 	
-	if [[ "$dry_run" == "yes" ]]; then
-		msg "- No need to check for boot partition corruption on dry run mode"
-	else
-		validate_written_bootpart || { 	msg " + Boot partition validation failed" ; rollback_bootpart ; } || return 1
-	fi
+	[[ "$dry_run" == "yes" ]] && { msg "- No need to check for boot partition corruption on dry run mode" ; return 0 ; }
+	validate_written_bootpart || { 	msg " + Boot partition validation failed" ; rollback_bootpart ; } || return 1
 	msg
 }
 

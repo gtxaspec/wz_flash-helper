@@ -8,6 +8,7 @@ current_profile_all_partname_list="[boot] [rootfs] [config] [para]"
 
 ## Where all partition images will be saved
 current_profile_backup_path="[/sdcard/backup_dir]"
+current_profile_backup_secondary_path="[/sdcard/secondary_backup_dir]"
 
 ## Filename of the entire flash dump
 current_profile_backup_allparts_filename="[FW_PROFILE_entire_flash.bin]"

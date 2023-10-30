@@ -49,6 +49,10 @@ function backup_operation() {
 	backup_entire_flash || return 1
 	backup_parts || return 1
 	archive_parts || return 1
+	if [[ ! "$current_profile_backup_secondary_path" == "" ]]; then
+		msg_nonewline "- This profile has secondary backup directory at $current_profile_backup_secondary_path, creating a copy from primary backup... "
+		cp -r $current_profile_backup_path $current_profile_backup_secondary_path && msg "succeeded" || { msg "failed" ; return 1 ; }
+	fi
 	msg
 }
 

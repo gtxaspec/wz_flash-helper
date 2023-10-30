@@ -103,10 +103,10 @@ function restore_partition_nor() {
 
 	
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "dd if=$infile of=$partmtd"
+		msg_dry_run "flashcp $infile $partmtd"
 	else
 		msg_nonewline " + Writing... "
-		dd if=$infile of=$partptd && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		flashcp $infile $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; } 
 	fi
 }
 

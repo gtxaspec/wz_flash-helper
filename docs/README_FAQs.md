@@ -9,7 +9,7 @@ When switch profile operation is going on, it reads partition images that you pr
 
 
 ## What is a profile?
-`wz_flash-helper` does not care about what firmware(which is a set of binaries) you use, it only cares about the partition information(name, MTD mapping number, filesystem type) of the firmware to read/write the partitions correctly. A profile defines the partition mapping of the partitions to let `wz_flash-helper` do its jobs.
+`wz_flash-helper` does not care about what firmware(which is a set of binaries) you use, it only cares about the partition information(name, MTD mapping number, filesystem type) of the firmware to read/write the partitions correctly. A profile defines provides that information to let `wz_flash-helper` do its jobs.
 
 A profile includes:
 - List of all partition names

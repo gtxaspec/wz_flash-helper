@@ -3,8 +3,11 @@
 ## Restore partitions guide
 
 **Step 1:** [Setup](README_setup.md)
+
 **Step 2:** Place your partition restore images at `(SD card)/wz_flash-helper/restore/(profile)`. They should have have this format: `(profile)_(SoC type)_(partition name).bin`, with `SoC type` is `t20`, `t31a` or `t31x`(eg. stock_t31x_kernel.bin).
+
 **Step 3:** Edit `(SD card)/wz_flash-helper/restore/(profile).conf` to select what partitions will be restored:
+
 **Step 4:** Edit `general.conf` to enable restore operation:
 ```
 switch_profile="no"

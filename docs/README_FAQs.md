@@ -9,15 +9,16 @@ When switch profile operation is going on, it reads partition images that you pr
 
 
 ## What is a profile?
-`wz_flash-helper` does not care about what firmware(which is a set of binaries) you use, it only cares about the partition layout of the firmware to read/write the partitions correctly. A profile defines the partition mapping of the partitions to let `wz_flash-helper` do its jobs.
+`wz_flash-helper` does not care about what firmware(which is a set of binaries) you use, it only cares about the partition information(name, MTD mapping number, filesystem type) of the firmware to read/write the partitions correctly. A profile defines the partition mapping of the partitions to let `wz_flash-helper` do its jobs.
 
 A profile includes:
 - List of all partition names
-- MTD mapping device of each partition
-- List of partitions that store user data
+- MTD mapping number of each partition
+- List of partitions that store user data to create archives for them with backup operation
+- Partition types(`raw`, `jffs2`, `squashfs`, `vfat`) of each partition in case they need to be mounted
 - Name of SD card boot image
 - Backup/restore path to hold partition images
-- List of mandatory partitions that must be written when switching to that profile(when `witch_profile_with_all_partitions` is disabled), list of task to do(ignore, erase) with other partitions.
+- List of mandatory partitions that must be written when switching to that profile(when `witch_profile_with_all_partitions` is disabled), list of task to do(`ignore`, `erase`) with other partitions.
 - Detection script to detect that profile(usually by analyzing bootloader partition strings)
 
 

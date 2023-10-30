@@ -1,33 +1,41 @@
-[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | **Switch firmware** | [Other options](README_other_options.md) | [FAQs](README_FAQs.md_)
+[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | **Switch profile** | [Other options](README_other_options.md) | [FAQs](README_FAQs.md_)
 
-## How to switch between stock and OpenIPC firmware
+## How to switch between stock and OpenIPC profile
 
 
-To switch from stock to OpenIPC firmware, edit `wz_flash-helper.conf` with:
+**IMPORTANT:** If your camera is T31, please find out if it is `T31a` or `T31x` to download the correct OpenIPC build. Using the wrong build would hard brick your camera.
+
+First you need to have partition images at `(SD card)/wz_flash-helper/restore/(profile)`
+
+To switch from stock to OpenIPC profile, edit `general.conf` with:
 ```
 restore_partitions="no"
 switch_profile="yes"
-switch_profile_to="openipc"
+next_profile="openipc"
 ```
 
-To switch from OpenIPC to stock firmware, edit `wz_flash-helper.conf` with:
+To switch from OpenIPC to stock profile, edit `general.conf` with:
 ```
 restore_partitions="no"
-switch_profile="yes"
-switch_profile_to="stock"
+switch_profile="no"
+next_profile="stock"
 ```
 
-**WARNING:** DO NOT DISCONNECT POWER when switch firmware operation is going on. This would brick your camera.
+After editing `general.conf`, download the correct build from OpenIPC website, rename it with format:
+```
+openipc_[Soc]_[partition name].bin
+```
 
-Conditions for switch firmware operation to work:
-1. Current firmware type must be different from `restore_fw_type` value
-2. All partition images of the firmware types that you want to switch to must present in either:
+**WARNING:** DO NOT DISCONNECT POWER when switch profile operation is going on. This would brick your camera.
+
+Conditions for switch profile operation to work:
+1. All partition images of the profile types that you want to switch to must present in either:
 - `(SD card)/wz_flash-helper/restore/stock` or
 - `(SD card)/wz_flash-helper/restore/openipc`
-3. All partition images must come with their md5sum file in `<partition image>.md5sum` format
+2. All partition images must come with their md5sum file in `<partition image>.md5sum` format.
 
 
 **Note:**
 - `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_profile`are enabled, both operations would not be executed.
 - All partition images are verified with their md5sum files before switch_profile operation starts, no need to worry a currupted partition image.
-- During switch firmware operation, both the blue LED and the red LED would be blinking.
+- During switch profile operation, both the blue LED and the red LED would be blinking.

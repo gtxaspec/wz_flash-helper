@@ -19,19 +19,6 @@ function validate_restore_partition_images() {
 			md5sum -c $infile_name.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
 		fi
 	done
-
-	msg
-	if [ -f /profile.d/$chip_family/$next_profile/boot_hashes.txt ]; then
-		msg " - Valid boot hashes file for next profile is found, validating boot image"
-		local valid_boot_hashes=$(cat /profile.d/$chip_family/$next_profile/boot_hashes.txt)
-		local bootimg_name=$(get_next_profile_partimg "boot")
-		local bootimg="$next_profile_restore_dir_path/$bootimg_name"
-		local bootimg_hash=$(md5sum $bootimg | cut -d ' ' -f1)
-	
-		echo "$valid_boot_hashes" | grep -q $bootimg_hash && msg "ok" || { msg "failed" ; return 1 ; }
-	else
-		msg "- Valid boot hashes file for next profile is missing, boot image validation will be skipped"
-	fi
 	msg
 }
 

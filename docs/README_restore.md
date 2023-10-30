@@ -1,28 +1,19 @@
-[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | **Restore** | [Switch firmware](README_switch_profile.md) | [Other options](README_other_options.md) | [FAQs](README_FAQs.md)
+[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | **Restore** | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [FAQs](README_FAQs.md)
 
 ## Restore partitions guide
 
 1. [Setup](README_setup.md)
 2. Place your partition restore images at `(SD card)/wz_flash-helper/restore/(profile)`
 3. Edit `(SD card)/wz_flash-helper/restore/(profile).conf` to select what partitions will be restored:
-4. Edit `wz_flash-helper.conf` to enable restore operation:
+4. Edit `general.conf` to enable restore operation:
 ```
 switch_profile="no"
 restore_partitions="yes"
 ```
-5. Depends on what firmware your camera is running, with `wz_flash-helper.conf` with:
-```
-restore_fw_type="stock"
-```
-or
-```
-restore_fw_type="openipc"
-```
-6. Insert your SD card into your camera and reboot.
+5. Insert your SD card into your camera and reboot.
 
 
 **Note:**
-- Be careful not to restore wrong firmware(eg. Restore OpenIPC partitions on a camera running stock), though this does not brick your camera.
 - There is no option to restore your boot partition to avoid accidentally corrupting it.
 - `switch_profile` option must be disabled like the above configurations. If both `restore_partitions` and `switch_profile`are enabled, both operations will not be executed.
 - All partition restore images must come with their md5sum file in `<partition image>.md5sum` format

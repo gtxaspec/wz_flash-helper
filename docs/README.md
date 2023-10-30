@@ -1,7 +1,7 @@
 **Introduction** | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [FAQs](README_FAQs.md)
 
 ## Still under development, you can not use this yet until there is an official release
-Alpha and beta releases are for testing only, do not use it
+Alpha and beta releases are for testing only, do not use them
 
 # wz_flash-helper
 
@@ -16,7 +16,8 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 - Switch between stock and OpenIPC firmware
 - Dry run option for safety and debugging.
 - Initramfs shell for manual debugging if you have a serial connection.
-- Other features with [extra options](README_boot_img_next_boot.md)
+- Seamlessly boots to wz_mini_hack on next boot
+- Custom script to customize partitions
 
 
 ## Supported cameras
@@ -30,13 +31,13 @@ You can also switch between stock and OpenIPC firmware without a scratch.
 ## Notes
 - It is highly recommended to enable `dry_run` to check if everything works before doing real operations.
 - Backup is done first, then Restore, then Switch profile and followed by Custom script.
-- If one task fails, the flash tool init would exit immediately without doing the remaining operations.
+- If one task fails, the program would exit immediately without doing any more operations.
 
 
 ## Warning
 ```
 I am not responsible for bricking someone's cameras.
-DO NOT DISCONNECT POWER when switch firmware operation is going on,
+DO NOT DISCONNECT POWER when switch profile operation is going on,
 this would brick your camera(unless you know how to remove the flash chip and use SPI programmer).
 It is also possible to brick the camera if you corrupt uboot partition with your custom script or you inject dangerous commands into the config file.
 ```
@@ -45,4 +46,4 @@ It is also possible to brick the camera if you corrupt uboot partition with your
 ## Credits
 - Gtxaspec with his ideas, tips and hard work on OpenIPC drivers and uboot SD card booting.
 - Mnakada with their docker image to build the boot image from [their repo](https://github.com/mnakada/atomcam_tools)
-- [OpenIPC project](https://github.com/OpenIPC) with their tools, firmware and tips.
+- [OpenIPC project](https://github.com/OpenIPC) with their tools, profile and tips.

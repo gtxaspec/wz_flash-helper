@@ -13,6 +13,7 @@ restore_partitions="yes"
 5. Insert your SD card into your camera and reboot.
 
 
+-----
 **Note:**
 - There is no option to restore your boot partition to avoid accidentally corrupting it.
 - `switch_profile` option must be disabled like the above configurations. If both `restore_partitions` and `switch_profile`are enabled, both operations will not be executed.

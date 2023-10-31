@@ -128,6 +128,7 @@ function import_leds_gpio() {
 
 function backup_bootpart() {
 # Description: Create backup for boot partition to rollback in case it gets corrupted, and for profile detection
+	msg "- Creating boot partition backup image"
 	backup_partition "boot" /dev/mtd0 /bootpart_backup.img
 }
 
@@ -220,7 +221,6 @@ function main() {
 	detect_hardware
 	load_kernel_modules
 	initialize_gpio
-
 	
 	welcome
 	wait_init_interrupt

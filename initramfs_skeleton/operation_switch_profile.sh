@@ -26,7 +26,6 @@ function validate_written_bootpart() {
 # Description: Check 3 times if written boot partition is the same as the partition image used to write
 	msg
 	msg "- Validating written boot partition"
-	msg
 	for attempt in 1 2 3; do
 		msg "- Validation attempt $attempt:"
 		local bootimg_name=$(get_next_profile_partimg "boot")
@@ -42,7 +41,7 @@ function validate_written_bootpart() {
 		rm /bootpart_check.img	
 
 		msg_nonewline " + Validation result: "
-		[[ "$bootimg_hash" == "$bootpart_hash" ]] && { msg "ok, this is good" ; return 0 ; } || msg "failed"
+		[[ "$bootimg_hash" == "$bootpart_hash" ]] && { msg "ok" ; return 0 ; } || msg "failed"
 	done
 	rm /bootpart_check.img
 	return 1

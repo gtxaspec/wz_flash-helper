@@ -120,6 +120,14 @@ function import_current_profile() {
 	
 }
 
+function load_kernel_modules() {
+# Description: Load kernel modules for device chip family
+	ls /kernel_module.d/$chip_family/*.ko || return 0
+	for kernel_module in /kernel_module.d/$chip_family/*.ko; do
+		insmod $kernel_module
+	done
+}
+
 function import_prog_info() {
 # Description: Import basic program variables
 	source /init_variables_prog_info.sh
@@ -180,8 +188,10 @@ function exit_init() {
 
 function main() {
 	detect_hardware
+	load_kernel_modules
 	initialize_gpio
-			
+
+	
 	welcome
 	wait_init_interrupt
 	

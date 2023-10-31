@@ -29,15 +29,17 @@ function validate_written_bootpart() {
 	msg
 	for attempt in 1 2 3; do
 		msg "- Validation attempt $attempt:"
-		backup_partition boot /dev/mtd0 /bootpart_check.img
-		local bootpart_hash=$(md5sum /bootpart_check.img | cut -d ' ' -f1)
-		rm /bootpart_check.img /bootpart_check.img.md5sum
-		msg " + Current boot partition hash: $bootpart_hash"
-		
 		local bootimg_name=$(get_next_profile_partimg "boot")
 		local bootimg="$next_profile_images_path/$bootimg_name"
+		local bootimg_blocksize=$(du -b $bootimg)
 		local bootimg_hash=$(md5sum $bootimg | cut -d ' ' -f1)
 		msg " + Boot image used to write hash: $bootimg_hash"
+
+		dd if=/dev/mtd0 of=/bootpart_check.img bs=1 count=$bootimg_blocksize status=none
+		local bootpart_hash=$(md5sum /bootpart_check.img | cut -d ' ' -f1)		
+		msg " + Current boot partition hash: $bootpart_hash"
+
+		rm /bootpart_check.img	
 
 		msg_nonewline " + Validation result: "
 		[[ "$bootimg_hash" == "$bootpart_hash" ]] && { msg "ok, this is good" ; return 0 ; } || msg "failed"

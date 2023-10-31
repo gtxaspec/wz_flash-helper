@@ -7,6 +7,19 @@
 # |_| \_\___||___/\__\___/|_|  \___|  \___/| .__/ \___|_|  \__,_|\__|_|\___/|_| |_|
 #                                          |_|                                     
 
+function restore_current_profile_bootpart() {
+# Description: Restore boot partition, this option is hidden from restore config files
+	if [[ "$hidden_option_restore_boot" == "yes" ]]; then
+		msg "- Sssh! Restoring boot option"
+		local partname="boot"
+		local infile_name=$(get_current_profile_partimg $partname)
+		local infile="$current_profile_restore_path/$infile_name"
+		local partmtd=$(get_current_profile_partmtd $partname)
+		
+		restore_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
+	fi
+}
+
 function restore_current_profile_parts() {
 # Description: Restore partitions from partition images
 	for partname in $current_profile_restore_partname_list; do
@@ -39,6 +52,7 @@ function restore_operation() {
 	msg
 	msg "---------- Begin of restore operation ----------"
 	restore_current_profile_parts
+	restore_current_profile_bootpart
 	kill $red_led_pid
 	msg
 }

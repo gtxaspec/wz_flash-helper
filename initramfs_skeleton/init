@@ -52,6 +52,35 @@ function detect_hardware() {
 	flash_type=$(ipcinfo-mips32 --flash-type)
 }
 
+function play_audio() {
+	[[ ! "$enable_audio" == "yes" ]] && exit 0
+
+	audio_title="$1"
+	case $audio_title in
+		"initializing")
+			local audio_file="/audio.d/initializing_oprerations.pcm"
+			;;
+		"processing")
+			local audio_file="/audio.d/processing_operations.pcm"
+			;;
+		"successful")
+			local audio_file="/audio.d/operations_successful.pcm"
+			;;
+		"failed")
+			local audio_file="/audio.d/operations_failed.pcm"
+			;;
+		"rebooting")
+			local audio_file="/audio.d/rebooting_now.pcm"
+			;;
+	esac
+	
+	local numberic='^[0-9]+$'
+	if [[ ! "$audio_volume" =~ $numberic ]] || [[ "$audio_volume" == "" ]] || [ "$audio_volume" -lt 0 ] || [ "$audio_volume" -gt 100 ]; then
+		local audio_volume="50"
+	fi
+	audioplay $audio_file $audio_volume
+}
+
 function initialize_gpio() {
 # Description: Initialize some GPIO pins to enable LEDs, maybe SD card if needed
 	source /initialize_gpio.d/$chip_family.sh
@@ -182,6 +211,7 @@ function exit_init() {
 	msg "Everything is finished! You can enter initramfs shell again before the program exits, if you wish"
 	wait_init_interrupt
 	
+	play_audio "rebooting"
 	exit # Crash init to reboot immediately
 	sleep 10 # Prevents init from continuing after exit_init is finished but the camera has not rebooted immediately
 }
@@ -216,9 +246,12 @@ function main() {
 	
 	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no"
 
+	play_audio "initializing"
+
 	#---------- Backup operation ----------
 	if [[ "$backup_partitions" == "yes" ]]; then
 		msg "$backup_partitions_yes"
+		play_audio "processing"
 		source /operation_backup.sh && msg "$backup_partitions_succeed" || { msg "$backup_partitions_fail" ; return 1 ; }
 	else
 		msg "$backup_partitions_no"
@@ -227,6 +260,7 @@ function main() {
 	#---------- Restore operation ----------
 	if [[ "$restore_partitions" == "yes" ]]; then
 		msg "$restore_partitions_yes"
+		play_audio "processing"
 		source /operation_restore.sh && msg "$restore_partitions_succeed" || { msg "$restore_partitions_fail" ; return 1 ; }
 	else
 		msg "$restore_partitions_no"
@@ -235,6 +269,7 @@ function main() {
 	#---------- Switch profile operation ----------
 	if [[ "$switch_profile" == "yes" ]]; then
 		msg "$switch_profile_yes"
+		play_audio "processing"
 		source /operation_switch_profile.sh && msg "$switch_profile_succeed" || { msg "$switch_profile_fail" ; return 1 ; }
 	else
 		msg "$switch_profile_no"
@@ -258,6 +293,6 @@ function main() {
 }
 
 
-main
+main && play_audio "successful" || play_audio "failed"
 exit_init
 

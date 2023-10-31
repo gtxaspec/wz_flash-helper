@@ -47,14 +47,14 @@ function restore_operation() {
 
 	dos2unix $prog_restore_config_file && source $prog_restore_config_file || { msg "$prog_restore_config_file file is invalid. Nothing will be done" ; return 1 ; }
 
-	/bg_blink_led_red.sh &
+	source /bg_blink_led_red.sh &
 	local red_led_pid="$!"
 	msg
 	msg "---------- Begin of restore operation ----------"
 	restore_current_profile_parts
 	restore_current_profile_bootpart
-	kill $red_led_pid
 	msg
+	kill $red_led_pid
 }
 
 

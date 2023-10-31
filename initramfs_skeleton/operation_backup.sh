@@ -44,6 +44,8 @@ function archive_parts() {
 function backup_operation() {
 # Description: Create partition images of the entire flash, all partitions and create extra archives from config partitions
 	mkdir -p $current_profile_backup_path
+	source /bg_blink_led_blue.sh &
+	local blue_led_pid="$!"
 	msg
 	msg "---------- Begin of backup operation ----------"
 	backup_entire_flash || return 1
@@ -54,6 +56,7 @@ function backup_operation() {
 		cp -r $current_profile_backup_path $current_profile_backup_secondary_path && msg "succeeded" || { msg "failed" ; return 1 ; }
 	fi
 	msg
+	kill $blue_led_pid
 }
 
 backup_operation || return 1

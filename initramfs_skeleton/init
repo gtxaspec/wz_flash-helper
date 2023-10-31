@@ -53,7 +53,7 @@ function detect_hardware() {
 }
 
 function play_audio() {
-	[[ ! "$enable_audio" == "yes" ]] && exit 0
+	[[ ! "$enable_audio" == "yes" ]] && return 0
 
 	audio_title="$1"
 	case $audio_title in

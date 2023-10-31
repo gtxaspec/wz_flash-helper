@@ -83,7 +83,7 @@ function switch_profile_operation() {
 		source /profile.d/$chip_family/$next_profile/next_profile_switch_baseparts.sh
 	fi
 	
-	/bg_blink_led_red_and_blue.sh &
+	source /bg_blink_led_red_and_blue.sh &
 	local red_and_blue_leds_pid="$!"
 	msg
 	msg "---------- Begin of switch profile ----------"
@@ -109,11 +109,10 @@ function switch_profile_operation() {
 		esac
 	done
 	
-	kill $red_and_blue_leds_pid
-	
 	[[ "$dry_run" == "yes" ]] && { msg "- No need to check for boot partition corruption on dry run mode" ; return 0 ; }
 	validate_written_bootpart || { 	msg " + Boot partition validation failed" ; rollback_bootpart ; } || return 1
 	msg
+	kill $red_and_blue_leds_pid
 }
 
 switch_profile_operation || return 1

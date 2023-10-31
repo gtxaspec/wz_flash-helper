@@ -72,6 +72,7 @@ function rollback_bootpart() {
 function switch_profile_operation() {
 	[[ "$restore_partitions" == "yes" ]] && { msg "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	[[ "$current_profile" == "$next_profile" ]] && { msg "next_profile value is same as current_profile, aborting switch profile" ; return 1 ; }
+	[ ! -f /profile.d/$chip_family/$next_profile ] && { msg "next_profile is not supported, aborting switch profile" ; return 1 ; }
 	
 	source /profile.d/$chip_family/$next_profile/next_profile_variables.sh
 	source /profile.d/$chip_family/$next_profile/next_profile_queries.sh

@@ -5,7 +5,7 @@
 
 function detect_profile() {
 	strings /bootpart_backup.img > /bootpart_backup_strings.txt
-	
+	msg
 	if grep -q "demo_wcv3.bin" /bootpart_backup_strings.txt ; then # Stock Cam v3
 		msg "Camera is currently on Cam v3 stock firmware"
 		current_profile="stock"

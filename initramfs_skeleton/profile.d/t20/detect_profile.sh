@@ -5,7 +5,7 @@
 
 function detect_profile() {
 	strings /bootpart_backup.img > /bootpart_backup_strings.txt
-	
+	msg
 	if grep -q "demo.bin" /bootpart_backup_strings.txt ; then # Stock Cam v2 & Cam Pan
 		msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
 		current_profile="stock"

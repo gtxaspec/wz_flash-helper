@@ -31,7 +31,7 @@ function validate_written_bootpart() {
 		msg "- Validation attempt $attempt:"
 		local bootimg_name=$(get_next_profile_partimg "boot")
 		local bootimg="$next_profile_images_path/$bootimg_name"
-		local bootimg_blocksize=$(du -b $bootimg)
+		local bootimg_blocksize=$(du -b $bootimg | cut -f -1)
 		local bootimg_hash=$(md5sum $bootimg | cut -d ' ' -f1)
 		msg " + Boot image used to write hash: $bootimg_hash"
 

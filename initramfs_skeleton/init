@@ -130,6 +130,7 @@ function backup_bootpart() {
 # Description: Create backup for boot partition to rollback in case it gets corrupted, and for profile detection
 	msg "- Creating boot partition backup image"
 	backup_partition "boot" /dev/mtd0 /bootpart_backup.img
+	strings /bootpart_backup.img > /bootpart_backup.img.strings
 }
 
 function detect_current_profile() {

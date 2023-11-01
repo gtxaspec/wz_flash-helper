@@ -61,7 +61,7 @@ function rollback_bootpart() {
 	for attempt in 1 2; do
 		msg "- Rollback attempt $attempt:"
 		msg_nonewline " + Rollback result: "
-		restore_partition "boot" /bootpart_backup.img /dev/mtd0 && { msg "succeeded :) You are safe now!" ; return 0 ; } || msg "failed"
+		restore_partition "boot" /bootpart_backup.img /dev/mtd0 && { msg "succeeded :) You are safe now!" ; return 1 ; } || msg "failed"
 	done
 		
 	msg "Rollback failed twice, sorry. Probably your flash chip is corrupted"

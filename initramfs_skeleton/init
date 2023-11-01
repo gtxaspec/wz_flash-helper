@@ -45,13 +45,6 @@ function msg_nonewline() {
 	echo -n "$message" >> /tmp/initramfs_serial.log
 }
 
-function detect_hardware() {
-# Description: Detect SoC and flash chip type
-	chip_name=$(ipcinfo-mips32 --chip-name)
-	chip_family=$(ipcinfo-mips32 --family)
-	flash_type=$(ipcinfo-mips32 --flash-type)
-}
-
 function play_audio() {
 	[[ ! "$enable_audio" == "yes" ]] && return 0
 
@@ -79,6 +72,20 @@ function play_audio() {
 		local audio_volume="50"
 	fi
 	audioplay $audio_file $audio_volume
+}
+
+function detect_hardware() {
+# Description: Detect SoC and flash chip type
+	chip_name=$(ipcinfo-mips32 --chip-name)
+	chip_family=$(ipcinfo-mips32 --family)
+	flash_type=$(ipcinfo-mips32 --flash-type)
+}
+
+function backup_bootpart() {
+# Description: Create backup for boot partition to rollback in case it gets corrupted, and for profile detection
+	msg "- Creating boot partition backup image"
+	backup_partition "boot" /dev/mtd0 /bootpart_backup.img
+	strings /bootpart_backup.img > /bootpart_backup.img.strings
 }
 
 function initialize_gpio() {
@@ -126,13 +133,6 @@ function import_leds_gpio() {
 	source /leds_gpio.d/$chip_family.sh
 }
 
-function backup_bootpart() {
-# Description: Create backup for boot partition to rollback in case it gets corrupted, and for profile detection
-	msg "- Creating boot partition backup image"
-	backup_partition "boot" /dev/mtd0 /bootpart_backup.img
-	strings /bootpart_backup.img > /bootpart_backup.img.strings
-}
-
 function detect_current_profile() {
 # Description: Detect current profile to read/write partitions correctly
 	source /profile.d/$chip_family/detect_profile.sh || return 1
@@ -154,14 +154,14 @@ function import_current_profile() {
 function load_kernel_modules() {
 # Description: Load kernel modules for device chip family
 	if ls /kernel_module.d/model_speciality.d/*.sh ; then
-		for speciality_kmod_script in /kernel_module.d/model_speciality.d/*.sh; do
+		for speciality_kmod_script in /kernel_module.d/model_speciality.d/*.sh ; do
 			source $speciality_kmod_script
 		done
 	fi
 	
 	[[ "$kmod_speciality_flag" == "true" ]] && return 0 # Do not load kernel modules again if they has already been loaded by speciality scripts
 	if ls /kernel_module.d/$chip_family/*.ko ; then
-		for kernel_module in /kernel_module.d/$chip_family/*.ko; do
+		for kernel_module in /kernel_module.d/$chip_family/*.ko ; do
 			insmod $kernel_module
 		done
 	fi
@@ -228,6 +228,7 @@ function exit_init() {
 
 function main() {
 	detect_hardware
+	backup_bootpart
 	load_kernel_modules
 	initialize_gpio
 	
@@ -237,8 +238,6 @@ function main() {
 	import_init_msg
 	import_functions_io
 	import_leds_gpio
-
-	backup_bootpart
 	
 	detect_current_profile || return 1
 	

@@ -8,7 +8,7 @@ current_profile_all_partname_list="boot kernel rootfs app kback aback cfg para"
 
 ## Where all partition images will be saved
 current_profile_backup_path="/sdcard/Wyze_factory_backup"
-current_profile_backup_secondary_path="/sdcard/backup/stock"
+current_profile_backup_secondary_path="/sdcard/wz_flash-helper/backup/stock"
 
 ## Filename of the entire flash dump
 current_profile_backup_allparts_filename="t31_stock_all.bin"

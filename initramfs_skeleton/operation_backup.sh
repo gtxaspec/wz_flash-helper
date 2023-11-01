@@ -53,7 +53,8 @@ function backup_operation() {
 	archive_parts || return 1
 	if [[ ! "$current_profile_backup_secondary_path" == "" ]] && [[ ! "$dry_run" == "yes" ]]; then
 		msg_nonewline "- This profile has secondary backup directory at $current_profile_backup_secondary_path, creating a copy from primary backup... "
-		cp -r $current_profile_backup_path $current_profile_backup_secondary_path && msg "succeeded" || { msg "failed" ; return 1 ; }
+		mkdir -p $current_profile_backup_secondary_path
+		cp -r $current_profile_backup_path/* $current_profile_backup_secondary_path && msg "succeeded" || { msg "failed" ; return 1 ; }
 	fi
 	msg
 	kill $blue_led_pid

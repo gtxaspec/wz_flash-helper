@@ -152,10 +152,18 @@ function import_current_profile() {
 
 function load_kernel_modules() {
 # Description: Load kernel modules for device chip family
-	ls /kernel_module.d/$chip_family/*.ko || return 0
-	for kernel_module in /kernel_module.d/$chip_family/*.ko; do
-		insmod $kernel_module
-	done
+	if ls /kernel_module.d/model_speciality.d/*.sh ; then
+		for speciality_kmod_script in /kernel_module.d/model_speciality.d/*.sh; do
+			source $speciality_kmod_script
+		done
+	fi
+	
+	[[ "$kmod_speciality_flag" == "true" ]] && return 0 # Do not load kernel modules again if they has already been loaded by speciality scripts
+	if ls /kernel_module.d/$chip_family/*.ko ; then
+		for kernel_module in /kernel_module.d/$chip_family/*.ko; do
+			insmod $kernel_module
+		done
+	fi
 }
 
 function import_prog_info() {

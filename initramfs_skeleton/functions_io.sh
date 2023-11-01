@@ -183,3 +183,8 @@ function leave_partition() {
 	msg "- Leave partition: $partname($partmtd) ---"
 		msg " + Leaving..."
 }
+
+function gen_4digit_id() {
+# Description: Generate a number in 1000-9999 range
+	shuf -i 1000-9999 -n 1
+}

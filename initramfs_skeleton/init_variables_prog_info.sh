@@ -4,7 +4,6 @@
 
 
 prog_name="wz_flash-helper"
-prog_version=$(cat /prog_ver.txt)
 
 prog_dir="/sdcard/wz_flash-helper"
 prog_config_file="/sdcard/wz_flash-helper/general.conf"

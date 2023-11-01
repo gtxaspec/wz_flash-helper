@@ -1,7 +1,11 @@
 #!/bin/sh
 
+detect_model_cleanup() {
+	umount $mnt_config && rmdir $mnt_config
+}
+
 detect_model() {
-	local config_partname="stock_para"
+	local config_partname="para"
 	local model_config_file="config/.product_config"
 
 	local partmtdblock=$(get_current_profile_partmtdblock $config_partname)
@@ -18,12 +22,12 @@ detect_model() {
 		model="v2"
 		
 	else
-		model="unknown"
+		msg "Unable to detect camera model"
+		detect_model_cleanup
+		return 1
 	fi
 	
-	umount $mnt_config && rmdir $mnt_config
-
-	[[ "$model" == "unknown" ]] && { msg "Unable to detect current firmware" ; return 1 ; }
+	detect_model_cleanup
 }
 
 detect_model || return 1

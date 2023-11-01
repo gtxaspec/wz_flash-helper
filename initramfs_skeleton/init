@@ -149,11 +149,6 @@ function import_leds_gpio() {
 	source /leds_gpio.d/$chip_family.sh
 }
 
-function detect_device_model() {
-# Description: Detect current camera model by reading the factory generated file
-	source /profile.d/$chip_family/detect_model.sh
-}
-
 function detect_current_profile() {
 # Description: Detect current profile to read/write partitions correctly
 	source /profile.d/$chip_family/detect_profile.sh || return 1
@@ -166,10 +161,9 @@ function emulate() {
 
 function import_current_profile() {
 # Description: Import current profile variables and querry script
-	source /profile.d/$chip_family/$current_profile/current_profile_variables.sh
-	source /profile.d/$chip_family/$current_profile/current_profile_queries.sh
 	source /profile.d/detect_chip_group.sh || return 1
-	
+	source /profile.d/$chip_family/$current_profile/current_profile_variables.sh
+	source /profile.d/$chip_family/$current_profile/current_profile_queries.sh	
 }
 
 function import_prog_info() {
@@ -182,6 +176,7 @@ function mount_sdcard() {
 	msg_nonewline "Mounting SD card... "
 	mkdir -p /sdcard
 	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg "succeeded" || msg "failed"
+	msg $(mount)
 }
 
 function rename_prog_sdcard_boot_img() {
@@ -197,6 +192,11 @@ function import_prog_config_file() {
 
 	# Fix issue that config file failed to be sourced if it contains MS-DOS newline
 	dos2unix $prog_config_file && source $prog_config_file || { msg "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
+}
+
+function detect_device_model() {
+# Description: Detect current camera model by reading the factory generated file
+	source /profile.d/$chip_family/detect_model.sh
 }
 
 function display_info() {
@@ -233,8 +233,12 @@ function exit_init() {
 
 function main() {
 	detect_hardware
-	
+
+	import_prog_info
 	import_functions_io
+	import_leds_gpio
+	import_init_msg
+		
 	backup_bootpart
 	
 	load_kernel_modules
@@ -243,21 +247,15 @@ function main() {
 	welcome
 	wait_init_interrupt
 	
-	import_init_msg
-	import_leds_gpio
-
-	detect_device_model || return 1
 	detect_current_profile || return 1
-	
 	emulate
-	
 	import_current_profile || return 1
-	import_prog_info
 	
 	mount_sdcard || return 1
 	rename_prog_sdcard_boot_img
 	import_prog_config_file || return 1
 
+	detect_device_model || return 1
 	display_info
 	
 	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no"

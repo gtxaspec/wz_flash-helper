@@ -43,18 +43,33 @@ function archive_parts() {
 
 function backup_operation() {
 # Description: Create partition images of the entire flash, all partitions and create extra archives from config partitions
+	msg "$(mount)"
 	mkdir -p $current_profile_backup_path
+	
+	backup_id=$(gen_4digit_id)
+	while [ -d $current_profile_backup_path/$backup_id ]; do
+		backup_id=$(gen_4digit_id)
+	done
+	
+	current_profile_backup_path="$current_profile_backup_path/$backup_id"
+	mkdir -p $current_profile_backup_path
+	
 	source /bg_blink_led_blue.sh &
 	local blue_led_pid="$!"
 	msg
 	msg "---------- Begin of backup operation ----------"
+	msg "Backup ID: $backup_id"
 	backup_entire_flash || return 1
 	backup_parts || return 1
 	archive_parts || return 1
 	if [[ ! "$current_profile_backup_secondary_path" == "" ]] && [[ ! "$dry_run" == "yes" ]]; then
 		msg_nonewline "- This profile has secondary backup directory at $current_profile_backup_secondary_path, creating a copy from primary backup... "
 		mkdir -p $current_profile_backup_secondary_path
-		cp -r $current_profile_backup_path/* $current_profile_backup_secondary_path && msg "succeeded" || { msg "failed" ; return 1 ; }
+		if [ -d $current_profile_backup_secondary_path/$backup_id ]; then
+			msg "Backup with ID $backup_id exists on secondary backup directory, old backup will not be overwritten, skipping"
+		else	
+			cp -r $current_profile_backup_path $current_profile_backup_secondary_path && msg "succeeded" || { msg "failed" ; return 1 ; }
+		fi	
 	fi
 	msg
 	kill $blue_led_pid

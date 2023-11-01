@@ -149,6 +149,11 @@ function import_leds_gpio() {
 	source /leds_gpio.d/$chip_family.sh
 }
 
+function detect_device_model() {
+# Description: Detect current camera model by reading the factory generated file
+	source /profile.d/$chip_family/detect_model.sh
+}
+
 function detect_current_profile() {
 # Description: Detect current profile to read/write partitions correctly
 	source /profile.d/$chip_family/detect_profile.sh || return 1
@@ -198,7 +203,7 @@ function display_info() {
 # Description: Let user know system info and current status
 	msg
 	msg "Program version: $prog_version"
-	msg "Hardware: $chip_name, chip family: $chip_family, flash type: $flash_type"
+	msg "Hardware: $chip_name, chip family: $chip_family, flash type: $flash_type, model: $model"
 	msg "Current profile: $current_profile"
 	msg
 }
@@ -240,7 +245,8 @@ function main() {
 	
 	import_init_msg
 	import_leds_gpio
-	
+
+	detect_device_model || return 1
 	detect_current_profile || return 1
 	
 	emulate

@@ -11,15 +11,15 @@ mtdparts: 256K@0(boot),64K@256K(openipc_env),3072K@320K(openipc_kernel),10240K@3
 ---------- Stock ----------
 PART     SIZE(dec)  START(dec)  START(hex)  MTD MAPPING                            MTD DEVICE
 boot     256        0           0x0         256K@0(boot)                           /dev/mtd0
-kernel   2048       256         0x40000     2048K@256K(t20_kernel)                 /dev/mtd6
-root     3392       2304        0x240000    3392K@2304K(t20_root)                  /dev/mtd7
-driver   640        5696        0x590000    640K@5696K(t20_driver)                 /dev/mtd8
-appfs    4736       6336        0x630000    4736K@6336K(t20_appfs)                 /dev/mtd9
-backupk  2048       11072       0xad0000    2048K@11072K(t20_backupk)              /dev/mtd10
-backupd  640        13120       0xcd0000    640K@13120K(t20_backupd)               /dev/mtd11
-backupa  2048       13760       0xd70000    2048K@13760K(t20_backupa)              /dev/mtd12
-config   256        15808       0xf70000    256K@15808K(t20_config)                /dev/mtd13
-para     256        16064       0xfb0000    256K@16064K(t20_para)                  /dev/mtd14
+kernel   2048       256         0x40000     2048K@256K(stock_kernel)                 /dev/mtd6
+root     3392       2304        0x240000    3392K@2304K(stock_root)                  /dev/mtd7
+driver   640        5696        0x590000    640K@5696K(stock_driver)                 /dev/mtd8
+appfs    4736       6336        0x630000    4736K@6336K(stock_appfs)                 /dev/mtd9
+backupk  2048       11072       0xad0000    2048K@11072K(stock_backupk)              /dev/mtd10
+backupd  640        13120       0xcd0000    640K@13120K(stock_backupd)               /dev/mtd11
+backupa  2048       13760       0xd70000    2048K@13760K(stock_backupa)              /dev/mtd12
+config   256        15808       0xf70000    256K@15808K(stock_config)                /dev/mtd13
+para     256        16064       0xfb0000    256K@16064K(stock_para)                  /dev/mtd14
 
 mtdparts: 256K@0(boot),2048K@256K(stock_kernel),3392K@2304K(stock_root),640K@5696K(stock_driver),4736K@6336K(stock_appfs),2048K@11072K(stock_backupk),640K@13120K(stock_backupd),2048K@13760K(stock_backupa),256K@15808K(stock_config),256K@16064K(stock_para)
 

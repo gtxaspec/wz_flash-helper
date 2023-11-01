@@ -11,7 +11,7 @@ current_profile_backup_path="/sdcard/Wyze_factory_backup"
 current_profile_backup_secondary_path="/sdcard/wz_flash-helper/backup/stock"
 
 ## Filename of the entire flash dump
-current_profile_backup_allparts_filename="t31_stock_all.bin"
+current_profile_backup_allparts_filename="t31_${chip_group}_stock_all.bin"
 
 ## List of partitions will be archived
 current_profile_archive_partname_list="cfg"

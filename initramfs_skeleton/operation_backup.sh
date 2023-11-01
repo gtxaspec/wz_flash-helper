@@ -43,7 +43,6 @@ function archive_parts() {
 
 function backup_operation() {
 # Description: Create partition images of the entire flash, all partitions and create extra archives from config partitions
-	msg "$(mount)"
 	mkdir -p $current_profile_backup_path
 	
 	backup_id=$(gen_4digit_id)

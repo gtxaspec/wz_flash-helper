@@ -15,14 +15,16 @@ wifi_ssid="Wi-Fi name"
 wifi_password="Wi-Fi password"
 
 
-## The below variables are optional, leave them empty if are not sure
+## The below variables are optional, leave them empty if you are not sure
 ## They can be set later using SSH after OpenIPC boots up
 
 ## mac_address format: 00:11:22:aa:bb:cc
+## If not set, OpenIPC uses a random MAC address for networking
 mac_address=""
 
-## timezone format: Zone/SubZone, example: America/Los_Angeles
+## Example: America/Los_Angeles, EST
 ## Full list of time zones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+## If not set, OpenIPC uses UTC
 timezone=""
 
 # ---------- End of user customization ----------
@@ -40,7 +42,7 @@ timezone=""
 ##### DO NOT MODIFY THE BELOW CODE #####	
 
 function get_wifi_gpio_pin() {
-# Description: Return GPIO pin for queried camera model
+# Description: Return Wi-Fi module GPIO pin for queried camera model
 # Syntax: get_wifi_gpio_pin <model>
 	local model="$1"
 	case $model in
@@ -58,21 +60,23 @@ function get_wifi_gpio_pin() {
 }
 
 function get_wifi_vendor_id() {
-# Description: Initialize Wi-Fi module by setting its gpio pin then get it device id
+# Description: Obtain Wi-Fi module vendor ID after initializing its GPIO pin
 # Syntax: get_wifi_id <gpio_pin>
 	local gpio_pin="$1"
 	
-	echo $gpio_pin > /sys/class/gpio/export 
-	echo out > /sys/class/gpio/$gpio_pin/direction 
-	echo 1 > /sys/class/gpio/$gpio_pin/value 
+	echo $gpio_pin > /sys/class/gpio/export
+	echo out > /sys/class/gpio/$gpio_pin/direction
+	echo 1 > /sys/class/gpio/$gpio_pin/value
+	
 	echo INSERT > /sys/devices/platform/jzmmc_v1.2.1/present
 	
-	local wifi_device_id=$(cat /sys/bus/mmc/devices/mmc1\:0001/mmc1\:0001\:1/vendor)
+	local wifi_vendor_id=$(cat /sys/bus/mmc/devices/mmc1\:0001/mmc1\:0001\:1/vendor)
 	echo -n $wifi_vendor_id
 }
 
 
 function detect_openipc_wifi_driver() {
+# Description: Assign Wi-Fi driver for OpenIPC based on camera model and vendor ID
 	case $model in
 		"pan_v1")
 			wifi_driver="rtl8189ftv-t20-wyze-pan-v1"
@@ -98,6 +102,7 @@ function detect_openipc_wifi_driver() {
 }
 
 function set_openipc_user_env() {
+# Description: Write user-specified variables to env partition using fw_setenv
 	fw_setenv_args="-l /tmp -c /etc/fw_env.config"
 	
 	fw_setenv $fw_setenv_args wlandev $wifi_driver

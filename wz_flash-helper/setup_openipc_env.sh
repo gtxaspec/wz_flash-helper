@@ -15,7 +15,8 @@ wifi_ssid="Wi-Fi name"
 wifi_password="Wi-Fi password"
 
 
-## The below variables are optional, leave them empty if you are not sure
+
+## The two below variables are optional, leave them empty if you are not sure
 ## They can be set later using SSH after OpenIPC boots up
 
 ## mac_address format: 00:11:22:aa:bb:cc
@@ -26,6 +27,13 @@ mac_address=""
 ## Full list of time zones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 ## If not set, OpenIPC uses UTC
 timezone=""
+
+
+
+## Only use this option if the program can not detect driver for Wi-Fi module
+wifi_driver_manual=""
+
+
 
 # ---------- End of user customization ----------
 
@@ -79,9 +87,15 @@ function set_openipc_user_env() {
 # Description: Write user-specified variables to env partition using fw_setenv
 	fw_setenv_args="-l /tmp -c /etc/fw_env.config"
 	
-	fw_setenv $fw_setenv_args wlandev $wifi_driver
 	fw_setenv $fw_setenv_args wlanssid $wifi_ssid
 	fw_setenv $fw_setenv_args wlanpass $wifi_password
+	
+	if [[ ! "$wifi_driver" == "" ]]; then
+		fw_setenv $fw_setenv_args wlandev $wifi_driver
+	else
+		msg "Can not detect driver for Wi-Fi module, using manually set value: $wifi_driver_manual"
+		fw_setenv $fw_setenv_args wlandev $wifi_driver_manual
+	fi
 	
 	[[ ! "$mac_address" == "" ]] && fw_setenv $fw_setenv_args wlanaddr $mac_address
 	[[ ! "$timezone" == "" ]] && fw_setenv $fw_setenv_args timezone $timezone

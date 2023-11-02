@@ -18,6 +18,9 @@ detect_model() {
 	if cat $mnt_config/$model_config_file | grep -q "WYZE_CAKP2JFUS" ; then
 		model="v3"
 		
+	if cat $mnt_config/$model_config_file | grep -q "HL_PAN2" ; then
+		model="pan_v2"
+
 	elif cat $mnt_config/$model_config_file | grep -q "WYZEDB3" ; then
 		model="db3"
 		

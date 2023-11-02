@@ -10,7 +10,7 @@ execute_custom_script() {
 	[[ "$dry_run" == "yes" ]] && { msg "Custom script does not run when dry run is active" ; return 1 ; }
 
 	msg "Executing custom script... "
-	/sdcard/$custom_script && msg "done" || { msg "failed" ; msg "Custom script did not run properly" ; return 1 ; }
+	source /sdcard/$custom_script && msg "done" || { msg "failed" ; msg "Custom script did not run properly" ; return 1 ; }
 }
 
 execute_custom_script || return 1

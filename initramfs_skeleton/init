@@ -195,7 +195,7 @@ function import_prog_config_file() {
 
 function detect_device_model() {
 # Description: Detect current camera model by reading the factory generated file
-	source /profile.d/$chip_family/detect_model.sh
+	source /profile.d/$chip_family/$current_profile/detect_model.sh
 }
 
 function display_info() {

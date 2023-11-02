@@ -41,33 +41,9 @@ timezone=""
 
 ##### DO NOT MODIFY THE BELOW CODE #####	
 
-function get_wifi_gpio_pin() {
-# Description: Return Wi-Fi module GPIO pin for queried camera model
-# Syntax: get_wifi_gpio_pin <model>
-	local model="$1"
-	case $model in
-		"pan_v1")
-			echo -n "62" ;;
-		"v2")
-			echo -n "62" ;;
-		"v3")
-			echo -n "59" ;;
-		"v3c")
-			echo -n "59" ;;
-		"pan_v2")
-			echo -n "58" ;;
-	esac
-}
-
 function get_wifi_vendor_id() {
-# Description: Obtain Wi-Fi module vendor ID after initializing its GPIO pin
+# Description: Obtain and return Wi-Fi module vendor ID after initializing its GPIO pin
 # Syntax: get_wifi_id <gpio_pin>
-	local gpio_pin="$1"
-	
-	echo $gpio_pin > /sys/class/gpio/export
-	echo out > /sys/class/gpio/$gpio_pin/direction
-	echo 1 > /sys/class/gpio/$gpio_pin/value
-	
 	echo INSERT > /sys/devices/platform/jzmmc_v1.2.1/present
 	
 	local wifi_vendor_id=$(cat /sys/bus/mmc/devices/mmc1\:0001/mmc1\:0001\:1/vendor)
@@ -85,9 +61,7 @@ function detect_openipc_wifi_driver() {
 			wifi_driver="rtl8189ftv-t20-wyze-v2"
 			;;
 		"v3")
-			local wifi_gpio_pin=$(get_wifi_gpio_pin $model)
-			local wifi_device_id=$(get_wifi_vendor_id $wifi_gpio_pin)
-			
+			get_wifi_vendor_id
 			[[ "$wifi_vendor_id" == "0x024c" ]] && wifi_driver="rtl8189ftv-t31-wyze-v3"
 			[[ "$wifi_vendor_id" == "0x007a" ]] && wifi_driver="atbm603x-t31-wyze-v3"
 			;;
@@ -110,7 +84,7 @@ function set_openipc_user_env() {
 	fw_setenv $fw_setenv_args wlanpass $wifi_password
 	
 	[[ ! "$MAC_ADDRESS" == "" ]] && fw_setenv $fw_setenv_args wlanaddr $mac_address
-	[[ ! "$TIMEZONE" == "" ]] && fw_setenv $fw_setenv_args timezone $timezone	
+	[[ ! "$TIMEZONE" == "" ]] && fw_setenv $fw_setenv_args timezone $timezone
 }
 
 function main() {

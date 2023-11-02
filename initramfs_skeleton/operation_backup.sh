@@ -58,6 +58,7 @@ function backup_operation() {
 	msg
 	msg "---------- Begin of backup operation ----------"
 	msg "Backup ID: $backup_id"
+	echo "$backup_id" > $current_profile_backup_path/ID.txt
 	backup_entire_flash || return 1
 	backup_parts || return 1
 	archive_parts || return 1

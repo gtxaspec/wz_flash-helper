@@ -54,6 +54,7 @@ function get_wifi_vendor_id() {
 function detect_openipc_wifi_driver() {
 # Description: Assign Wi-Fi driver for OpenIPC based on camera model and vendor ID
 	case $model in
+	
 		"pan_v1")
 			wifi_driver="rtl8189ftv-t20-wyze-pan-v1"
 			;;
@@ -61,11 +62,10 @@ function detect_openipc_wifi_driver() {
 			wifi_driver="rtl8189ftv-t20-wyze-v2"
 			;;
 		"v3")
-			get_wifi_vendor_id
+			wifi_driver=$(get_wifi_vendor_id)
 			[[ "$wifi_vendor_id" == "0x024c" ]] && wifi_driver="rtl8189ftv-t31-wyze-v3"
 			[[ "$wifi_vendor_id" == "0x007a" ]] && wifi_driver="atbm603x-t31-wyze-v3"
 			;;
-			
 		"v3c")
 			wifi_driver="atbm603x-t31-wyze-v3"
 			;;
@@ -83,8 +83,8 @@ function set_openipc_user_env() {
 	fw_setenv $fw_setenv_args wlanssid $wifi_ssid
 	fw_setenv $fw_setenv_args wlanpass $wifi_password
 	
-	[[ ! "$MAC_ADDRESS" == "" ]] && fw_setenv $fw_setenv_args wlanaddr $mac_address
-	[[ ! "$TIMEZONE" == "" ]] && fw_setenv $fw_setenv_args timezone $timezone
+	[[ ! "$mac_address" == "" ]] && fw_setenv $fw_setenv_args wlanaddr $mac_address
+	[[ ! "$timezone" == "" ]] && fw_setenv $fw_setenv_args timezone $timezone
 }
 
 function main() {

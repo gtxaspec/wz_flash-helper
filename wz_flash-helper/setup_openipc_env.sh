@@ -18,7 +18,7 @@ wifi_password="Wi-Fi password"
 ## The below variables are optional, leave them empty if are not sure
 ## They can be set later using SSH after OpenIPC boots up
 
-# mac_address format: 00:11:22:aa:bb:cc
+## mac_address format: 00:11:22:aa:bb:cc
 mac_address=""
 
 ## timezone format: Zone/SubZone, example: America/Los_Angeles
@@ -68,7 +68,7 @@ function get_wifi_vendor_id() {
 	echo INSERT > /sys/devices/platform/jzmmc_v1.2.1/present
 	
 	local wifi_device_id=$(cat /sys/bus/mmc/devices/mmc1\:0001/mmc1\:0001\:1/vendor)
-	echo -n $wifi_vendot_id
+	echo -n $wifi_vendor_id
 }
 
 

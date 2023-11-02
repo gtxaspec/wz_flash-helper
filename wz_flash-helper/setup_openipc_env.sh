@@ -70,7 +70,7 @@ function detect_openipc_wifi_driver() {
 			wifi_driver="rtl8189ftv-t20-wyze-v2"
 			;;
 		"v3")
-			wifi_driver=$(get_wifi_vendor_id)
+			wifi_vendor_id=$(get_wifi_vendor_id)
 			[[ "$wifi_vendor_id" == "0x024c" ]] && wifi_driver="rtl8189ftv-t31-wyze-v3"
 			[[ "$wifi_vendor_id" == "0x007a" ]] && wifi_driver="atbm603x-t31-wyze-v3"
 			;;

@@ -1,10 +1,13 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | **Other options** | [Build](README_build.md) | [FAQs](README_FAQs.md)
 
+
+
+
 # Guide for other options
 
 
 ## Specify the SD card boot image that will be used on the next boot
-If you are using wz_mini_hacks with stock profile, you can rename wz_mini's boot image to `sdcard_boot.wz_mini` and specify that file name with the `continue_boot_img_filename` option.
+If you are using `wz_mini_hacks` with stock profile, you can rename wz_mini's boot image to `sdcard_boot.wz_mini` and specify that file name with the `continue_boot_img_filename` option.
 After all operations are finished, this file will be renamed to:
 - `factory_ZMC6tiIDQN` if your camera is running stock profile on T20
 - `factory_t31_ZMC6tiIDQN` if your camera is running stock profile on T31

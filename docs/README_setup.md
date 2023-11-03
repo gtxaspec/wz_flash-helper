@@ -1,5 +1,7 @@
 [Introduction](README.md) | **Setup** | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [Build](README_build.md) | [FAQs](README_FAQs.md)
 
+
+
 ## Setup guide
 
 Download the correct release [lastest release](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract to your SD card.

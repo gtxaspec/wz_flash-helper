@@ -1,0 +1,9 @@
+#!/bin/sh
+
+nano_args="$@"
+
+export TERM='linux'
+export TERMINFO=/etc/terminfo
+busybox resize
+
+nano.bin $nano_args

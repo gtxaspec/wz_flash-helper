@@ -9,8 +9,10 @@ execute_custom_script() {
 	[ ! -f /sdcard/$custom_script ] && { msg "Custom script file is missing" ; return 1 ; }
 	[[ "$dry_run" == "yes" ]] && { msg "Custom script does not run when dry run is active" ; return 1 ; }
 
-	msg "Executing custom script... "
-	source /sdcard/$custom_script && msg "done" || { msg "failed" ; msg "Custom script did not run properly" ; return 1 ; }
+	msg
+	msg "---------- Begin custom script ----------"
+	source /sdcard/$custom_script || return 1
+	msg
 }
 
 execute_custom_script || return 1

@@ -88,7 +88,7 @@ function switch_profile_operation() {
 	msg "---------- Begin of switch profile ----------"
 	validate_restore_partition_images || return 1
 	
-	msg "- Writing to partition"
+	msg "- Writing to partitions"
 	for partname in $next_profile_all_partname_list; do
 		local partname_operation=$(get_next_profile_partoperation $partname)
 		local partmtd=$(get_next_profile_partmtd $partname)

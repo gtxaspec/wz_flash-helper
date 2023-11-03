@@ -22,4 +22,4 @@ current_profile_restore_path="/sdcard/wz_flash-helper/restore/openipc"
 current_profile_restore_partname_list="env kernel rootfs rootfs_data"
 
 ## Name of SD card boot image
-current_profile_sdcard_bootimg_name="factory_0P3N1PC_kernel"
+current_profile_sdcard_kernelimg_name="factory_t20_0P3N1PC_kernel"

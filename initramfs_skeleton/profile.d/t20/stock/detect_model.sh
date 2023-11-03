@@ -22,6 +22,7 @@ detect_model() {
 		model="v2"
 		
 	else
+		model="unknown"
 		msg "Unable to detect camera model by reading stock partition config file"
 		detect_model_cleanup
 		return 1

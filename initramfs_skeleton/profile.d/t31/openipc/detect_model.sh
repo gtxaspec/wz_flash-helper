@@ -24,6 +24,7 @@ detect_model() {
 			;;
 		
 		*)
+			model="unknown"
 			msg "Unable to detect camera model by reading uboot wlandev variable"
 			;;
 	esac

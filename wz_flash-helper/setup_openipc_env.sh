@@ -150,7 +150,7 @@ function set_openipc_user_env() {
 	#---------- MAC address ----------
 	msg_nonewline " + Setting MAC address... "
 	if [[ ! "$mac_address" == "" ]]; then
-		fw_setenv wlanaddr $mac_address && msg "succeeded" || { msg "failed" ; return 1 ; }
+		fw_setenv wlanmac $mac_address && msg "succeeded" || { msg "failed" ; return 1 ; }
 	else
 		msg "not set because it is empty"
 	fi

@@ -1,4 +1,4 @@
-[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | **FAQs**
+[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [Build](README_build.md) | **FAQs**
 
 ## How does switching profile work?
 On NOR flash, there is no partition table, the partition layout is actually seen by the kernel by setting `CONFIG_CMDLINE= ... mtdparts=...`. That option defines each partition size to let partition data be read and written into the correct addresses.

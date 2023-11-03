@@ -161,7 +161,7 @@ function restore_partition() {
 
 function format_partition_vfat() {
 # Description: Format partition <partmtd> as vfat
-# Syntax: format_partition_vfat <partmtd> <partmtdblock>
+# Syntax: format_partition_vfat <partname> <partmtdblock>
 	local partname="$1"
 	local partmtdblock="$2"
 
@@ -176,9 +176,9 @@ function format_partition_vfat() {
 
 function format_partition_jffs2() {
 # Description: Format partition <partmtd> as jffs2
-# Syntax: format_partition_jffs2 <partmtd>
+# Syntax: format_partition_jffs2 <partname> <partmtd>
 	local partname="$1"
-	local partmtd"$2"
+	local partmtd="$2"
 
 	msg "- Format partition: $partname($partmtd) as jffs2 ---"	
 	if [[ "$dry_run" == "yes" ]]; then

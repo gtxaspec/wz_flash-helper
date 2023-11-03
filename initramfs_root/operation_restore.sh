@@ -29,10 +29,10 @@ function restore_current_profile_parts() {
 		local restore_opt_value=$(get_current_profile_restore_opt_value $partname)
 		
 		if [[ "$restore_opt_value" == "yes" ]]; then
-			msg "restore_${current_profile}_${partname} value is Yes"
+			msg "- restore_${current_profile}_${partname} value is Yes"
 			restore_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
 		else
-			msg "restore_${current_profile}_${partname} value is No"
+			msg "- restore_${current_profile}_${partname} value is No"
 		fi
 	done
 }
@@ -47,10 +47,11 @@ function restore_operation() {
 
 	dos2unix $prog_restore_config_file && source $prog_restore_config_file || { msg "$prog_restore_config_file file is invalid. Nothing will be done" ; return 1 ; }
 
-	source /bg_blink_led_red.sh &
+	/bg_blink_led_red.sh &
 	local red_led_pid="$!"
 	msg
 	msg "---------- Begin of restore operation ----------"
+	msg
 	restore_current_profile_parts
 	restore_current_profile_bootpart
 	msg

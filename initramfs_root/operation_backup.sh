@@ -53,12 +53,14 @@ function backup_operation() {
 	current_profile_backup_path="$current_profile_backup_path/$backup_id"
 	mkdir -p $current_profile_backup_path
 	
-	source /bg_blink_led_blue.sh &
+	/bg_blink_led_blue.sh &
 	local blue_led_pid="$!"
 	msg
 	msg "---------- Begin of backup operation ----------"
 	msg "Backup ID: $backup_id"
+	msg "Backup location: $current_profile_backup_path"
 	echo "$backup_id" > $current_profile_backup_path/ID.txt
+	msg
 	backup_entire_flash || return 1
 	backup_parts || return 1
 	archive_parts || return 1

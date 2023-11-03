@@ -86,11 +86,6 @@ function import_init_msg() {
 	source /init_variables_msg.sh
 }
 
-function import_leds_gpio() {
-# Description: Import GPIO pin numbers for LEDs
-	source /leds_gpio.d/$chip_family.sh
-}
-
 function import_functions_io() {
 # Description: Import script which contains functions to read/write on flash chip
 	source /functions_io.sh
@@ -240,7 +235,6 @@ function main() {
 	detect_hardware
 
 	import_init_msg
-	import_leds_gpio
 	import_functions_io
 	
 	backup_bootpart
@@ -263,7 +257,7 @@ function main() {
 	detect_device_model || return 1
 	display_info
 	
-	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no"
+	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no" && msg
 
 	play_audio "initializing"
 

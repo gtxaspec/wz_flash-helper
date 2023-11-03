@@ -20,12 +20,12 @@ wifi_password="Wi-Fi password"
 ## They can be set later using SSH after OpenIPC boots up
 
 ## mac_address format: 00:11:22:aa:bb:cc
-## If not set, OpenIPC uses a random MAC address for networking
+## If not set, a random MAC address is used
 mac_address=""
 
 ## Example: America/Los_Angeles, EST
-## Full list of time zones can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-## If not set, OpenIPC uses UTC
+## Full list of time zones can be found here: https://github.com/openwrt/luci/blob/master/modules/luci-base/ucode/zoneinfo.uc
+## If not set, Etc/GMT is used
 timezone=""
 
 
@@ -122,7 +122,9 @@ function pre_script_check() {
 	[[ "$switch_profile" == "yes" ]] && [[ "$next_profile" == "openipc" ]] && return 0
 	[[ "$switch_profile" == "no" ]] && [[ "$current_profile" == "openipc" ]] && return 0
 	
-	msg " + Conditions for this script to run is not met, the camera must be on openipc and not switching profile, or already switched to openipc profile"
+	msg " + Conditions for this script to run are not met, for it to run the camera either:"
+	msg "  . is on openipc and not switching profile, or"
+	msg "  . already switched to openipc profile"
 	return 1
 }
 
@@ -165,7 +167,7 @@ function set_openipc_user_env() {
 }
 
 function main() {
-	pre_script_check || return 1
+	pre_script_check || { msg "- Aborted running this script" ; return 0 ; }
 	
 	detect_openipc_wifi_driver
 	set_openipc_user_env || return 1

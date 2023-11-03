@@ -15,6 +15,8 @@ function validate_restore_partition_images() {
 	for partname in $next_profile_all_partname_list; do # Check md5 for all partitions first to make sure they are all valid before flashing each partition
 		if [[ "$(get_next_profile_partoperation $partname)" == "write" ]]; then
 			local infile_name=$(get_next_profile_partimg $partname)
+			[ ! -f $infile_name ] && { msg " + $infile_name file is missing" ; return 1 ; }
+			
 			msg_nonewline " + Verifying $infile_name... "
 			md5sum -c $infile_name.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
 		fi
@@ -82,18 +84,20 @@ function switch_profile_operation() {
 		source /profile.d/$chip_family/$next_profile/next_profile_switch_baseparts.sh
 	fi
 	
-	source /bg_blink_led_red_and_blue.sh &
+	/bg_blink_led_red_and_blue.sh &
 	local red_and_blue_leds_pid="$!"
 	msg
 	msg "---------- Begin of switch profile ----------"
+	msg "Switch profile: $current_profile -> $next_profile"
+	msg
 	validate_restore_partition_images || return 1
 	
 	msg "- Writing to partitions"
 	for partname in $next_profile_all_partname_list; do
-		local partname_operation=$(get_next_profile_partoperation $partname)
+		local partoperation=$(get_next_profile_partoperation $partname)
 		local partmtd=$(get_next_profile_partmtd $partname)
 		
-		case "$partname_operation" in
+		case "$partoperation" in
 			"write")
 				local infile_name=$(get_next_profile_partimg $partname)
 				local infile="$next_profile_images_path/$infile_name"
@@ -109,10 +113,10 @@ function switch_profile_operation() {
 				
 				case $partfstype in
 					"jffs2")
-						format_partition_jffs2 $partname $partmtd $partfstype || return 1
+						format_partition_jffs2 $partname $partmtd || { msg "Failed to format partition $partname as jffs2" ; return 1 ; }
 						;;
 					"vfat")
-						format_partition_vfat $partname $partmtdblock $partfstype || return 1
+						format_partition_vfat $partname $partmtdblock || { msg "Failed to format partition $partname as vfat" ; return 1 ; }
 						;;
 					*)
 						msg "- Formating partition $partname as $partfstype is not supported"

@@ -102,6 +102,24 @@ function switch_profile_operation() {
 			"erase")
 				erase_partition $partname $partmtd || return 1
 				;;
+			"format")
+				local partfstype=$(get_next_profile_partfstype $partname)
+				local partmtd=$(get_next_profile_partmtd $partname)
+				local partmtdblock=$(get_next_profile_partmtdblock $partname)
+				
+				case $partfstype in
+					"jffs2")
+						format_partition_jffs2 $partname $partmtd $partfstype || return 1
+						;;
+					"vfat")
+						format_partition_vfat $partname $partmtdblock $partfstype || return 1
+						;;
+					*)
+						msg "- Formating partition $partname as $partfstype is not supported"
+						return 1
+						;;
+				esac
+				;;
 			"leave")
 				leave_partition $partname $partmtd
 				;;

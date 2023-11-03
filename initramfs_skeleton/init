@@ -142,6 +142,7 @@ function wait_init_interrupt() {
 		echo "Dropping a shell" > /dev/console
 		exec 1> /dev/console
 		exec 2> /dev/console
+		cd /
 		exec /bin/sh
 	fi
 	echo "Action has timed out" > /dev/console

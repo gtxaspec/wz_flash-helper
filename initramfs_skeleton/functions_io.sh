@@ -159,6 +159,36 @@ function restore_partition() {
 	esac
 }
 
+function format_partition_vfat() {
+# Description: Format partition <partmtd> as vfat
+# Syntax: format_partition_vfat <partmtd> <partmtdblock>
+	local partname="$1"
+	local partmtdblock="$2"
+
+	msg "- Format partition: $partname($partmtd) as vfat ---"
+	if [[ "$dry_run" == "yes" ]]; then
+		msg_dry_run "mkfs.vfat $partmtdblock"
+	else
+		msg_nonewline " + Formatting... "
+		mkfs.vfat $partmtdblock && msg "succeeded" || { msg "failed" ; return 1 ; } 
+	fi
+}
+
+function format_partition_jffs2() {
+# Description: Format partition <partmtd> as jffs2
+# Syntax: format_partition_jffs2 <partmtd>
+	local partname="$1"
+	local partmtd"$2"
+
+	msg "- Format partition: $partname($partmtd) as jffs2 ---"	
+	if [[ "$dry_run" == "yes" ]]; then
+		msg_dry_run "flash_eraseall -j $partmtd"
+	else
+		msg_nonewline " + Formatting... "
+		flash_eraseall -j $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; } 
+	fi
+}
+
 function erase_partition() {
 # Description: Erase partition <partmtd> using flash_eraseall
 # Syntax: erase_partition <partname> <partmtd>

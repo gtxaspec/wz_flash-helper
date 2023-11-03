@@ -26,9 +26,9 @@ detect_model() {
 		
 	elif cat $mnt_config/$model_config_file | grep -q "WYZEC1-JZ" ; then
 		model="v3c"
-		
-			model="unknown"
-else
+	
+	else
+		model="unknown"
 		msg "Unable to detect camera model by reading stock partition config file"
 		detect_model_cleanup
 		return 1

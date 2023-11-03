@@ -5,6 +5,7 @@
 
 function get_current_profile_partnum() {
 # Description: Return mtd mapping number of the queried partition name
+# Syntax: get_current_profile_partnum <partname>
 	local partname="$1"
 	case "$1" in
 		"boot")
@@ -28,6 +29,7 @@ function get_current_profile_partnum() {
 
 function get_current_profile_partfstype() {
 # Description: Return fstype of the queried partition name
+# Syntax: get_current_profile_partfstype <partname>
 	local partname="$1"
 	case "$1" in
 		"boot")
@@ -39,7 +41,7 @@ function get_current_profile_partfstype() {
 		"app")
 			echo -n "squasfs" ;;
 		"kback")
-			echo -n "raw" ;;
+			echo -n "vfat" ;;
 		"aback")
 			echo -n "raw" ;;
 		"cfg")
@@ -92,7 +94,7 @@ function get_current_profile_partmtdblock() {
 
 function get_current_profile_partimg() {
 # Description: Return filename of the partition image for the queried partition name
-# Syntax: get_openipc_partimg <partname> <>
+# Syntax: get_openipc_partimg <partname>
 	local partname="$1"
 	
 	echo -n "${current_profile}_${chip_group}_${partname}.bin"

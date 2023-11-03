@@ -5,6 +5,7 @@
 
 function get_current_profile_partnum() {
 # Description: Return mtd mapping number of the queried partition name
+# Syntax: get_current_profile_partnum <partname>
 	local partname="$1"
 	case "$1" in
 		"boot")
@@ -22,6 +23,7 @@ function get_current_profile_partnum() {
 
 function get_current_profile_partfstype() {
 # Description: Return fstype of the queried partition name
+# Syntax: get_current_profile_partfstype <partname>
 	local partname="$1"
 	case "$1" in
 		"boot")

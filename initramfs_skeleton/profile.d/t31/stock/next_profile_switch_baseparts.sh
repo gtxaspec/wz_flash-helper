@@ -16,7 +16,7 @@ function get_next_profile_partoperation() {
 		"app")
 			echo -n "write" ;;
 		"kback")
-			echo -n "leave" ;;
+			echo -n "format" ;;
 		"aback")
 			echo -n "leave" ;;
 		"cfg")

@@ -5,6 +5,7 @@
 
 function get_next_profile_partnum() {
 # Description: Return mtd mapping number of the queried partition name
+# Syntax: get_next_profile_partnum <partname>
 	local partname="$1"
 	case "$1" in
 		"boot")
@@ -20,6 +21,24 @@ function get_next_profile_partnum() {
 	esac
 }
 
+function get_next_profile_partfstype() {
+# Description: Return fstype of the queried partition name
+# Syntax: get_next_profile_partfstype <partname>
+	local partname="$1"
+	case "$1" in
+		"boot")
+			echo -n "raw" ;;
+		"env")
+			echo -n "raw" ;;
+		"kernel")
+			echo -n "raw" ;;
+		"rootfs")
+			echo -n "squashfs" ;;
+		"rootfs_data")
+			echo -n "jffs2" ;;
+	esac
+}
+
 function get_next_profile_partmtd() {
 # Description: Return mtd device of the queried partition name
 # Syntax: get_next_profile_partmtd <partname>
@@ -27,6 +46,15 @@ function get_next_profile_partmtd() {
 	local partnum=$(get_next_profile_partnum $partname)
 	
 	echo -n "/dev/mtd$partnum"	
+}
+
+function get_next_profile_partmtdblock() {
+# Description: Return mtdblock device of queried partition
+# Syntax: get_current_profile_partmtdblock <partname>
+	local partname="$1"
+	local partnum=$(get_next_profile_partnum $partname)
+	
+	echo -n "/dev/mtdblock$partnum"	
 }
 
 function get_next_profile_partimg() {

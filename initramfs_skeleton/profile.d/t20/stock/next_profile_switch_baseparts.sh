@@ -7,7 +7,6 @@ function get_next_profile_partoperation() {
 # Description: Return task will be done with queried partition when switching profile
 # Syntax: get_next_profile_switch <partname>
 	case "$1" in
-	case "$1" in
 		"boot")
 			echo -n "write" ;;
 		"kernel")
@@ -23,12 +22,11 @@ function get_next_profile_partoperation() {
 		"backupd")
 			echo -n "leave" ;;
 		"backupa")
-			echo -n "leave" ;;
+			echo -n "format" ;;
 		"config")
 			echo -n "write" ;;
 		"para")
 			echo -n "write" ;;
-	esac
 	esac
 }
 

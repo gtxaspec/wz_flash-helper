@@ -1,10 +1,10 @@
 #!/bin/sh
 
-detect_model_cleanup() {
+function detect_model_cleanup() {
 	umount $mnt_config && rmdir $mnt_config
 }
 
-detect_model() {
+function detect_model() {
 	local config_partname="para"
 	local model_config_file="config/.product_config"
 

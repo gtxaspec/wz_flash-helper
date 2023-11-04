@@ -177,7 +177,7 @@ function mount_sdcard() {
 function rename_prog_sdcard_kernelimg() {
 # Description: Rename program SD card boot image to avoid infinite boot loop
 	if [ -f /sdcard/$current_profile_sdcard_kernelimg_name ]; then
-		ms "- Renaming program kernel image on SD card"
+		msg "- Renaming program kernel image on SD card"
 		msg_nonewline " + Renaming $current_profile_sdcard_kernelimg_name to $current_profile_sdcard_kernelimg_name.$prog_name..."
 		mv /sdcard/$current_profile_sdcard_kernelimg_name /sdcard/$current_profile_sdcard_kernelimg_name.$prog_name && msg "succeeded" || { msg "failed" ; return 1 ; }
 	else

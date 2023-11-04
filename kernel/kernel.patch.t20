@@ -1,0 +1,34 @@
+--- firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config	2023-11-04 20:17:07.849950278 +0700
++++ kernel/kernel.config.t20	2023-11-01 14:18:16.533903241 +0700
+@@ -272,7 +272,7 @@
+ # CONFIG_SYSFS_DEPRECATED is not set
+ # CONFIG_RELAY is not set
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_INITRAMFS_SOURCE=""
++CONFIG_INITRAMFS_SOURCE="/tmp/initramfs.cpio"
+ CONFIG_RD_GZIP=y
+ # CONFIG_RD_BZIP2 is not set
+ # CONFIG_RD_LZMA is not set
+@@ -1796,9 +1796,9 @@
+ #
+ # DOS/FAT/NT Filesystems
+ #
+-CONFIG_FAT_FS=m
++CONFIG_FAT_FS=y
+ # CONFIG_MSDOS_FS is not set
+-CONFIG_VFAT_FS=m
++CONFIG_VFAT_FS=y
+ CONFIG_FAT_DEFAULT_CODEPAGE=437
+ CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
+ # CONFIG_NTFS_FS is not set
+@@ -2029,7 +2029,9 @@
+ # CONFIG_TEST_STRING_HELPERS is not set
+ # CONFIG_TEST_KSTRTOX is not set
+ CONFIG_EARLY_PRINTK=y
+-# CONFIG_CMDLINE_BOOL is not set
++CONFIG_CMDLINE_BOOL=y
++CONFIG_CMDLINE="console=ttyS1,115200n8 mem=104M@0x0 ispmem=8M@0x6800000 rmem=16M@0x7000000 init=/init mtdparts=jz_sfc:256K@0(boot),16384k@0(all),64K@256K(openipc_env),3072K@320K(openipc_kernel),10240K@3392K(openipc_rootfs),2752K@13632K(openipc_rootfs-data),2048K@256K(stock_kernel),3392K@2304K(stock_root),640K@5696K(stock_driver),4736K@6336K(stock_apps),2048K@11072K(stock_backupk),640K@13120K(stock_backupd),2048K@13760K(stock_backupa),256K@15808K(stock_config),256K@16064K(stock_para) nogmac"
++CONFIG_CMDLINE_OVERRIDE=y
+ # CONFIG_DEBUG_STACKOVERFLOW is not set
+ # CONFIG_RUNTIME_DEBUG is not set
+ # CONFIG_DEBUG_ZBOOT is not set

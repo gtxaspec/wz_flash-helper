@@ -34,16 +34,16 @@ function validate_written_bootpart() {
 		local bootimg="$next_profile_images_path/$bootimg_name"
 		local bootimg_blocksize=$(du -b $bootimg | cut -f -1)
 		local bootimg_hash=$(sha256sum $bootimg | cut -d ' ' -f1)
-		msg " + Boot image used to write hash: $bootimg_hash"
+		msg " + Hash of boot image used to write: $bootimg_hash"
 
 		dd if=/dev/mtdblock0 of=/bootpart_check.img bs=1 count=$bootimg_blocksize status=none
 		local bootpart_hash=$(sha256sum /bootpart_check.img | cut -d ' ' -f1)		
-		msg " + Current boot partition hash: $bootpart_hash"
+		msg " + Hash of current boot partition: $bootpart_hash"
 
 		rm /bootpart_check.img	
 
 		msg_nonewline " + Validation result: "
-		[[ "$bootimg_hash" == "$bootpart_hash" ]] && { msg "ok" ; return 0 ; } || msg "failed"
+		[[ "$bootimg_hash" == "$bootpart_hash" ]] && { msg "good" ; return 0 ; } || msg "bad"
 	done
 	rm /bootpart_check.img
 	return 1
@@ -63,7 +63,7 @@ function rollback_bootpart() {
 	for attempt in 1 2; do
 		msg "- Rollback attempt $attempt:"
 		msg_nonewline " + Rollback result: "
-		restore_partition "boot" /bootpart_backup.img /dev/mtd0 && { msg "succeeded :) You are safe now!" ; return 1 ; } || msg "failed"
+		restore_partition "boot" /bootpart_backup.img /dev/mtd0 && { msg "good :) You are safe now!" ; return 1 ; } || msg "bad"
 	done
 		
 	msg "Rollback failed twice, sorry. Probably your flash chip is corrupted"

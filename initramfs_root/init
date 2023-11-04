@@ -116,7 +116,7 @@ function welcome() {
 # Description: It is nice to let the user know that they are welcome!
 	msg
 	msg
-	msg "Welcome to initramfs init!"
+	msg "Welcome to initramfs init! ^_^"
 	msg
 }
 
@@ -178,7 +178,7 @@ function mount_sdcard() {
 function rename_prog_sdcard_kernelimg() {
 # Description: Rename program SD card boot image to avoid infinite boot loop
 	if [ -f /sdcard/$current_profile_sdcard_kernelimg_name ]; then
-		msg "Renaming program kernel image on SD card: $current_profile_sdcard_kernelimg_name to $current_profile_sdcard_kernelimg_name.$prog_name... "
+		msg_nonewline "Renaming program kernel image on SD card: $current_profile_sdcard_kernelimg_name to $current_profile_sdcard_kernelimg_name.$prog_name... "
 		mv /sdcard/$current_profile_sdcard_kernelimg_name /sdcard/$current_profile_sdcard_kernelimg_name.$prog_name && msg "succeeded" || { msg "failed" ; return 1 ; }
 	else
 		msg "Program SD card kernel image for this profile is missing, skipping"

@@ -131,7 +131,7 @@ function pre_script_check() {
 	msg " + Conditions for this script to run are not met, for it to run the camera either:"
 	msg "  . is on openipc and not switching profile, or"
 	msg "  . already switched to openipc profile"
-	msg
+	
 	return 1
 }
 
@@ -174,7 +174,7 @@ function set_openipc_user_env() {
 }
 
 function main() {
-	pre_script_check || { msg "- Exitting script" ; return 0 ; }
+	pre_script_check && msg " + Looks good! Starting script now" || { msg ; msg "- Exitting script" ; return 0 ; }
 
 	msg	
 	detect_openipc_wifi_driver || return 1

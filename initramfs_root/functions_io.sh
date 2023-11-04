@@ -144,10 +144,10 @@ function restore_partition() {
 	
 	cd $restore_stage_dir
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_nonewline " + Verifying $infile_basename... "
+		msg_nonewline " + Verifying file... "
 		sha256sum -c $infile_basename.sha256sum && msg "ok" || { msg "failed" ; return 1 ; }
 	else
-		msg_nonewline " + Verifying $infile_basename... "
+		msg_nonewline " + Verifying file... "
 		sha256sum -c $infile_basename.sha256sum && msg "ok" || { msg "failed" ; return 1 ; }
 	fi
 

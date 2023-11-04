@@ -91,13 +91,6 @@ function import_functions_io() {
 	source /functions_io.sh
 }
 
-function backup_bootpart() {
-# Description: Create backup for boot partition to rollback in case it gets corrupted, and for profile detection
-	msg "- Creating boot partition backup image"
-	backup_partition "boot" /dev/mtd0 /bootpart_backup.img
-	strings /bootpart_backup.img > /bootpart_backup.img.strings
-}
-
 function load_kernel_modules() {
 # Description: Load kernel modules for device chip family
 	if ls /kernel_module.d/model_speciality.d/*.sh ; then
@@ -122,6 +115,7 @@ function initialize_gpio() {
 function welcome() {
 # Description: It is nice to let the user know that they are welcome!
 	msg
+	msg
 	msg "Welcome to initramfs init!"
 	msg
 }
@@ -143,6 +137,12 @@ function wait_init_interrupt() {
 	echo "Action has timed out" > /dev/console
 	exec 0< /dev/null
 	echo > /dev/console
+}
+
+function backup_bootpart() {
+# Description: Create backup for boot partition to rollback in case it gets corrupted, and for profile detection
+	dd if=/dev/mtdblock0 of=/bootpart_backup.img status=none
+	strings /bootpart_backup.img > /bootpart_backup.img.strings
 }
 
 function detect_current_profile() {
@@ -169,6 +169,7 @@ function import_current_profile() {
 
 function mount_sdcard() {
 # Description: Mount SD card, nothing more
+	msg
 	msg_nonewline "Mounting SD card... "
 	mkdir -p /sdcard
 	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg "succeeded" || msg "failed"
@@ -177,11 +178,10 @@ function mount_sdcard() {
 function rename_prog_sdcard_kernelimg() {
 # Description: Rename program SD card boot image to avoid infinite boot loop
 	if [ -f /sdcard/$current_profile_sdcard_kernelimg_name ]; then
-		msg "- Renaming program kernel image on SD card"
-		msg_nonewline " + Renaming $current_profile_sdcard_kernelimg_name to $current_profile_sdcard_kernelimg_name.$prog_name..."
+		msg "Renaming program kernel image on SD card: $current_profile_sdcard_kernelimg_name to $current_profile_sdcard_kernelimg_name.$prog_name... "
 		mv /sdcard/$current_profile_sdcard_kernelimg_name /sdcard/$current_profile_sdcard_kernelimg_name.$prog_name && msg "succeeded" || { msg "failed" ; return 1 ; }
 	else
-		msg "SD card kernel image for this profile is missing on SD card, skipping"
+		msg "Program SD card kernel image for this profile is missing, skipping"
 		return 1
 	fi
 }
@@ -224,7 +224,7 @@ function exit_init() {
 	umount /sdcard
 
 	sleep 1
-	msg "Everything is finished! You can enter initramfs shell again before the program exits, if you wish"
+	echo "Everything is finished! You can enter initramfs shell again before the program exits, if you wish" > /dev/console
 	wait_init_interrupt
 	
 	play_audio "rebooting"
@@ -238,13 +238,13 @@ function main() {
 	import_init_msg
 	import_functions_io
 	
-	backup_bootpart
-	
 	load_kernel_modules
 	initialize_gpio
 	
 	welcome
 	wait_init_interrupt
+
+	backup_bootpart
 	
 	detect_current_profile || return 1
 	emulate

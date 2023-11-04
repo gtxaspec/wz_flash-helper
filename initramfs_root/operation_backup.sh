@@ -64,6 +64,7 @@ function backup_operation() {
 	backup_entire_flash || return 1
 	backup_parts || return 1
 	archive_parts || return 1
+	msg
 	if [[ ! "$current_profile_backup_secondary_path" == "" ]] && [[ ! "$dry_run" == "yes" ]]; then
 		msg "- This profile has secondary backup directory at $current_profile_backup_secondary_path"
 		msg_nonewline " + Creating a copy from primary backup... "
@@ -75,9 +76,11 @@ function backup_operation() {
 			cp -r $current_profile_backup_path $current_profile_backup_secondary_path && msg "succeeded" || { msg "failed" ; return 1 ; }
 		fi	
 	fi
+	sync
 	msg "----------- End of backup operation -----------"
 	msg
 	kill $blue_led_pid
+	/bg_turn_off_leds.sh
 }
 
 backup_operation || return 1

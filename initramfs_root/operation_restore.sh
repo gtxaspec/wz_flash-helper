@@ -55,9 +55,11 @@ function restore_operation() {
 	msg
 	restore_current_profile_parts
 	restore_current_profile_bootpart
+	sync
 	msg "----------- End of restore operation -----------"
 	msg
 	kill $red_led_pid
+	/bg_turn_off_leds.sh
 }
 
 

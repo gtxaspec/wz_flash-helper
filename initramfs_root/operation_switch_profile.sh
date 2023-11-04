@@ -36,7 +36,7 @@ function validate_written_bootpart() {
 		local bootimg_hash=$(sha256sum $bootimg | cut -d ' ' -f1)
 		msg " + Boot image used to write hash: $bootimg_hash"
 
-		dd if=/dev/mtd0 of=/bootpart_check.img bs=1 count=$bootimg_blocksize status=none
+		dd if=/dev/mtdblock0 of=/bootpart_check.img bs=1 count=$bootimg_blocksize status=none
 		local bootpart_hash=$(sha256sum /bootpart_check.img | cut -d ' ' -f1)		
 		msg " + Current boot partition hash: $bootpart_hash"
 
@@ -133,9 +133,11 @@ function switch_profile_operation() {
 	
 	[[ "$dry_run" == "yes" ]] && { msg "- No need to check for boot partition corruption on dry run mode" ; return 0 ; }
 	validate_written_bootpart || { 	msg " + Boot partition validation failed" ; rollback_bootpart ; } || return 1
+	sync
 	msg "----------- End of switch profile -----------"
 	msg
 	kill $red_and_blue_leds_pid
+	/bg_turn_off_leds.sh
 }
 
 switch_profile_operation || return 1

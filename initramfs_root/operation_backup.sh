@@ -66,7 +66,7 @@ function backup_operation() {
 	archive_parts || return 1
 	if [[ ! "$current_profile_backup_secondary_path" == "" ]] && [[ ! "$dry_run" == "yes" ]]; then
 		msg "- This profile has secondary backup directory at $current_profile_backup_secondary_path"
-		msg_nonewline "- Creating a copy from primary backup... "
+		msg_nonewline " + Creating a copy from primary backup... "
 		mkdir -p $current_profile_backup_secondary_path
 		if [ -d $current_profile_backup_secondary_path/$backup_id ]; then
 			msg "failed"

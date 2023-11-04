@@ -3,7 +3,7 @@
 
 
 
-initialize_gpio() {
+function initialize_gpio() {
 	if [ ! -d /sys/class/gpio/gpio38 ]; then # Export red LED pin
 		echo 38 > /sys/class/gpio/export
 		echo out > /sys/class/gpio/gpio38/direction

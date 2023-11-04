@@ -1,4 +1,4 @@
-[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | **Switch profile** | [Other options](README_other_options.md) | [Build](README_build.md) | [FAQs](README_FAQs.md_)
+[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | **Switch profile** | [Other options](README_other_options.md) | [Build](README_build.md) | [FAQs](README_FAQs.md)
 
 
 
@@ -8,7 +8,7 @@
 
 **Step 0: Obtain your camera hardware info**
 1. SoC type
-Connect to your camera with SSH or serial and download `ipcinfo` tool by running:
+Connect to your camera using SSH/serial and download `ipcinfo` tool by running:
 ```
 cd /tmp
 wget --no-check-certificate https://github.com/OpenIPC/ipctool/releases/download/latest/ipcinfo-mips32
@@ -16,9 +16,9 @@ chmod +x ipcinfo-mips32
 ./ipcinfo-mips32 --chip-name
 ```
 If the chip name is:
-- `t20x`, then your SoC type is `t20x`
 - `t31x`, `t31zl`, or `t31zx` then your SoC type is `t31x`
 - `t31a`, then your SoC type is `t31a`
+- `t20x`, then your SoC is `t20x`
 
 2. Wi-Fi MAC address
 
@@ -42,12 +42,19 @@ Download corrrect OpenIPC build from OpenIPC release page for your device, place
 - openipc_[SoC]_kernel.img
 - openipc_[SoC]_rootfs.img
 
-Generate md5 files for all partition images:
-- If you are on Windows, use a third-party software to generate md5 files for each partition images.
-- If you have WSL or Linux, md5 files generation is just as simple as running `for i in *.bin; do md5sum $i > $i.md5sum; done`
+Generate sha256 files for all partition images:
+- If you are on Windows, use a Powershell:
+```
+certutil -hashfile "openipc_[SoC]_[partition image].bin" SHA256
+ ``
+ 
+- If you have WSL or Linux, run
+```
+for i in openipc_*.bin; do sha256 $i > $i.sha256sum; done
+```
 
 **Step 2: Add your uboot env variables**
-Edit `setup_openipc_env.sh` with your Wi-Fi name(SSID), password. MAC address and Timezone are optional.
+Edit `setup_openipc_env.sh` inside `wz_flash-helper/scripts/` directory with your Wi-Fi name(SSID), password. Optionally with MAC address and Timezone.
 
 **Step 3: Edit the program configuration file**
 Edit `general.conf` with:
@@ -56,6 +63,9 @@ restore_partitions="no"
 switch_profile="yes"
 next_profile="openipc"
 switch_profile_with_all_partitions="no"
+
+enable_custom_script="yes"
+custom_script="setup_openipc_env.sh"
 ```
 
 **Step 4: Power on**

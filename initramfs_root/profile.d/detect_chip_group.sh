@@ -3,7 +3,7 @@
 #
 #
 
-detect_chip_group() {
+function detect_chip_group() {
 	case $chip_name in
 		t20x)
 			chip_group="t20x"

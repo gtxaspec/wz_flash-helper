@@ -3,7 +3,7 @@
 
 
 
-detect_model() {
+function detect_model() {
 	openipc_wifi_driver=$(fw_printenv wlandev | sed 's/wlandev=//')
 
 	case $openipc_wifi_driver in

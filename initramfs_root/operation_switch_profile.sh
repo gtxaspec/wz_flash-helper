@@ -89,6 +89,7 @@ function switch_profile_operation() {
 	msg
 	msg "---------- Begin of switch profile ----------"
 	msg "Switch profile: $current_profile -> $next_profile"
+	msg "Source directory: $next_profile_images_path"
 	msg
 	validate_restore_partition_images || return 1
 	
@@ -132,6 +133,7 @@ function switch_profile_operation() {
 	
 	[[ "$dry_run" == "yes" ]] && { msg "- No need to check for boot partition corruption on dry run mode" ; return 0 ; }
 	validate_written_bootpart || { 	msg " + Boot partition validation failed" ; rollback_bootpart ; } || return 1
+	msg "----------- End of switch profile -----------"
 	msg
 	kill $red_and_blue_leds_pid
 }

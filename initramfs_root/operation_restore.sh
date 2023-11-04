@@ -51,9 +51,11 @@ function restore_operation() {
 	local red_led_pid="$!"
 	msg
 	msg "---------- Begin of restore operation ----------"
+	msg "Restore source: $current_profile_restore_path"
 	msg
 	restore_current_profile_parts
 	restore_current_profile_bootpart
+	msg "----------- End of restore operation -----------"
 	msg
 	kill $red_led_pid
 }

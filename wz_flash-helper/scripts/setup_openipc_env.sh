@@ -30,8 +30,9 @@ timezone=""
 
 
 
-## Only use this option if the program can not detect driver for Wi-Fi module
-wifi_driver_manual=""
+## Only use this option to override for Wi-Fi module driver detection if the program can not detect camera driver
+set_wifi_driver_manually="no"
+wifi_driver=""
 
 
 
@@ -86,6 +87,8 @@ function get_wifi_vendor_id() {
 function detect_openipc_wifi_driver() {
 # Description: Assign Wi-Fi driver for OpenIPC based on camera model and vendor ID
 	msg "- Detecting driver for Wi-Fi module"
+	[[ "$set_wifi_driver_manually" == "yes" ]] && { msg " + Using overriden Wi-Fi driver value: $wifi_driver" ; return 0 ; }
+	
 	case $model in
 	
 		"pan_v1")
@@ -108,10 +111,13 @@ function detect_openipc_wifi_driver() {
 			;;
 	esac
 	
-	[[ ! "$wifi_driver" == "" ]] && { msg " + Found driver: $wifi_driver" ; return 0 ; } # Exit function if Wi-Fi driver has been set
-	
-	msg " + Can not detect driver, using manual value: $wifi_driver_manual"
-	[[ "$wifi_driver_manual" == "" ]] && msg " + Manual driver value is empty, skipping" || wifi_driver="$wifi_driver_manual"
+	if [[ ! "$wifi_driver" == "" ]]; then # Exit function if Wi-Fi driver has been set
+		msg " + Found driver: $wifi_driver"
+		return 0
+	else
+		msg " + Can not detect driver, please set it manually and run this script again"
+		return 1
+	fi
 }
 
 function pre_script_check() {
@@ -168,10 +174,10 @@ function set_openipc_user_env() {
 
 function main() {
 	pre_script_check || { msg "- Aborted running this script" ; return 0 ; }
-	
-	detect_openipc_wifi_driver
+
+	msg	
+	detect_openipc_wifi_driver || return 1
 	set_openipc_user_env || return 1
-	msg
 }
 
 main || return 1

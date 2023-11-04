@@ -58,7 +58,7 @@ function backup_operation() {
 	msg
 	msg "---------- Begin of backup operation ----------"
 	msg "Backup ID: $backup_id"
-	msg "Backup location: $current_profile_backup_path"
+	msg "Backup destination: $current_profile_backup_path"
 	echo "$backup_id" > $current_profile_backup_path/ID.txt
 	msg
 	backup_entire_flash || return 1
@@ -73,6 +73,7 @@ function backup_operation() {
 			cp -r $current_profile_backup_path $current_profile_backup_secondary_path && msg "succeeded" || { msg "failed" ; return 1 ; }
 		fi	
 	fi
+	msg "----------- End of backup operation -----------"
 	msg
 	kill $blue_led_pid
 }

@@ -42,8 +42,9 @@ function backup_partition() {
 	local partname="$1"
 	local partmtd="$2"
 	local outfile="$3"
+	local outfile_basename=$(basename $outfile)
 	
-	msg "- Read from flash: $partname at $partmtd to file $outfile ---"
+	msg "- Read from flash: $partname($partmtd) to file $outfile_basename ---"
 	[ -f $outfile ] && { msg " + $outfile already exists" ; return 1 ; }
 	
 	case "$flash_type" in
@@ -72,11 +73,12 @@ function archive_partition() {
 	local partblockmtd="$2"
 	local fstype="$3"
 	local outfile="$4"
+	local outfile_basename=$(basename $outfile)
 	
 	local archive_mnt_dir="/archive_mnt_$partname"
 	mkdir -p $archive_mnt_dir
 	
-	msg "- Archive partition: $partname($partblockmtd) files to file $outfile ---"
+	msg "- Archive partition: $partname($partblockmtd) files to file $outfile_basename ---"
 	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "mount -o ro -t $fstype $partblockmtd $archive_mnt_dir"
@@ -131,22 +133,22 @@ function restore_partition() {
 	local infile="$2"
 	local partmtd="$3"
 
-	local infile_name=$(basename $infile)
+	local infile_basename=$(basename $infile)
 	local restore_stage_dir="/restore_stage_dir"
 	
 
-	msg "- Write to flash: file $infile_name to $partname($partmtd) ---"
+	msg "- Write to flash: file $infile_basename to $partname($partmtd) ---"
 	mkdir -p $restore_stage_dir
-	cp $infile $restore_stage_dir/$infile_name || { msg " + $infile_name is missing" ; return 1 ; }
-	cp $infile.md5sum $restore_stage_dir/$infile_name.md5sum || { msg " + $infile_name.md5sum is missing" ; return 1 ; }
+	cp $infile $restore_stage_dir/$infile_basename || { msg " + $infile_basename is missing" ; return 1 ; }
+	cp $infile.md5sum $restore_stage_dir/$infile_basename.md5sum || { msg " + $infile_basename.md5sum is missing" ; return 1 ; }
 	
 	cd $restore_stage_dir
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_nonewline " + Verifying $infile_name... "
-		md5sum -c $infile_name.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
+		msg_nonewline " + Verifying $infile_basename... "
+		md5sum -c $infile_basename.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
 	else
-		msg_nonewline " + Verifying $infile_name... "
-		md5sum -c $infile_name.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
+		msg_nonewline " + Verifying $infile_basename... "
+		md5sum -c $infile_basename.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
 	fi
 
 	case "$flash_type" in

@@ -14,6 +14,7 @@ execute_custom_script() {
 	msg "Running script: $(basename $custom_script)"
 	msg
 	source /sdcard/$custom_script || return 1
+	msg "----------- End custom script -----------"
 	msg
 }
 

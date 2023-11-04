@@ -12,13 +12,13 @@
 function validate_restore_partition_images() {
 	msg "- Making sure that all needed partition images exist and are valid"
 	cd $next_profile_images_path
-	for partname in $next_profile_all_partname_list; do # Check md5 for all partitions first to make sure they are all valid before flashing each partition
+	for partname in $next_profile_all_partname_list; do # Check sha256 for all partitions first to make sure they are all valid before flashing each partition
 		if [[ "$(get_next_profile_partoperation $partname)" == "write" ]]; then
 			local infile_name=$(get_next_profile_partimg $partname)
 			[ ! -f $infile_name ] && { msg " + $infile_name file is missing" ; return 1 ; }
 			
 			msg_nonewline " + Verifying $infile_name... "
-			md5sum -c $infile_name.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
+			sha256sum -c $infile_name.sha256sum && msg "ok" || { msg "failed" ; return 1 ; }
 		fi
 	done
 	msg
@@ -33,11 +33,11 @@ function validate_written_bootpart() {
 		local bootimg_name=$(get_next_profile_partimg "boot")
 		local bootimg="$next_profile_images_path/$bootimg_name"
 		local bootimg_blocksize=$(du -b $bootimg | cut -f -1)
-		local bootimg_hash=$(md5sum $bootimg | cut -d ' ' -f1)
+		local bootimg_hash=$(sha256sum $bootimg | cut -d ' ' -f1)
 		msg " + Boot image used to write hash: $bootimg_hash"
 
 		dd if=/dev/mtd0 of=/bootpart_check.img bs=1 count=$bootimg_blocksize status=none
-		local bootpart_hash=$(md5sum /bootpart_check.img | cut -d ' ' -f1)		
+		local bootpart_hash=$(sha256sum /bootpart_check.img | cut -d ' ' -f1)		
 		msg " + Current boot partition hash: $bootpart_hash"
 
 		rm /bootpart_check.img	

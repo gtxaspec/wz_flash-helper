@@ -29,10 +29,10 @@ function restore_current_profile_parts() {
 		local restore_opt_value=$(get_current_profile_restore_opt_value $partname)
 		
 		if [[ "$restore_opt_value" == "yes" ]]; then
-			msg "- restore_${current_profile}_${partname} value is Yes"
+			msg "[x] restore_${current_profile}_${partname} value is Yes"
 			restore_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
 		else
-			msg "- restore_${current_profile}_${partname} value is No"
+			msg "[ ] restore_${current_profile}_${partname} value is No"
 		fi
 	done
 }

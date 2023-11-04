@@ -57,12 +57,12 @@ function backup_partition() {
 	esac
 	
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "md5sum $outfile > $outfile.md5sum"
-		msg_dry_run "local outfile_dir=$(dirname $outfile) && sed -i \"s|\$outfile_dir/||g\" $outfile.md5sum"
+		msg_dry_run "sha256sum $outfile > $outfile.sha256sum"
+		msg_dry_run "local outfile_dir=$(dirname $outfile) && sed -i \"s|\$outfile_dir/||g\" $outfile.sha256sum"
 	else
-		msg_nonewline " + Generating md5sum file... "
-		md5sum $outfile > $outfile.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
-		local outfile_dir=$(dirname $outfile) && sed -i "s|$outfile_dir/||g" $outfile.md5sum # Remove path of partition images files from their .md5sum files
+		msg_nonewline " + Generating sha256sum file... "
+		sha256sum $outfile > $outfile.sha256sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		local outfile_dir=$(dirname $outfile) && sed -i "s|$outfile_dir/||g" $outfile.sha256sum # Remove path of partition images files from their .sha256sum files
 	fi
 }
 
@@ -83,13 +83,13 @@ function archive_partition() {
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "mount -o ro -t $fstype $partblockmtd $archive_mnt_dir"
 		msg_dry_run "tar -czvf $outfile -C $archive_mnt_dir ."
-		msg_dry_run "md5sum $outfile > $outfile.md5sum"
+		msg_dry_run "sha256sum $outfile > $outfile.sha256sum"
 	else
 		mount -o ro -t $fstype $partblockmtd $archive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
 		msg_nonewline " + Creating archive file... "
 		tar -czvf $outfile -C $archive_mnt_dir . && msg "succeeded" || { msg "failed" ; return 1 ; }
-		msg_nonewline " + Generating md5sum file... "
-		md5sum $outfile > $outfile.md5sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		msg_nonewline " + Generating sha256sum file... "
+		sha256sum $outfile > $outfile.sha256sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
 		umount $archive_mnt_dir && rmdir $archive_mnt_dir
 	fi
 	
@@ -127,7 +127,7 @@ function restore_partition_nand() {
 }
 
 function restore_partition() {
-# Description: Write to <partmtd> partition using <infile>, <infile> and its md5sum file will be copied to stage directory before proceed writing
+# Description: Write to <partmtd> partition using <infile>, <infile> and its sha256sum file will be copied to stage directory before proceed writing
 # Syntax: restore_partition <partname> <restore_stage_dir> <infile> <partname>
 	local partname="$1"
 	local infile="$2"
@@ -140,15 +140,15 @@ function restore_partition() {
 	msg "- Write to flash: file $infile_basename to $partname($partmtd) ---"
 	mkdir -p $restore_stage_dir
 	cp $infile $restore_stage_dir/$infile_basename || { msg " + $infile_basename is missing" ; return 1 ; }
-	cp $infile.md5sum $restore_stage_dir/$infile_basename.md5sum || { msg " + $infile_basename.md5sum is missing" ; return 1 ; }
+	cp $infile.sha256sum $restore_stage_dir/$infile_basename.sha256sum || { msg " + $infile_basename.sha256sum is missing" ; return 1 ; }
 	
 	cd $restore_stage_dir
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_nonewline " + Verifying $infile_basename... "
-		md5sum -c $infile_basename.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
+		sha256sum -c $infile_basename.sha256sum && msg "ok" || { msg "failed" ; return 1 ; }
 	else
 		msg_nonewline " + Verifying $infile_basename... "
-		md5sum -c $infile_basename.md5sum && msg "ok" || { msg "failed" ; return 1 ; }
+		sha256sum -c $infile_basename.sha256sum && msg "ok" || { msg "failed" ; return 1 ; }
 	fi
 
 	case "$flash_type" in

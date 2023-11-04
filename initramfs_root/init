@@ -177,7 +177,8 @@ function mount_sdcard() {
 function rename_prog_sdcard_kernelimg() {
 # Description: Rename program SD card boot image to avoid infinite boot loop
 	if [ -f /sdcard/$current_profile_sdcard_kernelimg_name ]; then
-		msg_nonewline "Renaming /sdcard/$current_profile_sdcard_kernelimg_name to /sdcard/$current_profile_sdcard_kernelimg_name.$prog_name..."
+		ms "- Renaming program kernel image on SD card"
+		msg_nonewline " + Renaming $current_profile_sdcard_kernelimg_name to $current_profile_sdcard_kernelimg_name.$prog_name..."
 		mv /sdcard/$current_profile_sdcard_kernelimg_name /sdcard/$current_profile_sdcard_kernelimg_name.$prog_name && msg "succeeded" || { msg "failed" ; return 1 ; }
 	else
 		msg "SD card kernel image for this profile is missing on SD card, skipping"
@@ -262,6 +263,7 @@ function main() {
 	play_audio "initializing"
 
 	#---------- Backup operation ----------
+	msg
 	if [[ "$backup_partitions" == "yes" ]]; then
 		msg "$backup_partitions_yes"
 		play_audio "processing"
@@ -271,6 +273,7 @@ function main() {
 	fi
 
 	#---------- Restore operation ----------
+	msg
 	if [[ "$restore_partitions" == "yes" ]]; then
 		msg "$restore_partitions_yes"
 		play_audio "processing"
@@ -280,6 +283,7 @@ function main() {
 	fi
 
 	#---------- Switch profile operation ----------
+	msg
 	if [[ "$switch_profile" == "yes" ]]; then
 		msg "$switch_profile_yes"
 		play_audio "processing"
@@ -289,6 +293,7 @@ function main() {
 	fi
 
 	#---------- Custom script ----------
+	msg
 	if [[ "$enable_custom_script" == "yes" ]]; then
 		msg "$enable_custom_script_yes"
 		source /action_execute_custom_script.sh && msg "$enable_custom_script_succeed" || { msg "$enable_custom_script_fail" ; return 1 ; }
@@ -297,6 +302,7 @@ function main() {
 	fi
 
 	#---------- New SD card kernel image ----------
+	msg
 	if [[ "$copy_new_sdcard_kernelimg" == "yes" ]]; then
 		msg "$copy_new_sdcard_kernelimg_no"
 		source /action_copy_new_sdcard_kernelimg.sh && msg "$copy_new_sdcard_kernelimg_succeed" || { msg "$copy_new_sdcard_kernelimg_fail" ; return 1 ; }

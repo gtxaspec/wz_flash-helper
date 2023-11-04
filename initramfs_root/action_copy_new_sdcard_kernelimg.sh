@@ -16,6 +16,7 @@ function copy_new_sdcard_kernelimg() {
 	else
 		cp /sdcard/$current_profile_sdcard_kernelimg_name /sdcard/$new_sdcard_kernelimg && msg "done" || { msg "failed" ; return 1 ; }
 	fi
+	msg "----------- End of copy SD card kernel image -----------"
 	msg
 }
 

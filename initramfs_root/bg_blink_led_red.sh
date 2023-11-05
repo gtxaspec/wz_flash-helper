@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: Blink red LED every second
+# Description: Blink the red LED every second
 #
 
 function blink_led_blue() {

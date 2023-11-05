@@ -37,7 +37,7 @@ function archive_parts() {
 		local partfstype="$(get_current_profile_partfstype $partname_archive)"
 		local outfile="$current_profile_backup_path/${current_profile}_${chip_group}_${partname}.tar.gz"
 		
-		archive_partition $partname $partmtdblock $partfstype $outfile
+		create_archive_from_partition $partname $partmtdblock $partfstype $outfile
 	done
 }
 

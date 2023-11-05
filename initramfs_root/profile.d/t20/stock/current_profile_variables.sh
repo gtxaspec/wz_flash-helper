@@ -22,5 +22,5 @@ current_profile_restore_path="/sdcard/wz_flash-helper/restore/stock/"
 ## Same as "current_profile_all_partname_list" but without boot partition, the user can choose what partitions will be restored
 current_profile_restore_partname_list="kernel root driver appfs backupk backupd backupa config para"
 
-## Name of SD card boot image
-current_profile_sdcard_kernelimg_name="factory_ZMC6tiIDQN"
+## Name of SD card kernel
+current_profile_sdcard_kernel_name="factory_ZMC6tiIDQN"

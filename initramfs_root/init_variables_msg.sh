@@ -3,7 +3,7 @@
 # Description: These messages are used by init script, writing them on a separate file makes it look clean.
 #
 
-rename_prog_sdcard_kernelimg_fail="WARNING!!! Program SD card kernel can not be renamed, this will result in a bootloop"
+rename_prog_sdcard_kernel_fail="WARNING!!! Program SD card kernel can not be renamed, this will result in a bootloop"
 
 dry_run_yes="Dry run mode is Active. Your partitions will not be modified"
 dry_run_no="WARNING!!! Dry run mode is Inactive. Your partitions might be modified, depending on your configuration. Stay safe!"
@@ -28,7 +28,7 @@ enable_custom_script_no="[ ] enable_custom_script value is No"
 enable_custom_script_fail="Custom script running has failed, exiting..."
 enable_custom_script_succeed="Custom script was successful"
 
-copy_new_sdcard_kernelimg_yes="[x] copy_new_sdcard_kernelimg value is Yes"
-copy_new_sdcard_kernelimg_no="[ ] copy_new_sdcard_kernelimg value is No"
-copy_new_sdcard_kernelimg_fail="Copying continue kernel image has failed, exiting..."
-copy_new_sdcard_kernelimg_succeed="Copying new sdcard kernel image was successful"
+copy_new_sdcard_kernel_yes="[x] copy_new_sdcard_kernel value is Yes"
+copy_new_sdcard_kernel_no="[ ] copy_new_sdcard_kernel value is No"
+copy_new_sdcard_kernel_fail="Copying continue kernel has failed, exiting..."
+copy_new_sdcard_kernel_succeed="Copying new sdcard kernel was successful"

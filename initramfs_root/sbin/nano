@@ -1,8 +1,10 @@
 #!/bin/sh
 
+args="$@"
 export TERM='linux'
 export TERMINFO=/etc/terminfo
+
 busybox resize
 
-args="$@"
+
 nano.bin $args

@@ -1,7 +1,7 @@
 #!/bin/sh
-
-
-
+#
+# Description: Program varables to be imported by init script
+#
 
 prog_name="wz_flash-helper"
 

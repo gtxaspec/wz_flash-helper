@@ -6,7 +6,7 @@
 emulate_mode="no"
 
 function init_emulate() {
-# Description: Emulate various supposed-to-be automatically detected variables.
+# Description: Emulate various supposed-to-be automatically detected variables
 # For testing, only!
 	dry_run="yes" # Override config file option so nothing is actually done
 

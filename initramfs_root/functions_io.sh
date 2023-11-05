@@ -9,7 +9,7 @@
 
 
 function backup_partition_nor() {
-# Description: Dump partition <partmtd> contents to <outfile> on NOR flash
+# Description: Dump partition <partmtd> to <outfile> on NOR flash
 # Syntax: restore_partition_nor <partmtd> <outfile>
 	local partmtd="$1"
 	local outfile="$2"
@@ -23,7 +23,7 @@ function backup_partition_nor() {
 }
 
 function backup_partition_nand() {
-# Description: Dump partition <partmtd> contents to <outfile> on NAND flash
+# Description: Dump partition <partmtd> to <outfile> on NAND flash
 # Syntax: restore_partition_nand <partmtd> <outfile>
 	local partmtd="$1"
 	local outfile="$2"
@@ -37,7 +37,7 @@ function backup_partition_nand() {
 }
 
 function backup_partition() {
-# Description: Dump partition <partmtd> contents to <outfile>
+# Description: Dump partition <partmtd> to <outfile>
 # Syntax: backup_partition <partname> <partmtd> <outfile>
 	local partname="$1"
 	local partmtd="$2"
@@ -46,7 +46,7 @@ function backup_partition() {
 	local outfile_dirname=$(dirname $outfile)
 	
 	msg "- Read from flash: $partname($partmtd) to file $outfile_basename ---"
-	[ -f $outfile ] && { msg " + $outfile already exists" ; return 1 ; }
+	[ -f $outfile ] && { msg " + $outfile_basename already exists" ; return 1 ; }
 	
 	case "$flash_type" in
 		"nor")
@@ -54,22 +54,24 @@ function backup_partition() {
 		"nand")
 			backup_partition_nand $partmtd $outfile || return 1 ;;
 		*)
-			msg " + Invalid flash type, are you on emulation mode?" ;;
+			msg " + Invalid flash type, are you on emulation mode?"
+			return 1
+			;;
 	esac
 	
-	if [[ "$dry_run" == "yes" ]]; then
+	if [[ ! "$dry_run" == "yes" ]]; then
 		msg_dry_run "sha256sum $outfile > $outfile.sha256sum"
 		msg_dry_run "sed -i \"s|$outfile_dirname/||g\" $outfile.sha256sum"
 	else
 		msg_nonewline " + Generating sha256sum file... "
 		sha256sum $outfile > $outfile.sha256sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
-		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path of partition images files from their .sha256sum files
+		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path from .sha256sum file
 	fi
 }
 
-function archive_partition() {
+function create_archive_from_partition() {
 # Description: Create .tar.gz archive from partition <partmtdblock> files
-# Syntax: archive_partition <partname> <partblockmtd> <fstype> <outfile>
+# Syntax: create_archive_from_partition <partname> <partblockmtd> <fstype> <outfile>
 	local partname="$1"
 	local partblockmtd="$2"
 	local fstype="$3"
@@ -80,21 +82,20 @@ function archive_partition() {
 	local archive_mnt_dir="/archive_mnt_$partname"
 	mkdir -p $archive_mnt_dir
 	
-	msg "- Archive partition: $partname($partblockmtd) to file $outfile_basename ---"
+	msg "- Archive partition files: $partname($partblockmtd) to file $outfile_basename ---"
 	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "mount -o ro -t $fstype $partblockmtd $archive_mnt_dir"
 		msg_dry_run "tar -czf $outfile -C $archive_mnt_dir ."
 		msg_dry_run "sha256sum $outfile > $outfile.sha256sum"
 		msg_dry_run "sed -i \"s|$outfile_dirname/||g\" $outfile.sha256sum"
-		
 	else
 		mount -o ro -t $fstype $partblockmtd $archive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
 		msg_nonewline " + Creating archive file... "
 		tar -czf $outfile -C $archive_mnt_dir . && msg "succeeded" || { msg "failed" ; return 1 ; }
 		msg_nonewline " + Generating sha256sum file... "
 		sha256sum $outfile > $outfile.sha256sum && msg "succeeded" || { msg "failed" ; return 1 ; }
-		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path of partition images files from their .sha256sum files
+		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path from .sha256sum file
 		
 		umount $archive_mnt_dir && rmdir $archive_mnt_dir
 	fi
@@ -103,9 +104,9 @@ function archive_partition() {
 
 }
 
-function unarchive_partition() {
-# Description: Extract tar.gz archive to partition <partmtdblock>
-# Syntax: unarchive_partition <partname> <infile> <partblockmtd> <fstype>
+function extract_archive_to_partition() {
+# Description: Extract .tar.gz archive to partition <partmtdblock>
+# Syntax: extract_archive_to_partition <partname> <infile> <partblockmtd> <fstype>
 	local partname="$1"
 	local infile="$2"
 	local infile_basename=$(basename $infile)
@@ -116,16 +117,15 @@ function unarchive_partition() {
 	local unarchive_mnt_dir="/unarchive_mnt_$partname"
 	mkdir -p $unarchive_mnt_dir
 	
-	msg "- Unarchive partition: file $infile_basename to $partname($partblockmtd) ---"
+	msg "- Restore partition files: file $infile_basename to $partname($partblockmtd) ---"
 	
+	msg_nonewline " + Verifying file... "
+	( cd $infile_dirname && sha256sum -c $infile_basename.sha256sum ) && msg "ok" || { msg "failed" ; return 1 ; }
+
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_nonewline " + Verifying file... "
-		( cd $infile_dirname && sha256sum -c $infile_basename.sha256sum ) && msg "ok" || { msg "failed" ; return 1 ; }
 		msg_dry_run "mount -o rw -t $fstype $partblockmtd $unarchive_mnt_dir"
 		msg_dry_run "tar -xf $infile -C $unarchive_mnt_dir"
 	else
-		msg_nonewline " + Verifying file... "
-		( cd $infile_dirname && sha256sum -c $infile_basename.sha256sum ) && msg "ok" || { msg "failed" ; return 1 ; }
 		mount -o rw -t $fstype $partblockmtd $unarchive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
 		msg_nonewline " + Extracting archive file... "
 		tar -xf $infile -C $unarchive_mnt_dir && msg "succeeded" || { msg "failed" ; return 1 ; }
@@ -160,12 +160,12 @@ function restore_partition_nand() {
 		msg_dry_run "nandwrite -p $partmtd $infile"
 	else
 		msg_nonewline " + Writing... "
-		nandwrite -p $partmtd $infile || { msg "failed" ; return 1 ; } 
+		nandwrite -p $partmtd $infile && msg "succeeded" || { msg "failed" ; return 1 ; } 
 	fi
 }
 
 function restore_partition() {
-# Description: Write to <partmtd> partition using <infile>, <infile> and its sha256sum file will be copied to stage directory before proceed writing
+# Description: Write <infile> to <partmtd> partition, <infile> and its sha256sum file will be copied to stage directory before proceed writing
 # Syntax: restore_partition <partname> <restore_stage_dir> <infile> <partname>
 	local partname="$1"
 	local infile="$2"
@@ -178,15 +178,9 @@ function restore_partition() {
 	mkdir -p $restore_stage_dir
 	cp $infile $restore_stage_dir/$infile_basename || { msg " + $infile_basename is missing" ; return 1 ; }
 	cp $infile.sha256sum $restore_stage_dir/$infile_basename.sha256sum || { msg " + $infile_basename.sha256sum is missing" ; return 1 ; }
-	
-	cd $restore_stage_dir
-	if [[ "$dry_run" == "yes" ]]; then
-		msg_nonewline " + Verifying file... "
-		sha256sum -c $infile_basename.sha256sum && msg "ok" || { msg "failed" ; return 1 ; }
-	else
-		msg_nonewline " + Verifying file... "
-		sha256sum -c $infile_basename.sha256sum && msg "ok" || { msg "failed" ; return 1 ; }
-	fi
+
+	msg_nonewline " + Verifying file... "
+	( cd $restore_stage_dir ; sha256sum -c $infile_basename.sha256sum ) && msg "ok" || { msg "failed" ; return 1 ; }
 
 	case "$flash_type" in
 		"nor")
@@ -194,7 +188,9 @@ function restore_partition() {
 		"nand")
 			restore_partition_nand $infile $partmtd || return 1 ;;
 		*)
-			msg " + Invalid flash type, are you on emulation mode?" ;;
+			msg " + Invalid flash type, are you on emulation mode?"
+			return 1
+			;;
 	esac
 }
 
@@ -254,6 +250,6 @@ function leave_partition() {
 }
 
 function gen_4digit_id() {
-# Description: Generate a number in 1000-9999 range
+# Description: Generate a random number in 1000-9999 range
 	shuf -i 1000-9999 -n 1
 }

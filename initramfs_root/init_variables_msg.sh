@@ -26,7 +26,7 @@ switch_profile_succeed="Switch profile operation was successful"
 enable_custom_script_yes="[x] enable_custom_script value is Yes"
 enable_custom_script_no="[ ] enable_custom_script value is No"
 enable_custom_script_fail="Custom script running has failed, exiting..."
-enable_custom_script_succeed="Custom script running was successful"
+enable_custom_script_succeed="Custom script was successful"
 
 copy_new_sdcard_kernelimg_yes="[x] copy_new_sdcard_kernelimg value is Yes"
 copy_new_sdcard_kernelimg_no="[ ] copy_new_sdcard_kernelimg value is No"

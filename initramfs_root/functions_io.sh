@@ -80,7 +80,7 @@ function archive_partition() {
 	local archive_mnt_dir="/archive_mnt_$partname"
 	mkdir -p $archive_mnt_dir
 	
-	msg "- Archive partition: $partname($partblockmtd) files to file $outfile_basename ---"
+	msg "- Archive partition: $partname($partblockmtd) to file $outfile_basename ---"
 	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "mount -o ro -t $fstype $partblockmtd $archive_mnt_dir"

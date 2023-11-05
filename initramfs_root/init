@@ -305,15 +305,6 @@ function main() {
 		msg "$switch_profile_no"
 	fi
 
-	#---------- Custom script ----------
-	msg
-	if [[ "$enable_custom_script" == "yes" ]]; then
-		msg "$enable_custom_script_yes"
-		source /action_execute_custom_script.sh && msg "$enable_custom_script_succeed" || { msg "$enable_custom_script_fail" ; return 1 ; }
-	else
-		msg "$enable_custom_script_no"
-	fi
-
 	#---------- New SD card kernel ----------
 	msg
 	if [[ "$copy_new_sdcard_kernel" == "yes" ]]; then
@@ -322,6 +313,17 @@ function main() {
 	else
 		msg "$copy_new_sdcard_kernel_no"
 	fi
+	
+	#---------- Custom scripts ----------
+	msg
+	if [[ "$enable_custom_scripts" == "yes" ]]; then
+		msg "$enable_custom_scripts_yes"
+		source /action_execute_custom_scripts.sh && msg "$enable_custom_scripts_succeed" || { msg "$enable_custom_scripts_fail" ; return 1 ; }
+	else
+		msg "$enable_custom_scripts_no"
+	fi
+
+
 }
 
 

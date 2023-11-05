@@ -3,14 +3,14 @@
 # Description: Execute user custom script
 #
 
-function execute_custom_script() {
-	msg "custom_script value is set to $custom_script"
+function execute_custom_scripts() {
+	msg "custom_scripts value is set to \"$custom_scripts\""
 	
-	[[ "$dry_run" == "yes" ]] && { msg "Custom script does not run when dry run is active" ; return 1 ; }
+	[[ "$dry_run" == "yes" ]] && { msg "Custom scripts are not run when dry run is active" ; return 1 ; }
 
 	msg
 	msg "---------- Begin custom script ----------"
-	for custom_scriptlet in $custom_script ; do
+	for custom_scriptlet in $custom_scripts ; do
 		[ ! -f $prog_dir/scripts/$custom_scriptlet ] && { msg "Custom script file $custom_scriptlet is missing" ; return 1 ; }
 		msg "Running script: $custom_scriptlet"
 		msg
@@ -21,4 +21,4 @@ function execute_custom_script() {
 	msg
 }
 
-execute_custom_script || return 1
+execute_custom_scripts || return 1

@@ -50,16 +50,18 @@ function backup_partition() {
 	
 	case "$flash_type" in
 		"nor")
-			backup_partition_nor $partmtd $outfile || return 1 ;;
+			backup_partition_nor $partmtd $outfile || return 1
+			;;
 		"nand")
-			backup_partition_nand $partmtd $outfile || return 1 ;;
+			backup_partition_nand $partmtd $outfile || return 1
+			;;
 		*)
 			msg " + Invalid flash type, are you on emulation mode?"
 			return 1
 			;;
 	esac
 	
-	if [[ ! "$dry_run" == "yes" ]]; then
+	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "sha256sum $outfile > $outfile.sha256sum"
 		msg_dry_run "sed -i \"s|$outfile_dirname/||g\" $outfile.sha256sum"
 	else
@@ -184,9 +186,11 @@ function restore_partition() {
 
 	case "$flash_type" in
 		"nor")
-			restore_partition_nor $infile $partmtd || return 1 ;;
+			restore_partition_nor $infile $partmtd || return 1
+			;;
 		"nand")
-			restore_partition_nand $infile $partmtd || return 1 ;;
+			restore_partition_nand $infile $partmtd || return 1
+			;;
 		*)
 			msg " + Invalid flash type, are you on emulation mode?"
 			return 1

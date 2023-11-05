@@ -23,12 +23,11 @@ switch_profile_no="[ ] switch_profile value is No"
 switch_profile_fail="Switch profile operation has failed, exiting..."
 switch_profile_succeed="Switch profile operation was successful"
 
+copy_new_sdcard_kernel_yes="[x] copy_new_sdcard_kernel value is Yes"
+copy_new_sdcard_kernel_no="[ ] copy_new_sdcard_kernel value is No"
+
 enable_custom_scripts_yes="[x] enable_custom_scripts value is Yes"
 enable_custom_scripts_no="[ ] enable_custom_scripts value is No"
 enable_custom_scripts_fail="Custom scripts running has failed, exiting..."
 enable_custom_scripts_succeed="Custom scripts was successful"
 
-copy_new_sdcard_kernel_yes="[x] copy_new_sdcard_kernel value is Yes"
-copy_new_sdcard_kernel_no="[ ] copy_new_sdcard_kernel value is No"
-copy_new_sdcard_kernel_fail="Copying continue kernel has failed, exiting..."
-copy_new_sdcard_kernel_succeed="Copying new sdcard kernel was successful"

@@ -73,7 +73,7 @@ function backup_operation() {
 			msg "failed"
 			msg " + Backup with ID $backup_id exists on secondary backup directory, it will not be overwritten, skipping"
 		else	
-			cp -r $current_profile_backup_path $current_profile_backup_secondary_path && msg "succeeded" || { msg "failed" ; return 1 ; }
+			cp -r $current_profile_backup_path $current_profile_backup_secondary_path && msg "ok" || { msg "failed" ; return 1 ; }
 		fi	
 	fi
 	sync

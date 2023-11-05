@@ -18,7 +18,7 @@ function backup_partition_nor() {
 		msg_dry_run "dd if=$partmtd of=$outfile"
 	else
 		msg_nonewline " + Reading... "
-		dd if=$partmtd of=$outfile && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		dd if=$partmtd of=$outfile && msg "ok" || { msg "failed" ; return 1 ; } 
 	fi
 }
 
@@ -32,7 +32,7 @@ function backup_partition_nand() {
 		msg_dry_run "nanddump -f $outfile $partmtd"
 	else
 		msg_nonewline " + Reading... "
-		nanddump -f $outfile $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		nanddump -f $outfile $partmtd && msg "ok" || { msg "failed" ; return 1 ; } 
 	fi
 }
 
@@ -66,7 +66,7 @@ function backup_partition() {
 		msg_dry_run "sed -i \"s|$outfile_dirname/||g\" $outfile.sha256sum"
 	else
 		msg_nonewline " + Generating sha256sum file... "
-		sha256sum $outfile > $outfile.sha256sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		sha256sum $outfile > $outfile.sha256sum && msg "ok" || { msg "failed" ; return 1 ; } 
 		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path from .sha256sum file
 	fi
 }
@@ -94,9 +94,9 @@ function create_archive_from_partition() {
 	else
 		mount -o ro -t $fstype $partblockmtd $archive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
 		msg_nonewline " + Creating archive file... "
-		tar -czf $outfile -C $archive_mnt_dir . && msg "succeeded" || { msg "failed" ; return 1 ; }
+		tar -czf $outfile -C $archive_mnt_dir . && msg "ok" || { msg "failed" ; return 1 ; }
 		msg_nonewline " + Generating sha256sum file... "
-		sha256sum $outfile > $outfile.sha256sum && msg "succeeded" || { msg "failed" ; return 1 ; }
+		sha256sum $outfile > $outfile.sha256sum && msg "ok" || { msg "failed" ; return 1 ; }
 		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path from .sha256sum file
 		
 		umount $archive_mnt_dir && rmdir $archive_mnt_dir
@@ -130,7 +130,7 @@ function extract_archive_to_partition() {
 	else
 		mount -o rw -t $fstype $partblockmtd $unarchive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
 		msg_nonewline " + Extracting archive file... "
-		tar -xf $infile -C $unarchive_mnt_dir && msg "succeeded" || { msg "failed" ; return 1 ; }
+		tar -xf $infile -C $unarchive_mnt_dir && msg "ok" || { msg "failed" ; return 1 ; }
 		
 		umount $unarchive_mnt_dir && rmdir $unarchive_mnt_dir
 	fi
@@ -148,7 +148,7 @@ function restore_partition_nor() {
 		msg_dry_run "flashcp $infile $partmtd"
 	else
 		msg_nonewline " + Writing... "
-		flashcp $infile $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		flashcp $infile $partmtd && msg "ok" || { msg "failed" ; return 1 ; } 
 	fi
 }
 
@@ -162,7 +162,7 @@ function restore_partition_nand() {
 		msg_dry_run "nandwrite -p $partmtd $infile"
 	else
 		msg_nonewline " + Writing... "
-		nandwrite -p $partmtd $infile && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		nandwrite -p $partmtd $infile && msg "ok" || { msg "failed" ; return 1 ; } 
 	fi
 }
 
@@ -209,7 +209,7 @@ function format_partition_vfat() {
 		msg_dry_run "mkfs.vfat $partmtdblock"
 	else
 		msg_nonewline " + Formatting... "
-		mkfs.vfat $partmtdblock && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		mkfs.vfat $partmtdblock && msg "ok" || { msg "failed" ; return 1 ; } 
 	fi
 }
 
@@ -224,7 +224,7 @@ function format_partition_jffs2() {
 		msg_dry_run "flash_eraseall -j $partmtd"
 	else
 		msg_nonewline " + Formatting... "
-		flash_eraseall -j $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		flash_eraseall -j $partmtd && msg "ok" || { msg "failed" ; return 1 ; } 
 	fi
 }
 
@@ -239,7 +239,7 @@ function erase_partition() {
 		msg_dry_run "flash_eraseall $partmtd"
 	else
 		msg_nonewline " + Erasing... "
-		flash_eraseall $partmtd && msg "succeeded" || { msg "failed" ; return 1 ; }
+		flash_eraseall $partmtd && msg "ok" || { msg "failed" ; return 1 ; }
 	fi
 }
 

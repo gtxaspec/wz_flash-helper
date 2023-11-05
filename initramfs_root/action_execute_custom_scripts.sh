@@ -9,7 +9,7 @@ function execute_custom_scripts() {
 	[[ "$dry_run" == "yes" ]] && { msg "Custom scripts are not run when dry run is active" ; return 1 ; }
 
 	msg
-	msg "---------- Begin custom script ----------"
+	msg "---------- Begin of custom scripts ----------"
 	for custom_scriptlet in $custom_scripts ; do
 		[ ! -f $prog_dir/scripts/$custom_scriptlet ] && { msg "Custom script file $custom_scriptlet is missing" ; return 1 ; }
 		msg "Running script: $custom_scriptlet"
@@ -17,7 +17,7 @@ function execute_custom_scripts() {
 		source $prog_dir/scripts/$custom_scriptlet || return 1
 		msg
 	done
-	msg "----------- End custom script -----------"
+	msg "----------- End of custom scripts -----------"
 	msg
 }
 

@@ -175,14 +175,14 @@ function mount_sdcard() {
 # Description: Mount SD card, nothing more
 	msg
 	msg_nonewline "Mounting SD card... "
-	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg "succeeded" || msg "failed"
+	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg "ok" || msg "failed"
 }
 
 function rename_prog_sdcard_kernel() {
 # Description: Rename program SD card kernel to avoid infinite boot loop
 	if [ -f /sdcard/$current_profile_sdcard_kernel_name ]; then
 		msg_nonewline "Renaming program SD card kernel: $current_profile_sdcard_kernel_name to $current_profile_sdcard_kernel_name.$prog_name... "
-		mv /sdcard/$current_profile_sdcard_kernel_name /sdcard/$current_profile_sdcard_kernel_name.$prog_name && { msg "succeeded" ; return 0 ; } || msg "failed"
+		mv /sdcard/$current_profile_sdcard_kernel_name /sdcard/$current_profile_sdcard_kernel_name.$prog_name && { msg "ok" ; return 0 ; } || msg "failed"
 	else
 		msg "Program SD card kernel $current_profile_sdcard_kernel_name for this profile is missing"
 	fi
@@ -190,7 +190,7 @@ function rename_prog_sdcard_kernel() {
 	# OpenIPC uboot for Ingenic can load SD card kernel with two filenames, the second SD card kernel will be renamed if found to prevent bootloop
 	if [[ ! "$current_profile_sdcard_secondary_kernel_name" == "" ]] && [ -f /sdcard/$current_profile_sdcard_secondary_kernel_name ]; then
 		msg_nonewline "Renaming program secondary SD card kernel: $current_profile_sdcard_secondary_kernel_name to $current_profile_sdcard_secondary_kernel_name.$prog_name... "
-		mv /sdcard/$current_profile_sdcard_secondary_kernel_name /sdcard/$current_profile_sdcard_secondary_kernel_name.$prog_name && { msg "succeeded" ; return 0 ; } || msg "failed"
+		mv /sdcard/$current_profile_sdcard_secondary_kernel_name /sdcard/$current_profile_sdcard_secondary_kernel_name.$prog_name && { msg "ok" ; return 0 ; } || msg "failed"
 	else
 		msg "Program SD card secondary kernel $current_profile_sdcard_secondary_kernel_name for this profile is missing"
 	fi
@@ -214,7 +214,7 @@ function detect_camera_model() {
 function display_info() {
 # Description: Display system info and current status
 	msg
-	msg "Program version: $(cat /prog_ver.txt)"
+	msg "Program version: $(cat /version)"
 	msg "Hardware: chip name: $chip_name, chip family: $chip_family, flash type: $flash_type, model: $model"
 	msg "Current profile: $current_profile"
 	msg
@@ -309,7 +309,7 @@ function main() {
 	msg
 	if [[ "$copy_new_sdcard_kernel" == "yes" ]]; then
 		msg "$copy_new_sdcard_kernel_no"
-		source /action_copy_new_sdcard_kernel.sh && msg "$copy_new_sdcard_kernel_succeed" || { msg "$copy_new_sdcard_kernel_fail" ; return 1 ; }
+		source /action_copy_new_sdcard_kernel.sh || return 1
 	else
 		msg "$copy_new_sdcard_kernel_no"
 	fi

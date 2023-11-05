@@ -87,7 +87,7 @@ function get_wifi_vendor_id() {
 function detect_openipc_wifi_driver() {
 # Description: Assign Wi-Fi driver for OpenIPC based on camera model and vendor ID
 	msg "- Detecting driver for Wi-Fi module"
-	[[ "$set_wifi_driver_manually" == "yes" ]] && { msg " + Using overriden Wi-Fi driver value: $wifi_driver" ; return 0 ; }
+	[[ "$set_wifi_driver_manually" == "yes" ]] && { msg " + Using custom Wi-Fi driver value: $wifi_driver" ; return 0 ; }
 	
 	case $model in
 	
@@ -128,7 +128,7 @@ function pre_script_check() {
 	[[ "$switch_profile" == "yes" ]] && [[ "$next_profile" == "openipc" ]] && return 0
 	[[ "$switch_profile" == "no" ]] && [[ "$current_profile" == "openipc" ]] && return 0
 	
-	msg " + Conditions for this script to run are not met, for it to run the camera either:"
+	msg " + Conditions for this script to run are not met. For it to run, the camera must either:"
 	msg "  . is on openipc and not switching profile, or"
 	msg "  . already switched to openipc profile"
 	

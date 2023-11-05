@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#
+# Detect "chip group" to download correct OpenIPC uboot/build
 #
 
 function detect_chip_group() {

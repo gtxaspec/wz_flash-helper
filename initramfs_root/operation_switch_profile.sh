@@ -11,10 +11,12 @@
 
 function validate_restore_partition_images() {
 	msg "- Making sure that all needed partition images exist and are valid"
+	
 	cd $next_profile_images_path
 	for partname in $next_profile_all_partname_list; do # Check sha256 for all partitions first to make sure they are all valid before flashing each partition
 		if [[ "$(get_next_profile_partoperation $partname)" == "write" ]]; then
 			local infile_name=$(get_next_profile_partimg $partname)
+	
 			[ ! -f $infile_name ] && { msg " + $infile_name file is missing" ; return 1 ; }
 			
 			msg_nonewline " + Verifying $infile_name... "
@@ -34,10 +36,11 @@ function validate_written_bootpart() {
 		local bootimg="$next_profile_images_path/$bootimg_name"
 		local bootimg_blocksize=$(du -b $bootimg | cut -f -1)
 		local bootimg_hash=$(sha256sum $bootimg | cut -d ' ' -f1)
-		msg " + Hash of boot image used to write: $bootimg_hash"
 
 		dd if=/dev/mtdblock0 of=/bootpart_check.img bs=1 count=$bootimg_blocksize status=none
 		local bootpart_hash=$(sha256sum /bootpart_check.img | cut -d ' ' -f1)		
+		
+		msg " + Hash of boot image used to write: $bootimg_hash"
 		msg " + Hash of current boot partition: $bootpart_hash"
 
 		rm /bootpart_check.img	
@@ -50,7 +53,7 @@ function validate_written_bootpart() {
 }
 
 function rollback_bootpart() {
-# Description: Check if written boot partition is valid, if not, rollback with backup boot image
+# Description: Check if written boot partition is valid. If not, rollback with backup boot image
 	msg
 	msg "ATTENTION! ATTENTION! ATTENTION!"
 	msg "ATTENTION! ATTENTION! ATTENTION!"

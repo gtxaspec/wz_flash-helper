@@ -9,9 +9,9 @@ function copy_new_sdcard_kernel() {
 
 	msg
 	msg_nonewline "Copying /sdcard/$new_sdcard_kernel_name to /sdcard/$current_profile_sdcard_kernel_name... "
+	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "cp /sdcard/$new_sdcard_kernel_name /sdcard/$current_profile_sdcard_kernel_name"
-		msg
 	else
 		cp /sdcard/$new_sdcard_kernel_name /sdcard/$current_profile_sdcard_kernel_name && msg "done" || { msg "failed" ; return 1 ; }
 	fi

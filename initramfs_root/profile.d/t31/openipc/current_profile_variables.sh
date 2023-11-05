@@ -9,7 +9,7 @@ current_profile_all_partname_list="boot env kernel rootfs rootfs_data"
 ## Where all partition images will be saved
 current_profile_backup_path="/sdcard/wz_flash-helper/backup/openipc"
 
-## Filename of the entire flash dump
+## Filename of the entire flash dump file
 current_profile_backup_allparts_filename="openipc_${chip_group}_all.bin"
 
 ## List of partitions will be archived

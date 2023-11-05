@@ -10,7 +10,7 @@ current_profile_all_partname_list="boot kernel root driver appfs backupk backupd
 current_profile_backup_path="/sdcard/wz_flash-helper/backup/stock"
 current_profile_backup_secondary_path="/sdcard/Wyze_factory_backup"
 
-## Filename of the entire flash dump
+## Filename of the entire flash dump file
 current_profile_backup_allparts_filename="stock_${chip_group}_all.bin"
 
 ## List of partitions will be archived

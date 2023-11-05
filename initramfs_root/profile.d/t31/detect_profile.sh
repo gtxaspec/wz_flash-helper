@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#
+# Description: Detect current profile by analyzing uboot strings
 #
 
 function detect_profile() {

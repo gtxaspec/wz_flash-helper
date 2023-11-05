@@ -59,7 +59,7 @@ function get_next_profile_partmtdblock() {
 
 function get_next_profile_partimg() {
 # Description: Return filename of the partition image for the queried partition name
-# Syntax: get_openipc_partimg <partname> <>
+# Syntax: get_openipc_partimg <partname>
 	local partname="$1"
 	
 	echo -n "${next_profile}_${chip_group}_${partname}.bin"

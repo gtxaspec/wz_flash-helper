@@ -43,6 +43,7 @@ function backup_partition() {
 	local partmtd="$2"
 	local outfile="$3"
 	local outfile_basename=$(basename $outfile)
+	local outfile_dirname=$(dirname $outfile)
 	
 	msg "- Read from flash: $partname($partmtd) to file $outfile_basename ---"
 	[ -f $outfile ] && { msg " + $outfile already exists" ; return 1 ; }
@@ -58,11 +59,11 @@ function backup_partition() {
 	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "sha256sum $outfile > $outfile.sha256sum"
-		msg_dry_run "local outfile_dir=$(dirname $outfile) && sed -i \"s|\$outfile_dir/||g\" $outfile.sha256sum"
+		msg_dry_run "sed -i \"s|$outfile_dirname/||g\" $outfile.sha256sum"
 	else
 		msg_nonewline " + Generating sha256sum file... "
 		sha256sum $outfile > $outfile.sha256sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
-		local outfile_dir=$(dirname $outfile) && sed -i "s|$outfile_dir/||g" $outfile.sha256sum # Remove path of partition images files from their .sha256sum files
+		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path of partition images files from their .sha256sum files
 	fi
 }
 
@@ -74,6 +75,7 @@ function archive_partition() {
 	local fstype="$3"
 	local outfile="$4"
 	local outfile_basename=$(basename $outfile)
+	local outfile_dirname=$(dirname $outfile)
 	
 	local archive_mnt_dir="/archive_mnt_$partname"
 	mkdir -p $archive_mnt_dir
@@ -82,19 +84,56 @@ function archive_partition() {
 	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "mount -o ro -t $fstype $partblockmtd $archive_mnt_dir"
-		msg_dry_run "tar -czvf $outfile -C $archive_mnt_dir ."
+		msg_dry_run "tar -czf $outfile -C $archive_mnt_dir ."
 		msg_dry_run "sha256sum $outfile > $outfile.sha256sum"
+		msg_dry_run "sed -i \"s|$outfile_dirname/||g\" $outfile.sha256sum"
+		
 	else
 		mount -o ro -t $fstype $partblockmtd $archive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
 		msg_nonewline " + Creating archive file... "
-		tar -czvf $outfile -C $archive_mnt_dir . && msg "succeeded" || { msg "failed" ; return 1 ; }
+		tar -czf $outfile -C $archive_mnt_dir . && msg "succeeded" || { msg "failed" ; return 1 ; }
 		msg_nonewline " + Generating sha256sum file... "
-		sha256sum $outfile > $outfile.sha256sum && msg "succeeded" || { msg "failed" ; return 1 ; } 
+		sha256sum $outfile > $outfile.sha256sum && msg "succeeded" || { msg "failed" ; return 1 ; }
+		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path of partition images files from their .sha256sum files
+		
 		umount $archive_mnt_dir && rmdir $archive_mnt_dir
 	fi
 	
 	sync
 
+}
+
+function unarchive_partition() {
+# Description: Extract tar.gz archive to partition <partmtdblock>
+# Syntax: unarchive_partition <partname> <infile> <partblockmtd> <fstype>
+	local partname="$1"
+	local infile="$2"
+	local infile_basename=$(basename $infile)
+	local infile_dirname=$(dirname $infile)
+	local partblockmtd="$3"
+	local fstype="$4"
+	
+	local unarchive_mnt_dir="/unarchive_mnt_$partname"
+	mkdir -p $unarchive_mnt_dir
+	
+	msg "- Unarchive partition: file $infile_basename to $partname($partblockmtd) ---"
+	
+	if [[ "$dry_run" == "yes" ]]; then
+		msg_nonewline " + Verifying file... "
+		( cd $infile_dirname && sha256sum -c $infile_basename.sha256sum ) && msg "ok" || { msg "failed" ; return 1 ; }
+		msg_dry_run "mount -o rw -t $fstype $partblockmtd $unarchive_mnt_dir"
+		msg_dry_run "tar -xf $infile -C $unarchive_mnt_dir"
+	else
+		msg_nonewline " + Verifying file... "
+		( cd $infile_dirname && sha256sum -c $infile_basename.sha256sum ) && msg "ok" || { msg "failed" ; return 1 ; }
+		mount -o rw -t $fstype $partblockmtd $unarchive_mnt_dir || { msg "Failed to mount $partname" ; return 1 ; }
+		msg_nonewline " + Extracting archive file... "
+		tar -xf $infile -C $unarchive_mnt_dir && msg "succeeded" || { msg "failed" ; return 1 ; }
+		
+		umount $unarchive_mnt_dir && rmdir $unarchive_mnt_dir
+	fi
+	
+	sync
 }
 
 function restore_partition_nor() {
@@ -103,7 +142,6 @@ function restore_partition_nor() {
 	local infile="$1"
 	local partmtd="$2"
 
-	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "flashcp $infile $partmtd"
 	else
@@ -136,7 +174,6 @@ function restore_partition() {
 	local infile_basename=$(basename $infile)
 	local restore_stage_dir="/restore_stage_dir"
 	
-
 	msg "- Write to flash: file $infile_basename to $partname($partmtd) ---"
 	mkdir -p $restore_stage_dir
 	cp $infile $restore_stage_dir/$infile_basename || { msg " + $infile_basename is missing" ; return 1 ; }

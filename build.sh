@@ -26,7 +26,7 @@ function get_sdcard_kernel_filename() {
 }
 
 function make_initramfs() {
-	mkdir -p initramfs_root/{dev,proc,sys,tmp}
+	mkdir -p initramfs_root/{dev,proc,sys,tmp,mnt}
 	cp -r initramfs_root /tmp
 
 	( cd /tmp/initramfs_root && find . | fakeroot cpio --create --format='newc' | gzip > /tmp/initramfs.cpio )

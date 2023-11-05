@@ -26,10 +26,7 @@ function get_sdcard_kernel_filename() {
 }
 
 function make_initramfs() {
-	mkdir -p initramfs_root/{dev,proc,sys,tmp,mnt}
-	cp -r initramfs_root /tmp
-
-	( cd /tmp/initramfs_root && find . | fakeroot cpio --create --format='newc' | gzip > /tmp/initramfs.cpio )
+	( cd initramfs_root && find . | fakeroot cpio --create --format='newc' | gzip > /tmp/initramfs.cpio )
 }
 
 function patch_kernel_config() {
@@ -41,16 +38,20 @@ function compile_kernel() {
 	echo "Make sure that you patched kernel config by running ./build.sh patch first!"
 	echo
 	sleep 2
-	[ ! -f /tmp/initramfs.cpio ] && make_initramfs
+	clean_up
+	make_initramfs
 	( cd firmware && BOARD=${SoC}_ultimate_defconfig make br-linux )
-	
-	mkdir output/${SoC}
+
+	mkdir -p output/${SoC}
 	cp firmware/output/images/uImage output/${SoC}/${sdcard_kernel_filename}
 }
 
 function make_release() {
 	mkdir -p output/${SoC}
-	[ ! -f output/${SoC}/${sdcard_kernel_filename} ] && compile_kernel
+
+        clean_up
+        make_initramfs
+	compile_kernel
 
 	cp -r wz_flash-helper output/${SoC}
 	mv output/${SoC}/wz_flash-helper/restore/stock_${SoC}.conf output/${SoC}/wz_flash-helper/restore/stock.conf
@@ -61,9 +62,8 @@ function make_release() {
 }
 
 function clean_up() {
-	rm -r output/*
-	rm -r initramfs_root/{dev,proc,sys,tmp}
-	rm /tmp/initramfs.cpio
+	[ -d output ] && rm -r output
+	[ -f tmp/initramfs.cpio ] && rm /tmp/initramfs.cpio
 }
 
 
@@ -86,7 +86,7 @@ case ${action} in
 		make_release
 		;;
 	"clean")
-		clean_up 2>/dev/null
+		clean_up
 		;;
 	*)
 		show_syntax

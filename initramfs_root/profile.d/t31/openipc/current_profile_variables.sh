@@ -23,3 +23,4 @@ current_profile_restore_partname_list="env kernel rootfs rootfs_data"
 
 ## Name of SD card boot image
 current_profile_sdcard_kernelimg_name="factory_t31_0P3N1PC_kernel"
+current_profile_sdcard_secondary_kernelimg_name="factory_t31_ZMC6tiIDQN"

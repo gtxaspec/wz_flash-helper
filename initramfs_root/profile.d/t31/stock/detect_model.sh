@@ -5,6 +5,7 @@ function detect_model_cleanup() {
 }
 
 function detect_model() {
+# Description: Detect camera model by reading automatic generated file from factory
 	local config_partname="cfg"
 	local model_config_file=".product_config"
 

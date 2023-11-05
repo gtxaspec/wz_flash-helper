@@ -4,7 +4,7 @@
 
 
 function turn_off_leds() {
-	local chip_family=$(ipcinfo-mips32 --family)
+	local chip_family=$(ipcinfo --family)
 	source /leds_gpio.d/$chip_family.sh
 	
 	echo 1 > /sys/class/gpio/gpio$red_led_gpio/value

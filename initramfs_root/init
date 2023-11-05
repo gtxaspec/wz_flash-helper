@@ -8,6 +8,8 @@
 #                                                                                     `--'                  
 
 
+mkdir -p /dev /proc /sys /tmp
+mkdir -p /mnt /var/lock
 
 exec > /tmp/initramfs.log 2>&1 # Comment out this line to debug with serial connection
 set -x
@@ -46,6 +48,7 @@ function msg_nonewline() {
 }
 
 function play_audio() {
+# Description: Play audio to inform users the progress who don't have serial connection
 	[[ ! "$enable_audio" == "yes" ]] && return 0
 
 	audio_title="$1"
@@ -76,9 +79,9 @@ function play_audio() {
 
 function detect_hardware() {
 # Description: Detect SoC and flash chip type
-	chip_name=$(ipcinfo-mips32 --chip-name)
-	chip_family=$(ipcinfo-mips32 --family)
-	flash_type=$(ipcinfo-mips32 --flash-type)
+	chip_name=$(ipcinfo --chip-name)
+	chip_family=$(ipcinfo --family)
+	flash_type=$(ipcinfo --flash-type)
 }
 
 function import_init_msg() {
@@ -129,9 +132,10 @@ function wait_init_interrupt() {
 	read -r -s -n 1 -t 3
 	if [[ "$?" -eq 0 ]]; then
 		echo "Dropping a shell" > /dev/console
+		echo "You can run resize command to make terminal output match terminal size" > /dev/console
+		cd /
 		exec 1> /dev/console
 		exec 2> /dev/console
-		cd /
 		exec /bin/sh
 	fi
 	echo "Action has timed out" > /dev/console
@@ -179,11 +183,18 @@ function rename_prog_sdcard_kernelimg() {
 # Description: Rename program SD card boot image to avoid infinite boot loop
 	if [ -f /sdcard/$current_profile_sdcard_kernelimg_name ]; then
 		msg_nonewline "Renaming program kernel image on SD card: $current_profile_sdcard_kernelimg_name to $current_profile_sdcard_kernelimg_name.$prog_name... "
-		mv /sdcard/$current_profile_sdcard_kernelimg_name /sdcard/$current_profile_sdcard_kernelimg_name.$prog_name && msg "succeeded" || { msg "failed" ; return 1 ; }
+		mv /sdcard/$current_profile_sdcard_kernelimg_name /sdcard/$current_profile_sdcard_kernelimg_name.$prog_name && { msg "succeeded" ; return 0 ; } || msg "failed"
 	else
-		msg "Program SD card kernel image for this profile is missing, skipping"
-		return 1
+		msg "Program SD card kernel image for this profile is missing"
 	fi
+
+	if [[ ! "$current_profile_sdcard_secondary_kernelimg_name" == "" ]] && [ -f /sdcard/$current_profile_sdcard_secondary_kernelimg_name ]; then
+		msg_nonewline "Renaming program secondary kernel image on SD card: $current_profile_sdcard_secondary_kernelimg_name to $current_profile_sdcard_secondary_kernelimg_name.$prog_name... "
+		mv /sdcard/$current_profile_sdcard_secondary_kernelimg_name /sdcard/$current_profile_sdcard_secondary_kernelimg_name.$prog_name && { msg "succeeded" ; return 0 ; } || msg "failed"
+	else
+		msg "Program SD card secondary kernel image for this profile is missing"
+	fi
+	return 1
 }
 
 function import_prog_config_file() {
@@ -224,11 +235,12 @@ function exit_init() {
 	umount /sdcard
 
 	sleep 1
-	echo "Everything is finished! You can enter initramfs shell again before the program exits, if you wish" > /dev/console
+	echo "Everything is finished! You can enter initramfs shell again before the program exits" > /dev/console
 	wait_init_interrupt
 	
+	umount -a -r
 	play_audio "rebooting"
-	exit # Crash init to reboot immediately
+	reboot -f # Reboot immediately
 	sleep 10 # Prevents init from continuing after exit_init is finished but the camera has not rebooted immediately
 }
 

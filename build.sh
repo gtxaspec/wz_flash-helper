@@ -38,7 +38,6 @@ function compile_kernel() {
 	echo "Make sure that you patched kernel config by running ./build.sh patch first!"
 	echo
 	sleep 2
-	clean_up
 	make_initramfs
 	( cd firmware && BOARD=${SoC}_ultimate_defconfig make br-linux )
 
@@ -49,7 +48,6 @@ function compile_kernel() {
 function make_release() {
 	mkdir -p output/${SoC}
 
-        clean_up
         make_initramfs
 	compile_kernel
 

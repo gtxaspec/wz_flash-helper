@@ -11,9 +11,12 @@ function execute_custom_script() {
 
 	msg
 	msg "---------- Begin custom script ----------"
-	msg "Running script: $(basename $custom_script)"
-	msg
-	source $prog_dir/scripts/$custom_script || return 1
+	for custom_scriptlet in $custom_script ; do
+		msg "Running script: $custom_scriptlet"
+		msg
+		source $prog_dir/scripts/$custom_scriptlet || return 1
+		msg
+	done
 	msg "----------- End custom script -----------"
 	msg
 }

@@ -67,7 +67,7 @@ function clean_up() {
 
 
 sdcard_kernel_filename=$(get_sdcard_kernel_filename ${SoC})
-version=$(cat initramfs_root/prog_ver.txt)
+version=$(cat initramfs_root/version)
 
 mkdir -p output
 

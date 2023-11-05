@@ -38,7 +38,7 @@ function patch_kernel_config() {
 }
 
 function compile_kernel() {
-	echo "Make sure that you patched kernel config by runing ./build.sh patch first!"
+	echo "Make sure that you patched kernel config by running ./build.sh patch first!"
 	echo
 	sleep 2
 	[ ! -f /tmp/initramfs.cpio ] && make_initramfs

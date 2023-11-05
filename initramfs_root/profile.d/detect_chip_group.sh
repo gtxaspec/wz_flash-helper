@@ -5,7 +5,7 @@
 
 function detect_chip_group() {
 	case $chip_name in
-		t20x)
+		t20|t20x)
 			chip_group="t20x"
 			;;
 		t31x|t31zl|t31zx)

@@ -185,14 +185,14 @@ function rename_prog_sdcard_kernelimg() {
 		msg_nonewline "Renaming program kernel image on SD card: $current_profile_sdcard_kernelimg_name to $current_profile_sdcard_kernelimg_name.$prog_name... "
 		mv /sdcard/$current_profile_sdcard_kernelimg_name /sdcard/$current_profile_sdcard_kernelimg_name.$prog_name && { msg "succeeded" ; return 0 ; } || msg "failed"
 	else
-		msg "Program SD card kernel image for this profile is missing"
+		msg "Program SD card kernel image $current_profile_sdcard_kernelimg_name for this profile is missing"
 	fi
 
 	if [[ ! "$current_profile_sdcard_secondary_kernelimg_name" == "" ]] && [ -f /sdcard/$current_profile_sdcard_secondary_kernelimg_name ]; then
 		msg_nonewline "Renaming program secondary kernel image on SD card: $current_profile_sdcard_secondary_kernelimg_name to $current_profile_sdcard_secondary_kernelimg_name.$prog_name... "
 		mv /sdcard/$current_profile_sdcard_secondary_kernelimg_name /sdcard/$current_profile_sdcard_secondary_kernelimg_name.$prog_name && { msg "succeeded" ; return 0 ; } || msg "failed"
 	else
-		msg "Program SD card secondary kernel image for this profile is missing"
+		msg "Program SD card secondary kernel image $current_profile_sdcard_secondary_kernelimg_name for this profile is missing"
 	fi
 	return 1
 }

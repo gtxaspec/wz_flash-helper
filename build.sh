@@ -64,6 +64,7 @@ function make_release() {
 function clean_up() {
 	[ -d output ] && rm -r output
 	[ -f tmp/initramfs.cpio ] && rm /tmp/initramfs.cpio
+	return 0
 }
 
 

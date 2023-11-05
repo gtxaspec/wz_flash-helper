@@ -87,7 +87,7 @@ function detect_hardware() {
 
 function import_init_msg() {
 # Description: Place long init messages somewhere else to keep this script clean
-	source /init_variables_msg.sh
+	source /variables_msg.sh
 }
 
 function import_functions_io() {
@@ -156,12 +156,12 @@ function detect_current_profile() {
 
 function import_prog_info() {
 # Description: Import program variables
-	source /init_variables_prog_info.sh
+	source /variables_prog_info.sh
 }
 
 function emulate() {
 # Description: Emulate chip family, flash type and current profile for testing
-	source /init_emulate.sh
+	source /variables_emulate.sh
 }
 
 function import_current_profile() {

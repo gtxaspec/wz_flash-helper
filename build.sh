@@ -55,7 +55,7 @@ function make_release() {
 	mv output/${SoC}/wz_flash-helper/restore/stock_${SoC}.conf output/${SoC}/wz_flash-helper/restore/stock.conf
 	rm output/${SoC}/wz_flash-helper/restore/stock_*.conf
 
-	( cd output/${SoC} && zip -r ${version}_${SoC}.zip . )
+	( cd output/${SoC} && zip -r ${version}_${SoC}.zip . -x *.gitkeep)
 	rm -r output/${SoC}/wz_flash-helper
 }
 

@@ -275,6 +275,40 @@ function leave_partition() {
 	msg " + Leaving..."
 }
 
+function validate_written_partition() {
+# Description: Validate if written partition is the same as the partition image that was used to write. If the validation fails, it is done again up to three times
+# Syntax: validate_written_partition <partname> <partmtdblock> <verifyfile>
+	local partname="$1"
+	local partmtdblock="$2"
+	local verifyfile="$3"
+	local verifyfile_basename=$(basename $verifyfile)
+	local partimg_verify="/verify_$partname.img"
+
+	msg "- Validating written $partname($partmtdblock) with $verifyfile_basename"
+	
+	[ ! -b $partmtdblock ] && { msg " + $partmtdblock is not a block device" ; return 1 ; }
+	[ ! -f $verifyfile ] && { msg " + $verifyfile_basename is missing" ; return 1 ; }
+	
+	for attempt in 1 2 3; do
+		msg " + Validation attempt $attempt:"
+		
+		local verifyfile_blocksize=$(du -b $verifyfile | cut -f -1)
+		local verifyfile_hash=$(sha256sum $verifyfile | cut -d ' ' -f1)
+
+		dd if=$partmtdblock of=$partimg_verify bs=1 count=$verifyfile_blocksize status=none
+		local partimg_verify_hash=$(sha256sum $partimg_verify | cut -d ' ' -f1)		
+
+		rm $partimg_verify
+		
+		msg " + Hash of partition image used to write: $verifyfile_hash"
+		msg " + Hash of written partition: $partimg_verify_hash"
+
+		msg_nonewline " + Validation result: "
+		[[ "$verifyfile_hash" == "$partimg_verify_hash" ]] && { msg "good" ; return 0 ; } || msg "bad"
+	done
+	return 1
+}
+
 function gen_4digit_id() {
 # Description: Return a random number in 1000-9999 range
 	shuf -i 1000-9999 -n 1

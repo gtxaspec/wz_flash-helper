@@ -47,7 +47,9 @@ function backup_partition() {
 	
 	msg "- Read from flash: $partname($partmtd) to file $outfile_basename ---"
 	
+	[ ! -c $partmtd ] && { msg " + $partmtd is not a character device" ; return 1 ; }
 	[ -f $outfile ] && { msg " + $outfile_basename already exists" ; return 1 ; }
+	
 	case "$flash_type" in
 		"nor")
 			backup_partition_nor $partmtd $outfile || return 1
@@ -111,9 +113,13 @@ function restore_partition() {
 	mkdir -p $restore_stage_dir
 	
 	msg "- Write to flash: file $infile_basename to $partname($partmtd) ---"
+
+	[ ! -c $partmtd ] && { msg " + $partmtd is not a character device" ; return 1 ; }
+	[ ! -f $infile ] && { msg " + $infile_basename is missing" ; return 1 ; }
+	[ ! -f $infile.sha256sum ] && { msg " + $infile_basename.sha256sum is missing" ; return 1 ; }
 	
-	cp $infile $restore_stage_dir/$infile_basename || { msg " + $infile_basename is missing" ; return 1 ; }
-	cp $infile.sha256sum $restore_stage_dir/$infile_basename.sha256sum || { msg " + $infile_basename.sha256sum is missing" ; return 1 ; }
+	cp $infile $restore_stage_dir/$infile_basename
+	cp $infile.sha256sum $restore_stage_dir/$infile_basename.sha256sum
 
 	msg_nonewline " + Verifying file... "
 	( cd $restore_stage_dir ; sha256sum -c $infile_basename.sha256sum ) && msg "ok" || { msg "failed" ; return 1 ; }
@@ -146,7 +152,10 @@ function create_archive_from_partition() {
 	mkdir -p $archive_mnt
 	
 	msg "- Archive partition files: $partname($partblockmtd) to file $outfile_basename ---"
-	
+
+	[ ! -b $partmtdblock ] && { msg " + $partmtdblock is not a block device" ; return 1 ; }
+	[ -f $outfile ] && { msg " + $outfile_basename already exists" ; return 1 ; }
+		
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "mount -o ro -t $fstype $partblockmtd $archive_mnt"
 		msg_dry_run "tar -czf $outfile -C $archive_mnt ."
@@ -168,7 +177,7 @@ function create_archive_from_partition() {
 }
 
 function extract_archive_to_partition() {
-# Description: Extract .tar.gz archive to partition <partmtdblock>
+# Description: Extract an archive to partition <partmtdblock>
 # Syntax: extract_archive_to_partition <partname> <infile> <partblockmtd> <fstype>
 	local partname="$1"
 	local infile="$2"
@@ -181,6 +190,9 @@ function extract_archive_to_partition() {
 	mkdir -p $unarchive_mnt
 	
 	msg "- Restore partition files: file $infile_basename to $partname($partblockmtd) ---"
+
+	[ ! -f $infile ] && { msg " + $infile_basename is missing" ; return 1 ; }
+	[ ! -b $partmtdblock ] && { msg " + $partmtdblock is not a block device" ; return 1 ; }
 	
 	msg_nonewline " + Verifying file... "
 	( cd $infile_dirname && sha256sum -c $infile_basename.sha256sum ) && msg "ok" || { msg "failed" ; return 1 ; }
@@ -207,6 +219,8 @@ function format_partition_vfat() {
 
 	msg "- Format partition: $partname($partmtd) as vfat ---"
 
+	[ ! -b $partmtdblock ] && { msg " + $partmtdblock is not a block device" ; return 1 ; }
+	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "mkfs.vfat $partmtdblock"
 	else
@@ -223,6 +237,8 @@ function format_partition_jffs2() {
 
 	msg "- Format partition: $partname($partmtd) as jffs2 ---"	
 
+	[ ! -c $partmtd ] && { msg " + $partmtd is not a character device" ; return 1 ; }
+	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "flash_eraseall -j $partmtd"
 	else
@@ -239,6 +255,8 @@ function erase_partition() {
 
 	msg "- Erase partition: $partname($partmtd) ---"
 
+	[ ! -c $partmtd ] && { msg " + $partmtd is not a character device" ; return 1 ; }
+	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "flash_eraseall $partmtd"
 	else

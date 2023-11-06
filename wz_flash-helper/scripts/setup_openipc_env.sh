@@ -144,16 +144,16 @@ function set_openipc_user_env() {
 
 	#---------- Wi-Fi SSID ----------
 	msg_nonewline " + Setting Wi-Fi SSID... "
-	fw_setenv wlanssid $wifi_ssid && msg "succeeded" || { msg "failed" ; return 1 ; }
+	fw_setenv wlanssid $wifi_ssid && msg "ok" || { msg "failed" ; return 1 ; }
 
 	#---------- Wi-Fi password ----------
 	msg_nonewline " + Setting Wi-Fi password... "
-	fw_setenv wlanpass $wifi_password && msg "succeeded" || { msg "failed" ; return 1 ; }
+	fw_setenv wlanpass $wifi_password && msg "ok" || { msg "failed" ; return 1 ; }
 
 	#---------- Wi-Fi driver ----------
 	msg_nonewline " + Setting Wi-Fi driver... "
 	if [[ ! "$wifi_driver" == "" ]]; then
-		fw_setenv wlandev $wifi_driver && msg "succeeded" || { msg "failed" ; return 1 ; }
+		fw_setenv wlandev $wifi_driver && msg "ok" || { msg "failed" ; return 1 ; }
 	else
 		msg "not set because it is empty"
 	fi
@@ -161,7 +161,7 @@ function set_openipc_user_env() {
 	#---------- MAC address ----------
 	msg_nonewline " + Setting MAC address... "
 	if [[ ! "$mac_address" == "" ]]; then
-		fw_setenv wlanmac $mac_address && msg "succeeded" || { msg "failed" ; return 1 ; }
+		fw_setenv wlanmac $mac_address && msg "ok" || { msg "failed" ; return 1 ; }
 	else
 		msg "not set because it is empty"
 	fi
@@ -169,7 +169,7 @@ function set_openipc_user_env() {
 	#---------- Timezone ----------
 	msg_nonewline " + Setting Timezone... "
 	if [[ ! "$timezone" == "" ]]; then
-		fw_setenv timezone $timezone && msg "succeeded" || { msg "failed" ; return 1 ; }
+		fw_setenv timezone $timezone && msg "ok" || { msg "failed" ; return 1 ; }
 	else
 		msg "not set because it is empty"
 	fi

@@ -181,10 +181,7 @@ function mount_sdcard() {
 
 function rename_prog_sdcard_kernel() {
 # Description: Rename program SD card kernel to avoid infinite boot loop
-	local primary_kernelimg="$cp_sdcard_kernel_name"
-	local secondary_kernelimg="$cp_sdcard_secondary_kernel_name"
-	
-	for kernelimg in $primary_kernelimg $secondary_kernelimg; do
+	for kernelimg in $cp_sdcard_kernel_name $cp_sdcard_secondary_kernel_name; do
 		if [ -f /sdcard/$kernelimg ]; then
 			msg_nonewline "Renaming program SD card kernel: $kernelimg to $kernelimg.$prog_name... "
 			mv /sdcard/$kernelimg /sdcard/$kernelimg.$prog_name && { msg "ok" ; return 0 ; } || msg "failed"

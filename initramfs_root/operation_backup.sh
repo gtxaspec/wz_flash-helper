@@ -65,16 +65,16 @@ function operation_backup() {
 	backup_parts || return 1
 	archive_parts || return 1
 	msg
-	if [[ ! "$current_profile_backup_secondary_path" == "" ]] && [[ ! "$dry_run" == "yes" ]]; then
-		msg "- This profile has secondary backup directory at $current_profile_backup_secondary_path"
+	if [[ ! "$cp_backup_secondary_path" == "" ]] && [[ ! "$dry_run" == "yes" ]]; then
+		msg "- This profile has secondary backup directory at $cp_backup_secondary_path"
 		msg_nonewline " + Creating a copy from primary backup... "
 		
-		if [ -d $current_profile_backup_secondary_path/$backup_id ]; then
+		if [ -d $cp_backup_secondary_path/$backup_id ]; then
 			msg "failed"
 			msg " + Backup with ID $backup_id exists on secondary backup directory, it will not be overwritten, skipping"
 		else
-			mkdir -p $current_profile_backup_secondary_path	
-			cp -r $cp_backup_path $current_profile_backup_secondary_path && msg "ok" || { msg "failed" ; return 1 ; }
+			mkdir -p $cp_backup_secondary_path	
+			cp -r $cp_backup_path $cp_backup_secondary_path && msg "ok" || { msg "failed" ; return 1 ; }
 		fi	
 	fi
 	sync

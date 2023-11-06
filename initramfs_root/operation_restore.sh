@@ -15,8 +15,11 @@ function restore_current_profile_bootpart() {
 		local infile_name=$(get_current_profile_partimg $partname)
 		local infile="$current_profile_restore_path/$infile_name"
 		local partmtd=$(get_current_profile_partmtd $partname)
+		local partmtdblock=$(get_current_profile_partmtdblock $partname)
 		
 		restore_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
+		
+		validate_written_partition $partname $partmtdblock $infile || return 1
 	fi
 }
 

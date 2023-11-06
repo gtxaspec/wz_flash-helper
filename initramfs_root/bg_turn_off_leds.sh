@@ -1,7 +1,7 @@
 #!/bin/sh
-
-
-
+#
+# Description: Turn off all LEDs
+#
 
 function turn_off_leds() {
 	local chip_family=$(ipcinfo --family)

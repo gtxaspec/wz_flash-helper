@@ -28,6 +28,6 @@ copy_new_sdcard_kernel_no="[ ] copy_new_sdcard_kernel value is No"
 
 enable_custom_scripts_yes="[x] enable_custom_scripts value is Yes"
 enable_custom_scripts_no="[ ] enable_custom_scripts value is No"
-enable_custom_scripts_fail="Custom scripts running has failed, exiting..."
-enable_custom_scripts_succeed="Custom scripts was successful"
+enable_custom_scripts_fail="Running custom scripts has failed, exiting..."
+enable_custom_scripts_succeed="Running custom scripts was successful"
 

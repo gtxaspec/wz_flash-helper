@@ -168,8 +168,8 @@ function source_variables_emulate() {
 function source_current_profile() {
 # Description: Import current profile variables and querry script
 	source /profile.d/detect_chip_group.sh || return 1
-	source /profile.d/$chip_family/$current_profile/current_profile_variables.sh
-	source /profile.d/$chip_family/$current_profile/current_profile_queries.sh
+	source /profile.d/$chip_family/$current_profile/cp_variables.sh
+	source /profile.d/$chip_family/$current_profile/cp_queries.sh
 }
 
 function mount_sdcard() {

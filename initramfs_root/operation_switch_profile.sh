@@ -64,13 +64,13 @@ function operation_switch_profile() {
 	[[ "$current_profile" == "$next_profile" ]] && { msg "next_profile value is same as current_profile, aborting switch profile" ; return 1 ; }
 	[ ! -d /profile.d/$chip_family/$next_profile ] && { msg "next_profile is not supported, aborting switch profile" ; return 1 ; }
 	
-	source /profile.d/$chip_family/$next_profile/next_profile_variables.sh
-	source /profile.d/$chip_family/$next_profile/next_profile_queries.sh
+	source /profile.d/$chip_family/$next_profile/np_variables.sh
+	source /profile.d/$chip_family/$next_profile/np_queries.sh
 	
 	if [[ "$switch_profile_with_all_partitions" == "yes" ]]; then
-		source /profile.d/$chip_family/$next_profile/next_profile_switch_allparts.sh
+		source /profile.d/$chip_family/$next_profile/np_switch_allparts.sh
 	else
-		source /profile.d/$chip_family/$next_profile/next_profile_switch_baseparts.sh
+		source /profile.d/$chip_family/$next_profile/np_switch_baseparts.sh
 	fi
 	
 	/bg_blink_led_red_and_blue.sh &

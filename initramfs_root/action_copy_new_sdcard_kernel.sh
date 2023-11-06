@@ -1,19 +1,19 @@
 #!/bin/sh
 #
-# Description: Make a copy of user custom kernel with name that will be booted by uboot on next boot
+# Description: Make a copy of user-specified SD card kernel and rename it to let it be booted by uboot on next boot
 #
 
 function copy_new_sdcard_kernel() {
-	[ ! -f /sdcard/$new_sdcard_kernel_name ] && { msg "/sdcard/$new_sdcard_kernel_name file is missing" ; return 1 ; }
+	[ ! -f /sdcard/$new_sdcard_kernel ] && { msg "/sdcard/$new_sdcard_kernel file is missing" ; return 1 ; }
 	[[ "$switch_profile" == "yes" ]] && { msg "New SD card kernel will not be copied when switch_profile is enabled" ; return 1 ; }
 
 	msg
-	msg_nonewline "Copying /sdcard/$new_sdcard_kernel_name to /sdcard/$current_profile_sdcard_kernel_name... "
+	msg_nonewline "Copying /sdcard/$new_sdcard_kernel to /sdcard/$current_profile_sdcard_kernel_name... "
 	
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "cp /sdcard/$new_sdcard_kernel_name /sdcard/$current_profile_sdcard_kernel_name"
+		msg_dry_run "cp /sdcard/$new_sdcard_kernel /sdcard/$current_profile_sdcard_kernel_name"
 	else
-		cp /sdcard/$new_sdcard_kernel_name /sdcard/$current_profile_sdcard_kernel_name && msg "done" || { msg "failed" ; return 1 ; }
+		cp /sdcard/$new_sdcard_kernel /sdcard/$current_profile_sdcard_kernel_name && msg "done" || { msg "failed" ; return 1 ; }
 	fi
 }
 

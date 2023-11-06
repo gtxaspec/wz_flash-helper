@@ -20,12 +20,12 @@ wifi_password="Wi-Fi password"
 ## They can be set later using SSH after OpenIPC boots up
 
 ## mac_address format: 00:11:22:aa:bb:cc
-## If not set, a random MAC address is used
+## If not set, a random MAC address will be used
 mac_address=""
 
-## Example: America/Los_Angeles, EST
-## Full list of time zones can be found here: https://github.com/openwrt/luci/blob/master/modules/luci-base/ucode/zoneinfo.uc
-## If not set, Etc/GMT is used
+## Example: America/Los Angeles
+## Full list of time zones with correct format can be found here: https://github.com/openwrt/luci/blob/master/modules/luci-base/ucode/zoneinfo.uc
+## If not set, Etc/GMT is used by default
 timezone=""
 
 

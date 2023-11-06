@@ -213,14 +213,9 @@ function extract_archive_to_partition() {
 
 function format_partition_vfat() {
 # Description: Format partition <partmtd> as vfat
-# Syntax: format_partition_vfat <partname> <partmtdblock>
-	local partname="$1"
-	local partmtdblock="$2"
+# Syntax: format_partition_vfat <partmtdblock>
+	local partmtdblock="$1"
 
-	msg "- Format partition: $partname($partmtd) as vfat ---"
-
-	[ ! -b $partmtdblock ] && { msg " + $partmtdblock is not a block device" ; return 1 ; }
-	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "mkfs.vfat $partmtdblock"
 	else
@@ -231,20 +226,42 @@ function format_partition_vfat() {
 
 function format_partition_jffs2() {
 # Description: Format partition <partmtd> as jffs2
-# Syntax: format_partition_jffs2 <partname> <partmtd>
-	local partname="$1"
-	local partmtd="$2"
+# Syntax: format_partition_jffs2 <partmtd>
+	local partmtd="$1"
 
-	msg "- Format partition: $partname($partmtd) as jffs2 ---"	
-
-	[ ! -c $partmtd ] && { msg " + $partmtd is not a character device" ; return 1 ; }
-	
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "flash_eraseall -j $partmtd"
 	else
 		msg_nonewline " + Formatting... "
 		flash_eraseall -j $partmtd && msg "ok" || { msg "failed" ; return 1 ; } 
 	fi
+}
+
+function format_partition() {
+# Description: Format partition <partnum>
+	local partname="$1"
+	local partnum="$2"
+	local partfstype="$3"
+	local partmtd="/dev/mtd$partnum"
+	local partmtdblock="/dev/mtdblock$partnum"
+	
+	msg "- Format partition: $partname(partition number: $partnum) as $partfstype ---"
+
+	[ ! -c $partmtd ] && { msg " + $partmtd is not a character device" ; return 1 ; }
+	[ ! -b $partmtdblock ] && { msg " + $partmtdblock is not a block device" ; return 1 ; }
+
+	case $partfstype in
+		"jffs2")
+			format_partition_jffs2 $partmtd || return 1
+			;;
+		"vfat")
+			format_partition_vfat $partmtdblock || return 1
+			;;
+		*)
+			msg " + Formating partition as $partfstype is not supported"
+			return 1
+			;;
+	esac
 }
 
 function erase_partition() {
@@ -300,7 +317,7 @@ function validate_written_partition() {
 
 		rm $partimg_verify
 		
-		msg " + Hash of partition image used to write: $verifyfile_hash"
+		msg " + Hash of partition image: $verifyfile_hash"
 		msg " + Hash of written partition: $partimg_verify_hash"
 
 		msg_nonewline " + Validation result: "

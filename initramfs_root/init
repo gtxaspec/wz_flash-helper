@@ -146,6 +146,7 @@ function wait_init_interrupt() {
 function backup_bootpart() {
 # Description: Create backup for boot partition to rollback in case it gets corrupted, and to detect current profile by analyzing its strings
 	dd if=/dev/mtdblock0 of=/bootpart_backup.img status=none
+	sha256sum /bootpart_backup.img > /bootpart_backup.img.sha256sum
 	strings /bootpart_backup.img > /bootpart_backup.img.strings
 }
 

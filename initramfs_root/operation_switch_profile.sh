@@ -13,7 +13,9 @@ function validate_restore_partition_images() {
 	msg "- Making sure that all needed partition images exist and are valid"
 	
 	cd $next_profile_images_path
-	for partname in $next_profile_all_partname_list; do # Check sha256 for all partitions first to make sure they are all valid before flashing each partition
+	
+	# Check sha256 for all partitions first to make sure they are all valid before flashing each partition
+	for partname in $next_profile_all_partname_list; do 
 		if [[ "$(get_next_profile_partoperation $partname)" == "write" ]]; then
 			local infile_name=$(get_next_profile_partimg $partname)
 	
@@ -31,7 +33,7 @@ function validate_written_bootpart() {
 	local partname="boot"
 	local partmtdblock=$(get_next_profile_partmtdblock $partname)
 	local verifyfile_basename=$(get_next_profile_partimg $partname)
-	local verifyfile="$next_profile_images_path/$bootimg_name"
+	local verifyfile="$next_profile_images_path/$verifyfile_basename"
 	
 	validate_written_partition $partname $partmtdblock $verifyfile || return 1
 }
@@ -89,28 +91,15 @@ function operation_switch_profile() {
 			"write")
 				local infile_name=$(get_next_profile_partimg $partname)
 				local infile="$next_profile_images_path/$infile_name"
-				restore_partition $partname $infile $partmtd || { msg "Failed to write $partname partition image, aborting profile switch" ; return 1 ; }
+				restore_partition $partname $infile $partmtd || return 1
 				;;
 			"erase")
 				erase_partition $partname $partmtd || return 1
 				;;
 			"format")
 				local partfstype=$(get_next_profile_partfstype $partname)
-				local partmtd=$(get_next_profile_partmtd $partname)
-				local partmtdblock=$(get_next_profile_partmtdblock $partname)
-				
-				case $partfstype in
-					"jffs2")
-						format_partition_jffs2 $partname $partmtd || { msg "Failed to format partition $partname as jffs2" ; return 1 ; }
-						;;
-					"vfat")
-						format_partition_vfat $partname $partmtdblock || { msg "Failed to format partition $partname as vfat" ; return 1 ; }
-						;;
-					*)
-						msg "- Formating partition $partname as $partfstype is not supported"
-						return 1
-						;;
-				esac
+				local partnum=$(get_next_profile_partnum $partname)
+				format_partition $partname $partnum $partfstype || return 1
 				;;
 			"leave")
 				leave_partition $partname $partmtd

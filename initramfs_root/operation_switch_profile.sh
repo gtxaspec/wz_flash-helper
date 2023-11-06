@@ -27,29 +27,13 @@ function validate_restore_partition_images() {
 }
 
 function validate_written_bootpart() {
-# Description: Check 3 times if written boot partition is the same as the partition image used to write
-	msg
-	msg "- Validating written boot partition"
-	for attempt in 1 2 3; do
-		msg "- Validation attempt $attempt:"
-		local bootimg_name=$(get_next_profile_partimg "boot")
-		local bootimg="$next_profile_images_path/$bootimg_name"
-		local bootimg_blocksize=$(du -b $bootimg | cut -f -1)
-		local bootimg_hash=$(sha256sum $bootimg | cut -d ' ' -f1)
-
-		dd if=/dev/mtdblock0 of=/bootpart_check.img bs=1 count=$bootimg_blocksize status=none
-		local bootpart_hash=$(sha256sum /bootpart_check.img | cut -d ' ' -f1)		
-		
-		msg " + Hash of boot image used to write: $bootimg_hash"
-		msg " + Hash of current boot partition: $bootpart_hash"
-
-		rm /bootpart_check.img	
-
-		msg_nonewline " + Validation result: "
-		[[ "$bootimg_hash" == "$bootpart_hash" ]] && { msg "good" ; return 0 ; } || msg "bad"
-	done
-	rm /bootpart_check.img
-	return 1
+# Description: Validate if written boot partition is the same as the boot partition image used to write
+	local partname="boot"
+	local partmtdblock=$(get_next_profile_partmtdblock $partname)
+	local verifyfile_basename=$(get_next_profile_partimg $partname)
+	local verifyfile="$next_profile_images_path/$bootimg_name"
+	
+	validate_written_partition $partname $partmtdblock $verifyfile || return 1
 }
 
 function rollback_bootpart() {

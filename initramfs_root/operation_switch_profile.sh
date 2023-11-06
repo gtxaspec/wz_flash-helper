@@ -73,7 +73,7 @@ function rollback_bootpart() {
 	return 1
 }
 
-function switch_profile_operation() {
+function operation_switch_profile() {
 	[[ "$restore_partitions" == "yes" ]] && { msg "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	[[ "$current_profile" == "$next_profile" ]] && { msg "next_profile value is same as current_profile, aborting switch profile" ; return 1 ; }
 	[ ! -d /profile.d/$chip_family/$next_profile ] && { msg "next_profile is not supported, aborting switch profile" ; return 1 ; }
@@ -143,4 +143,4 @@ function switch_profile_operation() {
 	/bg_turn_off_leds.sh
 }
 
-switch_profile_operation || return 1
+operation_switch_profile || return 1

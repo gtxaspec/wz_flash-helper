@@ -38,7 +38,7 @@ function restore_current_profile_parts() {
 }
 
 
-function restore_operation() {
+function operation_restore() {
 	[[ "$switch_profile" == "yes" ]] && { msg "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	[ ! -d $current_profile_restore_path ] && { msg "$current_profile_restore_path directory is missing" ; return 1 ; }
 	[ ! -f $prog_restore_config_file ] && { msg "$prog_restore_config_file file is missing. Nothing more will be done" ; return 1 ; }	
@@ -61,4 +61,4 @@ function restore_operation() {
 }
 
 
-restore_operation || return 1
+operation_restore || return 1

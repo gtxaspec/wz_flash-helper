@@ -20,12 +20,12 @@ wifi_password="Wi-Fi password"
 ## They can be set later using SSH after OpenIPC boots up
 
 ## mac_address format: 00:11:22:aa:bb:cc
-## If not set, a random MAC address will be used
+## If not set, a random MAC address will be used by OpenIPC
 mac_address=""
 
 ## Example: America/Los Angeles
 ## Full list of time zones with correct format can be found here: https://github.com/openwrt/luci/blob/master/modules/luci-base/ucode/zoneinfo.uc
-## If not set, Etc/GMT is used by default
+## If not set, Etc/GMT will used by default by OpenIPC
 timezone=""
 
 
@@ -73,9 +73,11 @@ function get_wifi_vendor_id() {
 # Syntax: get_wifi_id <gpio_pin>
 	local wifi_gpio_pin="$1"
 	
-	echo $wifi_gpio_pin > /sys/class/gpio/export 
-	echo out > /sys/class/gpio/$wifi_gpio_pin/direction 
-	echo 1 > /sys/class/gpio/$wifi_gpio_pin/value 
+	if [ ! -d /sys/class/gpio/gpio$wifi_gpio_pin ]; then
+		echo $wifi_gpio_pin > /sys/class/gpio/export
+		echo out > /sys/class/gpio/gpio$wifi_gpio_pin/direction
+		echo 1 > /sys/class/gpio/gpio$wifi_gpio_pin/value
+	fi
 	
 	echo INSERT > /sys/devices/platform/jzmmc_v1.2.1/present
 	sleep 1
@@ -126,7 +128,7 @@ function pre_script_check() {
 	msg " + current_profile: $current_profile, next_profile: $next_profile, switch_profile: $switch_profile"
 	
 	[[ "$switch_profile" == "yes" ]] && [[ "$next_profile" == "openipc" ]] && return 0
-	[[ "$switch_profile" == "no" ]] && [[ "$current_profile" == "openipc" ]] && return 0
+	[[ ! "$switch_profile" == "yes" ]] && [[ "$current_profile" == "openipc" ]] && return 0
 	
 	msg " + Conditions for this script to run are not met. For it to run, the camera must either:"
 	msg "  . is on openipc and not switching profile, or"
@@ -174,7 +176,7 @@ function set_openipc_user_env() {
 }
 
 function main() {
-	pre_script_check && msg " + Looks good! Starting script now" || { msg ; msg "- Exitting script" ; return 0 ; }
+	pre_script_check && msg " + Conditions to run script are met, starting script now" || { msg ; msg "- Exitting script" ; return 0 ; }
 
 	msg	
 	detect_openipc_wifi_driver || return 1

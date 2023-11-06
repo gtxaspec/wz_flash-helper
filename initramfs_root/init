@@ -85,12 +85,12 @@ function detect_hardware() {
 	flash_type=$(ipcinfo --flash-type)
 }
 
-function import_init_msg() {
+function source_variables_init_msg() {
 # Description: Place long init messages somewhere else to keep this script clean
 	source /variables_msg.sh
 }
 
-function import_functions_io() {
+function source_functions_io() {
 # Description: Import the "io" script which contains functions to read/write partitions
 	source /functions_io.sh
 }
@@ -111,7 +111,7 @@ function load_kernel_modules() {
 	fi
 }
 
-function initialize_gpio() {
+function source_initialize_gpio() {
 # Description: Initialize some GPIO pins to enable LEDs, maybe SD card if needed
 	source /initialize_gpio.d/$chip_family.sh
 }
@@ -149,22 +149,22 @@ function backup_bootpart() {
 	strings /bootpart_backup.img > /bootpart_backup.img.strings
 }
 
-function detect_current_profile() {
+function source_detect_profile() {
 # Description: Detect current profile to read/write partitions correctly
 	source /profile.d/$chip_family/detect_profile.sh || return 1
 }
 
-function import_prog_info() {
+function source_variables_prog_info() {
 # Description: Import program variables
 	source /variables_prog_info.sh
 }
 
-function emulate() {
+function source_variables_emulate() {
 # Description: Emulate chip family, flash type and current profile for testing
 	source /variables_emulate.sh
 }
 
-function import_current_profile() {
+function source_current_profile() {
 # Description: Import current profile variables and querry script
 	source /profile.d/detect_chip_group.sh || return 1
 	source /profile.d/$chip_family/$current_profile/current_profile_variables.sh
@@ -206,7 +206,7 @@ function import_prog_config_file() {
 	dos2unix $prog_config_file && source $prog_config_file || { msg "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
 }
 
-function detect_camera_model() {
+function source_detect_model() {
 # Description: Detect current camera model by reading the factory generated config file
 	source /profile.d/$chip_family/$current_profile/detect_model.sh
 }
@@ -244,31 +244,31 @@ function exit_init() {
 	sleep 10 # Prevent init from continuing after exit_init finishes but the camera has not rebooted immediately
 }
 
-function main() {
+function main_init() {
 	detect_hardware
 
-	import_init_msg
-	import_functions_io
+	source_variables_init_msg
+	source_functions_io
 	
 	load_kernel_modules
-	initialize_gpio
+	source_initialize_gpio
 	
 	welcome
 	wait_init_interrupt
 
 	backup_bootpart
 	
-	detect_current_profile || return 1
-	emulate
+	source_detect_profile || return 1
+	source_variables_emulate
 	
-	import_current_profile || return 1
-	import_prog_info
+	source_current_profile || return 1
+	source_variables_prog_info
 	
 	mount_sdcard || return 1
 	rename_prog_sdcard_kernel || { msg "$rename_prog_sdcard_kernel_fail" ; sleep 3 ; }
 	import_prog_config_file || return 1
 
-	detect_camera_model || return 1
+	source_detect_model || return 1
 	display_info
 	
 	[[ "$dry_run" == "yes" ]] && msg "$dry_run_yes" || msg "$dry_run_no" && msg
@@ -314,6 +314,7 @@ function main() {
 		msg "$copy_new_sdcard_kernel_no"
 	fi
 	
+	source /unset_functions.sh
 	#---------- Custom scripts ----------
 	msg
 	if [[ "$enable_custom_scripts" == "yes" ]]; then
@@ -327,6 +328,6 @@ function main() {
 }
 
 
-main && play_audio "successful" || play_audio "failed"
+main_init && play_audio "successful" || play_audio "failed"
 exit_init
 

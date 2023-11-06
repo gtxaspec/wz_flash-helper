@@ -41,7 +41,7 @@ function archive_parts() {
 	done
 }
 
-function backup_operation() {
+function operation_backup() {
 # Description: Create partition images of the entire flash, all partitions and create extra archives from config partitions
 	mkdir -p $current_profile_backup_path || { msg "Failed to create backup directory at $current_profile_backup_path" ; return 1 ; }
 	
@@ -84,4 +84,4 @@ function backup_operation() {
 	/bg_turn_off_leds.sh
 }
 
-backup_operation || return 1
+operation_backup || return 1

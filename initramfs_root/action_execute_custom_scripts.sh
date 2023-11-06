@@ -11,9 +11,9 @@ function execute_custom_scripts() {
 	msg
 	msg "---------- Begin of custom scripts ----------"
 	for custom_scriptlet in $custom_scripts ; do
-		[ ! -f $prog_dir/scripts/$custom_scriptlet ] && { msg "Custom script file $custom_scriptlet is missing" ; return 1 ; }
 		msg "Running script: $custom_scriptlet"
 		msg
+		[ ! -f $prog_dir/scripts/$custom_scriptlet ] && { msg " - Script file is missing" ; return 1 ; }
 		source $prog_dir/scripts/$custom_scriptlet || return 1
 		msg
 	done

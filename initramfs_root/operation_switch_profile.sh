@@ -12,12 +12,12 @@
 function validate_restore_partition_images() {
 	msg "- Making sure that all needed partition images exist and are valid"
 	
-	cd $next_profile_images_path
+	cd $np_images_path
 	
 	# Check sha256 for all partitions first to make sure they are all valid before flashing each partition
-	for partname in $next_profile_all_partname_list; do 
-		if [[ "$(get_next_profile_partoperation $partname)" == "write" ]]; then
-			local infile_name=$(get_next_profile_partimg $partname)
+	for partname in $np_all_partname_list; do 
+		if [[ "$(get_np_partoperation $partname)" == "write" ]]; then
+			local infile_name=$(get_np_partimg $partname)
 	
 			[ ! -f $infile_name ] && { msg " + $infile_name file is missing" ; return 1 ; }
 			
@@ -31,9 +31,9 @@ function validate_restore_partition_images() {
 function validate_written_bootpart() {
 # Description: Validate if written boot partition is the same as the boot partition image used to write
 	local partname="boot"
-	local partmtdblock=$(get_next_profile_partmtdblock $partname)
-	local verifyfile_basename=$(get_next_profile_partimg $partname)
-	local verifyfile="$next_profile_images_path/$verifyfile_basename"
+	local partmtdblock=$(get_np_partmtdblock $partname)
+	local verifyfile_basename=$(get_np_partimg $partname)
+	local verifyfile="$np_images_path/$verifyfile_basename"
 	
 	validate_written_partition $partname $partmtdblock $verifyfile || return 1
 }
@@ -78,27 +78,27 @@ function operation_switch_profile() {
 	msg
 	msg "---------- Begin of switch profile ----------"
 	msg "Switch profile: $current_profile -> $next_profile"
-	msg "Source directory: $next_profile_images_path"
+	msg "Source directory: $np_images_path"
 	msg
 	validate_restore_partition_images || return 1
 	
 	msg "- Writing to partitions"
-	for partname in $next_profile_all_partname_list; do
-		local partoperation=$(get_next_profile_partoperation $partname)
-		local partmtd=$(get_next_profile_partmtd $partname)
+	for partname in $np_all_partname_list; do
+		local partoperation=$(get_np_partoperation $partname)
+		local partmtd=$(get_np_partmtd $partname)
 		
 		case "$partoperation" in
 			"write")
-				local infile_name=$(get_next_profile_partimg $partname)
-				local infile="$next_profile_images_path/$infile_name"
+				local infile_name=$(get_np_partimg $partname)
+				local infile="$np_images_path/$infile_name"
 				restore_partition $partname $infile $partmtd || return 1
 				;;
 			"erase")
 				erase_partition $partname $partmtd || return 1
 				;;
 			"format")
-				local partfstype=$(get_next_profile_partfstype $partname)
-				local partnum=$(get_next_profile_partnum $partname)
+				local partfstype=$(get_np_partfstype $partname)
+				local partnum=$(get_np_partnum $partname)
 				format_partition $partname $partnum $partfstype || return 1
 				;;
 			"leave")

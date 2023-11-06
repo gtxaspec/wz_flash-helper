@@ -72,7 +72,8 @@ function play_audio() {
 	esac
 	
 	local numberic='^[0-9]+$'
-	if [[ ! "$audio_volume" =~ $numberic ]] || [[ "$audio_volume" == "" ]] || [ "$audio_volume" -lt 0 ] || [ "$audio_volume" -gt 100 ]; then # Check for invalid audio value
+	# Check for invalid audio value
+	if [[ ! "$audio_volume" =~ $numberic ]] || [[ "$audio_volume" == "" ]] || [ "$audio_volume" -lt 0 ] || [ "$audio_volume" -gt 100 ]; then
 		local audio_volume="50"
 	fi
 	audioplay $audio_file $audio_volume
@@ -97,18 +98,17 @@ function source_functions_io() {
 
 function load_kernel_modules() {
 # Description: Load kernel modules for camera chip family
-	if ls /kernel_module.d/model_speciality.d/*.sh ; then # Some camera models need to load kernel modules with parameters
-		for speciality_kmod_script in /kernel_module.d/model_speciality.d/*.sh ; do
-			source $speciality_kmod_script
-		done
-	fi
+	# Some camera models need to load kernel modules with parameters
+	for speciality_kmod_script in /kernel_module.d/model_speciality.d/*.sh ; do
+		source $speciality_kmod_script
+	done
 	
-	[[ "$kmod_speciality_flag" == "true" ]] && return 0 # Do not load kernel modules again if they has already been loaded by speciality scripts
-	if ls /kernel_module.d/$chip_family/*.ko ; then
-		for kernel_module in /kernel_module.d/$chip_family/*.ko ; do
-			insmod $kernel_module
-		done
-	fi
+	# Do not load kernel modules again if they has already been loaded by speciality scripts
+	[[ "$kmod_speciality_flag" == "true" ]] && return 0
+
+	for kernel_module in /kernel_module.d/$chip_family/*.ko ; do
+		insmod $kernel_module
+	done
 }
 
 function source_initialize_gpio() {
@@ -181,27 +181,32 @@ function mount_sdcard() {
 
 function rename_prog_sdcard_kernel() {
 # Description: Rename program SD card kernel to avoid infinite boot loop
-	if [ -f /sdcard/$current_profile_sdcard_kernel_name ]; then
-		msg_nonewline "Renaming program SD card kernel: $current_profile_sdcard_kernel_name to $current_profile_sdcard_kernel_name.$prog_name... "
-		mv /sdcard/$current_profile_sdcard_kernel_name /sdcard/$current_profile_sdcard_kernel_name.$prog_name && { msg "ok" ; return 0 ; } || msg "failed"
-	else
-		msg "Program SD card kernel $current_profile_sdcard_kernel_name for this profile is missing"
-	fi
-
-	# OpenIPC uboot for Ingenic can load SD card kernel with two filenames, the second SD card kernel will be renamed if found to prevent bootloop
-	if [[ ! "$current_profile_sdcard_secondary_kernel_name" == "" ]] && [ -f /sdcard/$current_profile_sdcard_secondary_kernel_name ]; then
-		msg_nonewline "Renaming program secondary SD card kernel: $current_profile_sdcard_secondary_kernel_name to $current_profile_sdcard_secondary_kernel_name.$prog_name... "
-		mv /sdcard/$current_profile_sdcard_secondary_kernel_name /sdcard/$current_profile_sdcard_secondary_kernel_name.$prog_name && { msg "ok" ; return 0 ; } || msg "failed"
-	else
-		msg "Program SD card secondary kernel $current_profile_sdcard_secondary_kernel_name for this profile is missing"
-	fi
+	local primary_kernelimg="$cp_sdcard_kernel_name"
+	local secondary_kernelimg="$cp_sdcard_secondary_kernel_name"
+	
+	for kernelimg in $primary_kernelimg $secondary_kernelimg; do
+		if [ -f /sdcard/$kernelimg ]; then
+			msg_nonewline "Renaming program SD card kernel: $kernelimg to $kernelimg.$prog_name... "
+			mv /sdcard/$kernelimg /sdcard/$kernelimg.$prog_name && { msg "ok" ; return 0 ; } || msg "failed"
+		else
+			msg "Program SD card kernel $kernelimg for this profile is missing"
+		fi
+	done
 	return 1
 }
 
 function import_prog_config_file() {
 # Description: Source program config file to know and do what the user wants
-	[ ! -d $prog_dir ] && { msg "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; return 1 ; }
-	[ ! -f $prog_config_file ] && { msg "$prog_config_file file is missing. Nothing will be done" ; return 1 ; }
+	if [ ! -d $prog_dir ]; then
+		msg "$prog_dir does not exist. Creating it to store log files. Nothing will be done"
+		mkdir -p $prog_dir
+		return 1
+	fi
+	
+	if [ ! -f $prog_config_file ]; then
+		msg "$prog_config_file file is missing. Nothing will be done"
+		return 1
+	fi
 
 	# Fix issue that config file fails to be sourced if it contains MS-DOS newlines
 	dos2unix $prog_config_file && source $prog_config_file || { msg "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }

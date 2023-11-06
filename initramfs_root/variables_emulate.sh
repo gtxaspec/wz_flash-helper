@@ -1,13 +1,11 @@
 #!/bin/sh
 #
-#
-#
+# Description: Emulate various supposed-to-be automatically detected variables
+#              For testing, only!
 
 emulate_mode="no"
 
-function init_emulate() {
-# Description: Emulate various supposed-to-be automatically detected variables
-# For testing, only!
+function emulate() {
 	dry_run="yes" # Override config file option so nothing is actually done
 
 	chip_family=""
@@ -22,4 +20,4 @@ function init_emulate() {
 	msg
 }
 
-[[ "$emulate_mode" == "yes" ]] && init_emulate
+[[ "$emulate_mode" == "yes" ]] && emulate

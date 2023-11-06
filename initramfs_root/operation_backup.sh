@@ -13,17 +13,17 @@ function backup_entire_flash() {
 # Description: Dump the entire flash to a file
 	local partname="entire_flash"
 	local partmtd="$all_partmtd"
-	local outfile="$current_profile_backup_path/$current_profile_backup_allparts_filename"
+	local outfile="$cp_backup_path/$cp_backup_allparts_filename"
 	
 	backup_partition $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; return 1 ; }
 }
 
 function backup_parts() {
 # Description: Create images for all partitions of the current profile
-	for partname in $current_profile_all_partname_list; do
-		local partmtd=$(get_current_profile_partmtd $partname)
-		local outfile_name=$(get_current_profile_partimg $partname)
-		local outfile="$current_profile_backup_path/$outfile_name"
+	for partname in $cp_all_partname_list; do
+		local partmtd=$(get_cp_partmtd $partname)
+		local outfile_name=$(get_cp_partimg $partname)
+		local outfile="$cp_backup_path/$outfile_name"
 		
 		backup_partition $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; return 1 ; }
 	done
@@ -31,11 +31,11 @@ function backup_parts() {
 
 function archive_parts() {
 # Description: Create .tar.gz archive for partition files on current profile
-	for partname_archive in $current_profile_archive_partname_list; do
+	for partname_archive in $cp_archive_partname_list; do
 		local partname="$partname_archive"
-		local partmtdblock="$(get_current_profile_partmtdblock $partname_archive)"
-		local partfstype="$(get_current_profile_partfstype $partname_archive)"
-		local outfile="$current_profile_backup_path/${current_profile}_${chip_group}_${partname}.tar.gz"
+		local partmtdblock="$(get_cp_partmtdblock $partname_archive)"
+		local partfstype="$(get_cp_partfstype $partname_archive)"
+		local outfile="$cp_backup_path/${current_profile}_${chip_group}_${partname}.tar.gz"
 		
 		create_archive_from_partition $partname $partmtdblock $partfstype $outfile
 	done
@@ -43,23 +43,23 @@ function archive_parts() {
 
 function operation_backup() {
 # Description: Create partition images of the entire flash, all partitions and create extra archives from config partitions
-	mkdir -p $current_profile_backup_path || { msg "Failed to create backup directory at $current_profile_backup_path" ; return 1 ; }
+	mkdir -p $cp_backup_path || { msg "Failed to create backup directory at $cp_backup_path" ; return 1 ; }
 	
 	backup_id=$(gen_4digit_id)
-	while [ -d $current_profile_backup_path/$backup_id ]; do
+	while [ -d $cp_backup_path/$backup_id ]; do
 		backup_id=$(gen_4digit_id)
 	done
 	
-	current_profile_backup_path="$current_profile_backup_path/$backup_id"
-	mkdir -p $current_profile_backup_path
+	cp_backup_path="$cp_backup_path/$backup_id"
+	mkdir -p $cp_backup_path
 	
 	/bg_blink_led_blue.sh &
 	local blue_led_pid="$!"
 	msg
 	msg "---------- Begin of backup operation ----------"
 	msg "Backup ID: $backup_id"
-	msg "Backup destination: $current_profile_backup_path"
-	echo "$backup_id" > $current_profile_backup_path/ID.txt
+	msg "Backup destination: $cp_backup_path"
+	echo "$backup_id" > $cp_backup_path/ID.txt
 	msg
 	backup_entire_flash || return 1
 	backup_parts || return 1
@@ -74,7 +74,7 @@ function operation_backup() {
 			msg " + Backup with ID $backup_id exists on secondary backup directory, it will not be overwritten, skipping"
 		else
 			mkdir -p $current_profile_backup_secondary_path	
-			cp -r $current_profile_backup_path $current_profile_backup_secondary_path && msg "ok" || { msg "failed" ; return 1 ; }
+			cp -r $cp_backup_path $current_profile_backup_secondary_path && msg "ok" || { msg "failed" ; return 1 ; }
 		fi	
 	fi
 	sync

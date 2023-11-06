@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: Turn off all LEDs
+# Description: When LED blinking scripts are killed, they might still leave the LEDs on, this script turns them all off
 #
 
 function turn_off_leds() {

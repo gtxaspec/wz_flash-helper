@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: Execute user custom script
+# Description: Execute user custom scripts
 #
 
 function execute_custom_scripts() {

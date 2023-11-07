@@ -9,7 +9,7 @@
 
 
 
-function validate_restore_partition_images() {
+function validate_restore_partimgs() {
 	msg "- Making sure that all needed partition images exist and are valid"
 	
 	cd $np_images_path
@@ -80,7 +80,7 @@ function operation_switch_profile() {
 	msg "Switch profile: $current_profile -> $next_profile"
 	msg "Source directory: $np_images_path"
 	msg
-	validate_restore_partition_images || return 1
+	validate_restore_partimgs || return 1
 	
 	msg "- Writing to partitions"
 	for partname in $np_all_partname_list; do

@@ -7,7 +7,7 @@
 # |_| \_\___||___/\__\___/|_|  \___|  \___/| .__/ \___|_|  \__,_|\__|_|\___/|_| |_|
 #                                          |_|                                     
 
-function restore_current_profile_bootpart() {
+function restore_bootpart() {
 # Description: Restore boot partition, this option is hidden from restore config files
 	if [[ "$hidden_option_restore_boot" == "yes" ]]; then
 		msg "- Sssh! Restoring boot option"
@@ -23,7 +23,7 @@ function restore_current_profile_bootpart() {
 	fi
 }
 
-function restore_current_profile_parts() {
+function restore_parts() {
 # Description: Restore partitions from partition images
 	for partname in $cp_restore_partname_list; do
 		local infile_name=$(get_cp_partimg $partname)
@@ -54,8 +54,8 @@ function operation_restore() {
 	msg "---------- Begin of restore operation ----------"
 	msg "Restore source: $cp_restore_path"
 	msg
-	restore_current_profile_parts
-	restore_current_profile_bootpart
+	restore_parts
+	restore_bootpart
 	sync
 	msg "----------- End of restore operation -----------"
 	msg

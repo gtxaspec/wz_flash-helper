@@ -24,7 +24,7 @@ restore_partitions="yes"
 **Note:**
 - There is no option to restore your boot partition to avoid accidentally corrupting it.
 - `switch_profile` option must be disabled like the above configurations. If both `restore_partitions` and `switch_profile`are enabled, both operations will not be executed.
-- All partition restore images must come with their md5sum file in `(partition image).md5sum` format.
+- All partition restore images must come with their sha256sum file in `(partition image).sha256sum` format.
 - During restore operation, the red LED would be blinking every second.
 - Typically restore operation takes about 2 minutes(for reference it takes 2 minutes 15 seconds on Wyze Cam v3)
 

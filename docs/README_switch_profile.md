@@ -1,3 +1,4 @@
+
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | **Switch profile** | [Other options](README_other_options.md) | [Build](README_build.md) | [FAQs](README_FAQs.md)
 
 
@@ -16,9 +17,9 @@ chmod +x ipcinfo-mips32
 ./ipcinfo-mips32 --chip-name
 ```
 If the chip name is:
-- `t31x`, `t31zl`, or `t31zx` then your SoC type is `t31x`
-- `t31a`, then your SoC type is `t31a`
-- `t20x`, then your SoC is `t20x`
+- `t31x`, `t31zl`, or `t31zx` then your SoC is `t31x`
+- `t31a`, then your SoC is `t31a`
+- `t20`, `t20x`, then your SoC is `t20x`
 
 2. Wi-Fi MAC address
 
@@ -46,7 +47,7 @@ Generate sha256 files for all partition images:
 - If you are on Windows, use a Powershell:
 ```
 certutil -hashfile "openipc_[SoC]_[partition image].bin" SHA256
- ``
+```
  
 - If you have WSL or Linux, run
 ```
@@ -64,8 +65,8 @@ switch_profile="yes"
 next_profile="openipc"
 switch_profile_with_all_partitions="no"
 
-enable_custom_script="yes"
-custom_script="setup_openipc_env.sh"
+enable_custom_scripts="no"
+custom_scripts="setup_openipc_env.sh"
 ```
 
 **Step 4: Power on**
@@ -73,7 +74,7 @@ Insert your SD card to the camera and power it on. It would take about 3 minutes
 
 ## How to switch from OpenIPC to stock profile
 **Step 1: Preparation**
-Place your backup of stock partition images along with their md5 files at `(SD card)/wz_flash-helper/restore/stock/`
+Place your backup of stock partition images along with their sha256 files at `(SD card)/wz_flash-helper/restore/stock/`
 
 **Step 2: Edit the program configuration file**
 Edit `general.conf` with:
@@ -105,11 +106,11 @@ Conditions for switch profile operation to work:
 1. All partition images of the profile types that you want to switch to must present in either:
 - `(SD card)/wz_flash-helper/restore/stock` or
 - `(SD card)/wz_flash-helper/restore/openipc`
-2. All partition images must come with their md5sum file in `<partition image>.md5sum` format.
+2. All partition images must come with their sha256sum file in `<partition image>.sha256sum` format.
 
 
 **Note:**
 - `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_profile`are enabled, both operations would not be executed.
-- All partition images are verified with their md5sum files before switch_profile operation starts, no need to worry a currupted partition image.
+- All partition images are verified with their sha256sum files before switch_profile operation starts, no need to worry a corrupted partition image.
 - During switch profile operation, both the blue LED and the red LED would be blinking.
 

@@ -1,3 +1,4 @@
+
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [Build](README_build.md) | **FAQs**
 
 
@@ -20,14 +21,15 @@ A profile includes:
 - Partition types(`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
 - Name of SD card boot image
 - Backup/restore path to hold partition images
-- List of mandatory partitions that must be written when switching to that profile(when `witch_profile_with_all_partitions` is disabled), list of task to do(`ignore`, `erase`) with other partitions.
+- List of mandatory partitions that must be written when switching to that profile(when `witch_profile_with_all_partitions` is disabled), list of task to do(`ignore`, `erase,`,`format`, `leave`) with other partitions.
 - Detection script to detect that profile(usually by analyzing bootl partition strings)
 
 
 ## How can I add a new profile?
-If your new profile is used for existing chip group familyes, you only need to add the information above the the new profile. There is also a profile templates to let you do that easily.
+If your new profile is used for existing chip group families, you only need to add the information above the the new profile. There is also a profile templates to let you do that easily.
 
 If you new profile is used for a new chip group, you also need to:
 - Add `leds_gpio.d/(chip family).sh` to define LEDs GPIO pins.
 - Add `initialize_gpio.d/(chip family).sh` to define how to initialize GPIO pins to enable LEDs(maybe also SD card).
-- Edit `profile.d/detect_chip_group.sh` to define your new SoC name belong to what chip group(eg. t20, t31a, t31x) to select the right build for OpenIPC.
+- Edit `profile.d/detect_chip_group.sh` to define your new SoC name belong to what chip group(eg. `t20`, `t31a`, `t31x`) to select the right build for OpenIPC.
+

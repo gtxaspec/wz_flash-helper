@@ -190,7 +190,7 @@ function extract_archive_to_partition() {
 	local unarchive_mnt="/unarchive_mnt_$partname"
 	mkdir -p $unarchive_mnt
 	
-	msg "- Restore partition files: file $infile_basename to $partname($partblockmtd) ---"
+	msg "- Extract archive to partition: file $infile_basename to $partname($partblockmtd) ---"
 
 	[ ! -f $infile ] && { msg " + $infile_basename is missing" ; return 1 ; }
 	[ ! -b $partmtdblock ] && { msg " + $partmtdblock is not a block device" ; return 1 ; }
@@ -325,9 +325,4 @@ function validate_written_partition() {
 		[[ "$verifyfile_hash" == "$partimg_verify_hash" ]] && { msg "good" ; return 0 ; } || msg "bad"
 	done
 	return 1
-}
-
-function gen_4digit_id() {
-# Description: Return a random number in 1000-9999 range
-	shuf -i 1000-9999 -n 1
 }

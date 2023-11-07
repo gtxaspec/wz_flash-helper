@@ -34,8 +34,6 @@ timezone=""
 set_wifi_driver_manually="no"
 wifi_driver=""
 
-
-
 # ---------- End of user customization ----------
 
 
@@ -47,8 +45,10 @@ wifi_driver=""
 
 
 
-
 ##### DO NOT MODIFY THE BELOW CODE #####	
+
+## Name of the profile as the condition for the script to run
+matched_profile="openipc"
 
 function get_wifi_gpio_pin() {
 # Description: Return GPIO pin for queried camera model
@@ -122,21 +122,6 @@ function detect_openipc_wifi_driver() {
 	fi
 }
 
-function pre_script_check() {
-# Description: Make sure current profile is OpenIPC and not switching profile, or switching to OpenIPC profile
-	msg "- Checking conditions to run this script"
-	msg " + current_profile: $current_profile, next_profile: $next_profile, switch_profile: $switch_profile"
-	
-	[[ "$switch_profile" == "yes" ]] && [[ "$next_profile" == "openipc" ]] && return 0
-	[[ ! "$switch_profile" == "yes" ]] && [[ "$current_profile" == "openipc" ]] && return 0
-	
-	msg " + Conditions for this script to run are not met. For it to run, the camera must either:"
-	msg "  . is on openipc and not switching profile, or"
-	msg "  . already switched to openipc profile"
-	
-	return 1
-}
-
 function set_openipc_user_env() {
 # Description: Write user-specified variables to env partition using fw_setenv
 	msg
@@ -175,12 +160,10 @@ function set_openipc_user_env() {
 	fi
 }
 
-function main() {
-	pre_script_check && msg " + Conditions to run script are met, starting script now" || { msg ; msg "- Exitting script" ; return 0 ; }
-
-	msg	
+function custom_script_main() {
+	custom_script_matched_profile_check || return 0
 	detect_openipc_wifi_driver || return 1
 	set_openipc_user_env || return 1
 }
 
-main || return 1
+custom_script_main || return 1

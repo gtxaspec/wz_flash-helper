@@ -91,9 +91,10 @@ function init_source_variables_init_msg() {
 	source /variables_msg.sh
 }
 
-function init_source_functions_io() {
-# Description: Import the "io" script which contains functions to read/write partitions
+function init_source_functions() {
+# Description: Import functions scripts
 	source /functions_io.sh
+	source /fuctions_misc.sh
 }
 
 function init_load_kernel_modules() {
@@ -243,7 +244,7 @@ function main_init() {
 	init_detect_hardware
 
 	init_source_variables_init_msg
-	init_source_functions_io
+	init_source_functions
 	
 	init_load_kernel_modules
 	init_source_initialize_gpio

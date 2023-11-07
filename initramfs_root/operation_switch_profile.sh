@@ -38,27 +38,6 @@ function osp_validate_written_boot_partition() {
 	validate_written_partition $partname $partmtdblock $verifyfile || return 1
 }
 
-function osp_rollback_boot_partition() {
-# Description: Check if written boot partition is valid. If not, rollback with backup boot image
-	msg
-	msg "ATTENTION! ATTENTION! ATTENTION!"
-	msg "ATTENTION! ATTENTION! ATTENTION!"
-	msg "ATTENTION! ATTENTION! ATTENTION!"
-	msg
-	msg "It is very likely that your boot partition is corrupted"
-	msg "Rolling back boot partition with previous profile boot image"
-	msg
-	
-	for attempt in 1 2; do
-		msg "- Rollback attempt $attempt:"
-		msg_nonewline " + Rollback result: "
-		write_partition "boot" /boot_backup.img /dev/mtd0 && { msg "good :) You are safe now!" ; return 1 ; } || msg "bad"
-	done
-		
-	msg "Rollback failed twice, sorry. Probably your flash chip is corrupted"
-	return 1
-}
-
 function operation_switch_profile() {
 	[[ "$restore_partitions" == "yes" ]] && { msg "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	[[ "$current_profile" == "$next_profile" ]] && { msg "next_profile value is same as current_profile, aborting switch profile" ; return 1 ; }
@@ -106,9 +85,9 @@ function operation_switch_profile() {
 				;;
 		esac
 	done
-	
+	msg
 	[[ "$dry_run" == "yes" ]] && { msg "- No need to check for boot partition corruption on dry run mode" ; return 0 ; }
-	osp_validate_written_boot_partition || { msg " + Boot partition validation failed" ; osp_rollback_boot_partition ; } || return 1
+	osp_validate_written_boot_partition || rollback_boot_partition || return 1
 	sync
 	msg "----------- End of switch profile -----------"
 	msg

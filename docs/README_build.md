@@ -3,6 +3,13 @@
 
 ## Build guide
 
+Prerequisites:
+A Linux OS with:
+- fakeroot
+- cpio
+
+WSL2 has not been tested
+
 1. Download source code from Github repo:
 ```
 git submodule update --init --recursive https://github.com/archandanime/wz_flash-helper.git

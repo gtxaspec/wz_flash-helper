@@ -94,7 +94,7 @@ function init_source_variables_init_msg() {
 function init_source_functions() {
 # Description: Import functions scripts
 	source /functions_io.sh
-	source /fuctions_misc.sh
+	source /functions_misc.sh
 }
 
 function init_load_kernel_modules() {

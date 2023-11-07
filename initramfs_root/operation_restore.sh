@@ -40,7 +40,6 @@ function or_restore_partitions() {
 	done
 }
 
-
 function operation_restore() {
 	[[ "$switch_profile" == "yes" ]] && { msg "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	[ ! -d $cp_restore_path ] && { msg "$cp_restore_path directory is missing" ; return 1 ; }
@@ -62,6 +61,5 @@ function operation_restore() {
 	kill $red_led_pid
 	/bg_turn_off_leds.sh
 }
-
 
 operation_restore || return 1

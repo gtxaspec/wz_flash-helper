@@ -8,6 +8,7 @@
 #
 
 
+
 function read_partition_nor() {
 # Description: Dump partition <partmtd> to <outfile> on NOR flash
 # Syntax: read_partition_nor <partmtd> <outfile>

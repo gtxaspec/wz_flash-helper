@@ -1,7 +1,7 @@
 #!/bin/sh
-
-
-
+#
+# Description: Initialize GPIO pins for Ingenic T31 SoCs
+#
 
 function initialize_gpio() {
 	if [ ! -d /sys/class/gpio/gpio38 ]; then # Export red LED pin

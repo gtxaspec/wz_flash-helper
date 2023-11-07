@@ -5,7 +5,7 @@
 
 emulate_mode="no"
 
-function emulate() {
+function variables_emulate() {
 	dry_run="yes" # Override config file option so nothing is actually done
 
 	chip_family=""
@@ -20,4 +20,4 @@ function emulate() {
 	msg
 }
 
-[[ "$emulate_mode" == "yes" ]] && emulate
+[[ "$emulate_mode" == "yes" ]] && variables_emulate

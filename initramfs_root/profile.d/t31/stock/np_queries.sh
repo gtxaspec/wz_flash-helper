@@ -76,4 +76,3 @@ function get_np_partimg() {
 	
 	echo -n "${next_profile}_${chip_group}_${partname}.bin"
 }
-

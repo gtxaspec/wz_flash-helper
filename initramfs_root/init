@@ -321,7 +321,5 @@ function main_init() {
 
 }
 
-
 main_init && init_play_audio "successful" || init_play_audio "failed"
 exit_init
-

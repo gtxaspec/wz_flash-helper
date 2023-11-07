@@ -99,4 +99,3 @@ function get_cp_partimg() {
 	
 	echo -n "${current_profile}_${chip_group}_${partname}.bin"
 }
-

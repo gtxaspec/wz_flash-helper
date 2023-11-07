@@ -19,4 +19,3 @@ function get_np_partoperation() {
 			echo -n "write" ;;
 	esac
 }
-

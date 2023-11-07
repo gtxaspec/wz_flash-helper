@@ -9,7 +9,7 @@
 
 
 
-function validate_restore_partimgs() {
+function osp_validate_restore_partition_images() {
 	msg "- Making sure that all needed partition images exist and are valid"
 	
 	cd $np_images_path
@@ -28,7 +28,7 @@ function validate_restore_partimgs() {
 	msg
 }
 
-function validate_written_bootpart() {
+function osp_validate_written_boot_partition() {
 # Description: Validate if written boot partition is the same as the boot partition image used to write
 	local partname="boot"
 	local partmtdblock=$(get_np_partmtdblock $partname)
@@ -38,7 +38,7 @@ function validate_written_bootpart() {
 	validate_written_partition $partname $partmtdblock $verifyfile || return 1
 }
 
-function rollback_bootpart() {
+function osp_rollback_boot_partition() {
 # Description: Check if written boot partition is valid. If not, rollback with backup boot image
 	msg
 	msg "ATTENTION! ATTENTION! ATTENTION!"
@@ -52,7 +52,7 @@ function rollback_bootpart() {
 	for attempt in 1 2; do
 		msg "- Rollback attempt $attempt:"
 		msg_nonewline " + Rollback result: "
-		restore_partition "boot" /bootpart_backup.img /dev/mtd0 && { msg "good :) You are safe now!" ; return 1 ; } || msg "bad"
+		write_partition "boot" /bootpart_backup.img /dev/mtd0 && { msg "good :) You are safe now!" ; return 1 ; } || msg "bad"
 	done
 		
 	msg "Rollback failed twice, sorry. Probably your flash chip is corrupted"
@@ -80,7 +80,7 @@ function operation_switch_profile() {
 	msg "Switch profile: $current_profile -> $next_profile"
 	msg "Source directory: $np_images_path"
 	msg
-	validate_restore_partimgs || return 1
+	osp_validate_restore_partition_images || return 1
 	
 	msg "- Writing to partitions"
 	for partname in $np_all_partname_list; do
@@ -91,7 +91,7 @@ function operation_switch_profile() {
 			"write")
 				local infile_name=$(get_np_partimg $partname)
 				local infile="$np_images_path/$infile_name"
-				restore_partition $partname $infile $partmtd || return 1
+				write_partition $partname $infile $partmtd || return 1
 				;;
 			"erase")
 				erase_partition $partname $partmtd || return 1
@@ -108,7 +108,7 @@ function operation_switch_profile() {
 	done
 	
 	[[ "$dry_run" == "yes" ]] && { msg "- No need to check for boot partition corruption on dry run mode" ; return 0 ; }
-	validate_written_bootpart || { 	msg " + Boot partition validation failed" ; rollback_bootpart ; } || return 1
+	osp_validate_written_boot_partition || { msg " + Boot partition validation failed" ; osp_rollback_boot_partition ; } || return 1
 	sync
 	msg "----------- End of switch profile -----------"
 	msg

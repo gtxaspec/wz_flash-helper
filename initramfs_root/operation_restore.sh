@@ -7,7 +7,7 @@
 # |_| \_\___||___/\__\___/|_|  \___|  \___/| .__/ \___|_|  \__,_|\__|_|\___/|_| |_|
 #                                          |_|                                     
 
-function restore_bootpart() {
+function or_restore_boot_partition() {
 # Description: Restore boot partition, this option is hidden from restore config files
 	if [[ "$hidden_option_restore_boot" == "yes" ]]; then
 		msg "- Sssh! Restoring boot option"
@@ -17,13 +17,13 @@ function restore_bootpart() {
 		local partmtd=$(get_cp_partmtd $partname)
 		local partmtdblock=$(get_cp_partmtdblock $partname)
 		
-		restore_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
+		write_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
 		
 		validate_written_partition $partname $partmtdblock $infile || return 1
 	fi
 }
 
-function restore_parts() {
+function or_restore_partitions() {
 # Description: Restore partitions from partition images
 	for partname in $cp_restore_partname_list; do
 		local infile_name=$(get_cp_partimg $partname)
@@ -33,7 +33,7 @@ function restore_parts() {
 		
 		if [[ "$restore_opt_value" == "yes" ]]; then
 			msg "[x] restore_${current_profile}_${partname} value is Yes"
-			restore_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
+			write_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
 		else
 			msg "[ ] restore_${current_profile}_${partname} value is No"
 		fi
@@ -54,8 +54,8 @@ function operation_restore() {
 	msg "---------- Begin of restore operation ----------"
 	msg "Restore source: $cp_restore_path"
 	msg
-	restore_parts
-	restore_bootpart
+	or_restore_boot_partition
+	or_restore_partitions
 	sync
 	msg "----------- End of restore operation -----------"
 	msg

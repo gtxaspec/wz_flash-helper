@@ -9,27 +9,27 @@
 
 
 
-function backup_entire_flash() {
+function ob_backup_entire_flash() {
 # Description: Dump the entire flash to a file
 	local partname="entire_flash"
 	local partmtd="$all_partmtd"
 	local outfile="$cp_backup_path/$cp_backup_allparts_filename"
 	
-	backup_partition $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; return 1 ; }
+	read_partition $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; return 1 ; }
 }
 
-function backup_parts() {
+function ob_backup_partitions() {
 # Description: Create images for all partitions of the current profile
 	for partname in $cp_all_partname_list; do
 		local partmtd=$(get_cp_partmtd $partname)
 		local outfile_name=$(get_cp_partimg $partname)
 		local outfile="$cp_backup_path/$outfile_name"
 		
-		backup_partition $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; return 1 ; }
+		read_partition $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; return 1 ; }
 	done
 }
 
-function archive_parts() {
+function ob_archive_partitions() {
 # Description: Create .tar.gz archive for partition files on current profile
 	for partname_archive in $cp_archive_partname_list; do
 		local partname="$partname_archive"
@@ -61,9 +61,9 @@ function operation_backup() {
 	msg "Backup destination: $cp_backup_path"
 	echo "$backup_id" > $cp_backup_path/ID.txt
 	msg
-	backup_entire_flash || return 1
-	backup_parts || return 1
-	archive_parts || return 1
+	ob_backup_entire_flash || return 1
+	ob_backup_partitions || return 1
+	ob_archive_partitions || return 1
 	msg
 	if [[ ! "$cp_backup_secondary_path" == "" ]] && [[ ! "$dry_run" == "yes" ]]; then
 		msg "- This profile has secondary backup directory at $cp_backup_secondary_path"

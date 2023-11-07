@@ -6,11 +6,11 @@
 function detect_profile() {
 # Description: Detect current profile
 	msg
-	if grep -q "demo.bin" /bootpart_backup.img.strings ; then # Stock Cam v2 & Cam Pan
+	if grep -q "demo.bin" /boot_backup.img.strings ; then # Stock Cam v2 & Cam Pan
 		msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"
 		current_profile="stock"
 	
-	elif grep -q "factory_t20_0P3N1PC_kernel" /bootpart_backup_strings.txt ; then
+	elif grep -q "factory_t20_0P3N1PC_kernel" /boot_backup.img.strings ; then
 		msg "Camera is currently on OpenIPC firmware"
 		current_profile="openipc"
 	else

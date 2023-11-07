@@ -52,7 +52,7 @@ function osp_rollback_boot_partition() {
 	for attempt in 1 2; do
 		msg "- Rollback attempt $attempt:"
 		msg_nonewline " + Rollback result: "
-		write_partition "boot" /bootpart_backup.img /dev/mtd0 && { msg "good :) You are safe now!" ; return 1 ; } || msg "bad"
+		write_partition "boot" /boot_backup.img /dev/mtd0 && { msg "good :) You are safe now!" ; return 1 ; } || msg "bad"
 	done
 		
 	msg "Rollback failed twice, sorry. Probably your flash chip is corrupted"

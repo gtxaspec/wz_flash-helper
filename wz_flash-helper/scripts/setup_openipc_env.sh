@@ -47,9 +47,6 @@ wifi_driver=""
 
 ##### DO NOT MODIFY THE BELOW CODE #####	
 
-## Name of the profile as the condition for the script to run
-matched_profile="openipc"
-
 function get_wifi_gpio_pin() {
 # Description: Return GPIO pin for queried camera model
 # Syntax: get_wifi_gpio_pin <model>
@@ -160,10 +157,8 @@ function set_openipc_user_env() {
 	fi
 }
 
-function custom_script_main() {
-	custom_script_matched_profile_check || return 0
-	detect_openipc_wifi_driver || return 1
-	set_openipc_user_env || return 1
-}
+matched_profile="openipc"
 
-custom_script_main || return 1
+custom_script_matched_profile_check || return 0
+detect_openipc_wifi_driver || return 1
+set_openipc_user_env || return 1

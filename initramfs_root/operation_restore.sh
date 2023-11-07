@@ -7,6 +7,8 @@
 # |_| \_\___||___/\__\___/|_|  \___|  \___/| .__/ \___|_|  \__,_|\__|_|\___/|_| |_|
 #                                          |_|                                     
 
+
+
 function or_restore_boot_partition() {
 # Description: Restore boot partition, this option is hidden from restore config files
 	if [[ "$hidden_option_restore_boot" == "yes" ]]; then
@@ -19,7 +21,7 @@ function or_restore_boot_partition() {
 		
 		write_partition $partname $infile $partmtd || { msg "Restore $infile to $partname partition failed" ; return 1 ; }
 		
-		validate_written_partition $partname $partmtdblock $infile || return 1
+		validate_written_partition $partname $partmtdblock $infile || rollback_boot_partition || return 1
 	fi
 }
 

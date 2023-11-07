@@ -30,7 +30,7 @@ matched_profile=""
 
 ##### DO NOT MODIFY THE BELOW CODE #####
 
-function extract_archive_to_partition() {
+function extract_archive_file_to_partition() {
 	custom_script_matched_profile_check || return 0
 
 	local partname="$partition_name"
@@ -47,4 +47,4 @@ function extract_archive_to_partition() {
 	extract_archive_to_partition $partname $infile $partmtdblock $partfstype || return 1
 }
 
-extract_archive_to_partition || return 1
+extract_archive_file_to_partition || return 1

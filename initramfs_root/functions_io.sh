@@ -141,9 +141,9 @@ function write_partition() {
 
 function create_archive_from_partition() {
 # Description: Create .tar.gz archive from partition <partmtdblock> files
-# Syntax: create_archive_from_partition <partname> <partblockmtd> <fstype> <outfile>
+# Syntax: create_archive_from_partition <partname> <partmtdblock> <fstype> <outfile>
 	local partname="$1"
-	local partblockmtd="$2"
+	local partmtdblock="$2"
 	local fstype="$3"
 	local outfile="$4"
 	local outfile_basename=$(basename $outfile)
@@ -152,18 +152,18 @@ function create_archive_from_partition() {
 	local archive_mnt="/archive_mnt_$partname"
 	mkdir -p $archive_mnt
 	
-	msg "- Archive partition files: $partname($partblockmtd) to file $outfile_basename ---"
+	msg "- Archive partition files: $partname($partmtdblock) to file $outfile_basename ---"
 
 	[ ! -b $partmtdblock ] && { msg " + $partmtdblock is not a block device" ; return 1 ; }
 	[ -f $outfile ] && { msg " + $outfile_basename already exists" ; return 1 ; }
 		
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "mount -o ro -t $fstype $partblockmtd $archive_mnt"
+		msg_dry_run "mount -o ro -t $fstype $partmtdblock $archive_mnt"
 		msg_dry_run "tar -czf $outfile -C $archive_mnt ."
 		msg_dry_run "sha256sum $outfile > $outfile.sha256sum"
 		msg_dry_run "sed -i \"s|$outfile_dirname/||g\" $outfile.sha256sum"
 	else
-		mount -o ro -t $fstype $partblockmtd $archive_mnt || { msg "Failed to mount $partname" ; return 1 ; }
+		mount -o ro -t $fstype $partmtdblock $archive_mnt || { msg "Failed to mount $partname" ; return 1 ; }
 		msg_nonewline " + Creating archive file... "
 		tar -czf $outfile -C $archive_mnt . && msg "ok" || { msg "failed" ; return 1 ; }
 		msg_nonewline " + Generating sha256sum file... "
@@ -179,18 +179,18 @@ function create_archive_from_partition() {
 
 function extract_archive_to_partition() {
 # Description: Extract an archive to partition <partmtdblock>
-# Syntax: extract_archive_to_partition <partname> <infile> <partblockmtd> <fstype>
+# Syntax: extract_archive_to_partition <partname> <infile> <partmtdblock> <fstype>
 	local partname="$1"
 	local infile="$2"
 	local infile_basename=$(basename $infile)
 	local infile_dirname=$(dirname $infile)
-	local partblockmtd="$3"
+	local partmtdblock="$3"
 	local fstype="$4"
 	
 	local unarchive_mnt="/unarchive_mnt_$partname"
 	mkdir -p $unarchive_mnt
 	
-	msg "- Extract archive to partition: file $infile_basename to $partname($partblockmtd) ---"
+	msg "- Extract archive to partition: file $infile_basename to $partname($partmtdblock) ---"
 
 	[ ! -f $infile ] && { msg " + $infile_basename is missing" ; return 1 ; }
 	[ ! -b $partmtdblock ] && { msg " + $partmtdblock is not a block device" ; return 1 ; }
@@ -199,10 +199,10 @@ function extract_archive_to_partition() {
 	( cd $infile_dirname && sha256sum -c $infile_basename.sha256sum ) && msg "ok" || { msg "failed" ; return 1 ; }
 
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "mount -o rw -t $fstype $partblockmtd $unarchive_mnt"
+		msg_dry_run "mount -o rw -t $fstype $partmtdblock $unarchive_mnt"
 		msg_dry_run "tar -xf $infile -C $unarchive_mnt"
 	else
-		mount -o rw -t $fstype $partblockmtd $unarchive_mnt || { msg "Failed to mount $partname" ; return 1 ; }
+		mount -o rw -t $fstype $partmtdblock $unarchive_mnt || { msg "Failed to mount $partname" ; return 1 ; }
 		msg_nonewline " + Extracting archive file... "
 		tar -xf $infile -C $unarchive_mnt && msg "ok" || { msg "failed" ; return 1 ; }
 		

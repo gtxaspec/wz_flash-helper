@@ -35,10 +35,10 @@ function extract_archive_file_to_partition() {
 	local infile="$archive_file"
 	
 	if [[ "$switch_profile" == "yes" ]]; then
-		local partnum=$(get_np_partnum $partname)
+		local partmtdblock=$(get_np_partmtdblock $partname)
 		local partfstype=$(get_np_partfstype $partname)
 	else
-		local partnum=$(get_cp_partnum $partname)
+		local partmtdblock=$(get_cp_partmtdblock $partname)
 		local partfstype=$(get_cp_partfstype $partname)
 	fi
 		

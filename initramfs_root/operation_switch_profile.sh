@@ -89,6 +89,7 @@ function operation_switch_profile() {
 	[[ "$dry_run" == "yes" ]] && { msg "- No need to check for boot partition corruption on dry run mode" ; return 0 ; }
 	osp_validate_written_boot_partition || rollback_boot_partition || return 1
 	sync
+	msg
 	msg "----------- End of switch profile -----------"
 	msg
 	kill $red_and_blue_leds_pid

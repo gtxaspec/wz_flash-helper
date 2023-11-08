@@ -17,6 +17,7 @@ function execute_custom_scripts() {
 		source $prog_dir/scripts/$custom_scriptlet || return 1
 		msg
 	done
+	msg
 	msg "----------- End of custom scripts -----------"
 	msg
 }

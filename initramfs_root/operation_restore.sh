@@ -58,6 +58,7 @@ function operation_restore() {
 	or_restore_boot_partition
 	or_restore_partitions
 	sync
+	msg
 	msg "----------- End of restore operation -----------"
 	msg
 	kill $red_led_pid

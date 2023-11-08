@@ -82,6 +82,7 @@ function operation_backup() {
 		fi	
 	fi
 	sync
+	msg
 	msg "----------- End of backup operation -----------"
 	msg
 	kill $blue_led_pid

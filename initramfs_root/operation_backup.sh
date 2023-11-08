@@ -30,7 +30,7 @@ function ob_backup_partitions() {
 }
 
 function ob_archive_partitions() {
-# Description: Create .tar.gz archive for partition files on current profile
+# Description: Create .tar.gz archive for partition files on the current profile
 	for partname_archive in $cp_archive_partname_list; do
 		local partname="$partname_archive"
 		local partmtdblock="$(get_cp_partmtdblock $partname_archive)"
@@ -42,7 +42,7 @@ function ob_archive_partitions() {
 }
 
 function operation_backup() {
-# Description: Create partition images of the entire flash, all partitions and create extra archives from config partitions
+# Description: Create partition images of the entire flash, all partitions, and create extra archives from config partitions
 	mkdir -p $cp_backup_path || { msg "Failed to create backup directory at $cp_backup_path" ; return 1 ; }
 	
 	backup_id=$(gen_4digit_id)

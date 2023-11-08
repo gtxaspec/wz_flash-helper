@@ -9,7 +9,7 @@ function gen_4digit_id() {
 }
 
 function rollback_boot_partition() {
-# Description: Check if written boot partition is valid. If not, rollback with backup boot image
+# Description: Check if written boot partition is valid. If not, rollback with the backup boot image
 	msg
 	msg "ATTENTION! ATTENTION! ATTENTION!"
 	msg "ATTENTION! ATTENTION! ATTENTION!"
@@ -30,7 +30,7 @@ function rollback_boot_partition() {
 }
 
 function custom_script_matched_profile_check() {
-# Description: Make sure current profile is matched profile and not switching profile, or switching to matched profile
+# Description: Make sure the current profile is amatched profile and not switching profile, or switching to matched profile
 	local matched_profile="$1"
 	msg "- Checking conditions to run this script"
 	msg " + matched_profile: $matched_profile"

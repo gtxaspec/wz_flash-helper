@@ -22,12 +22,12 @@ mount -t sysfs sysfs /sys
 sleep 1
 
 function msg() {
-# Description: Allow output messages to be both displayed on the serial terminal and get written to the log files
+# Description: Allow output messages to be both displayed on the serial terminal and written to the log files
 	local message="$1"
 
 	echo "$message" # Print to log file
-	echo "$message" > /dev/console # Print on serial terminal
-	echo "$message" >> /tmp/initramfs_serial.log # Print to an extra log file, it is exactly the same as on serial terminal
+	echo "$message" > /dev/console # Print on the serial terminal
+	echo "$message" >> /tmp/initramfs_serial.log # Print to an extra log file. It is exactly the same as on the serial terminal
 }
 
 function msg_dry_run() {
@@ -49,7 +49,7 @@ function msg_nonewline() {
 }
 
 function init_play_audio() {
-# Description: Play audio to let the user keep track of the progress, useful when they don't have serial connection
+# Description: Play audio to let the user keep track of the progress, useful when they don't have a serial connection
 	[[ ! "$enable_audio" == "yes" ]] && return 0
 
 	audio_title="$1"
@@ -92,20 +92,20 @@ function init_source_variables_init_msg() {
 }
 
 function init_source_functions() {
-# Description: Import functions scripts
+# Description: Import function scripts
 	source /functions_io.sh
 	source /functions_misc.sh
 }
 
 function init_load_kernel_modules() {
-# Description: Load kernel modules for camera chip family
+# Description: Load kernel modules for the camera chip family
 	# Some camera models need to load kernel modules with parameters
-	for speciality_kmod_script in /kernel_module.d/model_speciality.d/*.sh ; do
-		source $speciality_kmod_script
+	for specialty_kmod_script in /kernel_module.d/model_specialty.d/*.sh ; do
+		source $specialty_kmod_script
 	done
 	
-	# Do not load kernel modules again if they has already been loaded by speciality scripts
-	[[ "$kmod_speciality_flag" == "true" ]] && return 0
+	# Do not load kernel modules again if they have already been loaded by specialty scripts
+	[[ "$kmod_specialty_flag" == "true" ]] && return 0
 
 	for kernel_module in /kernel_module.d/$chip_family/*.ko ; do
 		insmod $kernel_module
@@ -113,7 +113,7 @@ function init_load_kernel_modules() {
 }
 
 function init_source_initialize_gpio() {
-# Description: Initialize some GPIO pins to enable LEDs, maybe SD card if needed
+# Description: Initialize some GPIO pins to enable LEDs, also SD card if needed
 	source /initialize_gpio.d/$chip_family.sh
 }
 
@@ -126,33 +126,33 @@ function init_welcome() {
 }
 
 function init_wait_init_interrupt() {
-# Description: Allow the user to access initramfs shell with serial connection
+# Description: Allow the user to access the initramfs shell with a serial connection
 	echo > /dev/console
 	echo "Press any key to interrupt init" > /dev/console
 	
-	exec 0< /dev/console # Allow the user to type on serial terminal
+	exec 0< /dev/console # Allow the user to type on the serial terminal
 	read -r -s -n 1 -t 3
 	if [[ "$?" -eq 0 ]]; then
 		echo "Dropping a shell" > /dev/console
-		echo "You can run resize command to make terminal output match terminal size" > /dev/console
+		echo "You can run resize command to make the terminal output match the terminal size" > /dev/console
 		exec 1> /dev/console
 		exec 2> /dev/console
 		cd / && exec /bin/sh
 	fi
 	echo "Action has timed out" > /dev/console
 	echo > /dev/console
-	exec 0< /dev/null # Stop the user from typing on serial terminal
+	exec 0< /dev/null # Stop the user from typing on the serial terminal
 }
 
 function init_backup_bootpart() {
-# Description: Create backup for boot partition to rollback in case it gets corrupted, and to detect current profile by analyzing its strings
+# Description: Create a backup of the boot partition to rollback in case it gets corrupted and to detect the current profile by analyzing its strings
 	dd if=/dev/mtdblock0 of=/boot_backup.img status=none
 	sha256sum /boot_backup.img > /boot_backup.img.sha256sum
 	strings /boot_backup.img > /boot_backup.img.strings
 }
 
 function init_source_detect_profile() {
-# Description: Detect current profile to read/write partitions correctly
+# Description: Detect the current profile to read and write partitions correctly
 	source /profile.d/$chip_family/detect_profile.sh || return 1
 }
 
@@ -162,12 +162,12 @@ function init_source_variables_prog_info() {
 }
 
 function init_source_variables_emulate() {
-# Description: Emulate chip family, flash type and current profile for testing
+# Description: Emulate chip family, flash type, and current profile for testing
 	source /variables_emulate.sh
 }
 
 function init_source_current_profile() {
-# Description: Import current profile variables and querry script
+# Description: Import current profile variables and query script
 	source /profile.d/detect_chip_group.sh || return 1
 	source /profile.d/$chip_family/$current_profile/cp_variables.sh
 	source /profile.d/$chip_family/$current_profile/cp_queries.sh
@@ -181,7 +181,7 @@ function init_mount_sdcard() {
 }
 
 function init_rename_prog_sdcard_kernel() {
-# Description: Rename program SD card kernel to avoid infinite boot loop
+# Description: Rename the program SD card kernel to avoid an infinite boot loop
 	for kernelimg in $cp_sdcard_kernel_name $cp_sdcard_secondary_kernel_name; do
 		if [ -f /sdcard/$kernelimg ]; then
 			msg_nonewline "Renaming program SD card kernel: $kernelimg to $kernelimg.$prog_name... "
@@ -203,7 +203,7 @@ function init_import_prog_config_file() {
 }
 
 function init_source_detect_model() {
-# Description: Detect current camera model by reading the factory generated config file
+# Description: Detect the current camera model by reading the factory-generated config file
 	source /profile.d/$chip_family/$current_profile/detect_model.sh
 }
 
@@ -217,7 +217,7 @@ function init_display_info() {
 }
 
 function exit_init() {
-# Description: Copy log files to SD card and reboot, the user can still interrupt and access initramfs shell for debugging before the reboot
+# Description: Copy log files to the SD card and reboot. The user can still interrupt and access the initramfs shell for debugging before the reboot
 	msg
 	msg "---------- Exit init ----------"
 	msg
@@ -237,7 +237,7 @@ function exit_init() {
 	umount -a -r
 	init_play_audio "rebooting"
 	reboot -f # Reboot immediately
-	sleep 10 # Prevent init from continuing after exit_init finishes but the camera has not rebooted immediately
+	sleep 10 # Prevent init from continuing after exit_init finishes, but the camera has not rebooted immediately
 }
 
 function main_init() {

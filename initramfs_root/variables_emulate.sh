@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Description: Emulate various supposed-to-be automatically detected variables
-#              For testing, only!
+#              For testing only!
 
 emulate_mode="no"
 
@@ -13,7 +13,7 @@ function variables_emulate() {
 	current_profile=""
 
 	msg
-	msg "### Emulation mode is enabled, these variables are forged:"
+	msg "### Emulation mode is enabled; these variables are forged:"
 	msg "### - Hardware: chip_family: $chip_family, flash_type: $flash_type"
 	msg "### - Current profile: $current_profile"
 	msg "### Dry run is forcibly Enabled. No modification will be made."

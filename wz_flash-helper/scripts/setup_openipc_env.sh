@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Description: Write user Wi-Fi, MAC address and Timezone variables to OpenIPC env partition
-#              Use this script to do initial setup when you switch from stock to OpenIPC on the first time
+# Description: Write user Wi-Fi, MAC address, and Timezone variables to the OpenIPC env partition
+#              Use this script to do initial setup when you switch from stock to OpenIPC for the first time
 #
 
 
@@ -24,13 +24,13 @@ wifi_password="Wi-Fi password"
 mac_address=""
 
 ## Example: America/Los Angeles
-## Full list of time zones with correct format can be found here: https://github.com/openwrt/luci/blob/master/modules/luci-base/ucode/zoneinfo.uc
-## If not set, Etc/GMT will used by default by OpenIPC
+## Full list of time zones with the correct format can be found here: https://github.com/openwrt/luci/blob/master/modules/luci-base/ucode/zoneinfo.uc
+## If not set, Etc/GMT will be used by default by OpenIPC
 timezone=""
 
 
 
-## Only use this option to override for Wi-Fi module driver detection if the program can not detect camera driver
+## Only use this option to override for Wi-Fi module driver detection if the program cannot detect the correct camera driver
 set_wifi_driver_manually="no"
 wifi_driver=""
 
@@ -48,7 +48,7 @@ wifi_driver=""
 ##### DO NOT MODIFY THE BELOW CODE #####	
 
 function get_wifi_gpio_pin() {
-# Description: Return GPIO pin for queried camera model
+# Description: Return GPIO pin for the queried camera model
 # Syntax: get_wifi_gpio_pin <model>
 	local model="$1"
 	case $model in
@@ -66,7 +66,7 @@ function get_wifi_gpio_pin() {
 }
 
 function get_wifi_vendor_id() {
-# Description: Obtain and return Wi-Fi module vendor ID after initializing its GPIO pin
+# Description: Obtain and return the Wi-Fi module vendor ID after initializing its GPIO pin
 # Syntax: get_wifi_id <gpio_pin>
 	local wifi_gpio_pin="$1"
 	
@@ -84,7 +84,7 @@ function get_wifi_vendor_id() {
 }
 
 function detect_openipc_wifi_driver() {
-# Description: Assign Wi-Fi driver for OpenIPC based on camera model and vendor ID
+# Description: Assign Wi-Fi driver for OpenIPC based on the camera model and vendor ID
 	msg "- Detecting driver for Wi-Fi module"
 	[[ "$set_wifi_driver_manually" == "yes" ]] && { msg " + Using custom Wi-Fi driver value: $wifi_driver" ; return 0 ; }
 	
@@ -120,7 +120,7 @@ function detect_openipc_wifi_driver() {
 }
 
 function set_openipc_user_env() {
-# Description: Write user-specified variables to env partition using fw_setenv
+# Description: Write user-specified variables to the env partition using fw_setenv
 	msg
 	msg "- Setting env variables"
 

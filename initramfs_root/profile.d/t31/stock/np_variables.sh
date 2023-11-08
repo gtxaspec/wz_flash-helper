@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: This script contains variables of the next profile
+# Description: This script contains variables for the next profile
 #
 
 ## List of all partition names

@@ -1,10 +1,9 @@
 #!/bin/sh
 #
-# Description: Detect current profile by analyzing uboot strings
+# Description: Detect the current profile by analyzing uboot strings
 #
 
 function detect_profile() {
-# Description: Detect current profile
 	msg
 	if grep -q "demo.bin" /boot_backup.img.strings ; then # Stock Cam v2 & Cam Pan
 		msg "Camera is currently on Cam Pan v2 or Cam Pan stock firmware"

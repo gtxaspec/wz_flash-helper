@@ -13,7 +13,7 @@ archive_file=""
 ## Name of the partition that the archive will be extracted to, defined on the profile
 partition_name=""
 
-## Name of the profile that script will only run on
+## Name of the profile that the script will only run on
 matched_profile=""
 
 

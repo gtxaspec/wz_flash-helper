@@ -10,7 +10,7 @@
 
 
 function or_restore_boot_partition() {
-# Description: Restore boot partition, this option is hidden from restore config files
+# Description: Restore the boot partition, this option is hidden from restore config files
 	if [[ "$hidden_option_restore_boot" == "yes" ]]; then
 		msg "- Sssh! Restoring boot option"
 		local partname="boot"

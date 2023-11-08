@@ -4,7 +4,7 @@
 
 
 function detect_model() {
-# Description: Detect camera model by reading uboot wlandev variable
+# Description: Detect camera model by reading the uboot wlandev variable
 	openipc_wifi_driver=$(fw_printenv wlandev | sed 's/wlandev=//')
 
 	case $openipc_wifi_driver in
@@ -22,7 +22,7 @@ function detect_model() {
 
 		*)
 			model="unknown"
-			msg "Unable to detect camera model by reading uboot wlandev variable"
+			msg "Unable to detect camera model by reading the uboot wlandev variable"
 			;;
 	esac
 }

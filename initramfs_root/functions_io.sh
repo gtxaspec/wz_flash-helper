@@ -103,7 +103,7 @@ function write_partition_nand() {
 }
 
 function write_partition() {
-# Description: Write <infile> to <partmtd> partition, <infile> and its sha256sum file will be copied to stage directory before proceed writing
+# Description: Write <infile> to <partmtd> partition, <infile> and its sha256sum file will be copied to the stage directory before proceed with writing
 # Syntax: write_partition <partname> <infile> <partmtd>
 	local partname="$1"
 	local infile="$2"
@@ -302,7 +302,7 @@ function leave_partition() {
 }
 
 function validate_written_partition() {
-# Description: Validate if written partition is the same as the partition image that was used to write. If the validation fails, it is done again up to three times
+# Description: Validate if the written partition is the same as the partition image that was used to write it. If the validation fails, it is done again up to three times
 # Syntax: validate_written_partition <partname> <partmtdblock> <verifyfile>
 	local partname="$1"
 	local partmtdblock="$2"

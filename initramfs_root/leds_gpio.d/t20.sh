@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: GPIO LEDs pins for cameras with T20 SoCs
+# Description: GPIO LED pins for cameras with T20 SoCs
 #
 
 red_led_pin="38"

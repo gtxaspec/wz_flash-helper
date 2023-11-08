@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# Description: This script contains functions to query partition mapping, partition image filenames and user restore options
+# Description: This script contains functions to query partition mapping, partition image filenames, and user restore options
 #
 
 function get_np_partnum() {
-# Description: Return mtd mapping number of the queried partition name
+# Description: Return the mtdmapping number of the queried partition name
 # Syntax: get_np_partnum <partname>
 	local partname="$1"
 	case "$1" in
@@ -28,7 +28,7 @@ function get_np_partnum() {
 }
 
 function get_np_partfstype() {
-# Description: Return fstype of the queried partition name
+# Description: Return the fstype of the queried partition name
 # Syntax: get_np_partfstype <partname>
 	local partname="$1"
 	case "$1" in
@@ -52,7 +52,7 @@ function get_np_partfstype() {
 }
 
 function get_np_partmtd() {
-# Description: Return mtd device of the queried partition name
+# Description: Return the mtd device of the queried partition name
 # Syntax: get_np_partmtd <partname>
 	local partname="$1"
 	local partnum=$(get_np_partnum $partname)
@@ -61,7 +61,7 @@ function get_np_partmtd() {
 }
 
 function get_np_partmtdblock() {
-# Description: Return mtdblock device of queried partition
+# Description: Return the mtdblock device of the queried partition
 # Syntax: get_cp_partmtdblock <partname>
 	local partname="$1"
 	local partnum=$(get_np_partnum $partname)

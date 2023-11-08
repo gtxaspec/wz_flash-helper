@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: Program varables to be sourced by init script
+# Description: Program variables to be sourced by the init script
 #
 
 prog_name="wz_flash-helper"

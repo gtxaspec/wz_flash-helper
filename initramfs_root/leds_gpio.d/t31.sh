@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: GPIO LEDs pins for cameras with T31 SoCs
+# Description: GPIO LED pins for cameras with T31 SoCs
 #
 
 red_led_pin="38"

@@ -3,7 +3,7 @@
 # Description: These messages are used by init script, writing them on a separate file makes it look clean.
 #
 
-msg_rename_prog_sdcard_kernel_fail="WARNING!!! The program SD card kernel can not be renamed, this will result in a bootloop"
+msg_rename_prog_sdcard_kernel_fail="WARNING!!! The program SD card kernel cannot be renamed, this will result in a bootloop"
 
 msg_dry_run_yes="Dry run mode is Active. Your partitions will not be modified"
 msg_dry_run_no="WARNING!!! Dry run mode is Inactive. Your partitions might be modified, depending on your configuration. Stay safe!"

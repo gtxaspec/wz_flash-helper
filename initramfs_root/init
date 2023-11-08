@@ -128,7 +128,7 @@ function init_welcome() {
 function init_wait_init_interrupt() {
 # Description: Allow the user to access the initramfs shell with a serial connection
 	echo > /dev/console
-	echo "Press any key to interrupt init" > /dev/console
+	echo "Press any key to enter initramfs shell" > /dev/console
 	
 	exec 0< /dev/console # Allow the user to type on the serial terminal
 	read -r -s -n 1 -t 3
@@ -219,19 +219,16 @@ function init_display_info() {
 function exit_init() {
 # Description: Copy log files to the SD card and reboot. The user can still interrupt and access the initramfs shell for debugging before the reboot
 	msg
-	msg "---------- Exit init ----------"
-	msg
-
-	msg "Initramfs init is finished! Exiting now"
+	msg "Initramfs init is finished!"
 
 	cp /tmp/initramfs.log $prog_log_file
 	cp /tmp/initramfs_serial.log $prog_log_file_serial
 
 	sync
 	umount /sdcard
-
-	sleep 1
-	echo "Everything is finished! You can enter initramfs shell again before the program exits" > /dev/console
+	
+	echo > /dev/console
+	echo "The program is finished! You can enter initramfs shell again before the camera reboots" > /dev/console
 	init_wait_init_interrupt
 	
 	umount -a -r
@@ -304,10 +301,10 @@ function main_init() {
 	#---------- New SD card kernel ----------
 	msg
 	if [[ "$copy_new_sdcard_kernel" == "yes" ]]; then
-		msg "$msg_copy_new_sdcard_kernel_no"
+		msg "$msg_copy_new_sdcard_kernel_yes"
 		source /action_copy_new_sdcard_kernel.sh || return 1
 	else
-		msg "$_msgcopy_new_sdcard_kernel_no"
+		msg "$msg_copy_new_sdcard_kernel_no"
 	fi
 	
 	#---------- Custom scripts ----------

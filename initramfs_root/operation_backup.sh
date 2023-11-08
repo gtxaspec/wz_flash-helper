@@ -65,12 +65,14 @@ function operation_backup() {
 	msg "Backup destination: $cp_backup_path"
 	echo "$backup_id" > $cp_backup_path/ID.txt
 	msg
+	msg "> Creating backup for partitions"
 	ob_backup_entire_flash || return 1
 	ob_backup_partitions || return 1
 	ob_archive_partitions || return 1
-	msg
+
 	if [[ ! "$cp_backup_secondary_path" == "" ]] && [[ ! "$dry_run" == "yes" ]]; then
-		msg "- This profile has secondary backup directory at $cp_backup_secondary_path"
+		msg
+		msg "> This profile has secondary backup directory at $cp_backup_secondary_path"
 		msg_nonewline " + Creating a copy from primary backup... "
 		
 		if [ -d $cp_backup_secondary_path/$backup_id ]; then

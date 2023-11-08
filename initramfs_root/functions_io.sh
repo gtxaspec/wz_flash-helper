@@ -310,13 +310,13 @@ function validate_written_partition() {
 	local verifyfile_basename=$(basename $verifyfile)
 	local partimg_verify="/verify_$partname.img"
 
-	msg "- Validating written $partname($partmtdblock) with $verifyfile_basename"
+	msg "> Validating written $partname($partmtdblock) with $verifyfile_basename"
 	
 	[ ! -b $partmtdblock ] && { msg " + $partmtdblock is not a block device" ; return 1 ; }
 	[ ! -f $verifyfile ] && { msg " + $verifyfile_basename is missing" ; return 1 ; }
 	
 	for attempt in 1 2 3; do
-		msg " + Validation attempt $attempt:"
+		msg "- Validation attempt $attempt:"
 		
 		local verifyfile_blocksize=$(du -b $verifyfile | cut -f -1)
 		local verifyfile_hash=$(sha256sum $verifyfile | cut -d ' ' -f1)

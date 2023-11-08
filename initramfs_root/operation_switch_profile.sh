@@ -10,7 +10,7 @@
 
 
 function osp_validate_restore_partition_images() {
-	msg "- Making sure that all needed partition images exist and are valid"
+	msg "> Making sure that all needed partition images exist and are valid"
 	
 	cd $np_images_path
 	
@@ -18,10 +18,9 @@ function osp_validate_restore_partition_images() {
 	for partname in $np_all_partname_list; do 
 		if [[ "$(get_np_partoperation $partname)" == "write" ]]; then
 			local infile_name=$(get_np_partimg $partname)
-	
-			[ ! -f $infile_name ] && { msg " + $infile_name file is missing" ; return 1 ; }
-			
+		
 			msg_nonewline " + Verifying $infile_name... "
+			[ ! -f $infile_name ] && { msg "file is missing" ; return 1 ; }
 			sha256sum -c $infile_name.sha256sum && msg "ok" || { msg "failed" ; return 1 ; }
 		fi
 	done
@@ -55,13 +54,13 @@ function operation_switch_profile() {
 	/bg_blink_led_red_and_blue.sh &
 	local red_and_blue_leds_pid="$!"
 	msg
-	msg "---------- Begin of switch profile ----------"
+	msg "----------- Begin of switch profile -----------"
 	msg "Switch profile: $current_profile -> $next_profile"
 	msg "Source directory: $np_images_path"
 	msg
 	osp_validate_restore_partition_images || return 1
 	
-	msg "- Writing to partitions"
+	msg "> Writing to partitions"
 	for partname in $np_all_partname_list; do
 		local partoperation=$(get_np_partoperation $partname)
 		local partmtd=$(get_np_partmtd $partname)
@@ -90,7 +89,7 @@ function operation_switch_profile() {
 	osp_validate_written_boot_partition || rollback_boot_partition || return 1
 	sync
 	msg
-	msg "----------- End of switch profile -----------"
+	msg "------------ End of switch profile ------------"
 	msg
 	kill $red_and_blue_leds_pid
 	/bg_turn_off_leds.sh

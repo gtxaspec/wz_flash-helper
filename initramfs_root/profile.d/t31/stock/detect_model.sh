@@ -1,11 +1,13 @@
 #!/bin/sh
+#
+# Description: Detect camera model by reading automatic generated file from factory
+#
 
 function detect_model_cleanup() {
 	umount $mnt_config && rmdir $mnt_config
 }
 
 function detect_model() {
-# Description: Detect camera model by reading automatic generated file from factory
 	local config_partname="cfg"
 	local model_config_file=".product_config"
 

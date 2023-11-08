@@ -1,5 +1,5 @@
---- firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config	2023-11-04 20:17:07.849950278 +0700
-+++ kernel/kernel.config.t31	2023-11-01 10:47:10.602776690 +0700
+--- firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config	2023-11-08 14:17:15.855420052 +0700
++++ kernel/kernel.config.t31	2023-11-08 14:24:25.195014509 +0700
 @@ -272,7 +272,7 @@
  # CONFIG_SYSFS_DEPRECATED is not set
  # CONFIG_RELAY is not set
@@ -9,6 +9,19 @@
  CONFIG_RD_GZIP=y
  # CONFIG_RD_BZIP2 is not set
  # CONFIG_RD_LZMA is not set
+@@ -1625,9 +1625,9 @@
+ #
+ # File systems
+ #
+-# CONFIG_EXT2_FS is not set
+-# CONFIG_EXT3_FS is not set
+-# CONFIG_EXT4_FS is not set
++CONFIG_EXT2_FS=y
++CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_REISERFS_FS is not set
+ # CONFIG_JFS_FS is not set
+ # CONFIG_XFS_FS is not set
 @@ -1661,9 +1661,9 @@
  #
  # DOS/FAT/NT Filesystems

@@ -1,10 +1,9 @@
 #!/bin/sh
-
-
-
+#
+# Description: Detect camera model by reading the uboot wlandev variable
+#
 
 function detect_model() {
-# Description: Detect camera model by reading the uboot wlandev variable
 	openipc_wifi_driver=$(fw_printenv wlandev | sed 's/wlandev//')
 
 	case $openipc_wifi_driver in

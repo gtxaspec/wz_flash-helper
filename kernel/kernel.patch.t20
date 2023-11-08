@@ -1,5 +1,5 @@
---- firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config	2023-11-04 20:17:07.849950278 +0700
-+++ kernel/kernel.config.t20	2023-11-01 14:18:16.533903241 +0700
+--- firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config	2023-11-08 14:17:15.855420052 +0700
++++ kernel/kernel.config.t20	2023-11-08 14:24:34.285005504 +0700
 @@ -272,7 +272,7 @@
  # CONFIG_SYSFS_DEPRECATED is not set
  # CONFIG_RELAY is not set
@@ -9,6 +9,19 @@
  CONFIG_RD_GZIP=y
  # CONFIG_RD_BZIP2 is not set
  # CONFIG_RD_LZMA is not set
+@@ -1760,9 +1760,9 @@
+ #
+ # File systems
+ #
+-# CONFIG_EXT2_FS is not set
+-# CONFIG_EXT3_FS is not set
+-# CONFIG_EXT4_FS is not set
++CONFIG_EXT2_FS=y
++CONFIG_EXT3_FS=y
++CONFIG_EXT4_FS=y
+ # CONFIG_REISERFS_FS is not set
+ # CONFIG_JFS_FS is not set
+ # CONFIG_XFS_FS is not set
 @@ -1796,9 +1796,9 @@
  #
  # DOS/FAT/NT Filesystems

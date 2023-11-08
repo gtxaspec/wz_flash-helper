@@ -46,8 +46,12 @@ function operation_backup() {
 	mkdir -p $cp_backup_path || { msg "Failed to create backup directory at $cp_backup_path" ; return 1 ; }
 	
 	backup_id=$(gen_4digit_id)
+	local backup_id_gen_attempt=1
+	
 	while [ -d $cp_backup_path/$backup_id ]; do
 		backup_id=$(gen_4digit_id)
+		((backup_id_gen_attempt++))
+		[[ "$backup_id_gen_attempt" -gt 10000 ]] && { msg "All 10000 attempts to generate backup ID have failed, your backup directory is probably full" ; return 1 ; }
 	done
 	
 	cp_backup_path="$cp_backup_path/$backup_id"

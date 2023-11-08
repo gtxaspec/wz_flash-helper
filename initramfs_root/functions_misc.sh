@@ -31,8 +31,9 @@ function rollback_boot_partition() {
 
 function custom_script_matched_profile_check() {
 # Description: Make sure current profile is matched profile and not switching profile, or switching to matched profile
+	local matched_profile="$1"
 	msg "- Checking conditions to run this script"
-	msg " + current_profile: $current_profile, next_profile: $next_profile, switch_profile: $switch_profile"
+	msg " + matched_profile: $matched_profile"
 	msg
 	
 	local run_flag="false"
@@ -40,13 +41,11 @@ function custom_script_matched_profile_check() {
 	[[ ! "$switch_profile" == "yes" ]] && [[ "$current_profile" == "$matched_profile" ]] && run_flag="true"
 	
 	if [[ "$run_flag" == "true" ]]; then
-		msg " + Conditions to run script are met, starting script now"
+		msg " + Camare is on $matched_profile, this script will start"
 		msg
 		return 0
 	else
-		msg " + Conditions for this script to run are not met. For it to run, the camera must either:"
-		msg "  . is on $matched_profile and not switching profile, or"
-		msg "  . already switched to $matched_profile profile"
+		msg " + Camare is not on $matched_profile, this script will be skipped"
 		msg
 		msg "- Skipping script"
 		return 1

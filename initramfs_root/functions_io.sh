@@ -246,7 +246,19 @@ function format_partition() {
 	local partmtd="/dev/mtd$partnum"
 	local partmtdblock="/dev/mtdblock$partnum"
 	
-	msg "- Format partition: $partname(partition number: $partnum) as $partfstype ---"
+
+	case $partfstype in
+		"jffs2")
+			msg "- Format partition: $partname($partmtd) as $partfstype ---"
+			;;
+		"vfat")
+			msg "- Format partition: $partname($partmtdblock) as $partfstype ---"
+			;;
+		*)
+			msg " + Formating partition as $partfstype is not supported"
+			return 1
+			;;
+	esac
 
 	[ ! -c $partmtd ] && { msg " + $partmtd is not a character device" ; return 1 ; }
 	[ ! -b $partmtdblock ] && { msg " + $partmtdblock is not a block device" ; return 1 ; }
@@ -257,10 +269,6 @@ function format_partition() {
 			;;
 		"vfat")
 			format_partition_vfat $partmtdblock || return 1
-			;;
-		*)
-			msg " + Formating partition as $partfstype is not supported"
-			return 1
 			;;
 	esac
 }

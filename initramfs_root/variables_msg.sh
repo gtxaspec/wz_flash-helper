@@ -5,8 +5,8 @@
 
 msg_rename_prog_sdcard_kernel_fail="WARNING!!! The program SD card kernel cannot be renamed, this will result in a bootloop"
 
-msg_dry_run_yes="Dry run mode is Active. Your partitions will not be modified"
-msg_dry_run_no="WARNING!!! Dry run mode is Inactive. Your partitions might be modified, depending on your configuration. Stay safe!"
+msg_dry_run_yes="Dry run mode is active. Your partitions will not be modified"
+msg_dry_run_no="WARNING!!! Dry run mode is inactive. Your partitions might be modified, depending on your configuration. Stay safe!"
 
 msg_backup_partitions_yes="[x] backup_partition value is Yes"
 msg_backup_partitions_no="[ ] backup_partition value is No"

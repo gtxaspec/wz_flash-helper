@@ -57,7 +57,7 @@ function operation_switch_profile() {
 	msg
 	msg_color_bold blue ":: Starting switch profile operation"
 	msg_color_bold_nonewline white "Switch profile: "
-	msg_color_bold_nonewline lightred "$current_profile" && msg_nonewline " -> " && msg_color_bold_nonewline lightred "$next_profile"
+	msg_color_bold_nonewline lightred "$current_profile" && msg_nonewline " -> " && msg_color_bold lightred "$next_profile"
 	msg_color_bold_nonewline white "Source directory: " && msg_color cyan "$np_images_path"
 	msg
 	osp_validate_restore_partition_images || return 1

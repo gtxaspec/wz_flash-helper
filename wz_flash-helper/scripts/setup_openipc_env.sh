@@ -85,8 +85,11 @@ function get_wifi_vendor_id() {
 
 function detect_openipc_wifi_driver() {
 # Description: Assign Wi-Fi driver for OpenIPC based on the camera model and vendor ID
-	msg "- Detecting driver for Wi-Fi module"
-	[[ "$set_wifi_driver_manually" == "yes" ]] && { msg " + Using custom Wi-Fi driver value: $wifi_driver" ; return 0 ; }
+	msg "Detecting driver for Wi-Fi module"
+	if [[ "$set_wifi_driver_manually" == "yes" ]]; then
+		msg_nonewline "   Using custom Wi-Fi driver value: " && msg_color cyan "$wifi_driver"
+		return 0
+	fi
 	
 	case $model in
 	
@@ -111,10 +114,10 @@ function detect_openipc_wifi_driver() {
 	esac
 	
 	if [[ ! "$wifi_driver" == "" ]]; then # Exit function if Wi-Fi driver has been set
-		msg " + Found driver: $wifi_driver"
+		msg_nonewline "   Found driver: " && msg_color cyan "$wifi_driver"
 		return 0
 	else
-		msg " + Can not detect driver, please set it manually and run this script again"
+		msg_color red "   Can not detect driver, please set it manually and run this script again"
 		return 1
 	fi
 }
@@ -122,36 +125,36 @@ function detect_openipc_wifi_driver() {
 function set_openipc_user_env() {
 # Description: Write user-specified variables to the env partition using fw_setenv
 	msg
-	msg "- Setting env variables"
+	msg "Setting env variables"
 
 	#---------- Wi-Fi SSID ----------
-	msg_nonewline " + Setting Wi-Fi SSID... "
-	fw_setenv wlanssid $wifi_ssid && msg "ok" || { msg "failed" ; return 1 ; }
+	msg_nonewline "   Setting Wi-Fi SSID... "
+	fw_setenv wlanssid $wifi_ssid && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 
 	#---------- Wi-Fi password ----------
-	msg_nonewline " + Setting Wi-Fi password... "
-	fw_setenv wlanpass $wifi_password && msg "ok" || { msg "failed" ; return 1 ; }
+	msg_nonewline "   Setting Wi-Fi password... "
+	fw_setenv wlanpass $wifi_password && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 
 	#---------- Wi-Fi driver ----------
-	msg_nonewline " + Setting Wi-Fi driver... "
+	msg_nonewline "   Setting Wi-Fi driver... "
 	if [[ ! "$wifi_driver" == "" ]]; then
-		fw_setenv wlandev $wifi_driver && msg "ok" || { msg "failed" ; return 1 ; }
+		fw_setenv wlandev $wifi_driver && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	else
 		msg "not set because it is empty"
 	fi
 
 	#---------- MAC address ----------
-	msg_nonewline " + Setting MAC address... "
+	msg_nonewline "   Setting MAC address... "
 	if [[ ! "$mac_address" == "" ]]; then
-		fw_setenv wlanmac $mac_address && msg "ok" || { msg "failed" ; return 1 ; }
+		fw_setenv wlanmac $mac_address && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	else
 		msg "not set because it is empty"
 	fi
 	
 	#---------- Timezone ----------
-	msg_nonewline " + Setting Timezone... "
+	msg_nonewline "   Setting Timezone... "
 	if [[ ! "$timezone" == "" ]]; then
-		fw_setenv timezone $timezone && msg "ok" || { msg "failed" ; return 1 ; }
+		fw_setenv timezone $timezone && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	else
 		msg "not set because it is empty"
 	fi

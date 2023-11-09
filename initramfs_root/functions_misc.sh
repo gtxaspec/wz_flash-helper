@@ -11,9 +11,9 @@ function gen_4digit_id() {
 function rollback_boot_partition() {
 # Description: Check if written boot partition is valid. If not, rollback with the backup boot image
 	msg
-	msg "ATTENTION! ATTENTION! ATTENTION!"
-	msg "ATTENTION! ATTENTION! ATTENTION!"
-	msg "ATTENTION! ATTENTION! ATTENTION!"
+	msg_color_bold red "ATTENTION! ATTENTION! ATTENTION!"
+	msg_color_bold red "ATTENTION! ATTENTION! ATTENTION!"
+	msg_color_bold red "ATTENTION! ATTENTION! ATTENTION!"
 	msg
 	msg "It is very likely that your boot partition is corrupted"
 	msg "Rolling back boot partition with previous profile boot image"
@@ -21,28 +21,32 @@ function rollback_boot_partition() {
 	
 	for attempt in 1 2; do
 		msg "- Rollback attempt $attempt:"
-		msg_nonewline " + Rollback result: "
-		write_partition "boot" /boot_backup.img $boot_partmtd && { msg "good :) You are safe now!" ; return 1 ; } || msg "bad"
+		msg_nonewline "   Rollback result: "
+		write_partition "boot" /boot_backup.img $boot_partmtd && { msg_color green "good :) You are safe now!" ; return 1 ; } || msg_color red "bad"
 	done
 	
-	msg "Rollback failed twice, sorry. Probably your flash chip is corrupted"
+	msg_color_bold red "Rollback failed twice, sorry. Probably your flash chip is corrupted"
 	return 1
 }
 
 function custom_script_matched_profile_check() {
 # Description: Make sure the current profile is amatched profile and not switching profile, or switching to matched profile
 	local matched_profile="$1"
-	msg "- This script requires the running profile to be $matched_profile to run"
+	msg_color_bold_nonewline white "This script requires the running profile to be "
+	msg_color_nonewline cyan "$matched_profile "
+	msg_color_bold "to run"
 	
-	[[ "$switch_profile" == "yes" ]] && [[ "$next_profile" == "$matched_profile" ]] && local running_profile=$next_profile
-	[[ ! "$switch_profile" == "yes" ]] && [[ "$current_profile" == "$matched_profile" ]] && local running_profile=$current_profile
+	[[ ! "$switch_profile" == "yes" ]] && local running_profile=$current_profile	
+	[[ "$switch_profile" == "yes" ]] && local running_profile=$next_profile
 
-	msg_nonewline " + Running profile is: $running_profile, "
+	msg_nonewline "   Running profile is: "
+	msg_color_nonewline cyan "$running_profile"
+	msg_nonewline ", "
 	if [[ "$running_profile" == "$matched_profile" ]]; then
-		msg "executing script now!"
+		msg_color green "running script now!"
 		msg
 	else
-		msg "skipping script"
+		msg_color red "skipping script"
 		msg
 		return 1
 	fi

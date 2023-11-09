@@ -15,7 +15,7 @@ function ob_backup_entire_flash() {
 	local partmtd="$all_partmtd"
 	local outfile="$cp_backup_path/$cp_backup_allparts_filename"
 	
-	read_partition $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; return 1 ; }
+	read_partition $partname $partmtd $outfile || return 1
 }
 
 function ob_backup_partitions() {
@@ -25,7 +25,7 @@ function ob_backup_partitions() {
 		local outfile_name=$(get_cp_partimg $partname)
 		local outfile="$cp_backup_path/$outfile_name"
 		
-		read_partition $partname $partmtd $outfile || { msg "Backup $partname partition to $outfile failed" ; return 1 ; }
+		read_partition $partname $partmtd $outfile || return 1
 	done
 }
 
@@ -43,7 +43,7 @@ function ob_archive_partitions() {
 
 function operation_backup() {
 # Description: Create partition images of the entire flash, all partitions, and create extra archives from config partitions
-	mkdir -p $cp_backup_path || { msg "Failed to create backup directory at $cp_backup_path" ; return 1 ; }
+	mkdir -p $cp_backup_path || { msg_color red "Failed to create backup directory at $cp_backup_path" ; return 1 ; }
 	
 	backup_id=$(gen_4digit_id)
 	local backup_id_gen_attempt=1
@@ -51,7 +51,7 @@ function operation_backup() {
 	while [ -d $cp_backup_path/$backup_id ]; do
 		backup_id=$(gen_4digit_id)
 		((backup_id_gen_attempt++))
-		[[ "$backup_id_gen_attempt" -gt 10000 ]] && { msg "All 10000 attempts to generate backup ID have failed, your backup directory is probably full" ; return 1 ; }
+		[[ "$backup_id_gen_attempt" -gt 10000 ]] && { msg_color red "All 10000 attempts to generate backup ID have failed, your backup directory is probably full" ; return 1 ; }
 	done
 	
 	cp_backup_path="$cp_backup_path/$backup_id"
@@ -60,32 +60,31 @@ function operation_backup() {
 	/bg_blink_led_blue.sh &
 	local blue_led_pid="$!"
 	msg
-	msg "---------- Begin of backup operation ----------"
-	msg "Backup ID: $backup_id"
-	msg "Backup destination: $cp_backup_path"
+	msg_color_bold blue ":: Starting backup operation"
+	msg_color_bold_nonewline white "Backup ID: " && msg_color cyan "$backup_id"
+	msg_color_bold_nonewline white "Backup destination: " && msg_color cyan "$cp_backup_path"
 	echo "$backup_id" > $cp_backup_path/ID.txt
 	msg
-	msg "> Creating backup for partitions"
+	msg_color_bold white "> Backing up partitions"
 	ob_backup_entire_flash || return 1
 	ob_backup_partitions || return 1
 	ob_archive_partitions || return 1
 
 	if [[ ! "$cp_backup_secondary_path" == "" ]] && [[ ! "$dry_run" == "yes" ]]; then
 		msg
-		msg "> This profile has secondary backup directory at $cp_backup_secondary_path"
-		msg_nonewline " + Creating a copy from primary backup... "
+		msg_color_bold_nonewline white "> This profile has secondary backup directory at "
+		msg_color cyan "$cp_backup_secondary_path"
+		msg_nonewline "   Creating a copy from primary backup... "
 		
 		if [ -d $cp_backup_secondary_path/$backup_id ]; then
-			msg "failed"
-			msg " + Backup with ID $backup_id exists on secondary backup directory, it will not be overwritten, skipping"
+			msg_color red "failed"
+			msg_color red "   Backup with ID $backup_id exists on secondary backup directory, it will not be overwritten, skipping"
 		else
 			mkdir -p $cp_backup_secondary_path	
-			cp -r $cp_backup_path $cp_backup_secondary_path && msg "ok" || { msg "failed" ; return 1 ; }
+			cp -r $cp_backup_path $cp_backup_secondary_path && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 		fi	
 	fi
 	sync
-	msg
-	msg "----------- End of backup operation -----------"
 	msg
 	kill $blue_led_pid
 	/bg_turn_off_leds.sh

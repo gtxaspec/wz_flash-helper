@@ -10,7 +10,7 @@
 
 
 function osp_validate_restore_partition_images() {
-	msg "> Making sure that all needed partition images exist and are valid"
+	msg_color_bold white "> Making sure that all needed partition images exist and are valid"
 	
 	cd $np_images_path
 	
@@ -19,9 +19,10 @@ function osp_validate_restore_partition_images() {
 		if [[ "$(get_np_partoperation $partname)" == "write" ]]; then
 			local infile_name=$(get_np_partimg $partname)
 		
-			msg_nonewline " + Verifying $infile_name... "
+			msg_nonewline "    Verifying "
+			msg_color_nonewline brown "$infile_name... "
 			[ ! -f $infile_name ] && { msg "file is missing" ; return 1 ; }
-			sha256sum -c $infile_name.sha256sum && msg "ok" || { msg "failed" ; return 1 ; }
+			sha256sum -c $infile_name.sha256sum && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 		fi
 	done
 	msg
@@ -38,9 +39,9 @@ function osp_validate_written_boot_partition() {
 }
 
 function operation_switch_profile() {
-	[[ "$restore_partitions" == "yes" ]] && { msg "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
-	[[ "$current_profile" == "$next_profile" ]] && { msg "next_profile value is same as current_profile, aborting switch profile" ; return 1 ; }
-	[ ! -d /profile.d/$chip_family/$next_profile ] && { msg "next_profile is not supported, aborting switch profile" ; return 1 ; }
+	[[ "$restore_partitions" == "yes" ]] && { msg_color red "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
+	[[ "$current_profile" == "$next_profile" ]] && { msg_color red "next_profile value is same as current_profile, aborting switch profile" ; return 1 ; }
+	[ ! -d /profile.d/$chip_family/$next_profile ] && { msg_color red "next_profile is not supported, aborting switch profile" ; return 1 ; }
 	
 	source /profile.d/$chip_family/$next_profile/np_variables.sh
 	source /profile.d/$chip_family/$next_profile/np_queries.sh
@@ -54,13 +55,14 @@ function operation_switch_profile() {
 	/bg_blink_led_red_and_blue.sh &
 	local red_and_blue_leds_pid="$!"
 	msg
-	msg "----------- Begin of switch profile -----------"
-	msg "Switch profile: $current_profile -> $next_profile"
-	msg "Source directory: $np_images_path"
+	msg_color_bold blue ":: Starting switch profile operation"
+	msg_color_bold_nonewline white "Switch profile: "
+	msg_color_bold_nonewline lightred "$current_profile" && msg_nonewline " -> " && msg_color_bold_nonewline lightred "$next_profile"
+	msg_color_bold_nonewline white "Source directory: " && msg_color cyan "$np_images_path"
 	msg
 	osp_validate_restore_partition_images || return 1
 	
-	msg "> Writing to partitions"
+	msg_color_bold white "> Writing partition images"
 	for partname in $np_all_partname_list; do
 		local partoperation=$(get_np_partoperation $partname)
 		local partmtd=$(get_np_partmtd $partname)
@@ -85,11 +87,9 @@ function operation_switch_profile() {
 		esac
 	done
 	msg
-	[[ "$dry_run" == "yes" ]] && { msg "- No need to check for boot partition corruption on dry run mode" ; return 0 ; }
+	[[ "$dry_run" == "yes" ]] && { msg "No need to check for boot partition corruption on dry run mode" ; return 0 ; }
 	osp_validate_written_boot_partition || rollback_boot_partition || return 1
 	sync
-	msg
-	msg "------------ End of switch profile ------------"
 	msg
 	kill $red_and_blue_leds_pid
 	/bg_turn_off_leds.sh

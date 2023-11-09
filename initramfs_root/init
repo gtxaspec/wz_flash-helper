@@ -21,33 +21,6 @@ mount -t sysfs sysfs /sys
 
 sleep 1
 
-function msg() {
-# Description: Allow output messages to be both displayed on the serial terminal and written to the log files
-	local message="$1"
-
-	echo "$message" # Print to log file
-	echo "$message" > /dev/console # Print on the serial terminal
-	echo "$message" >> /tmp/initramfs_serial.log # Print to an extra log file. It is exactly the same as on the serial terminal
-}
-
-function msg_dry_run() {
-# Description: Print out commands instead of executing them when dry run is enabled
-	local cmd="$1"
-
-	echo " + (dry run) $cmd"
-	echo " + (dry run) $cmd" > /dev/console
-	echo " + (dry run) $cmd" >> /tmp/initramfs_serial.log
-}
-
-function msg_nonewline() {
-# Description: Same as msg but without newline
-	local message="$1"
-
-	echo -n "$message"
-	echo -n "$message" > /dev/console
-	echo -n "$message" >> /tmp/initramfs_serial.log
-}
-
 function init_play_audio() {
 # Description: Play audio to let the user keep track of the progress, useful when they don't have a serial connection
 	[[ ! "$enable_audio" == "yes" ]] && return 0
@@ -93,6 +66,7 @@ function init_source_variables_init_msg() {
 
 function init_source_functions() {
 # Description: Import function scripts
+	source /functions_msg.sh
 	source /functions_io.sh
 	source /functions_misc.sh
 }
@@ -121,7 +95,7 @@ function init_welcome() {
 # Description: It is nice to let the user know that they are welcome!
 	msg
 	msg
-	msg "Welcome to initramfs init! ^_^" # Yep, a smiling emoji!
+	msg_color_bold lightmagenta "Welcome to initramfs init! ^_^" # Yep, a smiling emoji!
 	msg
 }
 
@@ -133,6 +107,8 @@ function init_wait_init_interrupt() {
 	exec 0< /dev/console # Allow the user to type on the serial terminal
 	read -r -s -n 1 -t 3
 	if [[ "$?" -eq 0 ]]; then
+		export 'PS1=\[\e[1;31m\]\h \w # \[\e[0m\]\[\e[32m\]\[\e[00m\]'
+		hostname initramfs
 		echo "Dropping a shell" > /dev/console
 		echo "You can run resize command to make the terminal output match the terminal size" > /dev/console
 		exec 1> /dev/console
@@ -177,29 +153,33 @@ function init_mount_sdcard() {
 # Description: Mount SD card, nothing more
 	msg
 	msg_nonewline "Mounting SD card... "
-	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg "ok" || msg "failed"
+	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg_color green "ok" || msg_color red "failed"
 }
 
 function init_rename_prog_sdcard_kernel() {
 # Description: Rename the program SD card kernel to avoid an infinite boot loop
 	for kernelimg in $cp_sdcard_kernel_name $cp_sdcard_secondary_kernel_name; do
 		if [ -f /sdcard/$kernelimg ]; then
-			msg_nonewline "Renaming program SD card kernel: $kernelimg to $kernelimg.$prog_name... "
-			mv /sdcard/$kernelimg /sdcard/$kernelimg.$prog_name && { msg "ok" ; return 0 ; } || msg "failed"
+			msg_nonewline "Renaming program SD card kernel: " && msg_color_nonewline cyan "$kernelimg " && msg_nonewline "to " && msg_color_nonewline cyan "$kernelimg.$prog_name" && msg_nonewline "... "
+			mv /sdcard/$kernelimg /sdcard/$kernelimg.$prog_name && { msg_color green "ok" ; return 0 ; } || msg_color red "failed"
 		else
-			msg "Program SD card kernel $kernelimg for this profile is missing"
+			msg_color_nonewline lightbrown "Program SD card kernel "
+			msg_color_nonewline cyan "$kernelimg "
+			msg_color lightbrown "for this profile is missing"
 		fi
 	done
+	msg_color_bold red "WARNING!!! The program SD card kernel cannot be renamed, this will result in a bootloop"
+	sleep 3
 	return 1
 }
 
 function init_import_prog_config_file() {
 # Description: Source program config file to know and do what the user wants
-	[ ! -d $prog_dir ] && { msg "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; return 1 ; }
-	[ ! -f $prog_config_file ] && { msg "$prog_config_file file is missing. Nothing will be done" ; return 1 ; }
+	[ ! -d $prog_dir ] && { msg_color_bold red "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; return 1 ; }
+	[ ! -f $prog_config_file ] && { msg_color_bold red "$prog_config_file file is missing. Nothing will be done" ; return 1 ; }
 
 	# Fix issue that config file fails to be sourced if it contains MS-DOS newlines
-	dos2unix $prog_config_file && source $prog_config_file || { msg "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
+	dos2unix $prog_config_file && source $prog_config_file || { msg_color_bold red "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
 }
 
 function init_source_detect_model() {
@@ -210,16 +190,22 @@ function init_source_detect_model() {
 function init_display_info() {
 # Description: Display system info and current status
 	msg
-	msg "Program version: $(cat /version)"
-	msg "Hardware: chip name: $chip_name, chip family: $chip_family, flash type: $flash_type, model: $model"
-	msg "Current profile: $current_profile"
+	msg_color_bold_nonewline white "Program version: " && msg_color cyan "$(cat /version)"
+	
+	msg_color_bold_nonewline white "Hardware: "
+	msg_nonewline "chip name: " && msg_color_nonewline cyan $chip_name
+	msg_nonewline ", chip family: " && msg_color_nonewline cyan $chip_family
+	msg_nonewline ", flash type: " && msg_color_nonewline cyan $flash_type
+	msg_nonewline ", model: " && msg_color cyan $model
+	
+	msg_color_bold_nonewline white "Current profile: " && msg_color cyan "$current_profile"
 	msg
 }
 
 function exit_init() {
 # Description: Copy log files to the SD card and reboot. The user can still interrupt and access the initramfs shell for debugging before the reboot
 	msg
-	msg "Initramfs init is finished!"
+	msg_color_bold magenta "Initramfs init is finished!"
 
 	cp /tmp/initramfs.log $prog_log_file
 	cp /tmp/initramfs_serial.log $prog_log_file_serial
@@ -258,61 +244,69 @@ function main_init() {
 	init_source_variables_prog_info
 	
 	init_mount_sdcard || return 1
-	init_rename_prog_sdcard_kernel || { msg "$msg_rename_prog_sdcard_kernel_fail" ; sleep 3 ; }
+	init_rename_prog_sdcard_kernel
 	init_import_prog_config_file || return 1
 
 	init_source_detect_model || return 1
 	init_display_info
-	
-	[[ "$dry_run" == "yes" ]] && msg "$msg_dry_run_yes" || msg "$msg_dry_run_no" && msg
 
 	init_play_audio "initializing"
 
 	#---------- Backup operation ----------
 	msg
 	if [[ "$backup_partitions" == "yes" ]]; then
+		msg_tickbox_yes
 		msg "$msg_backup_partitions_yes"
 		init_play_audio "processing"
-		source /operation_backup.sh && msg "$msg_backup_partitions_succeed" || { msg "$msg_backup_partitions_fail" ; return 1 ; }
+		source /operation_backup.sh && msg_color_bold green "$msg_backup_partitions_succeed" || { msg_color_bold red "$msg_backup_partitions_fail" ; return 1 ; }
 	else
+		msg_tickbox_no
 		msg "$msg_backup_partitions_no"
 	fi
 
 	#---------- Restore operation ----------
 	msg
 	if [[ "$restore_partitions" == "yes" ]]; then
+		msg_tickbox_yes
 		msg "$msg_restore_partitions_yes"
 		init_play_audio "processing"
-		source /operation_restore.sh && msg "$msg_restore_partitions_succeed" || { msg "$msg_restore_partitions_fail" ; return 1 ; }
+		source /operation_restore.sh && msg_color_bold green "$msg_restore_partitions_succeed" || { msg_color_bold red "$msg_restore_partitions_fail" ; return 1 ; }
 	else
+		msg_tickbox_no
 		msg "$msg_restore_partitions_no"
 	fi
 
 	#---------- Switch profile operation ----------
 	msg
 	if [[ "$switch_profile" == "yes" ]]; then
+		msg_tickbox_yes
 		msg "$msg_switch_profile_yes"
 		init_play_audio "processing"
-		source /operation_switch_profile.sh && msg "$msg_switch_profile_succeed" || { msg "$msg_switch_profile_fail" ; return 1 ; }
+		source /operation_switch_profile.sh && msg_color_bold green "$msg_switch_profile_succeed" || { msg_color_bold red "$msg_switch_profile_fail" ; return 1 ; }
 	else
+		msg_tickbox_no
 		msg "$msg_switch_profile_no"
 	fi
 
 	#---------- New SD card kernel ----------
 	msg
 	if [[ "$copy_new_sdcard_kernel" == "yes" ]]; then
+		msg_tickbox_yes
 		msg "$msg_copy_new_sdcard_kernel_yes"
 		source /action_copy_new_sdcard_kernel.sh || return 1
 	else
+		msg_tickbox_no
 		msg "$msg_copy_new_sdcard_kernel_no"
 	fi
 	
 	#---------- Custom scripts ----------
 	msg
 	if [[ "$enable_custom_scripts" == "yes" ]]; then
+		msg_tickbox_yes
 		msg "$msg_enable_custom_scripts_yes"
-		source /action_execute_custom_scripts.sh && msg "$msg_enable_custom_scripts_succeed" || { msg "$msg_enable_custom_scripts_fail" ; return 1 ; }
+		source /action_execute_custom_scripts.sh && msg_color_bold green "$msg_enable_custom_scripts_succeed" || { msg_color_bold red "$msg_enable_custom_scripts_fail" ; return 1 ; }
 	else
+		msg_tickbox_no
 		msg "$msg_enable_custom_scripts_no"
 	fi
 

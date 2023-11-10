@@ -4,5 +4,5 @@
 
 ## v0.6.1
 
-- Fix partition validation doesn't display correctly
-- Check if audio kernel module is loaded before playing audio
+- Fix partition validation messages are not displayed correctly
+- Add check for audio kernel module before playing audio

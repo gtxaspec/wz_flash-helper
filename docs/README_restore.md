@@ -2,7 +2,6 @@
 
 
 
-## Restore partitions guide
 
 **Step 1:** [Setup](README_setup.md)
 

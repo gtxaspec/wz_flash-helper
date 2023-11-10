@@ -3,10 +3,6 @@
 
 
 
-
-# Guide for other options
-
-
 ## Specify the SD card boot image that will be used on the next boot
 
 Option: `new_sdcard_kernel`

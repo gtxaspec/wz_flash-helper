@@ -3,8 +3,6 @@
 
 
 
-## Backup guide
-
 **WARNING:**
 - Backup your stock partitions first and copy it to a safe place in case you need them for later recovery.
 - Do not modify your stock partitions backup, specially boot partition image. Switching from OpenIPC back to stock profile may brick your camera if you do that.

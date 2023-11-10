@@ -2,7 +2,6 @@
 
 
 
-## Setup guide
 
 Download the correct release at [release page](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract to your SD card.
 

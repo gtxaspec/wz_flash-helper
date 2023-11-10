@@ -52,8 +52,11 @@ function make_release() {
 	compile_kernel
 
 	cp -r wz_flash-helper output/${SoC}
-	mv output/${SoC}/wz_flash-helper/restore/stock_${SoC}.conf output/${SoC}/wz_flash-helper/restore/stock.conf
-	rm output/${SoC}/wz_flash-helper/restore/stock_*.conf
+	mv output/${SoC}/wz_flash-helper/restore/stock.conf.${SoC} output/${SoC}/wz_flash-helper/restore/stock.conf
+	rm output/${SoC}/wz_flash-helper/restore/stock.conf.*
+	
+	mv output/${SoC}/wz_flash-helper/restore/openipc/openipc_SoC_env.bin.${SoC} output/${SoC}/wz_flash-helper/restore/openipc/openipc_SoC_env.bin
+	rm output/${SoC}/wz_flash-helper/restore/openipc/openipc_SoC_env.bin.*
 
 	( cd output/${SoC} && zip -r ${version}_${SoC}.zip . -x *.gitkeep)
 	rm -r output/${SoC}/wz_flash-helper

@@ -4,11 +4,13 @@
 
 ## Setup guide
 
-Download the correct release [lastest release](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract to your SD card.
+Download the correct release at [release page](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract to your SD card.
 
 Example for t31x:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/setup_01.png)
 
 -----
+**IMPORTANT:** Make sure that your SD card partition is **MBR** instead of GPT. If it is not, please format it as MBR.
+
 **Note:** If your camera is Pan v2 or v2, you need to update your bootloader to with lastest release using this [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation) first.

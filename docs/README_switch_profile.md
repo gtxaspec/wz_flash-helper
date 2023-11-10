@@ -9,11 +9,11 @@
 
 ## How to switch from stock to OpenIPC profile
 
-**Step 0:** [Setup](README_setup.md)
+**Step 1:** [Setup](README_setup.md)
 
-**Step 1: Obtain your camera hardware info**
+**Step 2: Obtain your camera hardware info**
 1. SoC type
-Connect to your camera using SSH/serial and download `ipcinfo` tool by running:
+Connect to your camera using SSH/serial and download the `ipcinfo` tool by running:
 ```
 cd /tmp
 wget --no-check-certificate https://github.com/OpenIPC/ipctool/releases/download/latest/ipcinfo-mips32
@@ -27,8 +27,8 @@ If the chip name is:
 
 2. Wi-Fi MAC address
 
-There are 3 ways:
-- Checking the bottom of the camera
+There are three ways:
+- Check the bottom of the camera
 - Check Wyze mobile app: Device info -> MAC
 - Run `ifconfig wlan0` with SSH connection:
 
@@ -38,11 +38,11 @@ wlan0     Link encap:Ethernet  HWaddr 00:11:22:AA:BB:CC
 ...
 ```
 
-**Step 2: Preparation**
+**Step 3: Preparation**
 
 **IMPORTANT:** If your camera is T31, please find out if it is `t31a` or `t31x` to download the correct OpenIPC build. Using the wrong build would hard brick your camera.
 
-Download corrrect OpenIPC build from OpenIPC release page for your device, place them under `wz_flash-helper/restore/openipc/` on your SD card and rename them to:
+Download correct OpenIPC build from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) for your device, place them under the `wz_flash-helper/restore/openipc/` on your SD card and rename them to:
 - openipc_[SoC]_boot.bin
 - openipc_[SoC]_kernel.bin
 - openipc_[SoC]_rootfs.bin
@@ -62,11 +62,11 @@ Example for t31x:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_01.png)
 
-**Step 3: Add uboot env variables**
+**Step 4: Add uboot env variables**
 
-Edit `setup_openipc_env.sh` under `wz_flash-helper/scripts/` directory with your Wi-Fi name(SSID) and password. Optionally with MAC address and Timezone.
+Edit `setup_openipc_env.sh` under the `wz_flash-helper/scripts/` directory with your Wi-Fi name(SSID) and password. Optionally with MAC address and Timezone.
 
-**Step 4: Edit the program configuration file**
+**Step 5: Edit the program configuration file**
 
 Edit `general.conf` with:
 ```
@@ -79,14 +79,14 @@ enable_custom_scripts="no"
 custom_scripts="setup_openipc_env.sh"
 ```
 
-**Step 5: Power on**
+**Step 6: Power on**
 
-Insert your SD card to the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to OpenIPC firmware.
+Insert your SD card into the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it would reboot to OpenIPC firmware.
 
 ## How to switch from OpenIPC to stock profile
 **Step 1: Preparation**
 
-Place your backup of stock partition images along with their sha256sum files under `wz_flash-helper/restore/stock/` directory.
+Place your backup of stock partition images along with their sha256sum files under the `wz_flash-helper/restore/stock/` directory.
 
 **Step 2: Edit the program configuration file**
 
@@ -107,19 +107,19 @@ Insert your SD card to the camera and power it on. It would take about 3 minutes
 
 With the option `switch_profile_with_all_partitions` in `general.conf`, you can decide if all partitions will be written when switching profile.
 When it is enabled:
-- Switching from stock to OpenIPC needs partition images of all partitions including `rootfs_data`, if you don't have `rootfs_data` image, leave it disabled.
+- Switching from stock to OpenIPC needs partition images of all partitions, including `rootfs_data`, if you don't have `rootfs_data` image, leave it disabled.
 - Switching from OpenIPC also needs partition images of all partitions.
 
-When switching from OpenIPC to stock, some partitions such as `aback`, `kback`, `backupa`, `backupd`, etc. they don't need to be restored because they don't contain any meaningful data as they are used by stock firmware as stage partition to install updates. You can disable this option to save time.
+When switching from OpenIPC to stock, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be restored because they don't contain any meaningful data as they are used by stock firmware as stage partition to install updates. You can disable this option to save time.
 
-When switching from stock to OpenIPC the first time, you have to leave if disabled because you don't have `rootfs_data` partition image.
+When switching from stock to OpenIPC the first time, you have to leave if disabled because you don't have the `rootfs_data` partition image.
 
 
 
 -----
-Conditions for switch profile operation to work:
+Conditions for the switch profile operation to work:
 
-1. All partition images of the profile types that you want to switch to must present under either:
+1. All partition images of the profile types that you want to switch to must be present under either:
 - `wz_flash-helper/restore/stock` directory or
 - `wz_flash-helper/restore/openipc` directory
 
@@ -127,7 +127,7 @@ Conditions for switch profile operation to work:
 
 
 **Note:**
-- For switch profile operation to start, `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_profile` are enabled, both operations would not be done.
-- All partition images are verified with their .sha256sum files before switch_profile operation starts. If one file fails the verification, no change would be made.
+- For switch profile operation to start, `restore_partitions` option must be disabled, like in the above configurations. If both `restore_partitions` and `switch_profile` are enabled, both operations would not be done.
+- All partition images are verified with their .sha256sum files before the switch_profile operation starts. If one file fails the verification, no change will be made.
 - During switch profile operation, both the blue LED and the red LED would be blinking.
 

@@ -21,12 +21,12 @@ This kernel file will be booted on the next boot without having to pull the SD c
 
 Option: `custom_scripts`
 
-You can write scripts and those scripts will be executed after backup/restore/switch_profile operations are finished. This is useful if you want to do extra modification to your partitions from initramfs environment.
+You can write scripts, and those scripts will be executed after backup/restore/switch_profile operations are finished. This is useful if you want to do extra modifications to your partitions from initramfs environment.
 
 -----
 **Note:**
-- If you are on OpenIPC profile, SD card kernel specified with `new_sdcard_kernel` will be renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using SD card kernel for personal purpose, you should disable it.
+- If you are on OpenIPC profile, SD card kernel specified with `new_sdcard_kernel` will be renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using the SD card kernel for personal purposes, you should disable it.
 - SD card kernel will not be renamed if `dry_run` is enabled.
-- Custom script will not not run if `dry_run` is enabled.
+- Custom script will not run if `dry_run` is enabled.
 - Custom script does not necessarily have to be on the SD Card top directory, you can put its path on the option to make it run from somewhere else.
 

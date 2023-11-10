@@ -4,11 +4,11 @@
 
 
 **WARNING:**
-- Backup your stock partitions first and copy them to a safe place in case you need them for later recovery.
-- Do not modify your stock partition backup images, especially the boot partition image. Rolling back to the stock profile may brick your camera if you do that.
+- Backup your Stock partitions first and copy them to a safe place in case you need them for later recovery.
+- Do not modify your Stock partition backup images, especially the boot partition image. Rolling back to the Stock profile may brick your camera if you do that.
 
 
-### Backup stock partitions
+### Backup Stock partitions
 **Step 1:** [Setup](README_setup.md)
 
 **Step 2:** Edit `general.conf` with:
@@ -27,12 +27,12 @@ To know what backup ID was used for the most recent backup, check the `initramfs
 
 
 ### Backup OpenIPC partitions
-Similar to stock partitions, OpenIPC partitions can be backed up with the above steps. OpenIPC partition backup images would be under the `wz_flash-helper/backup/openipc` directory.
+Similar to Stock partitions, OpenIPC partitions can be backed up with the above steps. OpenIPC partition backup images would be under the `wz_flash-helper/backup/openipc` directory.
 
 
 -----
 **Notes:**
 - Backup operation will automatically generate .sha256sum files for partition backup images.
-- During backup operation, the blue LED would be blinking every second.
+- During the backup operation, the blue LED would be blinking every second.
 - Typically backup operation takes about 30 seconds(for reference, it takes 25 seconds on Wyze Cam v3)
 

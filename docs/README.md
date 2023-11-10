@@ -7,7 +7,7 @@
 - Serial or SSH connections are not needed! only SD card.
 - Backup partitions
 - Restore partitions
-- Switch between stock and OpenIPC firmware
+- Switch between Stock and OpenIPC firmware
 - Dry run option for safety and debugging.
 - Initramfs shell for manual debugging if you have a serial connection.
 - Seamlessly boot to `wz_mini_hacks` on the next boot

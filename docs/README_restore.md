@@ -5,11 +5,11 @@
 
 **Step 1:** [Setup](README_setup.md)
 
-**Step 2:** Place your partition restore images under the `wz_flash-helper/restore/(profile)` directory on your SD card.
+**Step 2:** Place your partition restore images along with their .sha256sum files under the `wz_flash-helper/restore/(profile)` directory on your SD card.
 
-They should have this format: `(profile)_(SoC)_(partition name).bin`, with `SoC` is `t20x`, `t31a` or `t31x`.
+They should have this format: `(profile)_(SoC)_(partition name).bin`, with `SoC` is `t20x`, `t31a` or `t31x`, and `profile` is either `stock` or `openipc`.
 
-Example for stock restore images on t31x:
+Example for Stock restore images on t31x:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/restore_01.png)
 
@@ -26,8 +26,7 @@ restore_partitions="yes"
 -----
 **Note:**
 - There is no option to restore your boot partition to avoid accidentally corrupting it.
-- For backup operation to start, `switch_profile` option must be disabled, like the above configurations. If both `restore_partitions` and `switch_profile` are enabled, both operations will not be done.
+- For the backup operation to start, `switch_profile` option must be disabled, like the above configurations. If both the `restore_partitions` and `switch_profile` options are enabled, both operations will not be done.
 - All partition restore images must come with their .sha256sum file with `(partition image).sha256sum` format.
-- During restore operation, the red LED would be blinking every second.
+- During the restore operation, the red LED would be blinking every second.
 - Typically restore operation takes about 2 minutes (for reference, it takes 2 minutes and 15 seconds on Wyze Cam v3)
-

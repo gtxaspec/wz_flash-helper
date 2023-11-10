@@ -7,12 +7,12 @@
 
 Option: `new_sdcard_kernel`
 
-If you are using `wz_mini_hacks` with stock profile, you can rename wz_mini's kernel file to `sdcard_boot.wz_mini` and specify its filename with the option.
+If you are using `wz_mini_hacks` with `stock` profile, you can rename wz_mini's kernel file to `sdcard_boot.wz_mini` and specify its filename with the option.
 
 After all operations are finished, that file will be renamed to:
 
-- `factory_ZMC6tiIDQN` if your camera is running stock profile on T20
-- `factory_t31_ZMC6tiIDQN` if your camera is running stock profile on T31
+- `factory_ZMC6tiIDQN` if your camera is running Stock profile on T20
+- `factory_t31_ZMC6tiIDQN` if your camera is running Stock profile on T31
 
 This kernel file will be booted on the next boot without having to pull the SD card and rename it manually. Seamless transition!
 

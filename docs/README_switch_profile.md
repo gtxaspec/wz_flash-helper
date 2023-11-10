@@ -4,10 +4,10 @@
 
 
 **WARNING:**
-- DO NOT DISCONNECT POWER when switch profile operation is going on. This would brick your camera.
-- Switching back to stock from OpenIPC is not supported yet. If you have switched to OpenIPC, you have to use SSH or serial connection to rollback.
+- DO NOT DISCONNECT POWER when the switch profile operation is going on. This would brick your camera.
+- Switching back to Stock from OpenIPC is not supported yet. If you have switched to OpenIPC, you have to use SSH or serial connection to rollback.
 
-## How to switch from stock to OpenIPC profile
+## How to switch from Stock to OpenIPC profile
 
 **Step 1:** [Setup](README_setup.md)
 
@@ -83,10 +83,10 @@ custom_scripts="setup_openipc_env.sh"
 
 Insert your SD card into the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it would reboot to OpenIPC firmware.
 
-## How to switch from OpenIPC to stock profile
+## How to switch from OpenIPC to Stock profile
 **Step 1: Preparation**
 
-Place your backup of stock partition images along with their sha256sum files under the `wz_flash-helper/restore/stock/` directory.
+Place your backup of Stock partition images along with their sha256sum files under the `wz_flash-helper/restore/stock/` directory.
 
 **Step 2: Edit the program configuration file**
 
@@ -100,19 +100,19 @@ switch_profile_with_all_partitions="yes"
 
 **Step 4: Power on**
 
-Insert your SD card to the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to stock firmware.
+Insert your SD card to the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to Stock firmware.
 
 
-### `switch_profile_with_all_partitions` option
+-----
 
 With the option `switch_profile_with_all_partitions` in `general.conf`, you can decide if all partitions will be written when switching profile.
 When it is enabled:
-- Switching from stock to OpenIPC needs partition images of all partitions, including `rootfs_data`, if you don't have `rootfs_data` image, leave it disabled.
+- Switching from Stock to OpenIPC needs partition images of all partitions, including `rootfs_data`, if you don't have `rootfs_data` image, leave it disabled.
 - Switching from OpenIPC also needs partition images of all partitions.
 
-When switching from OpenIPC to stock, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be restored because they don't contain any meaningful data as they are used by stock firmware as stage partition to install updates. You can disable this option to save time.
+When switching from OpenIPC to Stock, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be restored because they don't contain any meaningful data as they are used by Stock firmware as stage partition to install updates. You can disable this option to save time.
 
-When switching from stock to OpenIPC the first time, you have to leave if disabled because you don't have the `rootfs_data` partition image.
+When switching from Stock to OpenIPC the first time, you have to leave if disabled because you don't have the `rootfs_data` partition image.
 
 
 
@@ -127,7 +127,7 @@ Conditions for the switch profile operation to work:
 
 
 **Note:**
-- For switch profile operation to start, `restore_partitions` option must be disabled, like in the above configurations. If both `restore_partitions` and `switch_profile` are enabled, both operations would not be done.
+- For switch profile operation to start, `restore_partitions` option must be disabled, like in the above configurations. If both the  `restore_partitions` and `switch_profile` options are enabled, both operations would not be done.
 - All partition images are verified with their .sha256sum files before the switch_profile operation starts. If one file fails the verification, no change will be made.
-- During switch profile operation, both the blue LED and the red LED would be blinking.
+- During the switch profile operation, both the blue LED and the red LED would be blinking.
 

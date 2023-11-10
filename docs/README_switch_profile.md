@@ -3,9 +3,9 @@
 
 
 
-**WARNING:** DO NOT DISCONNECT POWER when switch profile operation is going on. This would brick your camera.
-
-**WARNING:** Switching back to stock from OpenIPC is not supported yet. If you have switched to OpenIPC, you have to use SSH or serial connection to rollback.
+**WARNING:**
+- DO NOT DISCONNECT POWER when switch profile operation is going on. This would brick your camera.
+- Switching back to stock from OpenIPC is not supported yet. If you have switched to OpenIPC, you have to use SSH or serial connection to rollback.
 
 ## How to switch from stock to OpenIPC profile
 
@@ -40,9 +40,9 @@ wlan0     Link encap:Ethernet  HWaddr 00:11:22:AA:BB:CC
 
 **Step 2: Preparation**
 
-**IMPORTANT:** If your camera is T31, please find out if it is `T31a` or `T31x` to download the correct OpenIPC build. Using the wrong build would hard brick your camera.
+**IMPORTANT:** If your camera is T31, please find out if it is `t31a` or `t31x` to download the correct OpenIPC build. Using the wrong build would hard brick your camera.
 
-Download corrrect OpenIPC build from OpenIPC release page for your device, place them at `wz_flash-helper/restore/openipc/` on your SD card and rename them to:
+Download corrrect OpenIPC build from OpenIPC release page for your device, place them under `wz_flash-helper/restore/openipc/` on your SD card and rename them to:
 - openipc_[SoC]_boot.bin
 - openipc_[SoC]_kernel.bin
 - openipc_[SoC]_rootfs.bin
@@ -62,9 +62,9 @@ Example for t31x:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_01.png)
 
-**Step 3: Add your uboot env variables**
+**Step 3: Add uboot env variables**
 
-Edit `setup_openipc_env.sh` inside `wz_flash-helper/scripts/` directory with your Wi-Fi name(SSID), password. Optionally with MAC address and Timezone.
+Edit `setup_openipc_env.sh` under `wz_flash-helper/scripts/` directory with your Wi-Fi name(SSID) and password. Optionally with MAC address and Timezone.
 
 **Step 4: Edit the program configuration file**
 
@@ -127,7 +127,7 @@ Conditions for switch profile operation to work:
 
 
 **Note:**
-- For switch profile operation to start, `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_profile` are enabled, both operations would not be executed.
+- For switch profile operation to start, `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_profile` are enabled, both operations would not be done.
 - All partition images are verified with their .sha256sum files before switch_profile operation starts. If one file fails the verification, no change would be made.
 - During switch profile operation, both the blue LED and the red LED would be blinking.
 

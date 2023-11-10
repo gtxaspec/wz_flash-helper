@@ -4,14 +4,14 @@
 
 
 ## Features
-- No serial connection or SSH is needed! only SD card.
+- Serial or SSH connection are not needed! only SD card.
 - Backup partitions
 - Restore partitions
 - Switch between stock and OpenIPC firmware
 - Dry run option for safety and debugging.
 - Initramfs shell for manual debugging if you have a serial connection.
 - Seamlessly boot to `wz_mini_hacks` on next boot
-- Custom script to customize partitions
+- Support custom scripts to customize partitions
 
 
 ## Supported cameras
@@ -24,7 +24,7 @@
 
 ## Notes
 - It is highly recommended to enable `dry_run` to check if everything works before doing real operations.
-- Backup is done first, then Restore, then Switch profile and followed by Custom script.
+- Backup is done first, then Restore, then Switch profile and followed by Custom scripts.
 - If one task fails, the program would exit immediately without doing any more operations.
 
 
@@ -32,7 +32,7 @@
 ```
 I am not responsible for bricking someone's cameras.
 DO NOT DISCONNECT POWER when switch profile operation is going on,
-this would brick your camera(unless you know how to remove the flash chip and use SPI programmer).
+this would brick your camera(unless you know how to recover with Ingenic Cloner or remove the flash chip and use SPI programmer).
 It is also possible to brick the camera if you corrupt uboot partition with your custom script or you inject dangerous commands into the config file.
 ```
 

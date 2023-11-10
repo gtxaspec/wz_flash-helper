@@ -12,4 +12,4 @@ Example for t31:
 -----
 **IMPORTANT:** Make sure that your SD card partition table is **MBR** instead of GPT. If it is not, please format it as MBR.
 
-**Note:** If your camera is Pan v2 or v2, you need to update your bootloader to with lastest release using this [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation) first.
+**Note:** If your camera is Wyze Cam v2 or Wyze Cam Pan v2, you need to update your camera bootloader to with latest version using [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation) first.

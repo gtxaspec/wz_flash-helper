@@ -39,9 +39,9 @@ wlan0     Link encap:Ethernet  HWaddr 00:11:22:AA:BB:CC
 **IMPORTANT:** If your camera is T31, please find out if it is `T31a` or `T31x` to download the correct OpenIPC build. Using the wrong build would hard brick your camera.
 
 Download corrrect OpenIPC build from OpenIPC release page for your device, place them in `(SD card)/wz_flash-helper/restore/openipc/` and rename them to:
-- openipc_[SoC]_boot.img
-- openipc_[SoC]_kernel.img
-- openipc_[SoC]_rootfs.img
+- openipc_[SoC]_boot.bin
+- openipc_[SoC]_kernel.bin
+- openipc_[SoC]_rootfs.bin
 
 Generate sha256 files for all partition images:
 - If you are on Windows, use a Powershell:
@@ -51,8 +51,11 @@ certutil -hashfile "openipc_[SoC]_[partition image].bin" SHA256
  
 - If you have WSL or Linux, run
 ```
-for i in openipc_*.bin; do sha256 $i > $i.sha256sum; done
+for i in openipc_*.bin; do sha256sum $i > $i.sha256sum; done
 ```
+Example for t31x:
+
+![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_01.png
 
 **Step 2: Add your uboot env variables**
 Edit `setup_openipc_env.sh` inside `wz_flash-helper/scripts/` directory with your Wi-Fi name(SSID), password. Optionally with MAC address and Timezone.

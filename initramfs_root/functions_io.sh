@@ -361,11 +361,11 @@ function validate_written_partition() {
 		rm $partimg_verify
 		
 		msg_nonewline "    Hash of "
-		msg_color_nonewline brown "$partname "
+		msg_color_nonewline brown "$partname"
 		msg_nonewline ": "
 		msg_color cyan "$partimg_verify_hash"
 		msg_nonewline "    Hash of "
-		msg_color_nonewline brown "$verifyfile_basename "
+		msg_color_nonewline brown "$verifyfile_basename"
 		msg_nonewline ": "
 		msg_color cyan "$verifyfile_hash"
 

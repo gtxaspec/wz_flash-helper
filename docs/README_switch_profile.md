@@ -40,13 +40,13 @@ wlan0     Link encap:Ethernet  HWaddr 00:11:22:AA:BB:CC
 
 **IMPORTANT:** If your camera is T31, please find out if it is `T31a` or `T31x` to download the correct OpenIPC build. Using the wrong build would hard brick your camera.
 
-Download corrrect OpenIPC build from OpenIPC release page for your device, place them in `(SD card)/wz_flash-helper/restore/openipc/` and rename them to:
+Download corrrect OpenIPC build from OpenIPC release page for your device, place them at `wz_flash-helper/restore/openipc/` on your SD card and rename them to:
 - openipc_[SoC]_boot.bin
 - openipc_[SoC]_kernel.bin
 - openipc_[SoC]_rootfs.bin
 
 Generate sha256 files for all partition images:
-- If you are on Windows, use a Powershell:
+- If you are on Windows, use Powershell to run:
 ```
 certutil -hashfile "openipc_[SoC]_[partition image].bin" SHA256
 ```
@@ -61,9 +61,11 @@ Example for t31x:
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_01.png)
 
 **Step 2: Add your uboot env variables**
+
 Edit `setup_openipc_env.sh` inside `wz_flash-helper/scripts/` directory with your Wi-Fi name(SSID), password. Optionally with MAC address and Timezone.
 
 **Step 3: Edit the program configuration file**
+
 Edit `general.conf` with:
 ```
 restore_partitions="no"
@@ -76,13 +78,16 @@ custom_scripts="setup_openipc_env.sh"
 ```
 
 **Step 4: Power on**
+
 Insert your SD card to the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to OpenIPC firmware.
 
 ## How to switch from OpenIPC to stock profile
 **Step 1: Preparation**
+
 Place your backup of stock partition images along with their sha256 files at `(SD card)/wz_flash-helper/restore/stock/`
 
 **Step 2: Edit the program configuration file**
+
 Edit `general.conf` with:
 ```
 restore_partitions="no"
@@ -92,11 +97,13 @@ switch_profile_with_all_partitions="yes"
 ```
 
 **Step 4: Power on**
+
 Insert your SD card to the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to stock firmware.
 
-## `switch_profile_with_all_partitions` option
 
-With the option `switch_profile_with_all_partitions=` in `general.conf`, you can decide when switching profile, all partition images will be used or not.
+##### `switch_profile_with_all_partitions` option
+
+With the option `switch_profile_with_all_partitions=` in `general.conf`, you can decide if all partitions will be written when switching profile.
 When it is enabled:
 - Switching from stock to OpenIPC needs partition images of all partitions including `rootfs_data`, if you don't have `rootfs_data` image, leave it disabled.
 - Switching from OpenIPC also needs partition images of all partitions.
@@ -109,9 +116,11 @@ When switching from stock to OpenIPC the first time, you have to leave if disabl
 
 -----
 Conditions for switch profile operation to work:
+
 1. All partition images of the profile types that you want to switch to must present in either:
 - `(SD card)/wz_flash-helper/restore/stock` or
 - `(SD card)/wz_flash-helper/restore/openipc`
+
 2. All partition images must come with their sha256sum file in `<partition image>.sha256sum` format.
 
 

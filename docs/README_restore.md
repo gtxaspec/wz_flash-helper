@@ -5,7 +5,7 @@
 
 **Step 1:** [Setup](README_setup.md)
 
-**Step 2:** Place your partition restore images at `(SD card)/wz_flash-helper/restore/(profile)`.
+**Step 2:** Place your partition restore images at `wz_flash-helper/restore/(profile)` on your SD card.
 
 They should have have this format: `(profile)_(SoC type)_(partition name).bin`, with `SoC type` is `t20x`, `t31a` or `t31x`(eg. stock_t31x_kernel.bin).
 
@@ -13,7 +13,7 @@ Example for restoring stock on t31x:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/restore_01.png)
 
-**Step 3:** Edit `(SD card)/wz_flash-helper/restore/(profile).conf` to select what partitions will be restored:
+**Step 3:** Edit `wz_flash-helper/restore/(profile).conf` on your SD card to select what partitions will be restored:
 
 **Step 4:** Edit `general.conf` to enable restore operation:
 ```

@@ -3,10 +3,6 @@
 
 
 
-Automatic partitions backup/restore tool for T20x/T31a/T31x cameras, works with both stock and OpenIPC firmware.
-You can also switch between stock and OpenIPC firmware without a scratch.
-
-
 ## Features
 - No serial connection or SSH is needed! only SD card.
 - Backup partitions

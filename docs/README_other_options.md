@@ -3,18 +3,18 @@
 
 
 
-## Specify the SD card boot image that will be used on the next boot
+## Specify the SD card boot kernel that will be used on the next boot
 
 Option: `new_sdcard_kernel`
 
-If you are using `wz_mini_hacks` with stock profile, you can rename wz_mini's boot image to `sdcard_boot.wz_mini` and specify that file name with the option.
+If you are using `wz_mini_hacks` with stock profile, you can rename wz_mini's boot kernel to `sdcard_boot.wz_mini` and specify that file name with the option.
 
-After all operations are finished, this file will be renamed to:
+After all operations are finished, that file will be renamed to:
 
 - `factory_ZMC6tiIDQN` if your camera is running stock profile on T20
 - `factory_t31_ZMC6tiIDQN` if your camera is running stock profile on T31
 
-This boot image will be booted on the next boot without having to pull the SD card and rename it manually. Seamless transition!
+This boot kernel will be booted on the next boot without having to pull the SD card and rename it manually. Seamless transition!
 
 
 ## Run a custom script
@@ -25,8 +25,8 @@ You can write scripts and those scripts will be executed after backup/restore/sw
 
 -----
 **Note:**
-- If you are on OpenIPC profile, boot image specified with `new_sdcard_kernel` will be renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using SD card boot image for personal purpose, you should disable it.
-- SD card boot image will not be renamed if `dry_run` is enabled.
+- If you are on OpenIPC profile, boot kernel specified with `new_sdcard_kernel` will be renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using SD card boot kernel for personal purpose, you should disable it.
+- SD card boot kernel will not be renamed if `dry_run` is enabled.
 - Custom script will not not run if `dry_run` is enabled.
 - Custom script does not necessarily have to be on the SD Card top directory, you can put its path on the option to make it run from somewhere else.
 

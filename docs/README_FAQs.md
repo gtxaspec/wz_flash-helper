@@ -27,7 +27,7 @@ A profile includes:
 - MTD mapping number of each partition
 - List of partitions that store user data to create archives for them with backup operation
 - Partition types(`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
-- Name of SD card boot image
+- Name of SD card boot kernel
 - Backup/restore path to hold partition images
 - List of mandatory partitions that must be written when switching to that profile(when `witch_profile_with_all_partitions` is disabled), list of task to do(`ignore`, `erase,`,`format`, `leave`) with other partitions.
 - Detection script to detect that profile(usually by analyzing bootl partition strings)

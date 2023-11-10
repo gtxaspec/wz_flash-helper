@@ -5,7 +5,7 @@
 
 **WARNING:** DO NOT DISCONNECT POWER when switch profile operation is going on. This would brick your camera.
 
-**WARNING:** Support for switching back to stock from OpenIPC is not supported yet. If you have switched to OpenIPC, you have to use serial connection to rollback.
+**WARNING:** Switching back to stock from OpenIPC is not supported yet. If you have switched to OpenIPC, you have to use serial connection to rollback.
 
 ## How to switch from stock to OpenIPC profile
 

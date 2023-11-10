@@ -103,7 +103,7 @@ Insert your SD card to the camera and power it on. It would take about 3 minutes
 
 ##### `switch_profile_with_all_partitions` option
 
-With the option `switch_profile_with_all_partitions=` in `general.conf`, you can decide if all partitions will be written when switching profile.
+With the option `switch_profile_with_all_partitions` in `general.conf`, you can decide if all partitions will be written when switching profile.
 When it is enabled:
 - Switching from stock to OpenIPC needs partition images of all partitions including `rootfs_data`, if you don't have `rootfs_data` image, leave it disabled.
 - Switching from OpenIPC also needs partition images of all partitions.
@@ -117,15 +117,15 @@ When switching from stock to OpenIPC the first time, you have to leave if disabl
 -----
 Conditions for switch profile operation to work:
 
-1. All partition images of the profile types that you want to switch to must present in either:
-- `(SD card)/wz_flash-helper/restore/stock` or
-- `(SD card)/wz_flash-helper/restore/openipc`
+1. All partition images of the profile types that you want to switch to must present under either:
+- `wz_flash-helper/restore/stock` directory or
+- `wz_flash-helper/restore/openipc` directory
 
-2. All partition images must come with their sha256sum file in `<partition image>.sha256sum` format.
+2. All partition images must come with their .sha256sum file in `<partition image>.sha256sum` format.
 
 
 **Note:**
-- `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_profile`are enabled, both operations would not be executed.
-- All partition images are verified with their sha256sum files before switch_profile operation starts, no need to worry a corrupted partition image.
+- For switch profile operation to start, `restore_partitions` option must be disabled like the above configurations. If both `restore_partitions` and `switch_profile` are enabled, both operations would not be executed.
+- All partition images are verified with their .sha256sum files before switch_profile operation starts. If one file fails the verification, no change would be made.
 - During switch profile operation, both the blue LED and the red LED would be blinking.
 

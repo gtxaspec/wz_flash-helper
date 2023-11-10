@@ -21,16 +21,16 @@ restore_partitions="no"
 
 **Step 4:** Wait for the camera to restart after backup operation is finished.
 
-**Step 5:** Check your SD card, there should be a `Wyze_factory_backup` and `wz_flash-helper/backup/stock`directories. Under those 2 directories, there are directories with 4-digit ID where partition images backup are keep. To know what ID was used for the most recent backup, check `initramfs.log` file.
+**Step 5:** Check your SD card, there should be a `Wyze_factory_backup` and `wz_flash-helper/backup/stock`directories. Under those 2 directories, there are directories with 4-digit ID where partition images backup are keep. To know what ID was used for the most recent backup, check `initramfs_serial.log` file under `wz_flash-helper` directory.
 
 
 ### Backup OpenIPC partitions
-Like with stock partitions, OpenIPC partitions can also be backed up with the above steps. Backup of OpenIPC partitions is at `wz_flash-helper/backup/openipc`.
+Like with stock partitions, OpenIPC partitions can also be backed up with the above steps. OpenIPC partition backup images would be under `wz_flash-helper/backup/openipc` directory.
 
 
 -----
 **Notes:**
-- Backup operation will automatically generate sha256sum files for backup partitions images.
+- Backup operation will automatically generate `.sha256sum` files for partition backup images.
 - During backup operation, the blue LED would be blinking every second.
 - Typically backup operation takes about 30 seconds(for reference it takes 25 seconds on Wyze Cam v3)
 

@@ -74,11 +74,11 @@ function operation_backup() {
 		msg
 		msg_color_bold_nonewline white "> This profile has secondary backup directory at "
 		msg_color cyan "$cp_backup_secondary_path"
-		msg_nonewline "   Creating a copy from primary backup... "
+		msg_nonewline "    Creating a copy from primary backup... "
 		
 		if [ -d $cp_backup_secondary_path/$backup_id ]; then
 			msg_color red "failed"
-			msg_color red "   Backup with ID $backup_id exists on secondary backup directory, it will not be overwritten, skipping"
+			msg_color red "    Backup with ID $backup_id exists on secondary backup directory, it will not be overwritten, skipping"
 		else
 			mkdir -p $cp_backup_secondary_path	
 			cp -r $cp_backup_path $cp_backup_secondary_path && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }

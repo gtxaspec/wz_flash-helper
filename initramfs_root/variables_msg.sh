@@ -3,8 +3,6 @@
 # Description: These messages are used by init script, writing them on a separate file makes it look clean.
 #
 
-msg_rename_prog_sdcard_kernel_fail="WARNING!!! The program SD card kernel cannot be renamed, this will result in a bootloop"
-
 msg_backup_partitions_yes="backup_partition value is set to Yes"
 msg_backup_partitions_no="backup_partition value is set to No"
 msg_backup_partitions_fail="Backup operation has failed, exiting..."

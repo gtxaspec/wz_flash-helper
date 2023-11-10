@@ -4,7 +4,7 @@
 #
 
 function copy_new_sdcard_kernel() {
-	[ ! -f /sdcard/$new_sdcard_kernel ] && { msg "/sdcard/$new_sdcard_kernel file is missing" ; return 1 ; }
+	[ ! -f /sdcard/$new_sdcard_kernel ] && { msg_color red "/sdcard/$new_sdcard_kernel file is missing" ; return 1 ; }
 	[[ "$switch_profile" == "yes" ]] && { msg "New SD card kernel will not be copied when switch_profile is enabled" ; return 1 ; }
 
 	msg

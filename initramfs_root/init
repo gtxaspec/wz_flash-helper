@@ -23,6 +23,7 @@ sleep 1
 
 function init_play_audio() {
 # Description: Play audio to let the user keep track of the progress, useful when they don't have a serial connection
+	! lsmod | grep -q audio && return 0
 	[[ ! "$enable_audio" == "yes" ]] && return 0
 
 	audio_title="$1"

@@ -13,10 +13,10 @@ function variables_emulate() {
 	current_profile=""
 
 	msg
-	msg "### Emulation mode is enabled; these variables are forged:"
-	msg "### - Hardware: chip_family: $chip_family, flash_type: $flash_type"
-	msg "### - Current profile: $current_profile"
-	msg "### Dry run is forcibly Enabled. No modification will be made."
+	msg_color_bold lightbrown "### Emulation mode is enabled; these variables are forged:"
+	msg_color_bold lightbrown "### - Hardware: chip_family: $chip_family, flash_type: $flash_type"
+	msg_color_bold lightbrown "### - Current profile: $current_profile"
+	msg_color_bold lightbrown "### Dry run is forcibly Enabled. No modification will be made."
 	msg
 }
 

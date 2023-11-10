@@ -21,7 +21,7 @@ function osp_validate_restore_partition_images() {
 		
 			msg_nonewline "    Verifying "
 			msg_color_nonewline brown "$infile_name... "
-			[ ! -f $infile_name ] && { msg "file is missing" ; return 1 ; }
+			[ ! -f $infile_name ] && { msg_color red "file is missing" ; return 1 ; }
 			sha256sum -c $infile_name.sha256sum && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 		fi
 	done

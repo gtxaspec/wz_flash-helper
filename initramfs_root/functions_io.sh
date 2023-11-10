@@ -343,7 +343,7 @@ function validate_written_partition() {
 	msg_color_bold_nonewline white "> Validating written "
 	msg_color_nonewline brown "$partname "
 	msg_color_nonewline magenta "$partmtdblock "
-	mg_nonewline "with "
+	msg_nonewline "against "
 	msg_color brown "$verifyfile_basename"
 	
 	[ ! -b $partmtdblock ] && { msg_color red "    $partmtdblock is not a block device" ; return 1 ; }
@@ -360,10 +360,14 @@ function validate_written_partition() {
 
 		rm $partimg_verify
 		
-		msg_nonewline "    Hash of partition image: "
-		msg_color cyan "$verifyfile_hash"
-		msg_nonewline "    Hash of written partition: "
+		msg_nonewline "    Hash of "
+		msg_color_nonewline brown "$partname "
+		msg_nonewline ": "
 		msg_color cyan "$partimg_verify_hash"
+		msg_nonewline "    Hash of "
+		msg_color_nonewline brown "$verifyfile_basename "
+		msg_nonewline ": "
+		msg_color cyan "$verifyfile_hash"
 
 		msg_nonewline "    Validation result: "
 		[[ "$verifyfile_hash" == "$partimg_verify_hash" ]] && { msg_color green "good" ; return 0 ; } || msg_color red "bad"

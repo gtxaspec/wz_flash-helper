@@ -16,7 +16,7 @@ function detect_model() {
 			;;
 		*)
 			model="unknown"
-			msg "Unable to detect camera model by reading the uboot wlandev variable"
+			msg_color red "Unable to detect camera model by reading the uboot wlandev variable"
 			;;
 	esac
 }

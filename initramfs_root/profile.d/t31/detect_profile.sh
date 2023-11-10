@@ -17,7 +17,7 @@ function detect_profile() {
 		msg "Camera is currently on OpenIPC firmware"
 		current_profile="openipc"
 	else
-		msg "Unable to detect current firmware"
+		msg_color red "Unable to detect current firmware"
 		return 1
 	fi
 }

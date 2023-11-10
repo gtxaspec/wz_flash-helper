@@ -31,14 +31,14 @@
 ## Warning
 ```
 I am not responsible for bricking someone's camera.
-DO NOT DISCONNECT POWER when switch profile operation is going on,
+DO NOT DISCONNECT POWER when the switch profile operation is going on,
 this would brick your camera (unless you know how to recover with Ingenic Cloner or remove the flash chip and use SPI programmer).
 It is also possible to brick the camera if you corrupt the uboot partition with your custom script or inject dangerous commands into the config file.
 ```
 
 
 ## Credits
-- Gtxaspec with his ideas, tips, and hard work on OpenIPC drivers, uboot SD card booting, and testing.
+- Gtxaspec with his ideas, tips, hard work on OpenIPC drivers, uboot SD card booting, and testing.
 - Mnakada with their Docker image to build the SD card kernel from [their repo](https://github.com/mnakada/atomcam_tools)
 - [OpenIPC](https://github.com/OpenIPC) project and people with their tools, firmware, and tips.
 

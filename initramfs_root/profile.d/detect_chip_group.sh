@@ -15,7 +15,7 @@ function detect_chip_group() {
 			chip_group="t31a"
 			;;
 		*)
-			msg "Your chip name belongs to no group, exiting... "
+			msg_color_bold red "Your chip name belongs to no group, exiting... "
 			return 1
 			;;
 	esac

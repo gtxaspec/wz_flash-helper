@@ -8,7 +8,7 @@ Download the correct release [lastest release](https://github.com/archandanime/w
 
 Example for t31x:
 
-![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/setup_01.png
+![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/setup_01.png)
 
 -----
 **Note:** If your camera is Pan v2 or v2, you need to update your bootloader to with lastest release using this [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation) first.

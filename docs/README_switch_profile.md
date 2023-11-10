@@ -53,9 +53,10 @@ certutil -hashfile "openipc_[SoC]_[partition image].bin" SHA256
 ```
 for i in openipc_*.bin; do sha256sum $i > $i.sha256sum; done
 ```
+
 Example for t31x:
 
-![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_01.png
+![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_01.png)
 
 **Step 2: Add your uboot env variables**
 Edit `setup_openipc_env.sh` inside `wz_flash-helper/scripts/` directory with your Wi-Fi name(SSID), password. Optionally with MAC address and Timezone.

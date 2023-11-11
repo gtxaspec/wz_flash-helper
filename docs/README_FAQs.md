@@ -27,9 +27,10 @@ A profile includes:
 - List of partitions that store user data to create archives for them with backup operation
 - Partition types (`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
 - Name of SD card kernel
-- Backup and restore path to hold partition images
+- Backup and restore paths to hold partition images
 - List of mandatory partitions that must be written when switching to that profile (when `witch_profile_with_all_partitions` is disabled) and list of tasks to do (`ignore`, `erase,`,`format`, `leave`) with other partitions.
-- Detection script to detect that profile (usually by analyzing boot partition strings)
+- Model detection script to detect camera model
+- Profile detection script to detect current profile
 
 ## How can I add a new profile?
 

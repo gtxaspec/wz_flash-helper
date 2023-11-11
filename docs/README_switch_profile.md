@@ -61,7 +61,11 @@ certutil -hashfile "openipc_[SoC]_[partition image].bin" SHA256
 ```
 then create .sha256sum file with this format:
 ```
-openipc_[SoC]_[partition image].bin     (sha256sum)
+(sha256sum)     openipc_[SoC]_[partition image].bin
+```
+example:
+```
+a88a367b4f6c8a9ea703428b20617d4e8ccb4eba516962dc0fc37391adf0e2bc  openipc_t31x_boot.bin
 ```
 
 Example for t31x:

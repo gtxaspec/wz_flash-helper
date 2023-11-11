@@ -4,6 +4,8 @@
 
 **⚠️ IMPORTANT:** Make sure that your SD card partition table is **MBR** instead of GPT. If it is not, please format it to MBR.
 
+-----
+
 Download the correct release at the [Release page](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract it to your SD card.
 
 Example for t31:

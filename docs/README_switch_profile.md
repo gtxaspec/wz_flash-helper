@@ -107,7 +107,10 @@ Insert your SD card to the camera and power it on. It would take about 3 minutes
 
 -----
 
-With the option `switch_profile_with_all_partitions` in `general.conf`, you can decide if all partitions will be written when switching profile.
+Option: `switch_profile_with_all_partitions`
+
+You can decide if all partitions will be written when switching profile.
+
 When it is enabled:
 - Switching from Stock to OpenIPC needs partition images of all partitions, including `rootfs_data`, if you don't have `rootfs_data` image, leave it disabled.
 - Switching from OpenIPC also needs partition images of all partitions.

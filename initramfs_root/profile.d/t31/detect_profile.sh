@@ -20,6 +20,16 @@ function detect_profile() {
 		msg_color_bold red "Unable to detect current profile"
 		return 1
 	fi
+	
+	if [[ "$current_profile" == "stock" ]]; then
+		mkdir -p /rootfs_mnt
+		mount -o ro -t squashfs /dev/mtdblock14 /rootfs_mnt || { msg_color_bold red "Unable to distinguish between stock and wzmini profile" ; return 1 ; }
+		if [ -d /rootfs_mnt/opt/wz_mini ]; then
+			msg_color lightbrown "wzmini has been found on stock firmware"
+			current_profile="wzmini"
+		fi
+		umount /rootfs_mnt && rmdir /rootfs_mnt
+	fi
 }
 
 detect_profile || return 1

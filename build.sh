@@ -10,7 +10,7 @@ SoC="${2}"
 
 
 function show_syntax() {
-	echo "./build.sh <action> [SoC]"
+	echo "./build.sh <action> <SoC>"
 	echo "Actions: patch initramfs kernel release clean"
 }
 
@@ -30,7 +30,10 @@ function make_initramfs() {
 }
 
 function patch_kernel_config() {
+	cp -n firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config.bak
 	patch firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config < kernel/kernel.patch.t20
+	
+	cp -n firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config.bak
 	patch firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config < kernel/kernel.patch.t31
 }
 

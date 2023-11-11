@@ -24,21 +24,21 @@ function make_a_table() {
 			part_start_add="${part_size[${part_count_start_add}]}"
 			part_start=$(( ${part_start} + ${part_start_add} ))
 		done
-	
+
 	local PART="${part_name[${part_num}]}"
 	local SIZE_DEC="${part_size[${part_num}]}"
 	local START_DEC="${part_start}"
 	local START_HEX="0x$(addr_dec_1K_to_hex ${part_start})"
-	
+
 	local MTD_SIZE="${SIZE_DEC}K"
 	local MTD_START="${START_DEC}K"
 	[[ "${MTD_START}" == "0K" ]] && MTD_START="0"
-	
+
 	local MTD_PART="${devname}_${PART}"
 	[[ "${PART}" == "boot" ]] && MTD_PART="boot"
-	
+
 	local MTD_MAPPING="${MTD_SIZE}@${MTD_START}(${MTD_PART})"
-	
+
 	echo -e "${PART},${SIZE_DEC},${START_DEC},${START_HEX},${MTD_MAPPING}"
 
 
@@ -55,6 +55,11 @@ function import_vars_t31_stock() {
 	## Pan v2, v3, Floodlight
 	part_name=(boot kernel rootfs app kback aback cfg para)
 	part_size=(256 1984 3904 3904 1984 3904 384 64)
+}
+
+function import_vars_wzmini() {
+	part_name=(boot kernel rootfs configs)
+	part_size=(256 1984 13760 384)
 }
 
 function import_vars_openipc() {
@@ -90,6 +95,15 @@ column -s, -t < /tmp/t31_stock_addresses
 echo
 echo "mtdparts: $(cat /tmp/t31_stock_addresses | cut -d ',' -f5 | tail -n +2 | tr '\n' ',' | sed 's/.$//')"
 rm /tmp/t31_stock_addresses
+
+echo
+echo "---------- wzmini ----------"
+import_vars_wzmini
+make_a_table "wzmini" > /tmp/wzmini_addresses
+column -s, -t < /tmp/wzmini_addresses
+echo
+echo "mtdparts: $(cat /tmp/wzmini_addresses | cut -d ',' -f5 | tail -n +2 | tr '\n' ',' | sed 's/.$//')"
+rm /tmp/wzmini_addresses
 
 
 

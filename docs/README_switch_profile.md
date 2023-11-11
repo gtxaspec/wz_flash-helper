@@ -35,7 +35,7 @@ There are three ways:
 - Run `ifconfig wlan0` with SSH connection:
 
 ```
-[root@WCV3-Outdoor:~]# ifconfig wlan0
+[root@WCV3:~]# ifconfig wlan0
 wlan0     Link encap:Ethernet  HWaddr 00:11:22:AA:BB:CC
 ...
 ```
@@ -50,14 +50,18 @@ Download correct OpenIPC build for your device from the OpenIPC [Release page](h
 - openipc_[SoC]_rootfs.bin
 
 Generate .sha256sum files for all partition images:
+- If you have WSL or Linux, run
+```
+for i in openipc_*.bin; do sha256sum $i > $i.sha256sum; done
+```
+
 - If you are on Windows, use Powershell to run:
 ```
 certutil -hashfile "openipc_[SoC]_[partition image].bin" SHA256
 ```
- 
-- If you have WSL or Linux, run
+then create .sha256sum file with this format:
 ```
-for i in openipc_*.bin; do sha256sum $i > $i.sha256sum; done
+openipc_[SoC]_[partition image].bin     (sha256sum)
 ```
 
 Example for t31x:

@@ -23,6 +23,15 @@ para     256        16064       0xfb0000    256K@16064K(stock_para)             
 
 mtdparts: 256K@0(boot),2048K@256K(stock_kernel),3392K@2304K(stock_root),640K@5696K(stock_driver),4736K@6336K(stock_appfs),2048K@11072K(stock_backupk),640K@13120K(stock_backupd),2048K@13760K(stock_backupa),256K@15808K(stock_config),256K@16064K(stock_para)
 
+---------- wzmini ----------
+PART     SIZE(dec)  START(dec)  START(hex)  MTD MAPPING                            MTD DEVICE
+boot     256        0           0x0         256K@0(boot)			   /dev/mtd0
+kernel   1984       256         0x40000     1984K@256K(wzmini_kernel)              /dev/mtd15
+rootfs   13760      2240        0x230000    13760K@2240K(wzmini_rootfs)            /dev/mtd16
+configs  384        16000       0xfa0000    384K@16000K(wzmini_configs)            /dev/mtd17
+
+mtdparts: 256K@0(boot),1984K@256K(wzmini_kernel),13760K@2240K(wzmini_rootfs),384K@16000K(wzmini_configs)
+
 Entire flash mapping                        16384k@0(all)                          /dev/mtd1
 
 -----

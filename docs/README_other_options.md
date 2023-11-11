@@ -1,4 +1,3 @@
-
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | **Other options** | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md)
 
 
@@ -29,4 +28,3 @@ You can write scripts, and those scripts will be executed after backup/restore/s
 - SD card kernel will not be renamed if `dry_run` is enabled.
 - Custom script will not run if `dry_run` is enabled.
 - Custom script does not necessarily have to be on the SD Card top directory, you can put its path on the option to make it run from somewhere else.
-

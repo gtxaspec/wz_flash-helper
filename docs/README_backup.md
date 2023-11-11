@@ -1,4 +1,3 @@
-
 [Introduction](README.md) | [Setup](README_setup.md) | **Backup** | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md)
 
 
@@ -7,6 +6,7 @@
 - Backup your Stock partitions first and copy them to a safe place in case you need them for later recovery.
 - Do not modify your Stock partition backup images, especially the boot partition image. Rolling back to the Stock profile may brick your camera if you do that.
 
+-----
 
 ### Backup Stock partitions
 **Step 1:** [Setup](README_setup.md)
@@ -34,5 +34,4 @@ Similar to Stock partitions, OpenIPC partitions can be backed up with the above 
 **ℹ️ Notes:**
 - Backup operation will automatically generate .sha256sum files for partition backup images.
 - During the backup operation, the blue LED would be blinking every second.
-- Typically backup operation takes about 30 seconds(for reference, it takes 25 seconds on Wyze Cam v3)
-
+- Typically backup operation takes about 30 seconds(for reference, it takes 25 seconds on Wyze Cam v3).

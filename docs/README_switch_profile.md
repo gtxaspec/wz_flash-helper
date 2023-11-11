@@ -7,6 +7,8 @@
 - DO NOT DISCONNECT POWER when the switch profile operation is going on. This would brick your camera.
 - Switching back to Stock from OpenIPC is not supported yet. If you have switched to OpenIPC, you have to use SSH or serial connection to rollback.
 
+-----
+
 ## How to switch from Stock to OpenIPC profile
 
 **Step 1:** [Setup](README_setup.md)
@@ -42,7 +44,7 @@ wlan0     Link encap:Ethernet  HWaddr 00:11:22:AA:BB:CC
 
 **⚠️ IMPORTANT:** If your camera is T31, please find out if it is `t31a` or `t31x` to download the correct OpenIPC build. Using the wrong build would hard brick your camera.
 
-Download correct OpenIPC build from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) for your device, place them under the `wz_flash-helper/restore/openipc/` on your SD card and rename them to:
+Download correct OpenIPC build for your device from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), place them under the `wz_flash-helper/restore/openipc/` on your SD card and rename them with this format:
 - openipc_[SoC]_boot.bin
 - openipc_[SoC]_kernel.bin
 - openipc_[SoC]_rootfs.bin

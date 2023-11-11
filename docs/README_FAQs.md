@@ -1,4 +1,3 @@
-
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | **FAQs**
 
 
@@ -40,4 +39,3 @@ If you new profile is used for a new chip group, you also need to:
 - Add `leds_gpio.d/(chip family).sh` to define LED GPIO pins.
 - Add `initialize_gpio.d/(chip family).sh` to define how to initialize GPIO pins to enable LEDs (maybe also SD card).
 - Edit `profile.d/detect_chip_group.sh` to define your new SoC name belongs to which chip group (eg. `t20`, `t31a`, `t31x`) to select the right build for OpenIPC.
-

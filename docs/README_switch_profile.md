@@ -3,7 +3,7 @@
 
 
 
-**⚠️ WARNING:**
+**❗ WARNING:**
 - DO NOT DISCONNECT POWER when the switch profile operation is going on. This would brick your camera.
 - Switching back to Stock from OpenIPC is not supported yet. If you have switched to OpenIPC, you have to use SSH or serial connection to rollback.
 
@@ -40,7 +40,7 @@ wlan0     Link encap:Ethernet  HWaddr 00:11:22:AA:BB:CC
 
 **Step 3: Preparation**
 
-**IMPORTANT:** If your camera is T31, please find out if it is `t31a` or `t31x` to download the correct OpenIPC build. Using the wrong build would hard brick your camera.
+**⚠️ IMPORTANT:** If your camera is T31, please find out if it is `t31a` or `t31x` to download the correct OpenIPC build. Using the wrong build would hard brick your camera.
 
 Download correct OpenIPC build from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) for your device, place them under the `wz_flash-helper/restore/openipc/` on your SD card and rename them to:
 - openipc_[SoC]_boot.bin
@@ -98,7 +98,7 @@ next_profile="stock"
 switch_profile_with_all_partitions="yes"
 ```
 
-**Step 4: Power on**
+**Step 3: Power on**
 
 Insert your SD card to the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to Stock firmware.
 
@@ -126,7 +126,7 @@ Conditions for the switch profile operation to work:
 2. All partition images must come with their .sha256sum file in `(partition image).sha256sum` format.
 
 
-**ℹ️ Note:**
+**ℹ️ Notes:**
 - For switch profile operation to start, `restore_partitions` option must be disabled, like in the above configurations. If both the  `restore_partitions` and `switch_profile` options are enabled, both operations would not be done.
 - All partition images are verified with their .sha256sum files before the switch_profile operation starts. If one file fails the verification, no change will be made.
 - During the switch profile operation, both the blue LED and the red LED would be blinking.

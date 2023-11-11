@@ -3,7 +3,7 @@
 
 
 
-**WARNING:**
+**⚠️ WARNING:**
 - Backup your Stock partitions first and copy them to a safe place in case you need them for later recovery.
 - Do not modify your Stock partition backup images, especially the boot partition image. Rolling back to the Stock profile may brick your camera if you do that.
 
@@ -31,7 +31,7 @@ Similar to Stock partitions, OpenIPC partitions can be backed up with the above 
 
 
 -----
-**Notes:**
+**ℹ️ Notes:**
 - Backup operation will automatically generate .sha256sum files for partition backup images.
 - During the backup operation, the blue LED would be blinking every second.
 - Typically backup operation takes about 30 seconds(for reference, it takes 25 seconds on Wyze Cam v3)

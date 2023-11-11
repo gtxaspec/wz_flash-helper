@@ -3,7 +3,7 @@
 
 
 
-**WARNING:**
+**⚠️ WARNING:**
 - DO NOT DISCONNECT POWER when the switch profile operation is going on. This would brick your camera.
 - Switching back to Stock from OpenIPC is not supported yet. If you have switched to OpenIPC, you have to use SSH or serial connection to rollback.
 
@@ -126,7 +126,7 @@ Conditions for the switch profile operation to work:
 2. All partition images must come with their .sha256sum file in `(partition image).sha256sum` format.
 
 
-**Note:**
+**ℹ️ Note:**
 - For switch profile operation to start, `restore_partitions` option must be disabled, like in the above configurations. If both the  `restore_partitions` and `switch_profile` options are enabled, both operations would not be done.
 - All partition images are verified with their .sha256sum files before the switch_profile operation starts. If one file fails the verification, no change will be made.
 - During the switch profile operation, both the blue LED and the red LED would be blinking.

@@ -24,7 +24,7 @@ restore_partitions="yes"
 
 
 -----
-**Note:**
+**ℹ️ Note:**
 - There is no option to restore your boot partition to avoid accidentally corrupting it.
 - For the backup operation to start, `switch_profile` option must be disabled, like the above configurations. If both the `restore_partitions` and `switch_profile` options are enabled, both operations will not be done.
 - All partition restore images must come with their .sha256sum file with `(partition image).sha256sum` format.

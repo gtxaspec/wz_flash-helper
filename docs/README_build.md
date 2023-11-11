@@ -2,11 +2,12 @@
 
 
 
-Prerequisites:
+## Prerequisites
+
 A Linux OS with `fakeroot` and `cpio` packages
 WSL2 has not been tested.
 
------
+## Build
 
 Download source code from Github repo:
 ```

@@ -61,9 +61,9 @@ certutil -hashfile "openipc_[SoC]_[partition image].bin" SHA256
 ```
 then create .sha256sum file with this format:
 ```
-(sha256sum)     openipc_[SoC]_[partition image].bin
+(sha256sum)		openipc_[SoC]_[partition image].bin
 ```
-example:
+for example:
 ```
 a88a367b4f6c8a9ea703428b20617d4e8ccb4eba516962dc0fc37391adf0e2bc  openipc_t31x_boot.bin
 ```
@@ -92,8 +92,6 @@ custom_scripts="setup_openipc_env.sh"
 **Step 6: Power on**
 
 Insert your SD card into the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it would reboot to OpenIPC firmware.
-
------
 
 ## Switch from OpenIPC to Stock profile
 **Step 1: Preparation**

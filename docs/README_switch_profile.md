@@ -9,7 +9,7 @@
 
 -----
 
-## How to switch from Stock to OpenIPC profile
+## Switch from Stock to OpenIPC profile
 
 **Step 1:** [Setup](README_setup.md)
 
@@ -85,7 +85,9 @@ custom_scripts="setup_openipc_env.sh"
 
 Insert your SD card into the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it would reboot to OpenIPC firmware.
 
-## How to switch from OpenIPC to Stock profile
+-----
+
+## Switch from OpenIPC to Stock profile
 **Step 1: Preparation**
 
 Place your backup of Stock partition images along with their sha256sum files under the `wz_flash-helper/restore/stock/` directory.
@@ -104,7 +106,6 @@ switch_profile_with_all_partitions="yes"
 
 Insert your SD card to the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to Stock firmware.
 
-
 -----
 
 Option: `switch_profile_with_all_partitions`
@@ -119,9 +120,8 @@ When switching from OpenIPC to Stock, some partitions, such as `aback`, `kback`,
 
 When switching from Stock to OpenIPC the first time, you have to leave if disabled because you don't have the `rootfs_data` partition image.
 
-
-
 -----
+
 Conditions for the switch profile operation to work:
 
 1. All partition images of the profile types that you want to switch to must be present under either:
@@ -130,6 +130,7 @@ Conditions for the switch profile operation to work:
 
 2. All partition images must come with their .sha256sum file in `(partition image).sha256sum` format.
 
+-----
 
 **ℹ️ Notes:**
 - For switch profile operation to start, `restore_partitions` option must be disabled, like in the above configurations. If both the  `restore_partitions` and `switch_profile` options are enabled, both operations would not be done.

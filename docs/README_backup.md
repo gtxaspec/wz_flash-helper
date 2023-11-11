@@ -25,12 +25,13 @@ restore_partitions="no"
 
 To know what backup ID was used for the most recent backup, check the `initramfs_serial.log` file.
 
+-----
 
 ### Backup OpenIPC partitions
 Similar to Stock partitions, OpenIPC partitions can be backed up with the above steps. OpenIPC partition backup images would be under the `wz_flash-helper/backup/openipc` directory.
 
-
 -----
+
 **ℹ️ Notes:**
 - Backup operation will automatically generate .sha256sum files for partition backup images.
 - During the backup operation, the blue LED would be blinking every second.

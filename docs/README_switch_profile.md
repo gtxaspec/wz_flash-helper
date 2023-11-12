@@ -68,6 +68,8 @@ for example:
 a88a367b4f6c8a9ea703428b20617d4e8ccb4eba516962dc0fc37391adf0e2bc  openipc_t31x_boot.bin
 ```
 
+**⚠️ IMPORTANT:** Each .sha256sum file must have only one line.
+
 Example for t31x:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_01.png)

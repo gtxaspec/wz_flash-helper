@@ -9,10 +9,10 @@
 # ---------- Begin of user customization ----------
 
 ## Wi-Fi authentication info
-## Allowed characters for Wi-Fi SSID and password:
-## alphanumeric(a-z, A-Z, 0-9), underscore(_), period(.), dash(-), colon(:), space( )
-wifi_ssid="Wi-Fi name"
-wifi_password="Wi-Fi password"
+## All characters are allowed for wifi_ssid and wifi_password, EXCEPT single quote (')
+## Don't remove the single quotes that quote the values
+wifi_ssid='Wi-Fi name'
+wifi_password='WiFi password'
 
 
 
@@ -129,11 +129,11 @@ function set_openipc_user_env() {
 
 	#---------- Wi-Fi SSID ----------
 	msg_nonewline "   Setting Wi-Fi SSID... "
-	fw_setenv wlanssid $wifi_ssid && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	fw_setenv wlanssid $(echo $wifi_name) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 
 	#---------- Wi-Fi password ----------
 	msg_nonewline "   Setting Wi-Fi password... "
-	fw_setenv wlanpass $wifi_password && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	fw_setenv wlanpass $(echo $wifi_password) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 
 	#---------- Wi-Fi driver ----------
 	msg_nonewline "   Setting Wi-Fi driver... "
@@ -165,3 +165,4 @@ matched_profile="openipc"
 custom_script_matched_profile_check $matched_profile || return 0
 detect_openipc_wifi_driver || return 1
 set_openipc_user_env || return 1
+

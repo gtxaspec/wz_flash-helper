@@ -46,7 +46,7 @@ function custom_script_matched_profile_check() {
 		msg_color green "running script now!"
 		msg
 	else
-		msg_color red "skipping script"
+		msg_color lightbrown "skipping script"
 		return 1
 	fi
 }

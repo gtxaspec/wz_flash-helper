@@ -260,6 +260,7 @@ function main_init() {
 		msg "$msg_backup_partitions_yes"
 		init_play_audio "processing"
 		source /operation_backup.sh && msg_color_bold green "$msg_backup_partitions_succeed" || { msg_color_bold red "$msg_backup_partitions_fail" ; return 1 ; }
+		msg
 	else
 		msg_tickbox_no
 		msg "$msg_backup_partitions_no"
@@ -272,6 +273,7 @@ function main_init() {
 		msg "$msg_restore_partitions_yes"
 		init_play_audio "processing"
 		source /operation_restore.sh && msg_color_bold green "$msg_restore_partitions_succeed" || { msg_color_bold red "$msg_restore_partitions_fail" ; return 1 ; }
+		msg
 	else
 		msg_tickbox_no
 		msg "$msg_restore_partitions_no"
@@ -284,6 +286,7 @@ function main_init() {
 		msg "$msg_switch_profile_yes"
 		init_play_audio "processing"
 		source /operation_switch_profile.sh && msg_color_bold green "$msg_switch_profile_succeed" || { msg_color_bold red "$msg_switch_profile_fail" ; return 1 ; }
+		msg
 	else
 		msg_tickbox_no
 		msg "$msg_switch_profile_no"
@@ -306,6 +309,7 @@ function main_init() {
 		msg_tickbox_yes
 		msg "$msg_enable_custom_scripts_yes"
 		source /action_execute_custom_scripts.sh && msg_color_bold green "$msg_enable_custom_scripts_succeed" || { msg_color_bold red "$msg_enable_custom_scripts_fail" ; return 1 ; }
+		msg
 	else
 		msg_tickbox_no
 		msg "$msg_enable_custom_scripts_no"

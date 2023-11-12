@@ -2,7 +2,7 @@
 
 
 
-**Step 1:** [Setup](README_setup.md)
+**Step 1: [Setup](README_setup.md)**
 
 **Step 2:** Place your partition restore images along with their .sha256sum files under the `wz_flash-helper/restore/(profile)` directory on your SD card.
 

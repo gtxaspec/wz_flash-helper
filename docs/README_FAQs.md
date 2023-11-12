@@ -4,7 +4,7 @@
 
 ## How can I obtain my camera hardware info?
 
-**1. Obtain your camera SoC**
+**1. Obtain your camera SoC info**
 
 Edit `general.conf` with:
 ```
@@ -13,7 +13,7 @@ dry_run="yes"
 
 Then insert your SD card into your camera, power on, wait till the program is finished, check `initramfs_serial.log` for "chip group" information. That is your camera SoC.
 
-**2. (Optional) Obtain your Wi-Fi MAC address**
+**2. Obtain your Wi-Fi MAC address**
 
 There are three ways:
 
@@ -24,9 +24,9 @@ There are three ways:
 ## The program does not work at all. Help!
 
 Make sure that:
-- Your SD card partition is **MBR**.
+- Your SD card partition table is **MBR**.
 - You downloaded the correct release for your camera SoC.
-- The SD card kernel has the correct name(`factory_..._ZMC6tiIDQN`) without the `.wz_flash-helper` extension. The program adds the extension to the file after it finishes running to stop it from being booted multiple times.
+- The SD card kernel has the correct name(`factory_..._ZMC6tiIDQN`) without the `.wz_flash-helper` extension. The program adds the extension to the file after it is finished to stop itself from booting multiple times, therefore you need to rename it back if you want to run the program again.
 
 ## How does switching profile work?
 

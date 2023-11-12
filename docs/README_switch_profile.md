@@ -11,7 +11,7 @@
 
 ## Switch to OpenIPC profile
 
-**Step 1:** [Setup](README_setup.md)
+**Step 1: [Setup](README_setup.md)**
 
 **Step 2: [Obtain your camera hardware info](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-obtain-my-camera-hardware-info)**
 
@@ -110,8 +110,8 @@ You can decide if all partitions will be written when switching profile.
 When it is disabled, only necessary partitions for a barely functional camera are written.
 
 - For OpenIPC: `boot`, `kernel` and `rootfs` are written; `rootfs_data` would be formatted.
-- For Stock t20: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para` are written; `backupa` would be formatted.
-- For Stock t31: `boot`, `kernel`, `rootfs`, `app` and `cfg` are written; `kback` would be formatted.
+- For Stock T20: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para` are written; `backupa` would be formatted.
+- For Stock T31: `boot`, `kernel`, `rootfs`, `app` and `cfg` are written; `kback` would be formatted.
 
 When it is enabled, all partition images are needed. This is only helpful when you need to write `rootfs_data` partition for OpenIPC.
 

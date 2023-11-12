@@ -6,7 +6,7 @@
 
 Option: `new_sdcard_kernel`
 
-If you are using `wz_mini_hacks` with `stock` profile, you can rename wz_mini's kernel file to `sdcard_boot.wz_mini` and specify its filename with the option.
+If you are using `wz_mini_hacks` with Stock profile, you can rename wz_mini's kernel file to `sdcard_boot.wz_mini` and specify its filename with the option.
 
 After all operations are finished, that file will be renamed to:
 

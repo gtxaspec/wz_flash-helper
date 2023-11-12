@@ -9,9 +9,9 @@
 # ---------- Begin of user customization ----------
 
 ## Wi-Fi authentication info
-## All characters are allowed for wifi_ssid and wifi_password, EXCEPT single quote (')
+## All characters are allowed for wifi_name and wifi_password, EXCEPT single quote (')
 ## Don't remove the single quotes that quote the values
-wifi_ssid='Wi-Fi name'
+wifi_name='Wi-Fi name'
 wifi_password='WiFi password'
 
 

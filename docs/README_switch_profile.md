@@ -127,12 +127,12 @@ You can decide if all partitions will be written when switching profile.
 When it is disabled, only necessary partitions for a barely functional camera are written.
 
 - For OpenIPC: `boot`, `kernel` and `rootfs` are written; `rootfs_data` would be formatted.
-- For Stock `t20`: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para` are written; `backupa` would be formatted.
-- For Stock `t31`: `boot`, `kernel`, `rootfs`, `app` and `cfg` are written; `kback` would be formatted.
+- For Stock t20: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para` are written; `backupa` would be formatted.
+- For Stock t31: `boot`, `kernel`, `rootfs`, `app` and `cfg` are written; `kback` would be formatted.
 
 When it is enabled, all partition images are needed. This is only helpful when you need to write `rootfs_data` partition for OpenIPC.
 
-On Stock formware, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be restored because they don't contain any meaningful data as they are used by Stock firmware as stage partition to install updates. You can disable this option to save time.
+On Stock firmware, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be restored because they don't contain any meaningful data as they are used by Stock firmware as stage partition to install updates. You can disable this option to save time.
 
 -----
 

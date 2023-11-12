@@ -30,15 +30,19 @@ function make_initramfs() {
 }
 
 function patch_kernel_config() {
-	cp -n firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config.bak
+	if [ ! -f firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config.bak ]; then
+		cp firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config.bak
+	fi
 	patch firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config < kernel/kernel.patch.t20
 	
-	cp -n firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config.bak
+	if [ ! -f firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config.bak ]; then
+		cp firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config.bak
+	fi
 	patch firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config < kernel/kernel.patch.t31
 }
 
 function compile_kernel() {
-	echo "Make sure that you patched kernel config by running ./build.sh patch first!"
+	echo "Make sure that you patched kernel config by running \"./build.sh patch\" first!"
 	echo
 	sleep 2
 	make_initramfs

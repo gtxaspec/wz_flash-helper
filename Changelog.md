@@ -11,3 +11,6 @@
 
 - Fix some messages are not displayed with colors
 
+## v0.6.3
+
+- Allow most special characters to be set for Wi-Fi password

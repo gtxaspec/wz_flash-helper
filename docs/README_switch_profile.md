@@ -5,32 +5,15 @@
 
 **❗ WARNING:**
 - DO NOT DISCONNECT POWER when the switch profile operation is going on. This would brick your camera.
-- Switching back to Stock from OpenIPC is not supported yet. If you have switched to OpenIPC, you have to use SSH or serial connection to rollback.
-
+- Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
+- Switching to wzmini profile is not supported yet.
 -----
 
 ## Switch to OpenIPC profile
 
 **Step 1:** [Setup](README_setup.md)
 
-**Step 2: Obtain your camera hardware info**
-
-**1. Obtain your camera SoC**
-
-Edit `general.conf` with:
-```
-dry_run="yes"
-```
-
-Then insert your SD card into your camera, power on, wait till the program is finished, check `initramfs_serial.log` for "chip group" information. That is your camera SoC.
-
-**2. (Optional) Obtain your Wi-Fi MAC address**
-
-There are three ways:
-
-- Checking the bottom of the camera
-- Checking with Wyze mobile app: Device info -> MAC
-- Running `ifconfig wlan0` with SSH or serial connection
+**Step 2: [Obtain your camera hardware info](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-obtain-my-camera-hardware-info)**
 
 **Step 3: Prepare partition images**
 
@@ -134,7 +117,7 @@ When it is enabled, all partition images are needed. This is only helpful when y
 
 On Stock firmware, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be written because they don't contain any meaningful data as they are used by Stock firmware as stage partitions to install updates. You can disable this option to save time.
 
-This option value has no effect when switching to wzmini profile as the `configs` partition is required for your camera to be functional.
+This option value has no effect when switching to wzmini profile. All partitions are written anyway because writting the `configs` partition is required for your camera to be functional.
 
 -----
 

@@ -2,6 +2,25 @@
 
 
 
+## How can I obtain my camera hardware info?
+
+**1. Obtain your camera SoC**
+
+Edit `general.conf` with:
+```
+dry_run="yes"
+```
+
+Then insert your SD card into your camera, power on, wait till the program is finished, check `initramfs_serial.log` for "chip group" information. That is your camera SoC.
+
+**2. (Optional) Obtain your Wi-Fi MAC address**
+
+There are three ways:
+
+- Checking the bottom of the camera
+- Checking with Wyze mobile app: Device info -> MAC
+- Running `ifconfig wlan0` with SSH or serial connection
+
 ## The program does not work at all. Help!
 
 Make sure that:

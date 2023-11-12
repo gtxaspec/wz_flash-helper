@@ -1,14 +1,15 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | **Restore** | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md)
 
+**❗ WARNING:**
+- DO NOT DISCONNECT POWER when the restore operation is going on. This would soft brick your camera.
 
+-----
 
 **Step 1: [Setup](README_setup.md)**
 
 **Step 2:** Place your partition restore images along with their .sha256sum files under the `wz_flash-helper/restore/(profile)` directory on your SD card.
 
-They should have this format: `(profile)_(SoC)_(partition name).bin`, with:
-- `SoC` is `t20x`, `t31a`, or `t31x`
-- `profile` is `stock` or `openipc`
+They should have this format: `(profile)_(SoC)_(partition name).bin`.
 
 Example for Stock restore images on t31x:
 
@@ -21,7 +22,8 @@ Example for Stock restore images on t31x:
 switch_profile="no"
 restore_partitions="yes"
 ```
-**Step 5:** Insert your SD card into your camera and power on.
+**Step 5:** Insert your SD card into your camera and power on. Wait till the camera reboot.
+
 
 -----
 

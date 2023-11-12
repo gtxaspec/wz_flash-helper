@@ -4,7 +4,7 @@
 
 
 **❗ WARNING:**
-- DO NOT DISCONNECT POWER when the switch profile operation is going on. This would brick your camera.
+- DO NOT DISCONNECT POWER when the switch profile operation is going on. This would hard brick your camera.
 - Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
 - Switching to wzmini profile is not supported yet.
 -----
@@ -19,7 +19,7 @@
 
 **⚠️ IMPORTANT:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would hard brick your camera.
 
-Download the correct firmware archive and uboot image for your camera from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract firmware archive and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
+Download the latest correct firmware archive and uboot image for your camera from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract firmware archive and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 
 - `u-boot-[SoC]-universal.bin` to `openipc_[SoC]_boot.bin`
 - `openipc_env.bin.[SoC]` to `openipc_[SoC]_env.bin`
@@ -37,10 +37,12 @@ for i in openipc_*.bin; do sha256sum $i > $i.sha256sum; done
 ```
 certutil -hashfile "openipc_[SoC]_[partition name].bin" SHA256
 ```
-then create .sha256sum file with this format:
+then create .sha256sum files for each partition images with this format:
 ```
 (sha256sum)		openipc_[SoC]_[partition name].bin
 ```
+It doesn't matter how many empty spaces there are between sha256 value and partition image filename.
+
 for example:
 ```
 a88a367b4f6c8a9ea703428b20617d4e8ccb4eba516962dc0fc37391adf0e2bc  openipc_t31x_boot.bin

@@ -15,6 +15,7 @@ function show_syntax() {
 }
 
 function get_sdcard_kernel_filename() {
+	local SoC="${1}"
 	case ${SoC} in
 		"t20")
 			echo -n "factory_ZMC6tiIDQN"
@@ -25,20 +26,29 @@ function get_sdcard_kernel_filename() {
 	esac
 }
 
+function get_default_kernel_config() {
+	local SoC="${1}"
+	case ${SoC} in
+		"t20")
+			echo -n "firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config"
+			;;
+		"t31")
+			echo -n "firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config"
+			;;
+	esac
+}
+
 function make_initramfs() {
 	( cd initramfs_root && find . | fakeroot cpio --create --format='newc' | gzip > /tmp/initramfs.cpio )
 }
 
-function patch_kernel_config() {
-	if [ ! -f firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config.bak ]; then
-		cp firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config.bak
-	fi
-	patch firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config < kernel/kernel.patch.t20
-	
-	if [ ! -f firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config.bak ]; then
-		cp firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config.bak
-	fi
-	patch firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config < kernel/kernel.patch.t31
+function patch_all_kernel_config() {
+	for patch_SoC in ${all_SoCs}; do
+		default_kernel_config=$(get_default_kernel_config ${patch_SoC})
+		
+		[ ! -f ${default_kernel_config}.bak ] && cp ${default_kernel_config} ${default_kernel_config}.bak
+		patch ${default_kernel_config} < kernel/kernel.patch.${patch_SoC}
+	done
 }
 
 function compile_kernel() {
@@ -64,7 +74,7 @@ function make_release() {
 	
 	mv output/${SoC}/wz_flash-helper/restore/openipc/openipc_SoC_env.bin.${SoC} output/${SoC}/wz_flash-helper/restore/openipc/openipc_SoC_env.bin
 	rm output/${SoC}/wz_flash-helper/restore/openipc/openipc_SoC_env.bin.*
-
+	
 	( cd output/${SoC} && zip -r ${version}_${SoC}.zip . -x *.gitkeep)
 	rm -r output/${SoC}/wz_flash-helper
 }
@@ -78,12 +88,13 @@ function clean_up() {
 
 sdcard_kernel_filename=$(get_sdcard_kernel_filename ${SoC})
 version=$(cat initramfs_root/version)
+all_SoCs="t20 t31"
 
 mkdir -p output
 
 case ${action} in
 	"patch")
-		patch_kernel_config
+		patch_all_kernel_config
 		;;
 	"initramfs")
 		make_initramfs

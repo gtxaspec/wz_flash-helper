@@ -36,9 +36,10 @@ There are three ways:
 
 **⚠️ IMPORTANT:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would hard brick your camera.
 
-Download the correct firmware archive and uboot image for your device from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract firmware archive and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card and rename the partition images:
+Download the correct firmware archive and uboot image for your device from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract firmware archive and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 
 - `u-boot-[SoC]-universal.bin` to `openipc_[SoC]_boot.bin`
+- `openipc_SoC_env.bin.[SoC]` to `openipc_[SoC]_env.bin`
 - `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`
 - `rootfs.squashfs.[SoC]` to `openipc_[SoC]_rootfs.bin`
 
@@ -69,6 +70,8 @@ Example for t31x:
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_01.png)
 
 **Step 4: Edit custom script to set uboot env variables**
+
+To let your camera connect to Wi-Fi, uboot env variables for Wi-Fi SSID, password and driver must be set. This can be done with help from `setup_openipc_env.sh` script.
 
 Edit `setup_openipc_env.sh` under the `wz_flash-helper/scripts/` directory with your Wi-Fi name(SSID) and password. Optionally with camera MAC address and Timezone.
 
@@ -127,9 +130,7 @@ When it is disabled, only necessary partitions for a barely functional camera ar
 - For Stock `t20`: `boot`, `kernel`, `app`, `driver`, `config` and `para` are written.
 - For Stock `t31`: `boot`, `kernel`, `app` and `cfg` are written; `kback` would be formatted.
 
-When it is enabled:
-- For OpenIPC: `rootfs_data`. If you don't have `rootfs_data` image, leave it disabled.
-- For Stock:  also needs partition images of all partitions.
+When it is enabled, all partition images are needed. This is only helpful when you need to write `rootfs_data` partition for OpenIPC.
 
 On Stock formware, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be restored because they don't contain any meaningful data as they are used by Stock firmware as stage partition to install updates. You can disable this option to save time.
 

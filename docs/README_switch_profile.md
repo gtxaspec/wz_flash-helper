@@ -52,11 +52,11 @@ for i in openipc_*.bin; do sha256sum $i > $i.sha256sum; done
 
 - If you are on Windows, use Powershell to run:
 ```
-certutil -hashfile "openipc_[SoC]_[partition image].bin" SHA256
+certutil -hashfile "openipc_[SoC]_[partition name].bin" SHA256
 ```
 then create .sha256sum file with this format:
 ```
-(sha256sum)		openipc_[SoC]_[partition image].bin
+(sha256sum)		openipc_[SoC]_[partition name].bin
 ```
 for example:
 ```
@@ -71,7 +71,7 @@ Example for t31x:
 
 **Step 4: Edit custom script to set uboot env variables**
 
-To let your camera connect to Wi-Fi, uboot env variables for Wi-Fi SSID, password and driver must be set. This can be done with help from `setup_openipc_env.sh` script.
+**ℹ️ Note:** To let your camera connect to Wi-Fi, uboot env variables for Wi-Fi SSID, password and driver must be set. This can be done with help from `setup_openipc_env.sh` script.
 
 Edit `setup_openipc_env.sh` under the `wz_flash-helper/scripts/` directory with your Wi-Fi name(SSID) and password. Optionally with camera MAC address and Timezone.
 
@@ -127,8 +127,8 @@ You can decide if all partitions will be written when switching profile.
 When it is disabled, only necessary partitions for a barely functional camera are written.
 
 - For OpenIPC: `boot`, `kernel` and `rootfs` are written; `rootfs_data` would be formatted.
-- For Stock `t20`: `boot`, `kernel`, `app`, `driver`, `config` and `para` are written.
-- For Stock `t31`: `boot`, `kernel`, `app` and `cfg` are written; `kback` would be formatted.
+- For Stock `t20`: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para` are written; `backupa` would be formatted.
+- For Stock `t31`: `boot`, `kernel`, `rootfs`, `app` and `cfg` are written; `kback` would be formatted.
 
 When it is enabled, all partition images are needed. This is only helpful when you need to write `rootfs_data` partition for OpenIPC.
 

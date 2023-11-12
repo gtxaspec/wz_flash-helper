@@ -22,6 +22,6 @@ function get_np_partoperation() {
 		"cfg")
 			echo -n "write" ;;
 		"para")
-			echo -n "write" ;;
+			echo -n "erase" ;;
 	esac
 }

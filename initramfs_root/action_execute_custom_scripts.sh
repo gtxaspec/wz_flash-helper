@@ -15,11 +15,10 @@ function execute_custom_scripts() {
 		msg_color_bold_nonewline white "> Running script: "
 		msg_color cyan "$custom_scriptlet"
 		msg
-		[ ! -f $prog_dir/scripts/$custom_scriptlet ] && { msg_color red " - Script file is missing" ; return 1 ; }
+		[ ! -f $prog_dir/scripts/$custom_scriptlet ] && { msg_color red "Script file is missing" ; return 1 ; }
 		source $prog_dir/scripts/$custom_scriptlet || return 1
 		msg
 	done
-	msg
 }
 
 execute_custom_scripts || return 1

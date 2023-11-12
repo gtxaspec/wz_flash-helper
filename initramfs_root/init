@@ -310,8 +310,6 @@ function main_init() {
 		msg_tickbox_no
 		msg "$msg_enable_custom_scripts_no"
 	fi
-
-
 }
 
 main_init && init_play_audio "successful" || init_play_audio "failed"

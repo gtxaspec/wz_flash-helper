@@ -47,7 +47,6 @@ function custom_script_matched_profile_check() {
 		msg
 	else
 		msg_color red "skipping script"
-		msg
 		return 1
 	fi
 }

@@ -72,8 +72,8 @@ function make_release() {
 	mv output/${SoC}/wz_flash-helper/restore/stock.conf.${SoC} output/${SoC}/wz_flash-helper/restore/stock.conf
 	rm output/${SoC}/wz_flash-helper/restore/stock.conf.*
 	
-	mv output/${SoC}/wz_flash-helper/restore/openipc/openipc_SoC_env.bin.${SoC} output/${SoC}/wz_flash-helper/restore/openipc/openipc_SoC_env.bin
-	rm output/${SoC}/wz_flash-helper/restore/openipc/openipc_SoC_env.bin.*
+	mv output/${SoC}/wz_flash-helper/restore/openipc/openipc_env.bin.${SoC} output/${SoC}/wz_flash-helper/restore/openipc/openipc_${SoC}_env.bin
+	rm output/${SoC}/wz_flash-helper/restore/openipc/openipc_env.bin.*
 	
 	( cd output/${SoC} && zip -r ${version}_${SoC}.zip . -x *.gitkeep)
 	rm -r output/${SoC}/wz_flash-helper

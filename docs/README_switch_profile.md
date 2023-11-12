@@ -36,10 +36,10 @@ There are three ways:
 
 **⚠️ IMPORTANT:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would hard brick your camera.
 
-Download the correct firmware archive and uboot image for your device from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract firmware archive and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
+Download the correct firmware archive and uboot image for your camera from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract firmware archive and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 
 - `u-boot-[SoC]-universal.bin` to `openipc_[SoC]_boot.bin`
-- `openipc_SoC_env.bin.[SoC]` to `openipc_[SoC]_env.bin`
+- `openipc_env.bin.[SoC]` to `openipc_[SoC]_env.bin`
 - `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`
 - `rootfs.squashfs.[SoC]` to `openipc_[SoC]_rootfs.bin`
 

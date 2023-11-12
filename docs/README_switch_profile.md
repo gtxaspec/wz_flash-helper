@@ -15,7 +15,7 @@
 
 **Step 2: Obtain your camera hardware info**
 
-1. Camera SoC
+**1. Obtain your camera SoC**
 
 Edit `general.conf` with:
 ```
@@ -24,19 +24,19 @@ dry_run="yes"
 
 Then insert your SD card into your camera, power on, wait till the program is finished, check `initramfs_serial.log` for "chip group" information. That is your camera SoC.
 
-2. (Optional) Wi-Fi MAC address
+**2. (Optional) Obtain your Wi-Fi MAC address**
 
 There are three ways:
 
-- Check the bottom of the camera
-- Check with Wyze mobile app: Device info -> MAC
-- Run `ifconfig wlan0` with SSH connection
+- Checking the bottom of the camera
+- Checking with Wyze mobile app: Device info -> MAC
+- Running `ifconfig wlan0` with SSH or serial connection
 
 **Step 3: Prepare partition images**
 
 **⚠️ IMPORTANT:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would hard brick your camera.
 
-Download correct OpenIPC build for your device from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), place them under the `wz_flash-helper/restore/openipc/` on your SD card and rename the partition images:
+Download the correct firmware archive and uboot image for your device from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract firmware archive and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card and rename the partition images:
 
 - `u-boot-[SoC]-universal.bin` to `openipc_[SoC]_boot.bin`
 - `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`

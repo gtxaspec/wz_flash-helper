@@ -10,6 +10,7 @@
 ## v0.6.2
 
 - Fix some messages are not displayed with colors
+- Add wzmini profile
 
 ## v0.6.3
 

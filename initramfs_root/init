@@ -196,6 +196,7 @@ function init_display_info() {
 	msg_color_bold_nonewline white "Hardware: "
 	msg_nonewline "chip name: " && msg_color_nonewline cyan $chip_name
 	msg_nonewline ", chip family: " && msg_color_nonewline cyan $chip_family
+	msg_nonewline ", chip group: " && msg_color_nonewline cyan $chip_group
 	msg_nonewline ", flash type: " && msg_color_nonewline cyan $flash_type
 	msg_nonewline ", model: " && msg_color cyan $model
 	

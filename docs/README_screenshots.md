@@ -8,5 +8,5 @@
 ## Restore operation
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_restore.png)
 
-## Switch firmare operation
+## Switch firmware operation
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_switch_profile.png)

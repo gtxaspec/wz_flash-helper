@@ -17,7 +17,7 @@ backup_partitions="yes"
 restore_partitions="no"
 ```
 
-**Step 3:** Insert your SD card and power on your camera.
+**Step 3:** Insert your SD card into your camera and power on.
 
 **Step 4:** Wait for the camera to restart after the backup operation is finished.
 

@@ -15,3 +15,7 @@
 ## v0.6.3
 
 - Allow most special characters to be set for Wi-Fi password
+
+## v0.6.4
+
+- Print chip group info on serial terminal and to log files

@@ -73,7 +73,7 @@ Example for t31x:
 
 **ℹ️ Note:** To let your camera connect to Wi-Fi, uboot env variables for Wi-Fi SSID, password and driver must be set. This can be done with help from `setup_openipc_env.sh` script.
 
-Edit `setup_openipc_env.sh` under the `wz_flash-helper/scripts/` directory with your Wi-Fi name(SSID) and password. Optionally with camera MAC address and Timezone.
+Edit `setup_openipc_env.sh` under the `wz_flash-helper/scripts/` directory to set your Wi-Fi name(SSID) and password, optionally set your camera MAC address and Timezone. Wi-Fi driver would be automatically detected.
 
 **Step 5: Edit the program configuration file**
 
@@ -132,7 +132,7 @@ When it is disabled, only necessary partitions for a barely functional camera ar
 
 When it is enabled, all partition images are needed. This is only helpful when you need to write `rootfs_data` partition for OpenIPC.
 
-On Stock firmware, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be restored because they don't contain any meaningful data as they are used by Stock firmware as stage partition to install updates. You can disable this option to save time.
+On Stock firmware, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be written because they don't contain any meaningful data as they are used by Stock firmware as stage partitions to install updates. You can disable this option to save time.
 
 -----
 

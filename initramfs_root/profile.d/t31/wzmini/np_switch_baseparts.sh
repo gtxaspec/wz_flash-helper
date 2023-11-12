@@ -14,6 +14,6 @@ function get_np_partoperation() {
 		"rootfs")
 			echo -n "write" ;;
 		"configs")
-			echo -n "format" ;;
+			echo -n "write" ;;
 	esac
 }

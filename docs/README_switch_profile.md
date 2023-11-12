@@ -134,6 +134,8 @@ When it is enabled, all partition images are needed. This is only helpful when y
 
 On Stock firmware, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be written because they don't contain any meaningful data as they are used by Stock firmware as stage partitions to install updates. You can disable this option to save time.
 
+This option value has no effect when switching to wzmini profile as the `configs` partition is required for your camera to be functional.
+
 -----
 
 **ℹ️ Notes:**

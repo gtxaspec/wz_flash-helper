@@ -1,0 +1,62 @@
+
+[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | **Switch profile** | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md)
+
+
+**❗ WARNING:**
+- DO NOT DISCONNECT POWER when the switch profile operation is going on. This would hard brick your camera.
+- Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
+- Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development)
+
+-----
+
+[Switch to Stock profile](README_switch_profile_stock.md)
+**Switch to OpenIPC profile**
+[Switch to wzmini profile](README_switch_profile_wzmini.md) 
+
+-----
+
+## Switch to OpenIPC profile
+
+**Step 1: [Setup](README_setup.md)**
+
+**Step 2: [Obtain your camera hardware info](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-obtain-my-camera-hardware-info)**
+
+**Step 3: Prepare partition images**
+
+**⚠️ IMPORTANT:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would hard brick your camera.
+
+Download the latest correct firmware archive and uboot image for your camera from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract firmware archive and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
+
+- `u-boot-[SoC]-universal.bin` to `openipc_[SoC]_boot.bin`
+- `openipc_env.bin.[SoC]` to `openipc_[SoC]_env.bin`
+- `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`
+- `rootfs.squashfs.[SoC]` to `openipc_[SoC]_rootfs.bin`
+
+**Step 4: [Generate .sha256sum files](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-generate-sha256sum-files-for-partition-images)**
+
+Example for t31x:
+
+![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_openipc.png)
+
+**Step 5: Edit custom script to set uboot env variables**
+
+**ℹ️ Note:** To let your camera connect to Wi-Fi, uboot env variables for Wi-Fi SSID, password and driver must be set. This can be done with help from `setup_openipc_env.sh` script.
+
+Edit `setup_openipc_env.sh` under the `wz_flash-helper/scripts/` directory to set your Wi-Fi name(SSID) and password, optionally set your camera MAC address and Timezone. Wi-Fi driver would be automatically detected.
+
+**Step 6: Edit the program configuration file**
+
+Edit `general.conf` with:
+```
+restore_partitions="no"
+switch_profile="yes"
+next_profile="openipc"
+switch_profile_with_all_partitions="no"
+
+enable_custom_scripts="yes"
+custom_scripts="setup_openipc_env.sh"
+```
+
+**Step 7: Power on**
+
+Insert your SD card into your camera and power on. It would take about 3 minutes to finish writing all partitions, then it would reboot to OpenIPC firmware.

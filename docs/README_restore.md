@@ -23,14 +23,13 @@ Example for Stock restore images on t31x:
 switch_profile="no"
 restore_partitions="yes"
 ```
-**Step 5:** Insert your SD card into your camera and power on. Wait till the camera reboot.
-
+**Step 5:** Insert your SD card into your camera and power on. Wait till the program is finished and reboots.
 
 -----
 
 **ℹ️ Notes:**
 - There is no option to restore your boot partition to avoid accidentally corrupting it.
 - For the backup operation to start, `switch_profile` option must be disabled, like the above configurations. If both the `restore_partitions` and `switch_profile` options are enabled, both operations will not be done.
-- All partition restore images must come with their .sha256sum file with `(partition image).sha256sum` format.
+- All partition restore images must come with their .sha256sum file for integrity verification.
 - During the restore operation, the red LED would be blinking every second.
 - Typically restore operation takes about 2 minutes (for reference, it takes 2 minutes and 15 seconds on Wyze Cam v3).

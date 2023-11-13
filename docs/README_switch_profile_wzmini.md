@@ -29,7 +29,7 @@ Switch to wzmini profile
 
 **Step 2: Prepare partition images**
 
-wzmini profile requires 4 partition images: `boot`, `kernel`, `rootfs` and `configs`.
+wzmini profile requires four partition images: `boot`, `kernel`, `rootfs` and `configs`.
 
 - `boot` and `configs` partition images can be created by making a copy from Stock firmware backup along with their .sha256sum files.
 - `kernel` and `rootfs` partition images along with their .sha256sum files can be downloaded them from (**TBA**).

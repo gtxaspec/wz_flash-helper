@@ -46,11 +46,13 @@ Example for t31x:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_openipc.png)
 
-**Step 5: Edit custom script to set uboot env variables**
+**Step 5: Edit the custom script setup_openipc_env.sh**
 
-In order to let your camera connect to Wi-Fi, the Wi-Fi SSID, password and driver must be set by adding uboot env variables with help from the `setup_openipc_env.sh` script under the `wz_flash-helper/scripts/` directory.
+Because Wyze cameras don't have Ethernet, Wi-Fi authentication information and driver need to be configured so your camera can connect to your home Wi-Fi network after OpenIPC boots up. The `setup_openipc_env.sh` script under the `wz_flash-helper/scripts/` directory would help you with the mentioned Wi-Fi settings.
 
-To get the `setup_openipc_env.sh` script work, edit the script to set your Wi-Fi name(SSID) and password, optionally set your camera MAC address and Timezone. Wi-Fi driver would be automatically detected.
+To get the `setup_openipc_env.sh` script work, edit the script to set your Wi-Fi name(SSID) and password, optionally set your camera MAC address and Timezone.
+
+The Wi-Fi driver doesn't need to be set manually but it is automatically detected.
 
 **Step 6: Edit the program configuration file**
 

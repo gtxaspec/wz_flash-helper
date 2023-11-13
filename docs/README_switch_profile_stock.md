@@ -23,15 +23,15 @@ Switch to Stock profile
 
 ### 📖 Overview
 
+Stock profile for T20 requires seven partition images: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
+
+Stock profile for T31 requires five partition images: `boot`, `kernel`, `rootfs`, `app` and `configs`.
+
 ### 🛠️ Guide
 
 **Step 1: [Setup](README_setup.md)**
 
 **Step 2: Prepare partition images**
-
-Stock profile for T20 requires seven partition images: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
-
-Stock profile for T31 requires five partition images: `boot`, `kernel`, `rootfs`, `app` and `configs`.
 
 Place your Stock partition backup images along with their .sha256sum files under the `wz_flash-helper/restore/stock/` directory.
 

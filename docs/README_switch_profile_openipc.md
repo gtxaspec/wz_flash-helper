@@ -23,6 +23,8 @@ Switch to OpenIPC profile
 
 ### 📖 Overview
 
+openipc profile requires four partition images: `boot`, `env`, `kernel` and `rootfs`.
+
 ### 🛠️ Guide
 
 **Step 1: [Setup](README_setup.md)**
@@ -32,8 +34,6 @@ Switch to OpenIPC profile
 **Step 3: Prepare partition images**
 
 **⚠️ IMPORTANT:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would hard brick your camera.
-
-openipc profile requires four partition images: `boot`, `env`, `kernel` and `rootfs`.
 
 Download the latest correct firmware archive and uboot image for your camera from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract firmware archive and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 
@@ -54,7 +54,7 @@ Because Wyze cameras don't have Ethernet, Wi-Fi authentication information and d
 
 To get the `setup_openipc_env.sh` script work, edit the script to set your Wi-Fi name(SSID) and password, optionally set your camera MAC address and Timezone.
 
-The Wi-Fi driver doesn't need to be set manually but it is automatically detected.
+The Wi-Fi driver doesn't need to be set manually because it is automatically detected.
 
 **Step 6: Edit the program configuration file**
 

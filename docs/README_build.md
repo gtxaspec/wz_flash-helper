@@ -3,6 +3,8 @@
 
 ### 📖 Overview
 
+wz_flash-helper uses OpenIPC kernel source. The compilation steps are the same as building OpenIPC kernels after patching OpenIPC kernel config files.
+
 ### ‍🍳 Prerequisites
 
 A Linux distro with `fakeroot` and `cpio` packages installed.

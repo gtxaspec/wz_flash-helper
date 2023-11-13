@@ -7,6 +7,8 @@
 
 ### 📖 Overview
 
+The restore operations allows restoring one or more partitions using partition images. You can decide what partitions will be restored.
+
 ### 🛠️ Guide
 
 **Step 1: [Setup](README_setup.md)**

@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-A Linux OS with `fakeroot` and `cpio` packages.
+A Linux distro with `fakeroot` and `cpio` packages installed.
 
 WSL2 has not been tested.
 
@@ -24,7 +24,7 @@ Build kernel:
 ```
 ./build.sh kernel <SoC>
 ```
-example:
+for example:
 ```
 ./build.sh kernel t20
 ```
@@ -33,7 +33,7 @@ You can also generate a release by running:
 ```
 ./build.sh release <SoC>
 ```
-example:
+for example:
 ```
 ./build.sh release t20
 ```

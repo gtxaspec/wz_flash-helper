@@ -4,7 +4,8 @@
 
 **⚠️ IMPORTANT:**
 - Make sure that your SD card partition table is **MBR** instead of GPT. If it is not, please format it to MBR.
-- If your camera is Wyze Cam Pan or Wyze Cam v2, you need to update your camera bootloader to with the latest version using [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation) first.
+- If your camera is Wyze Cam Pan or Wyze Cam v2, you need to update your camera bootloader to with the latest version using [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation) before using the program.
+
 -----
 
 Download the correct release at the [Release page](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract it to your SD card.

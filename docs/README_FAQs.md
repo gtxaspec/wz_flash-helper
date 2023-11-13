@@ -4,7 +4,7 @@
 
 ## How can I obtain my camera hardware info?
 
-**1. Obtain your camera SoC info**
+**1. Obtain camera SoC info**
 
 Edit `general.conf` with:
 ```
@@ -13,7 +13,7 @@ dry_run="yes"
 
 Then insert your SD card into your camera, power on, wait till the program is finished, check `initramfs_serial.log` for "chip group" information. That is your camera SoC.
 
-**2. Obtain your Wi-Fi MAC address**
+**2. Obtain Wi-Fi MAC address**
 
 There are three ways:
 
@@ -44,7 +44,7 @@ When the switch profile operation is going on, it reads the partition images tha
 - MTD mapping number of each partition
 - List of partitions that store user data to create archives for them with backup operation
 - Partition types (`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
-- Name of SD card kernel
+- Name of SD card kernel that can be recognized and booted by uboot
 - Backup and restore paths to hold partition images
 - List of mandatory partitions that must be written when switching to that profile (when `witch_profile_with_all_partitions` is disabled) and list of tasks to do (`ignore`, `erase,`,`format`, `leave`) with other partitions.
 - Model detection script to detect camera model
@@ -54,8 +54,8 @@ When the switch profile operation is going on, it reads the partition images tha
 
 If your new profile is used for existing chip group families, you only need to add the information above the new profile.
 
-If you new profile is used for a new chip group, you also need to:
+If you new profile is used for a new chip family, you also need to:
 - Add `leds_gpio.d/(chip family).sh` to define LED GPIO pins.
 - Add `initialize_gpio.d/(chip family).sh` to define how to initialize GPIO pins to enable LEDs (maybe also SD card).
 - Edit `profile.d/detect_chip_group.sh` to define your new SoC name belongs to which chip group (eg. `t20`, `t31a`, `t31x`) to select the right build for OpenIPC.
-- Add partition mapping for the partitions of the new profile to kernel config
+- Add partition mapping for the partitions of the new profile to kernel config.

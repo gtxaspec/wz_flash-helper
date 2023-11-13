@@ -15,7 +15,6 @@ After all operations are finished, that file will be renamed to:
 
 This kernel file will be booted on the next boot without having to pull the SD card and rename it manually. Seamless transition!
 
-
 ## Run custom scripts
 
 Option: `custom_scripts`

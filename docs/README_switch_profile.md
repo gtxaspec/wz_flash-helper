@@ -6,7 +6,7 @@
 **❗ WARNING:**
 - DO NOT DISCONNECT POWER when the switch profile operation is going on. This would hard brick your camera.
 - Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
-- Switching to wzmini profile is not supported yet.
+- Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development)
 -----
 
 ## Switch to OpenIPC profile
@@ -79,7 +79,7 @@ Insert your SD card into your camera and power on. It would take about 3 minutes
 
 ## Switch to Stock profile
 
-**Step 1:** [Setup](README_setup.md)
+**Step 1: [Setup](README_setup.md)**
 
 **Step 2: Prepare partition images**
 
@@ -101,7 +101,27 @@ Insert your SD card to the camera and power it on. It would take about 3 minutes
 
 ## Switch to wzmini profile
 
-(definitely not coming soon)
+**Step 1: [Setup](README_setup.md)**
+
+**Step 2: Prepare partition images**
+
+wzmini profile requires 4 partition images for `boot`, `kernel`, `rootfs` and `configs`.
+
+- For `boot` and `configs` partition images, make a copy from Stock firmware backup along with their .sha256sum files.
+- For `kernel` and `rootfs`, download them along with their .sha256sum files from (to be announced)
+
+**Step 3: Edit the program configuration file**
+
+Edit `general.conf` with:
+```
+restore_partitions="no"
+switch_profile="yes"
+next_profile="wzmini"
+```
+
+**Step 4: Power on**
+
+Insert your SD card to the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to wzmini firmware.
 
 -----
 

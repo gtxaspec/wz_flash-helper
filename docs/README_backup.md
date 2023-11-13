@@ -21,15 +21,15 @@ restore_partitions="no"
 
 **Step 4:** Wait for the camera to restart after the backup operation is finished.
 
-**Step 5:** Check your SD card; there should be `Wyze_factory_backup` and `wz_flash-helper/backup/stock` directories. Under those directories, there are directories with 4-digit ID names where partition backup images are stored.
+**Step 5:** Check your SD card for backup directory:
+
+- For Stock firmware: `wz_flash-helper/backup/stock` and `Wyze_factory_backup`
+- For OpenIPC firmware: `wz_flash-helper/backup/openipc`
+- For wzmini firmware: `wz_flash-helper/backup/wzmini`
+
+Under those directories, there are directories with 4-digit ID names where partition backup images are stored.
 
 To know what backup ID was used for the most recent backup, check the `initramfs_serial.log` file.
-
-### Backup OpenIPC partitions
-Similar to Stock partitions, OpenIPC partitions can be backed up with the above steps. OpenIPC partition backup images would be under the `wz_flash-helper/backup/openipc` directory.
-
-### Backup wzmini partitions
-Similar to Stock partitions, wzmini partitions can be backed up with the above steps. wzmini partition backup images would be under the `wz_flash-helper/backup/wzmini` directory.
 
 -----
 

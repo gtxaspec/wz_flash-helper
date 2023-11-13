@@ -9,13 +9,13 @@
 
 -----
 
-**Overview**
+### 📖 Overview**
 
-[Switch to Stock profile](README_switch_profile_stock.md)
+### [Switch to Stock profile](README_switch_profile_stock.md)
 
-[Switch to OpenIPC profile](README_switch_profile_openipc.md)
+### [Switch to OpenIPC profile](README_switch_profile_openipc.md)
 
-[Switch to wzmini profile](README_switch_profile_wzmini.md) 
+### [Switch to wzmini profile](README_switch_profile_wzmini.md) 
 
 -----
 
@@ -37,7 +37,7 @@ This option value has no effect when switching to wzmini profile. All partitions
 
 -----
 
-**ℹ️ Notes:**
+### ℹ️ Notes
 - For switch profile operation to start, `restore_partitions` option must be disabled, like in the above configurations. If both the  `restore_partitions` and `switch_profile` options are enabled, both operations would not be done.
 - All partition images are verified with their .sha256sum files before the switch_profile operation starts. If one file fails the verification, no change will be made.
 - During the switch profile operation, both the blue LED and the red LED would be blinking.

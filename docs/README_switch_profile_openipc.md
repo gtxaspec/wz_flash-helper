@@ -9,13 +9,13 @@
 
 -----
 
-[Overview](README_switch_profile.md)
+### [📖 Overview](README_switch_profile.md)
 
-[Switch to Stock profile](README_switch_profile_stock.md)
+### [Switch to Stock profile](README_switch_profile_stock.md)
 
-**Switch to OpenIPC profile**
+### **Switch to OpenIPC profile**
 
-[Switch to wzmini profile](README_switch_profile_wzmini.md)
+### [Switch to wzmini profile](README_switch_profile_wzmini.md)
 
 -----
 
@@ -44,9 +44,9 @@ Example for t31x:
 
 **Step 5: Edit custom script to set uboot env variables**
 
-**ℹ️ Note:** To let your camera connect to Wi-Fi, uboot env variables for Wi-Fi SSID, password and driver must be set. This can be done with help from `setup_openipc_env.sh` script.
+In order to let your camera connect to Wi-Fi, the Wi-Fi SSID, password and driver must be set by adding uboot env variables with help from the `setup_openipc_env.sh` script under the `wz_flash-helper/scripts/` directory.
 
-Edit `setup_openipc_env.sh` under the `wz_flash-helper/scripts/` directory to set your Wi-Fi name(SSID) and password, optionally set your camera MAC address and Timezone. Wi-Fi driver would be automatically detected.
+To get the `setup_openipc_env.sh` script work, edit the script to set your Wi-Fi name(SSID) and password, optionally set your camera MAC address and Timezone. Wi-Fi driver would be automatically detected.
 
 **Step 6: Edit the program configuration file**
 

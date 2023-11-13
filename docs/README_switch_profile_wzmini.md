@@ -9,17 +9,17 @@
 
 -----
 
-[Overview](README_switch_profile.md)
+### [📖 Overview](README_switch_profile.md)
 
-[Switch to Stock profile](README_switch_profile_stock.md)
+### [Switch to Stock profile](README_switch_profile_stock.md)
 
-[Switch to OpenIPC profile](README_switch_profile_openipc.md)
+### [Switch to OpenIPC profile](README_switch_profile_openipc.md)
 
-**Switch to wzmini profile**
+### **Switch to wzmini profile**
 
 -----
 
-## Switch to wzmini profile
+### Guide
 
 **Step 1: [Setup](README_setup.md)**
 

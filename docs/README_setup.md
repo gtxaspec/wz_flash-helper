@@ -8,15 +8,17 @@
 
 -----
 
-Download the correct release at the [Release page](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract it to your SD card.
+### 📖 Overview
 
+### 🛠️ Guide
+
+Download the correct release at the [Release page](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract it to your SD card.
 
 Example for T31:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/setup_01.png)
 
------
-**ℹ️ Notes:**
+### ℹ️ Notes
 
 T20 releases support:
 - Wyze Cam Pan

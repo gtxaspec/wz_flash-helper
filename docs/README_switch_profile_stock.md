@@ -10,7 +10,9 @@
 -----
 
 **Switch to Stock profile**
+
 [Switch to OpenIPC profile](README_switch_profile_openipc.md)
+
 [Switch to wzmini profile](README_switch_profile_wzmini.md) 
 
 -----

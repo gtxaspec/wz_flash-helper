@@ -2,11 +2,11 @@
 
 
 
-## Backup operation
+### Backup OpenIPC partitions
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_backup.png)
 
-## Restore operation
+### Restore OpenIPC partitions
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_restore.png)
 
-## Switch profile operation
+### Switch profile from Stock to OpenIPC (with setup_openipc_env.sh script)
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_switch_profile.png)

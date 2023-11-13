@@ -21,6 +21,30 @@ There are three ways:
 - Checking with Wyze mobile app: Device info -> MAC
 - Running `ifconfig wlan0` with SSH or serial connection
 
+## How can I generate .sha256sum files for partition images?
+
+- If you have WSL or Linux, you only need to run:
+```
+for i in [profile]_*.bin; do sha256sum $i > $i.sha256sum; done
+```
+
+- If you are on Windows, use Powershell to run:
+```
+certutil -hashfile "[profile]_[SoC]_[partition name].bin" SHA256
+```
+then create .sha256sum files for each partition images with this format:
+```
+[sha256sum value]		[profile]_[SoC]_[partition name].bin
+```
+It doesn't matter how many empty spaces there are between sha256 value and partition image filename.
+
+for example:
+```
+a88a367b4f6c8a9ea703428b20617d4e8ccb4eba516962dc0fc37391adf0e2bc  openipc_t31x_boot.bin
+```
+
+**⚠️ IMPORTANT:** Each .sha256sum file must have only one line.
+
 ## The program does not work at all. Help!
 
 Make sure that:

@@ -7,16 +7,16 @@
 
 **Step 1: [Setup](README_setup.md)**
 
-**Step 2:** Place your partition restore images along with their .sha256sum files under the `wz_flash-helper/restore/(profile)` directory on your SD card. They should have this format:
+**Step 2:** Place your partition restore images along with their .sha256sum files under the `wz_flash-helper/restore/[profile]` directory on your SD card. They should have this format:
 
-- `(profile)_(SoC)_(partition name).bin` for partition restore images.
-- `(profile)_(SoC)_(partition name).bin.sha256sum` for their .sha256sum files.
+- `[profile]_[SoC]_[partition name].bin` for partition restore images.
+- `[profile]_[SoC]_[partition name].bin.sha256sum` for their .sha256sum files.
 
 Example for Stock restore images on t31x:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/restore_01.png)
 
-**Step 3:** Edit `(profile).conf` under the `wz_flash-helper/restore/` directory on your SD card to select what partitions will be restored:
+**Step 3:** Edit `[profile].conf` under the `wz_flash-helper/restore/` directory on your SD card to select what partitions will be restored:
 
 **Step 4:** Edit `general.conf` to enable the restore operation:
 ```

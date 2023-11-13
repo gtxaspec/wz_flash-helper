@@ -26,41 +26,19 @@ Download the latest correct firmware archive and uboot image for your camera fro
 - `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`
 - `rootfs.squashfs.[SoC]` to `openipc_[SoC]_rootfs.bin`
 
-**Step 3: Generate .sha256sum files**
-
-- If you have WSL or Linux, you only need to run:
-```
-for i in openipc_*.bin; do sha256sum $i > $i.sha256sum; done
-```
-
-- If you are on Windows, use Powershell to run:
-```
-certutil -hashfile "openipc_[SoC]_[partition name].bin" SHA256
-```
-then create .sha256sum files for each partition images with this format:
-```
-(sha256sum)		openipc_[SoC]_[partition name].bin
-```
-It doesn't matter how many empty spaces there are between sha256 value and partition image filename.
-
-for example:
-```
-a88a367b4f6c8a9ea703428b20617d4e8ccb4eba516962dc0fc37391adf0e2bc  openipc_t31x_boot.bin
-```
-
-**⚠️ IMPORTANT:** Each .sha256sum file must have only one line.
+**Step 4: [Generate .sha256sum files](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-generate-sha256sum-files-for-partition-images)****
 
 Example for t31x:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_openipc.png)
 
-**Step 4: Edit custom script to set uboot env variables**
+**Step 5: Edit custom script to set uboot env variables**
 
 **ℹ️ Note:** To let your camera connect to Wi-Fi, uboot env variables for Wi-Fi SSID, password and driver must be set. This can be done with help from `setup_openipc_env.sh` script.
 
 Edit `setup_openipc_env.sh` under the `wz_flash-helper/scripts/` directory to set your Wi-Fi name(SSID) and password, optionally set your camera MAC address and Timezone. Wi-Fi driver would be automatically detected.
 
-**Step 5: Edit the program configuration file**
+**Step 6: Edit the program configuration file**
 
 Edit `general.conf` with:
 ```
@@ -73,7 +51,7 @@ enable_custom_scripts="yes"
 custom_scripts="setup_openipc_env.sh"
 ```
 
-**Step 6: Power on**
+**Step 7: Power on**
 
 Insert your SD card into your camera and power on. It would take about 3 minutes to finish writing all partitions, then it would reboot to OpenIPC firmware.
 
@@ -108,7 +86,7 @@ Insert your SD card to the camera and power it on. It would take about 3 minutes
 wzmini profile requires 4 partition images for `boot`, `kernel`, `rootfs` and `configs`.
 
 - For `boot` and `configs` partition images, make a copy from Stock firmware backup along with their .sha256sum files.
-- For `kernel` and `rootfs`, download them along with their .sha256sum files from (to be announced)
+- For `kernel` and `rootfs`, download them along with their .sha256sum files from (**TBA**)
 
 Example for t31x:
 

@@ -10,16 +10,20 @@
 
 Download the correct release at the [Release page](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract it to your SD card.
 
-Releases for `t20` support:
+
+Example for T31:
+
+![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/setup_01.png)
+
+-----
+**ℹ️ Notes:**
+
+T20 releases support:
 - Wyze Cam Pan
 - Wyze Cam v2
 
-Releases for `t31` support:
+T31 releases support:
 - Wyze Cam v2 Pan
 - Wyze Cam v3
 - Wyze Cam Floodlight
-
-Example for t31:
-
-![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/setup_01.png)
 

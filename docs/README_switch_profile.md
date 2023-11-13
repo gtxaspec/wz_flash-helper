@@ -52,7 +52,7 @@ a88a367b4f6c8a9ea703428b20617d4e8ccb4eba516962dc0fc37391adf0e2bc  openipc_t31x_b
 
 Example for t31x:
 
-![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_01.png)
+![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_openipc.png)
 
 **Step 4: Edit custom script to set uboot env variables**
 
@@ -109,6 +109,10 @@ wzmini profile requires 4 partition images for `boot`, `kernel`, `rootfs` and `c
 
 - For `boot` and `configs` partition images, make a copy from Stock firmware backup along with their .sha256sum files.
 - For `kernel` and `rootfs`, download them along with their .sha256sum files from (to be announced)
+
+Example for t31x:
+
+![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_wzmini.png)
 
 **Step 3: Edit the program configuration file**
 

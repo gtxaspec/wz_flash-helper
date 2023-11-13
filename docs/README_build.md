@@ -8,7 +8,7 @@ A Linux distro with `fakeroot` and `cpio` packages installed.
 
 WSL2 has not been tested.
 
-## Build
+## Build 🔨
 
 Download source code from Github repo:
 ```

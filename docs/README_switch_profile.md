@@ -5,9 +5,11 @@
 **❗ WARNING:**
 - DO NOT DISCONNECT POWER when the switch profile operation is going on. This would hard brick your camera.
 - Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
-- Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development)
+- Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development stage)
 
 -----
+
+**Overview**
 
 [Switch to Stock profile](README_switch_profile_stock.md)
 
@@ -19,7 +21,7 @@
 
 **✅ Option: `switch_profile_with_all_partitions`**
 
-You can decide if all partitions will be written when switching profile.
+You can decide if all partitions will be written by profile operation.
 
 When it is disabled, only necessary partitions for a barely functional camera are written.
 

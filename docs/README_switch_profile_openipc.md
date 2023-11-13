@@ -5,9 +5,11 @@
 **❗ WARNING:**
 - DO NOT DISCONNECT POWER when the switch profile operation is going on. This would hard brick your camera.
 - Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
-- Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development)
+- Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development stage)
 
 -----
+
+[Overview](README_switch_profile.md)
 
 [Switch to Stock profile](README_switch_profile_stock.md)
 
@@ -34,7 +36,7 @@ Download the latest correct firmware archive and uboot image for your camera fro
 - `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`
 - `rootfs.squashfs.[SoC]` to `openipc_[SoC]_rootfs.bin`
 
-**Step 4: [Generate .sha256sum files](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-generate-sha256sum-files-for-partition-images)**
+**Step 4: Generate .sha256sum files** using [this guide](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-generate-sha256sum-files-for-partition-images)
 
 Example for t31x:
 

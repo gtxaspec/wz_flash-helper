@@ -5,9 +5,11 @@
 **❗ WARNING:**
 - DO NOT DISCONNECT POWER when the switch profile operation is going on. This would hard brick your camera.
 - Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
-- Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development)
+- Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development stage)
 
 -----
+
+[Overview](README_switch_profile.md)
 
 [Switch to Stock profile](README_switch_profile_stock.md)
 
@@ -23,10 +25,10 @@
 
 **Step 2: Prepare partition images**
 
-wzmini profile requires 4 partition images for `boot`, `kernel`, `rootfs` and `configs`.
+wzmini profile requires 4 partition images: `boot`, `kernel`, `rootfs` and `configs`.
 
-- For `boot` and `configs` partition images, make a copy from Stock firmware backup along with their .sha256sum files.
-- For `kernel` and `rootfs`, download them along with their .sha256sum files from (**TBA**)
+- `boot` and `configs` partition images can be created by making a copy from Stock firmware backup along with their .sha256sum files.
+- `kernel` and `rootfs` partition images along with their .sha256sum files can be downloaded them from (**TBA**).
 
 Example for t31x:
 

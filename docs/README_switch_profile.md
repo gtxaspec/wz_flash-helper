@@ -9,13 +9,12 @@
 
 -----
 
-### 📖 Switch profile
+### 📄 Index
 
-### [Switch to Stock profile](README_switch_profile_stock.md)
-
-### [Switch to OpenIPC profile](README_switch_profile_openipc.md)
-
-### [Switch to wzmini profile](README_switch_profile_wzmini.md) 
+- Switch profile overview
+- [Switch to Stock profile](README_switch_profile_stock.md)
+- [Switch to OpenIPC profile](README_switch_profile_openipc.md)
+- [Switch to wzmini profile](README_switch_profile_wzmini.md) 
 
 -----
 

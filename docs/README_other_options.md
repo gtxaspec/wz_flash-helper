@@ -4,7 +4,7 @@
 
 ## Specify the SD card kernel that will be used on the next boot
 
-Option: `new_sdcard_kernel`
+**✅ Option: `new_sdcard_kernel`**
 
 If you are using `wz_mini_hacks` with Stock profile, you can rename wz_mini's kernel file to `sdcard_boot.wz_mini` and specify its filename with the option.
 
@@ -17,7 +17,7 @@ This kernel file will be booted on the next boot without having to pull the SD c
 
 ## Run custom scripts
 
-Option: `custom_scripts`
+**✅ Option: `custom_scripts`**
 
 You can write scripts and get them executed by the program after backup/restore/switch_profile operations are finished. This is useful for extra modifications to your partitions from initramfs environment.
 

@@ -26,7 +26,7 @@ Download the latest correct firmware archive and uboot image for your camera fro
 - `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`
 - `rootfs.squashfs.[SoC]` to `openipc_[SoC]_rootfs.bin`
 
-**Step 4: [Generate .sha256sum files](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-generate-sha256sum-files-for-partition-images)****
+**Step 4: [Generate .sha256sum files](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-generate-sha256sum-files-for-partition-images)**
 
 Example for t31x:
 
@@ -107,7 +107,7 @@ Insert your SD card to the camera and power it on. It would take about 3 minutes
 
 -----
 
-Option: `switch_profile_with_all_partitions`
+**✅ Option: `switch_profile_with_all_partitions`**
 
 You can decide if all partitions will be written when switching profile.
 

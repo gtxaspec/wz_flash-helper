@@ -18,7 +18,7 @@ Download source code from Github repo:
 git submodule update --init --recursive https://github.com/archandanime/wz_flash-helper.git
 ```
 
-Patch OpenIPC kernel source:
+Patch OpenIPC kernel config:
 ```
 ./build.sh patch
 ```

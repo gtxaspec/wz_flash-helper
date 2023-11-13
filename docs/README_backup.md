@@ -37,6 +37,6 @@ Under those directories, there are directories with 4-digit ID names where parti
 To know what backup ID was used for the most recent backup, check the `initramfs_serial.log` file.
 
 ### ℹ️ Notes
-- Backup operation will automatically generate .sha256sum files for partition backup images.
+- Backup operation automatically generates .sha256sum files for partition backup images and archives.
 - During the backup operation, the blue LED would be blinking every second.
 - Typically backup operation takes about 30 seconds(for reference, it takes 25 seconds on Wyze Cam v3).

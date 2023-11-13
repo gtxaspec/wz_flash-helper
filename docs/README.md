@@ -24,7 +24,7 @@
 - Backup is done first, then Restore, then Switch profile, and followed by Custom scripts.
 - If one task fails, the program would exit immediately without doing any more operations.
 
-## Warning
+## Disclaimer
 ```
 I am not responsible for bricking someone's camera.
 DO NOT DISCONNECT POWER when the switch profile operation is going on,

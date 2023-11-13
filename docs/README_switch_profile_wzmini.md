@@ -9,7 +9,7 @@
 
 -----
 
-### [📖 Overview](README_switch_profile.md)
+### [📖 Switch profile overview](README_switch_profile.md)
 
 ### [Switch to Stock profile](README_switch_profile_stock.md)
 
@@ -19,7 +19,9 @@
 
 -----
 
-### Guide
+### 📖 Overview
+
+### 🛠️ Guide
 
 **Step 1: [Setup](README_setup.md)**
 

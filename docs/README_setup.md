@@ -12,7 +12,7 @@
 
 ### 🛠️ Guide
 
-Download the correct release at the [Release page](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract it to your SD card.
+Download the correct release from the [Release page](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract it to your SD card.
 
 Example for T31:
 

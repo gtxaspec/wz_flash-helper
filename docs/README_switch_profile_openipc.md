@@ -13,13 +13,13 @@
 
 ### [Switch to Stock profile](README_switch_profile_stock.md)
 
-### **Switch to OpenIPC profile**
+### Switch to OpenIPC profile
 
 ### [Switch to wzmini profile](README_switch_profile_wzmini.md)
 
 -----
 
-## Switch to OpenIPC profile
+### Guide
 
 **Step 1: [Setup](README_setup.md)**
 

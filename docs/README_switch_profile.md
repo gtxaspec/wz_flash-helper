@@ -9,7 +9,7 @@
 
 -----
 
-### 📖 Overview**
+### 📖 Overview
 
 ### [Switch to Stock profile](README_switch_profile_stock.md)
 

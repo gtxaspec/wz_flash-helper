@@ -2,7 +2,7 @@
 
 
 
-## Specify the SD card kernel that will be used on the next boot
+### Specify the SD card kernel that will be used on the next boot
 
 **✅ Option: `new_sdcard_kernel`**
 
@@ -15,7 +15,7 @@ After all operations are finished, that file will be renamed to:
 
 This kernel file will be booted on the next boot without having to pull the SD card and rename it manually. Seamless transition!
 
-## Run custom scripts
+### Run custom scripts
 
 **✅ Option: `custom_scripts`**
 
@@ -23,7 +23,7 @@ You can write scripts and get them executed by the program after backup/restore/
 
 -----
 
-**ℹ️ Notes:**
+### ℹ️ Notes
 - If you are on OpenIPC profile, SD card kernel specified with `new_sdcard_kernel` will be renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using the SD card kernel for personal purposes, you should disable it.
 - SD card kernel will not be renamed if `dry_run` is enabled.
 - Custom scripts will not run if `dry_run` is enabled.

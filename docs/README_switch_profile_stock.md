@@ -11,7 +11,7 @@
 
 ### [📖 Overview](README_switch_profile.md)
 
-### **Switch to Stock profile**
+### Switch to Stock profile
 
 ### [Switch to OpenIPC profile](README_switch_profile_openipc.md)
 

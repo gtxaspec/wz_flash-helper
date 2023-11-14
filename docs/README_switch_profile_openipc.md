@@ -50,7 +50,7 @@ Example for t31x:
 
 **Step 5: Edit the custom script setup_openipc_env.sh**
 
-Because Wyze cameras don't have Ethernet, Wi-Fi authentication information and driver need to be configured so your camera can connect to your home Wi-Fi network after OpenIPC boots up. The `setup_openipc_env.sh` script under the `wz_flash-helper/scripts/` directory would help you with the mentioned Wi-Fi settings.
+Because Wyze cameras don't have Ethernet, Wi-Fi authentication information and driver need to be configured by setting uboot env variables so your camera can connect to your home Wi-Fi network after OpenIPC boots up. The `setup_openipc_env.sh` script under the `wz_flash-helper/scripts/` directory would help you to do the job.
 
 To get the `setup_openipc_env.sh` script work, edit the script to set your Wi-Fi name(SSID) and password, optionally set your camera MAC address and Timezone.
 
@@ -71,4 +71,4 @@ custom_scripts="setup_openipc_env.sh"
 
 **Step 7: Power on**
 
-Insert your SD card into your camera and power on. It would take about 3 minutes to finish writing all partitions, then it would reboot to OpenIPC firmware.
+Insert your SD card into your camera and power on. It would take about 3 minutes to finish writing all partitions, then it will reboot to OpenIPC firmware.

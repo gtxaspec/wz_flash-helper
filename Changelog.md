@@ -19,3 +19,7 @@
 ## v0.6.4
 
 - Print chip group info on serial terminal and to log files
+
+## v0.6.5
+
+- Grow wzmini kernel partition ftom 1984k to 3072k

@@ -10,7 +10,7 @@
 
 ### 📖 Overview
 
-The backup operation creates partition backup images for all partitions. Additionally, it creates an image for the entire flash and archive file(s) for writable partition(s). The partition backup images can be used later to restored partitions or for profile switching.
+The backup operation creates partition backup images for all partitions. Additionally, it creates an image for the entire flash and archive file(s) for writable partition(s). The partition backup images can be used later to restore partitions or for profile switching.
 
 ### 🛠️ Guide
 
@@ -26,7 +26,7 @@ restore_partitions="no"
 
 **Step 4:** Wait for the camera to restart after the backup operation is finished.
 
-**Step 5:** Check your SD card for backup directory:
+**Step 5:** Check your SD card for the backup directory:
 
 - For Stock: `wz_flash-helper/backup/stock` and `Wyze_factory_backup`
 - For OpenIPC: `wz_flash-helper/backup/openipc`
@@ -39,4 +39,4 @@ To know what backup ID was used for the most recent backup, check the `initramfs
 ### ℹ️ Notes
 - Backup operation automatically generates .sha256sum files for partition backup images and archives.
 - During the backup operation, the blue LED would be blinking every second.
-- Typically backup operation takes about 30 seconds(for reference, it takes 25 seconds on Wyze Cam v3).
+- Typically backup operation takes about 30 seconds (for reference, it takes 25 seconds on Wyze Cam v3).

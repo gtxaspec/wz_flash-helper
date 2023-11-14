@@ -19,7 +19,7 @@ This kernel file will be booted on the next boot without having to pull the SD c
 
 **✅ Option: `custom_scripts`**
 
-You can write scripts and get them executed by the program after backup/restore/switch_profile operations are finished. This is useful for extra modifications to your partitions from initramfs environment.
+You can write scripts and get them executed by the program after backup/restore/switch_profile operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
 
 -----
 

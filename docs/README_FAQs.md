@@ -11,7 +11,7 @@ Edit `general.conf` with:
 dry_run="yes"
 ```
 
-Then insert your SD card into your camera, power on, wait till the program is finished, check `initramfs_serial.log` for "chip group" information. That is your camera SoC.
+Then insert your SD card into your camera, power on, wait till the program is finished, then check `initramfs_serial.log` for "chip group" information. That is your camera SoC.
 
 **2. Obtain Wi-Fi MAC address**
 
@@ -32,11 +32,11 @@ for i in [profile]_*.bin; do sha256sum $i > $i.sha256sum; done
 ```
 certutil -hashfile "[profile]_[SoC]_[partition name].bin" SHA256
 ```
-then create .sha256sum files for each partition images with this format:
+then create .sha256sum files for each partition image with this format:
 ```
 [sha256sum value]		[profile]_[SoC]_[partition name].bin
 ```
-It doesn't matter how many empty spaces there are between sha256 value and partition image filename.
+It doesn't matter how many empty spaces there are between the sha256 value and the partition image filename.
 
 for example:
 ```
@@ -50,7 +50,7 @@ a88a367b4f6c8a9ea703428b20617d4e8ccb4eba516962dc0fc37391adf0e2bc  openipc_t31x_b
 Make sure that:
 - Your SD card partition table is **MBR**.
 - You downloaded the correct release for your camera SoC.
-- The SD card kernel has the correct name(`factory_..._ZMC6tiIDQN`) without the `.wz_flash-helper` extension. The program adds the extension to its kernel file after it is finished to prevent itself from booting multiple times, therefore you need to rename it back if you want to run the program again.
+- The SD card kernel has the correct name(`factory_..._ZMC6tiIDQN`) without the `.wz_flash-helper` extension. The program adds the extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
 
 ### How does switching profile work?
 

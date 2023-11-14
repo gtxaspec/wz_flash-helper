@@ -5,7 +5,7 @@
 **❗ WARNING:**
 - DO NOT DISCONNECT POWER when the switch profile operation is going on. This would hard brick your camera.
 - Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
-- Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development stage)
+- Switching to wzmini profile is not supported yet (it is actually supported, but the firmware is still in early development stage)
 
 -----
 
@@ -25,7 +25,7 @@ Switch profile overview
 
 You can decide if all partitions will be written by profile operation.
 
-When it is disabled, only necessary partitions for a barely functional camera are written.
+When it is disabled, only the necessary partitions for a barely functional camera are written.
 
 - For OpenIPC: `boot`, `kernel` and `rootfs` are written; `rootfs_data` would be formatted.
 - For Stock T20: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para` are written; `backupa` would be formatted.
@@ -35,7 +35,7 @@ When it is enabled, all partition images are needed. This is only helpful when y
 
 On Stock firmware, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be written because they don't contain any meaningful data as they are used by Stock firmware as stage partitions to install updates. You can disable this option to save time.
 
-This option value has no effect when switching to wzmini profile. All partitions are written anyway because writting the `configs` partition is required for your camera to be functional.
+This option value has no effect when switching to the wzmini profile. All partitions are written anyway because writing the `configs` partition is required for your camera to be functional.
 
 -----
 

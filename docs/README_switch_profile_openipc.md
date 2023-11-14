@@ -35,7 +35,7 @@ openipc profile requires four partition images: `boot`, `env`, `kernel` and `roo
 
 **⚠️ IMPORTANT:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would hard brick your camera.
 
-Download the latest correct firmware archive and uboot image for your camera from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract firmware archive and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
+Download the latest correct firmware archive and uboot image for your camera from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract the firmware archive, and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 
 - `u-boot-[SoC]-universal.bin` to `openipc_[SoC]_boot.bin`
 - `openipc_env.bin.[SoC]` to `openipc_[SoC]_env.bin`
@@ -52,7 +52,7 @@ Example for t31x:
 
 Because Wyze cameras don't have Ethernet, Wi-Fi authentication information and driver need to be configured by setting uboot env variables so your camera can connect to your home Wi-Fi network after OpenIPC boots up. The `setup_openipc_env.sh` script under the `wz_flash-helper/scripts/` directory would help you to do the job.
 
-To get the `setup_openipc_env.sh` script work, edit the script to set your Wi-Fi name(SSID) and password, optionally set your camera MAC address and Timezone.
+To get the `setup_openipc_env.sh` script work, edit the script to set your Wi-Fi name (SSID) and password, optionally set your camera's MAC address and Timezone.
 
 The Wi-Fi driver doesn't need to be set manually because it is automatically detected.
 
@@ -71,4 +71,4 @@ custom_scripts="setup_openipc_env.sh"
 
 **Step 7: Power on**
 
-Insert your SD card into your camera and power on. It would take about 3 minutes to finish writing all partitions, then it will reboot to OpenIPC firmware.
+Insert your SD card into your camera and power on. It would take about 3 minutes to finish writing all partitions, then it would reboot to OpenIPC firmware.

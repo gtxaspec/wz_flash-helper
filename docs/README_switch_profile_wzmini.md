@@ -5,7 +5,7 @@
 **❗ WARNING:**
 - DO NOT DISCONNECT POWER when the switch profile operation is going on. This would hard brick your camera.
 - Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
-- Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development stage)
+- Switching to wzmini profile is not supported yet (it is actually supported, but the firmware is still in early development stage)
 
 -----
 
@@ -31,7 +31,7 @@ wzmini profile requires four partition images: `boot`, `kernel`, `rootfs` and `c
 
 **Step 2: Prepare partition images**
 
-- `boot` and `configs` partition images can be created by making a copy from Stock firmware backup along with their .sha256sum files.
+- `boot` and `configs` partition images can be created by making a copy from the Stock firmware backup along with their .sha256sum files.
 - `kernel` and `rootfs` partition images along with their .sha256sum files can be downloaded them from (**TBA**).
 
 Example for t31x:
@@ -49,4 +49,4 @@ next_profile="wzmini"
 
 **Step 4: Power on**
 
-Insert your SD card to the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to wzmini firmware.
+Insert your SD card into the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it would reboot to wzmini firmware.

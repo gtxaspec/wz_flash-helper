@@ -12,6 +12,7 @@ SoC="${2}"
 function show_syntax() {
 	echo "./build.sh <action> <SoC>"
 	echo "Actions: patch initramfs kernel release clean"
+	echo "SoC: t20 t31"
 }
 
 function get_sdcard_kernel_filename() {

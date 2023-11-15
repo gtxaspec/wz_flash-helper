@@ -23,3 +23,8 @@
 ## v0.6.5
 
 - Grow wzmini kernel partition ftom 1984k to 3072k
+
+## v0.6.6
+
+- Improve displayed messages for profile detection
+

@@ -1,3 +1,4 @@
 [submodule "firmware"]
 	path = firmware
 	url = https://github.com/OpenIPC/firmware.git
+	update = true

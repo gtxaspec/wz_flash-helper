@@ -14,6 +14,7 @@ Building with WSL2 has not been tested.
 ### 🔨 Build
 
 **1. Prepare**
+
 Download source code from the Github repo:
 ```
 git clone --recurse-submodules https://github.com/archandanime/wz_flash-helper.git

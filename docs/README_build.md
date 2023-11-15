@@ -15,7 +15,7 @@ WSL2 has not been tested.
 
 Download source code from the Github repo:
 ```
-git submodule update --init --recursive https://github.com/archandanime/wz_flash-helper.git
+git clone --recursive https://github.com/archandanime/wz_flash-helper.git
 ```
 
 Patch OpenIPC kernel config:

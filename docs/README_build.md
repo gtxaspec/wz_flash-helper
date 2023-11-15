@@ -32,19 +32,13 @@ To build a kernel, run:
 ```
 ./build.sh kernel <SoC>
 ```
-for example:
-```
-./build.sh kernel t20
-```
 
 To generate a release, run:
 ```
 ./build.sh release <SoC>
 ```
-for example:
-```
-./build.sh release t20
-```
+
+where as `SoC` is `t20` or `t31`
 
 To clean up, run:
 ```

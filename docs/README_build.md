@@ -3,7 +3,7 @@
 
 ### 📖 Overview
 
-wz_flash-helper uses OpenIPC kernel source. The compilation steps are the same as building OpenIPC kernels after patching kernel config files.
+wz_flash-helper uses OpenIPC kernel source. The compilation steps are the same as building OpenIPC kernels after the kernel config files are patched.
 
 ### ‍🍳 Prerequisites
 
@@ -38,7 +38,7 @@ To generate a release, run:
 ./build.sh release <SoC>
 ```
 
-where as `SoC` is `t20` or `t31`
+where as `SoC` is either `t20` or `t31`
 
 To clean up, run:
 ```

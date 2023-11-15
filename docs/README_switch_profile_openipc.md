@@ -33,7 +33,7 @@ openipc profile requires four partition images: `boot`, `env`, `kernel` and `roo
 
 **Step 3: Prepare partition images**
 
-**⚠️ IMPORTANT:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would hard brick your camera.
+**❗ WARNING:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would hard brick your camera.
 
 Download the latest correct firmware archive and uboot image for your camera from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest), extract the firmware archive, and place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 

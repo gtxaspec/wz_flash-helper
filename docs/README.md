@@ -3,6 +3,7 @@
 
 
 ## Features
+
 - Serial or SSH connections are not needed! only SD card.
 - Backup partitions
 - Restore partitions
@@ -13,6 +14,7 @@
 - Support custom scripts to customize partitions
 
 ## Supported cameras
+
 - Wyze Cam Pan
 - Wyze Cam v2
 - Wyze Cam v2 Pan
@@ -20,11 +22,13 @@
 - Wyze Cam Floodlight
 
 ## Notes
+
 - It is highly recommended to enable `dry_run` to check if everything works before doing real operations.
 - Backup is done first, then Restore, then Switch profile, and followed by Custom scripts.
 - If one task fails, the program would exit immediately without doing any more operations.
 
 ## Disclaimer
+
 ```
 I am not responsible for bricking someone's camera.
 DO NOT DISCONNECT POWER when the switch profile operation is going on,
@@ -33,6 +37,7 @@ It is also possible to brick the camera if you corrupt the uboot partition with 
 ```
 
 ## Credits
+
 - Gtxaspec with his ideas, tips, and hard work on OpenIPC drivers, uboot SD card booting, and testing.
 - Mnakada with their Docker image to build the SD card kernel from [their repo](https://github.com/mnakada/atomcam_tools)
 - [OpenIPC](https://github.com/OpenIPC) project and people with their tools, firmware, and tips.

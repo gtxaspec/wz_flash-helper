@@ -6,15 +6,15 @@
 function detect_profile() {
 	msg
 	if grep -q "demo_wcv3.bin" /boot_backup.img.strings ; then # Stock Cam v3
-		msg "The camera uboot is stock Cam v3"
+		msg "stock Cam v3 uboot is detected"
 		current_profile="stock"
 	
 	elif grep -q "recovery_wcpv2.bin" /boot_backup.img.strings ; then # Stock Cam Pan v2
-		msg "The camera uboot is stock Cam Pan v2"
+		msg "stock Cam Pan v2 uboot is detected"
 		current_profile="stock"
 	
 	elif grep -q "factory_t31_0P3N1PC_kernel" /boot_backup.img.strings ; then
-		msg "The camera uboot is OpenIPC for T31"
+		msg "T31 OpenIPC uboot is detected"
 		current_profile="openipc"
 	else
 		msg_color_bold red "Unable to detect current profile by analyzing uboot strings"

@@ -6,7 +6,7 @@
 function detect_profile() {
 	msg
 	if grep -q "demo.bin" /boot_backup.img.strings ; then # Stock Cam v2 & Cam Pan
-		msg "Detected stock Cam Pan v2 or Cam Pan uboot"
+		msg "Detected stock Wyze Cam Pan v2 or Wyze Cam Pan uboot"
 		current_profile="stock"
 	
 	elif grep -q "factory_t20_0P3N1PC_kernel" /boot_backup.img.strings ; then
@@ -21,7 +21,7 @@ function detect_profile() {
 		mkdir -p /rootfs_mnt
 		mount -o ro -t squashfs /dev/mtdblock17 /rootfs_mnt || { msg_color_bold red "Unable to mount rootfs" ; return 1 ; }
 		if [ -d /rootfs_mnt/opt/wz_mini ]; then
-			msg_color lightbrown "Found wzmini on rootfs"
+			msg_color lightbrown "Found wz_mini on rootfs"
 			current_profile="wzmini"
 		fi
 		umount /rootfs_mnt && rmdir /rootfs_mnt

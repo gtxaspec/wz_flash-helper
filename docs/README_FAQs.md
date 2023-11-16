@@ -73,7 +73,7 @@ When the switch profile operation is going on, it reads the partition images tha
 - Partition types (`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
 - Name of SD card kernel that can be recognized and booted by uboot
 - Backup and restore paths to hold partition images
-- List of mandatory partitions that must be written when switching to that profile (when `witch_profile_with_all_partitions` is disabled) and list of tasks to do (`ignore`, `erase,`,`format`, `leave`) with other partitions.
+- List of mandatory partitions that must be written when switching to that profile (when `witch_profile_with_all_partitions` is disabled) and list of tasks to do (`write`, `erase,`,`format`, `leave`) with other partitions.
 - Model detection script to detect camera model
 - Profile detection script to detect current profile
 

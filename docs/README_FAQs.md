@@ -1,8 +1,8 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | **FAQs**
 
 
-
-###❓ How can I obtain my camera hardware info?
+❓
+### How can I obtain my camera hardware info?
 
 **1. Obtain camera SoC info**
 
@@ -21,7 +21,8 @@ There are three ways:
 - Checking with Wyze mobile app: Device info -> MAC
 - Running `ifconfig wlan0` with SSH or serial connection
 
-###❓ How can I generate .sha256sum files for partition images?
+❓
+### How can I generate .sha256sum files for partition images?
 
 - If you have WSL or Linux, you only need to run:
 ```
@@ -45,14 +46,16 @@ a88a367b4f6c8a9ea703428b20617d4e8ccb4eba516962dc0fc37391adf0e2bc  openipc_t31x_b
 
 **⚠️ IMPORTANT:** Each .sha256sum file must have only one line.
 
-###❓ The program does not work at all. Help!
+❓
+### The program does not work at all. Help!
 
 Make sure that:
 - Your SD card partition table is **MBR** and partition format is **FAT**.
 - You downloaded the correct release for your camera SoC.
 - The SD card kernel has the correct name(`factory_..._ZMC6tiIDQN`) without the `.wz_flash-helper` extension. The program adds the extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
 
-###❓How does switching profile work?
+❓
+### How does switching profile work?
 
 On NOR flash, there is no partition table; the partition layout is actually seen by the kernel by setting `CONFIG_CMDLINE= ... mtdparts=...` which will be passed to `jz_sfc` driver. That option defines each partition size to let partition data be read and written to the correct addresses.
 
@@ -60,7 +63,8 @@ The partitions can also be defined by setting their sizes and offsets from the s
 
 When the switch profile operation is going on, it reads the partition images that you provide and writes them to the partitions of the next profile. It is just that simple.
 
-###❓ What is a profile?
+❓
+### What is a profile?
 
 `wz_flash-helper` does not care about the firmware you use (which is a set of binaries); it only cares about the partition information (name, MTD mapping number, filesystem type) of the firmware to read or write the partitions correctly. A profile provides that information to let the program do its job. It includes:
 
@@ -74,7 +78,8 @@ When the switch profile operation is going on, it reads the partition images tha
 - Model detection script to detect camera model
 - Profile detection script to detect current profile
 
-###❓ How can I add a new profile?
+❓
+### How can I add a new profile?
 
 If your new profile is used for existing chip group families, you only need to add the information above the new profile.
 

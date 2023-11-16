@@ -3,7 +3,7 @@
 
 
 **⚠️ IMPORTANT:**
-- Make sure that your SD card partition table is **MBR** instead of GPT. If it is not, please format it to MBR.
+- Make sure that your SD card partition table is **MBR** and partition format is **FAT**(also known as FAT32).
 - If your camera is Wyze Cam Pan or Wyze Cam v2, you need to update your camera bootloader to with the latest version using [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation) before using the program.
 
 -----

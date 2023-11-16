@@ -6,7 +6,7 @@
 emulate_mode="no"
 
 function variables_emulate() {
-	dry_run="yes" # Override config file option so nothing is actually done
+	dry_run="yes" # Override dry_run option so nothing is actually done
 
 	chip_family=""
 	flash_type=""

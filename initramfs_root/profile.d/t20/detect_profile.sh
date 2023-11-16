@@ -6,14 +6,14 @@
 function detect_profile() {
 	msg
 	if grep -q "demo.bin" /boot_backup.img.strings ; then # Stock Cam v2 & Cam Pan
-		msg "stock Cam Pan v2 or Cam Pan uboot is detected"
+		msg "Detected stock Cam Pan v2 or Cam Pan uboot"
 		current_profile="stock"
 	
 	elif grep -q "factory_t20_0P3N1PC_kernel" /boot_backup.img.strings ; then
-		msg "T20 OpenIPC uboot is detected"
+		msg "Detected OpenIPC T20 uboot"
 		current_profile="openipc"
 	else
-		msg_color_bold red "Unable to detect current profile by analyzing uboot strings"
+		msg_color_bold red "No known uboot string is found on boot partition, failed to detect current profile"
 		return 1
 	fi
 
@@ -21,7 +21,7 @@ function detect_profile() {
 		mkdir -p /rootfs_mnt
 		mount -o ro -t squashfs /dev/mtdblock17 /rootfs_mnt || { msg_color_bold red "Unable to mount rootfs" ; return 1 ; }
 		if [ -d /rootfs_mnt/opt/wz_mini ]; then
-			msg_color lightbrown "wzmini has been found on rootfs"
+			msg_color lightbrown "Found wzmini on rootfs"
 			current_profile="wzmini"
 		fi
 		umount /rootfs_mnt && rmdir /rootfs_mnt

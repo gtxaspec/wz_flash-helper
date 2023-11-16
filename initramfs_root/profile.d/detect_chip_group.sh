@@ -15,7 +15,7 @@ function detect_chip_group() {
 			chip_group="t31a"
 			;;
 		*)
-			msg_color_bold red "Your chip name belongs to no group, exiting... "
+			msg_color_bold red "Camera chip name $chip_name belongs to no group"
 			return 1
 			;;
 	esac

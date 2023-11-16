@@ -35,11 +35,11 @@ function or_restore_partitions() {
 		
 		if [[ "$restore_opt_value" == "yes" ]]; then
 			msg_tickbox_yes
-			msg "restore_${current_profile}_${partname} value is set to Yes"
+			msg "restore_${current_profile}_${partname} is set to Yes"
 			write_partition $partname $infile $partmtd || return 1
 		else
 			msg_tickbox_no
-			msg "restore_${current_profile}_${partname} value is set to No"
+			msg "restore_${current_profile}_${partname} is set to No"
 		fi
 	done
 }

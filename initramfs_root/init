@@ -116,9 +116,9 @@ function init_wait_init_interrupt() {
 		exec 2> /dev/console
 		cd / && exec /bin/sh
 	fi
+	exec 0< /dev/null # Stop the user from typing on the serial terminal
 	echo "Action has timed out" > /dev/console
 	echo > /dev/console
-	exec 0< /dev/null # Stop the user from typing on the serial terminal
 }
 
 function init_backup_bootpart() {

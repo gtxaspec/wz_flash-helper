@@ -39,7 +39,7 @@ function custom_script_matched_profile_check() {
 	[[ ! "$switch_profile" == "yes" ]] && local running_profile=$current_profile	
 	[[ "$switch_profile" == "yes" ]] && local running_profile=$next_profile
 
-	msg_nonewline "   Running profile is: "
+	msg_nonewline "   The running profile is: "
 	msg_color_nonewline cyan "$running_profile"
 	msg_nonewline ", "
 	if [[ "$running_profile" == "$matched_profile" ]]; then

@@ -51,6 +51,10 @@ Make sure that:
 - You downloaded the correct release for your camera SoC.
 - The SD card kernel has the correct name(`factory_..._ZMC6tiIDQN`) without the `.wz_flash-helper` extension. The program adds the extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
 
+### Can you add support for my camera?
+
+Yes, with the condition that your camera uboot supports booting a kernel file from SD card. Otherwise, you have to root it then compile and flash a uboot that has that functionality.
+
 ### How does switching profile work?
 
 On NOR flash, there is no partition table; the partition layout is actually seen by the kernel by setting `CONFIG_CMDLINE= ... mtdparts=...` which will be passed to `jz_sfc` driver. That option defines each partition size to let partition data be read and written to the correct addresses.

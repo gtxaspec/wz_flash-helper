@@ -48,7 +48,7 @@ a88a367b4f6c8a9ea703428b20617d4e8ccb4eba516962dc0fc37391adf0e2bc  openipc_t31x_b
 ### The program does not work at all. Help!
 
 Make sure that:
-- Your SD card partition table is **MBR** and partition format is **FAT**(also known as FAT32).
+- Your SD card partition table is **MBR** and partition format is **FAT**.
 - You downloaded the correct release for your camera SoC.
 - The SD card kernel has the correct name(`factory_..._ZMC6tiIDQN`) without the `.wz_flash-helper` extension. The program adds the extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
 

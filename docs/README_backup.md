@@ -24,7 +24,7 @@ restore_partitions="no"
 
 **Step 3:** Insert your SD card into your camera and power on.
 
-**Step 4:** Wait for the camera to restart after the backup operation is finished.
+**Step 4:** Wait for the program to finish. After it is finished, the camera will reboot.
 
 **Step 5:** Check your SD card for the backup directory:
 

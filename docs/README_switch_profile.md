@@ -9,7 +9,7 @@
 
 -----
 
-❓ Q: Hold on, are switch profile and switch firmware the same thing? - Not really, but if you are using existing profiles(stock, openipc and wzmini), they are the same.
+❓ **Q:** Hold on, are switch profile and switch firmware the same thing? - **A:** Not really, but if you are using existing profiles(stock, openipc and wzmini), they are the same.
 
 ### 📄 Index
 

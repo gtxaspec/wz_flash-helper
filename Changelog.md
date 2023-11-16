@@ -22,7 +22,7 @@
 
 ## v0.6.5
 
-- Grow wzmini kernel partition ftom 1984k to 3072k
+- Grow wzmini kernel partition from 1984k to 3072k
 
 ## v0.6.6
 

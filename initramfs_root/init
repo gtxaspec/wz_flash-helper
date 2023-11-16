@@ -169,7 +169,13 @@ function init_rename_prog_sdcard_kernel() {
 			msg_color lightbrown "for this profile is missing"
 		fi
 	done
-	msg_color_bold red "WARNING!!! The program SD card kernel cannot be renamed, this will result in a bootloop"
+	
+	if [ -f /sdcard/$kernelimg.$prog_name ]; then
+		msg_color_nonewline cyan "$kernelimg.$prog_name "
+		msg "exists on SD card, it seems that you are running the init script manually"
+	else
+		msg_color_bold red "WARNING!!! The program SD card kernel cannot be renamed, this will result in a bootloop"
+	fi
 	sleep 3
 	return 1
 }

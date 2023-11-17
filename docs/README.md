@@ -4,12 +4,12 @@
 
 ## Features
 
-- Serial or SSH connections are not needed! only SD card.
 - Backup partitions
 - Restore partitions
 - Switch between Stock, wzmini and OpenIPC firmware
-- Dry run option debugging.
-- Initramfs shell for manual debugging if you have a serial connection.
+- Only SD card is needed
+- Dry run option debugging
+- Initramfs shell for manual debugging if you have a serial connection
 - Seamlessly boot to `wz_mini_hacks` on the next boot
 - Support custom scripts to customize partitions
 
@@ -25,8 +25,7 @@
 
 ```
 I am not responsible for bricking someone's camera.
-DO NOT DISCONNECT POWER when the switch profile operation is going on,
-this would brick your camera (unless you know how to recover with Ingenic Cloner or remove the flash chip and use SPI programmer).
+DO NOT DISCONNECT POWER when the switch profile operation is going on, this would brick your camera (unless you know how to recover with Ingenic Cloner or remove the flash chip and use SPI programmer).
 It is also possible to brick the camera if you corrupt the uboot partition with your custom script or inject dangerous commands into the config file.
 ```
 

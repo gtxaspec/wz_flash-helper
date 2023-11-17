@@ -20,7 +20,7 @@ function detect_profile() {
 	if [[ "$current_profile" == "stock" ]]; then
 		mkdir -p /rootfs_mnt
 		mount -o ro -t squashfs /dev/mtdblock17 /rootfs_mnt || { msg_color_bold red "Unable to mount rootfs" ; return 1 ; }
-		if [ -d /rootfs_mnt/opt/wz_mini ]; then
+		if [ "$(ls -A /rootfs_mnt/system)" ]; then
 			msg_color lightbrown "Found wz_mini on rootfs"
 			current_profile="wzmini"
 		fi

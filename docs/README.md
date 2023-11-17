@@ -21,12 +21,6 @@
 - Wyze Cam v3
 - Wyze Cam Floodlight
 
-## Notes
-
-- It is highly recommended to enable `dry_run` to check if everything works before doing real operations.
-- Backup is done first, then Restore, then Switch profile, and followed by Custom scripts.
-- If one task fails, the program would exit immediately without doing any more operations.
-
 ## Disclaimer
 
 ```

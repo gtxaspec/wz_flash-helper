@@ -52,4 +52,4 @@ To build everything, run:
 ### ℹ️ Notes
 
 - Cloning the Github repo might take up to 15 minutes, depending on your Internet speed.
-- On the first time you build a kernel/release, it takes about 3 minutes, after that it takes only about a minute.
+- On the first time you build a kernel/release, it might take up to 20 minutes to download necessary toolchains before the compiling, after that it takes only about a minute.

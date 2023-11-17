@@ -44,6 +44,10 @@ To clean up, run:
 ```
 ./build.sh clean
 ```
+To build everything, run:
+```
+./build.sh clean && ./build.sh release t20 && ./build.sh release t31
+```
 
 ### ℹ️ Notes
 

@@ -15,7 +15,7 @@ Building with WSL2 has not been tested.
 
 **1. Prepare**
 
-Download source code from the Github repo:
+Clone the Github repo:
 ```
 git clone --recurse-submodules https://github.com/archandanime/wz_flash-helper.git
 cd wz_flash-helper
@@ -47,4 +47,5 @@ To clean up, run:
 
 ### ℹ️ Notes
 
+- Cloning the Github repo might take up to 15 minutes, depending on your Internet speed.
 - On the first time you build a kernel/release, it takes about 3 minutes, after that it takes only about a minute.

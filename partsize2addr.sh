@@ -59,7 +59,7 @@ function import_vars_t31_stock() {
 
 function import_vars_wzmini() {
 	part_name=(boot kernel rootfs configs)
-	part_size=(256 1984 13760 384)
+	part_size=(256 3072 12672 384)
 }
 
 function import_vars_openipc() {

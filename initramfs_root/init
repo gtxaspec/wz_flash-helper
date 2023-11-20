@@ -222,8 +222,8 @@ function exit_init() {
 	msg
 	msg_color_bold magenta "Initramfs init is finished!"
 
-	cp /tmp/initramfs.log $prog_log_file
 	cp /tmp/initramfs_serial.log $prog_log_file_serial
+	cp /tmp/initramfs.log $prog_log_file
 
 	sync
 	umount /sdcard

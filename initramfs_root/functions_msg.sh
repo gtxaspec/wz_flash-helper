@@ -119,9 +119,9 @@ function msg_tickbox_no() {
 # Description: Display a tickbox with color
 	local color_code_no=$(get_color_code "lightbrown")
 	
-	echo -ne "\e[1;${color_code_no}m[ ] \e[0m" > /dev/console
 	echo -n "[ ] "
 	echo -n "[ ] " >> /tmp/initramfs_serial.log
+	echo -ne "\e[1;${color_code_no}m[ ] \e[0m" > /dev/console
 }
 
 function msg_dry_run() {

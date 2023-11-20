@@ -28,3 +28,7 @@
 
 - Improve displayed messages for profile detection
 
+## v0.6.7
+
+- Fix audio is not played on Wyze Pan v2
+- Fix "Rebooting now" audio is not played

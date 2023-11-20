@@ -18,12 +18,10 @@ Example for T31:
 
 ### ℹ️ Notes
 
-T20 releases support:
-- Wyze Cam Pan
-- Wyze Cam v2
+- The program adds the extension `.wz_flash-helper` to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
 
-T31 releases support:
-- Wyze Cam v2 Pan
-- Wyze Cam v3
-- Wyze Cam Floodlight
+- The program takes about 15 seconds to load before processing operations.
 
+- T20 releases support: `Wyze Cam Pan` and `Wyze Cam v2`.
+
+- T31 releases support: `Wyze Cam v2 Pan`, `Wyze Cam v3` and `Wyze Cam Floodlight`.

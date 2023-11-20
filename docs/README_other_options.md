@@ -24,6 +24,7 @@ You can write scripts and get them executed by the program after backup/restore/
 -----
 
 ### ℹ️ Notes
+
 - If you are on OpenIPC profile, SD card kernel specified with `new_sdcard_kernel` will be renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using the SD card kernel for personal purposes, you should disable it.
 - SD card kernel will not be renamed if `dry_run` is enabled.
 - Custom scripts will not run if `dry_run` is enabled.

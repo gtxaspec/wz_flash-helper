@@ -32,8 +32,9 @@ restore_partitions="yes"
 **Step 5:** Insert your SD card into your camera and power on. Wait for the program to finish. After it is finished, the camera will reboot.
 
 ### ℹ️ Notes
+
 - There is no option to restore your boot partition to avoid accidentally corrupting it.
 - For the backup operation to start, `switch_profile` option must be disabled, like in the above configurations. If both the `restore_partitions` and `switch_profile` options are enabled, both operations will not be done.
 - All partition restore images must come with their .sha256sum file for integrity verification.
 - During the restore operation, the red LED would be blinking every second.
-- Typically, the restore operation takes about 2 minutes (for reference, it takes 2 minutes and 15 seconds on Wyze Cam v3).
+- Typically, the restore operation takes about 2 minutes (excluding load time).

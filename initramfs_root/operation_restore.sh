@@ -49,7 +49,8 @@ function operation_restore() {
 	[ ! -d $cp_restore_path ] && { msg_color_bold red "$cp_restore_path directory is missing" ; return 1 ; }
 	[ ! -f $prog_restore_config_file ] && { msg_color red "$prog_restore_config_file file is missing. Nothing more will be done" ; return 1 ; }	
 
-	dos2unix $prog_restore_config_file && source $prog_restore_config_file || { msg_color_bold red "$prog_restore_config_file file is invalid. Nothing will be done" ; return 1 ; }
+	grep -q $'\r' $prog_restore_config_file && dos2unix $prog_restore_config_file
+	source $prog_restore_config_file || { msg_color_bold red "$prog_restore_config_file file is invalid. Nothing will be done" ; return 1 ; }
 
 	/bg_blink_led_red.sh &
 	local red_led_pid="$!"

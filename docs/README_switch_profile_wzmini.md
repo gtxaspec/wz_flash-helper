@@ -50,3 +50,5 @@ next_profile="wzmini"
 **Step 4: Power on**
 
 Insert your SD card into the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it would reboot to wzmini firmware.
+
+After your camera finishes booting, you can use an IP scanner (e.g. nmap) to figure out its IP address and connect to it using SSH.

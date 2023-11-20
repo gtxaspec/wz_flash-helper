@@ -49,6 +49,8 @@ To build everything, run:
 ./build.sh clean && ./build.sh release t20 && ./build.sh release t31
 ```
 
+Compiled kernels and releases will be saved at `output/` directory.
+
 ### ℹ️ Notes
 
 - Cloning the Github repo might take up to 15 minutes, depending on your Internet speed.

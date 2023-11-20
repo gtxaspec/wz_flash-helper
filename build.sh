@@ -40,7 +40,8 @@ function get_default_kernel_config() {
 }
 
 function make_initramfs() {
-	( cd initramfs_root && find . | fakeroot cpio --create --format='newc' | gzip > /tmp/initramfs.cpio )
+	echo "Creating /tmp/initramfs.cpio"
+	( cd initramfs_root && find . | fakeroot cpio --create --format='newc' | gzip > /tmp/initramfs.cpio)
 }
 
 function patch_all_kernel_config() {
@@ -57,6 +58,7 @@ function compile_kernel() {
 	echo
 	sleep 2
 	make_initramfs
+	echo "Compiling kernel for ${SoC}"
 	( cd firmware && BOARD=${SoC}_ultimate_defconfig make br-linux )
 
 	mkdir -p output/${SoC}
@@ -69,6 +71,7 @@ function make_release() {
         make_initramfs
 	compile_kernel
 
+	echo "Making release for ${SoC}"
 	cp -r wz_flash-helper output/${SoC}
 	mv output/${SoC}/wz_flash-helper/restore/stock.conf.${SoC} output/${SoC}/wz_flash-helper/restore/stock.conf
 	rm output/${SoC}/wz_flash-helper/restore/stock.conf.*

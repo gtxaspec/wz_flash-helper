@@ -10,6 +10,7 @@
 
 ## Wi-Fi authentication info
 ## All characters are allowed for wifi_name and wifi_password, EXCEPT single quote (')
+## If your your Wi-Fi password contains a single quote(s), modify the line "fw_setenv wlanpass" below with: "fw_setenv wlanpass $(echo wifi-password)" and replace "wifi-password" with your Wi-Fi password with all special characters escaped
 ## Don't remove the single quotes that quote the values
 wifi_name='Wi-Fi name'
 wifi_password='WiFi password'

@@ -9,7 +9,7 @@
 
 -----
 
-### 📄 Index
+### 📋 Index
 
 [Switch profile overview](README_switch_profile.md)
 
@@ -21,7 +21,7 @@ Switch to wzmini profile
 
 -----
 
-### 📖 Overview
+### 📄 Overview
 
 ### 🛠️ Guide
 

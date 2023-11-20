@@ -9,7 +9,7 @@
 
 -----
 
-### 📄 Index
+### 📋 Index
 
 [Switch profile overview](README_switch_profile.md)
 
@@ -21,7 +21,7 @@ Switch to Stock profile
 
 -----
 
-### 📖 Overview
+### 📄 Overview
 
 Stock profile for T20 requires seven partition images: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
 

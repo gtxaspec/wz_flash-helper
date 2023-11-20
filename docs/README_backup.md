@@ -8,7 +8,7 @@
 
 -----
 
-### 📖 Overview
+### 📄 Overview
 
 The backup operation creates partition backup images for all partitions. Additionally, it creates an image for the entire flash and archive file(s) for writable partition(s). The partition backup images can be used later to restore partitions or for profile switching.
 

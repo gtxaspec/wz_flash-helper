@@ -5,7 +5,7 @@
 
 -----
 
-### 📖 Overview
+### 📄 Overview
 
 The restore operation allows restoring one or more partitions using partition images. You can decide what partitions will be restored.
 

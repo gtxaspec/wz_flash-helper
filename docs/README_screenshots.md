@@ -2,6 +2,10 @@
 
 
 
+### Loading
+
+![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_loading.png)
+
 ### Backup OpenIPC partitions
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_backup.png)

@@ -87,7 +87,7 @@ If you new profile is used for a new chip family, you also need to:
 - Edit `profile.d/detect_chip_group.sh` to define your new SoC name belongs to which chip group (eg. `t20`, `t31a`, `t31x`) to select the right build for OpenIPC.
 - Add partition mapping for the partitions of the new profile to kernel config.
 
-### How can I restore boot partition?
+### How can I restore the boot partition?
 
 **❗ WARNING:** Doing this might brick your camera, only do when you know what you are doing.
 

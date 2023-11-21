@@ -9,7 +9,7 @@
 
 -----
 
-### 📋 Index
+## 📋 Index
 
 [Switch profile overview](README_switch_profile.md)
 
@@ -21,13 +21,13 @@ Switch to Stock profile
 
 -----
 
-### 📄 Overview
+## 📄 Overview
 
 Stock profile for T20 requires seven partition images for: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
 
 Stock profile for T31 requires five partition images for: `boot`, `kernel`, `rootfs`, `app` and `configs`.
 
-### 🛠️ Guide
+## 🛠️ Guide
 
 **Step 1: [Setup](README_setup.md)**
 

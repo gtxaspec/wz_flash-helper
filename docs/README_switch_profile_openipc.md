@@ -9,7 +9,7 @@
 
 -----
 
-### 📋 Index
+## 📋 Index
 
 [Switch profile overview](README_switch_profile.md)
 
@@ -21,11 +21,11 @@ Switch to OpenIPC profile
 
 -----
 
-### 📄 Overview
+## 📄 Overview
 
 openipc profile requires four partition images for: `boot`, `env`, `kernel` and `rootfs`.
 
-### 🛠️ Guide
+## 🛠️ Guide
 
 **Step 1: [Setup](README_setup.md)**
 

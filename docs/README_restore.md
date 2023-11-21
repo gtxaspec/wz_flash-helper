@@ -5,11 +5,11 @@
 
 -----
 
-### 📄 Overview
+## 📄 Overview
 
 The restore operation allows restoring one or more partitions using partition images. You can decide what partitions will be restored.
 
-### 🛠️ Guide
+## 🛠️ Guide
 
 **Step 1: [Setup](README_setup.md)**
 
@@ -31,7 +31,7 @@ restore_partitions="yes"
 ```
 **Step 5:** Insert your SD card into your camera and power on. Wait for the program to finish. After it is finished, the camera will reboot.
 
-### ℹ️ Notes
+## ℹ️ Notes
 
 - There is no option to restore your boot partition to avoid accidentally corrupting it.
 - For the backup operation to start, `switch_profile` option must be disabled, like in the above configurations. If both the `restore_partitions` and `switch_profile` options are enabled, both operations will not be done.

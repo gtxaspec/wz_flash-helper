@@ -8,7 +8,7 @@
 
 -----
 
-### 🛠️ Guide
+## 🛠️ Guide
 
 Download the correct release from the [Release page](https://github.com/archandanime/wz_flash-helper/releases/latest) for your camera SoC and extract it to your SD card.
 
@@ -16,7 +16,7 @@ Example for T31:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/setup_01.png)
 
-### ℹ️ Notes
+## ℹ️ Notes
 
 - The program adds the extension `.wz_flash-helper` to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
 

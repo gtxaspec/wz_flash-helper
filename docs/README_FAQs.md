@@ -12,7 +12,7 @@ Make sure that:
 
 Connect 3 pins: Tx, Rx and GND from your camera to your computer with a USB to TTL adapter. Then run this command from your terminal:
 ```
-sudo picocom /dev/ttyUSB0 -b 115200 -l | tee /tmp/serial.log'
+sudo picocom /dev/ttyUSB0 -b 115200 -l | tee /tmp/serial.log
 ```
 
 Alternatively you can use PuTTY.

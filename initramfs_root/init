@@ -149,7 +149,11 @@ function init_rename_prog_sdcard_kernel() {
 # Description: Rename the program SD card kernel to avoid an infinite boot loop
 	for kernelimg in $cp_sdcard_kernel_name $cp_sdcard_secondary_kernel_name; do
 		if [ -f /sdcard/$kernelimg ]; then
-			msg_nonewline "Renaming program SD card kernel: " && msg_color_nonewline cyan "$kernelimg " && msg_nonewline "to " && msg_color_nonewline cyan "$kernelimg.$prog_name" && msg_nonewline "... "
+			msg_nonewline "Renaming program SD card kernel: "
+			msg_color_nonewline cyan "$kernelimg "
+			msg_nonewline "to "
+			msg_color_nonewline cyan "$kernelimg.$prog_name"
+			msg_nonewline "... "
 			mv /sdcard/$kernelimg /sdcard/$kernelimg.$prog_name && { msg_color green "ok" ; return 0 ; } || msg_color red "failed"
 		else
 			msg_color_nonewline lightbrown "Program SD card kernel "

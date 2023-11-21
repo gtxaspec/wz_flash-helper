@@ -32,3 +32,7 @@
 
 - Fix audio is not played on Wyze Pan v2
 - Fix "Rebooting now" audio is not played
+
+## v0.7.0
+
+- Add more audio files to help the user better keep track of the operations

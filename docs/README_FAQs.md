@@ -1,6 +1,22 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | **FAQs**
 
 
+### The program does not work at all. Help!
+
+Make sure that:
+- Your SD card partition table is **MBR** and partition format is **FAT**.
+- You downloaded the correct release for your camera SoC.
+- The SD card kernel has the correct name(`factory_..._ZMC6tiIDQN`) without the `.wz_flash-helper` extension. The program adds the extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
+
+### How can I access serial console?
+
+Connect 3 pins: Tx, Rx and GND from your camera to your computer with a USB to TTL adapter. Then run this command from your terminal:
+```
+sudo picocom /dev/ttyUSB0 -b 115200 -l | tee /tmp/serial.log'
+```
+
+Alternatively you can use PuTTY.
+
 ### How can I obtain my camera hardware info?
 
 **1. Obtain camera SoC info**
@@ -43,13 +59,6 @@ a88a367b4f6c8a9ea703428b20617d4e8ccb4eba516962dc0fc37391adf0e2bc  openipc_t31x_b
 ```
 
 **⚠️ IMPORTANT:** Each .sha256sum file must have only one line.
-
-### The program does not work at all. Help!
-
-Make sure that:
-- Your SD card partition table is **MBR** and partition format is **FAT**.
-- You downloaded the correct release for your camera SoC.
-- The SD card kernel has the correct name(`factory_..._ZMC6tiIDQN`) without the `.wz_flash-helper` extension. The program adds the extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
 
 ### Can you add support for my camera?
 

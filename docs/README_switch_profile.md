@@ -25,7 +25,7 @@ Switch profile overview
 
 **✅ Option: `switch_profile_with_all_partitions`**
 
-You can decide if all partitions will be written by profile operation.
+With this option, you can decide if all partitions will be written by the switch profile operation.
 
 When it is disabled, only the necessary partitions for a barely functional camera are written.
 
@@ -33,7 +33,7 @@ When it is disabled, only the necessary partitions for a barely functional camer
 - For Stock T20: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para` are written; `backupa` would be formatted.
 - For Stock T31: `boot`, `kernel`, `rootfs`, `app` and `cfg` are written; `kback` would be formatted.
 
-When it is enabled, all partition images are needed. This is only helpful when you need to write `rootfs_data` partition for OpenIPC.
+When it is enabled, all partition images are required for the switch profile operation to start. This is only helpful when you need to write `rootfs_data` partition for OpenIPC.
 
 On Stock firmware, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be written because they don't contain any meaningful data as they are used by Stock firmware as stage partitions to install updates. You can disable this option to save time.
 

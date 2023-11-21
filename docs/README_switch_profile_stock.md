@@ -23,9 +23,9 @@ Switch to Stock profile
 
 ### 📄 Overview
 
-Stock profile for T20 requires seven partition images: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
+Stock profile for T20 requires seven partition images for: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
 
-Stock profile for T31 requires five partition images: `boot`, `kernel`, `rootfs`, `app` and `configs`.
+Stock profile for T31 requires five partition images for: `boot`, `kernel`, `rootfs`, `app` and `configs`.
 
 ### 🛠️ Guide
 

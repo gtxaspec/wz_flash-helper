@@ -6,12 +6,12 @@
 
 **✅ Option: `new_sdcard_kernel`**
 
-If you are using `wz_mini_hacks` with Stock profile, you can rename wz_mini's kernel file to `sdcard_boot.wz_mini` and specify its filename with the option.
+If you are using `wz_mini_hacks` with Stock firmware, you can rename wz_mini's kernel file to `sdcard_boot.wz_mini` and specify that filename with the option.
 
 After all operations are finished, that file will be renamed to:
 
-- `factory_ZMC6tiIDQN` if your camera is running Stock profile on T20
-- `factory_t31_ZMC6tiIDQN` if your camera is running Stock profile on T31
+- `factory_ZMC6tiIDQN` if your camera is on T20
+- `factory_t31_ZMC6tiIDQN` if your camera is T31
 
 This kernel file will be booted on the next boot without having to pull the SD card and rename it manually. Seamless transition!
 
@@ -19,7 +19,7 @@ This kernel file will be booted on the next boot without having to pull the SD c
 
 **✅ Option: `custom_scripts`**
 
-You can write scripts and get them executed by the program after backup/restore/switch_profile operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
+With this option, you can write scripts and get them executed by the program after backup/restore/switch_profile operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
 
 -----
 

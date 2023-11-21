@@ -25,7 +25,7 @@ Switch to wzmini profile
 
 ### 🛠️ Guide
 
-wzmini profile requires four partition images: `boot`, `kernel`, `rootfs` and `configs`.
+wzmini profile requires four partition images for: `boot`, `kernel`, `rootfs` and `configs`.
 
 **Step 1: [Setup](README_setup.md)**
 

@@ -9,8 +9,7 @@ With this option enabled:
 
 - No operation will be done.
 - Custom scripts will not be run.
-- SD card kernel will not be renamed.
-
+- SD card kernel will not be copied and renamed.
 
 **✅ Option: `new_sdcard_kernel`**
 
@@ -18,15 +17,14 @@ With this option, you can specify the SD card kernel that will be used on the ne
 
 If you are using `wz_mini_hacks` with Stock firmware, you can rename wz_mini's kernel file to `sdcard_boot.wz_mini` and specify that filename with the option.
 
-After all operations are finished, that file will be renamed to:
+After all operations are finished, that file will be copied and renamed to:
 
 - `factory_ZMC6tiIDQN` if your camera is on T20
 - `factory_t31_ZMC6tiIDQN` if your camera is T31
 
 This kernel file will be booted on the next boot without having to pull the SD card and rename it manually. Seamless transition!
 
-If you are on OpenIPC profile, SD card kernel specified with `new_sdcard_kernel` will be renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using the SD card kernel for personal purposes, you should disable it.
-
+If you are on OpenIPC profile, SD card kernel specified with `new_sdcard_kernel` will be copied and renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using the SD card kernel for personal purposes, you should disable it.
 
 **✅ Option: `custom_scripts`**
 

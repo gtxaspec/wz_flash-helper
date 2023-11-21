@@ -3,7 +3,7 @@
 
 
 **❗ WARNING:**
-- DO NOT DISCONNECT POWER when the switch profile operation is going on. This would hard brick your camera.
+- DO NOT DISCONNECT POWER when the switch profile operation is going on. This would brick your camera.
 - Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
 - Switching to wzmini profile is not supported yet (it is actually supported, but the firmware is still in early development stage)
 

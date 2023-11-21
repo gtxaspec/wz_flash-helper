@@ -4,7 +4,7 @@
 ### The program does not work at all. Help!
 
 Make sure that:
-- Your SD card partition table is **MBR** and partition format is **FAT**.
+- Your SD card partition table is **MBR** and partition format is **FAT32**.
 - You downloaded the correct release for your camera SoC.
 - The SD card kernel has the correct name(`factory_..._ZMC6tiIDQN`) without the `.wz_flash-helper` extension. The program adds the extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
 

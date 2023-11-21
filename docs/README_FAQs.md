@@ -24,7 +24,7 @@ There are three ways:
 
 - If you have WSL or Linux, you only need to run:
 ```
-for i in [profile]_*.bin; do sha256sum $i > $i.sha256sum; done
+for i in *.bin; do sha256sum $i > $i.sha256sum; done
 ```
 
 - If you are on Windows, use Powershell to run:

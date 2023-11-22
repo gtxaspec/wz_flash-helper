@@ -10,6 +10,7 @@ foreach($file in dir .\* -include ('*.bin', '*.tar.gz') ){
     $hash_lowercase = $hash.ToLower()
 
     $file_basename = (Split-Path $file -leaf)
+    
     $hash_file = "$($file).sha256sum"
     $hash_file_contents = "$hash_lowercase","  ","$file_basename"
 

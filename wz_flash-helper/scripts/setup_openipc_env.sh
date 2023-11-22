@@ -2,7 +2,7 @@
 #
 # Description: Write user Wi-Fi, MAC address, and Timezone variables to the OpenIPC env partition
 #              Use this script to do initial setup when you switch from stock to OpenIPC for the first time
-#              This script is only run if the current profile is openipc
+#              This script is only run if the running profile is openipc
 
 
 

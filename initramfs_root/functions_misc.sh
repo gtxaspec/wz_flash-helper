@@ -16,7 +16,7 @@ function rollback_boot_partition() {
 	msg_color_bold red "ATTENTION! ATTENTION! ATTENTION!"
 	msg
 	msg "It is very likely that your boot partition is corrupted"
-	msg "Rolling back boot partition with previous profile boot image"
+	msg "Rolling back the boot partition using the backup boot image"
 	msg
 	
 	for attempt in 1 2; do
@@ -25,7 +25,7 @@ function rollback_boot_partition() {
 		write_partition "boot" /boot_backup.img $boot_partmtd && { msg_color green "good :) You are safe now!" ; return 1 ; } || msg_color red "bad"
 	done
 	
-	msg_color_bold red "Rollback failed twice, sorry. Probably your flash chip is corrupted"
+	msg_color_bold red "Rollback failed twice. Sorry, your flash chip is probably corrupted"
 	return 1
 }
 

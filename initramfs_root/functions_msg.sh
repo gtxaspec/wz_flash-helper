@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# Description: Print out messages to both the serial terminal and log files
+# Description: Print out messages to both the serial terminal and the log files
 #
 
 function msg() {
-# Description: Print messages to the serial terminal and written to the log files
+# Description: Print messages to the serial terminal and the log files
 	local message="$1"
 
 	echo "$message" # Print to log file

@@ -203,7 +203,7 @@ function init_display_info() {
 	msg
 }
 
-function exit_init() {
+function init_exit() {
 # Description: Copy log files to the SD card and reboot. The user can still interrupt and access the initramfs shell for debugging before the reboot
 	msg
 	msg_color_bold magenta "Initramfs init is finished!"
@@ -223,10 +223,10 @@ function exit_init() {
 	init_play_audio /audio.d/rebooting_now.pcm
 	umount -a -r
 	reboot -f # Reboot immediately
-	sleep 10 # Prevent init from continuing after exit_init finishes, but the camera has not rebooted immediately
+	sleep 10 # Prevent init from continuing after init_exit finishes, but the camera has not rebooted immediately
 }
 
-function main_init() {
+function init_main() {
 	init_detect_hardware
 	init_backup_bootpart
 
@@ -346,5 +346,5 @@ function main_init() {
 	fi
 }
 
-main_init && init_play_audio /audio.d/all_operations_are_successful.pcm
-exit_init
+init_main && init_play_audio /audio.d/all_operations_are_successful.pcm
+init_exit

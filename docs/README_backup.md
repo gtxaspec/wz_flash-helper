@@ -38,6 +38,6 @@ To know what backup ID was used for the most recent backup, check the `initramfs
 
 ## ℹ️ Notes
 
-- Backup operation automatically generates .sha256sum files for partition backup images and archives.
+- The backup operation automatically generates .sha256sum files for partition backup images and archives.
 - During the backup operation, the blue LED would be blinking every second.
-- Typically backup operation takes about 30 seconds (excluding load time).
+- Typically the backup operation takes about 30 seconds (excluding load time).

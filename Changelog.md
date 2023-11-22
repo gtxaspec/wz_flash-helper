@@ -40,3 +40,7 @@
 ## v0.7.1
 
 - Add a Powershell script to generate .sha256sum files to make Windows users happy
+
+## v0.7.2
+
+- Minor fixes

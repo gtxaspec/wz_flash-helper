@@ -3,7 +3,7 @@
 
 
 **❗ WARNING:**
-- Backup your Stock partitions first and copy them to a safe place in case you need them for later recovery.
+- Backup your camera Stock partitions first and copy them to a safe place in case you need them later for recovery.
 - Do not modify your Stock partition backup images, especially the boot partition image, or else rolling back to the Stock profile may brick your camera.
 
 -----

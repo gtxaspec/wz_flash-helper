@@ -3,7 +3,7 @@
 
 
 **❗ WARNING:**
-- DO NOT DISCONNECT POWER when the switch profile operation is going on. This would brick your camera.
+- DO NOT DISCONNECT POWER when the switch profile operation is going on. Doing this would brick your camera.
 - Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
 - Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development stage)
 
@@ -29,13 +29,13 @@ openipc profile requires four partition images for: `boot`, `env`, `kernel` and 
 
 **Step 1: [Setup](README_setup.md)**
 
-**Step 2: [Obtain your camera hardware info](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-obtain-my-camera-hardware-info)**
+**Step 2: [Obtain your camera hardware info](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-obtain-my-camera-hardware-information)**
 
 **Step 3: Prepare partition images**
 
 **❗ WARNING:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would brick your camera.
 
-Download the latest correct firmware archive (`openipc.[chip family]-[flash type]-ultimate.tgz`  file) and uboot image (`u-boot-[SoC]-universal.bin` file) for your camera from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest).
+Download the latest firmware archive (`openipc.[chip family]-[flash type]-ultimate.tgz`  file) and uboot image (`u-boot-[SoC]-universal.bin` file) for your camera from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest).
 
 Then extract the firmware archive, place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 
@@ -73,7 +73,7 @@ custom_scripts="setup_openipc_env.sh"
 
 **Step 7: Power on**
 
-Insert your SD card into your camera and power on. It would take about 3 minutes to finish writing all partitions, then it would reboot to OpenIPC firmware.
+Insert your SD card into your camera and power on. It would take about 3 minutes to finish writing all partitions, then it will reboot to OpenIPC firmware.
 
 After your camera finishes booting, you can use an IP scanner (e.g. nmap) to figure out its IP address and connect to it using SSH.
 

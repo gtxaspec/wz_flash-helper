@@ -17,7 +17,7 @@ sudo picocom /dev/ttyUSB0 -b 115200 -l | tee /tmp/serial.log
 
 Alternatively you can use PuTTY.
 
-### How can I obtain my camera hardware info?
+### How can I obtain my camera hardware information?
 
 **1. Obtain camera SoC info**
 
@@ -33,7 +33,7 @@ Then insert your SD card into your camera, power on, wait till the program is fi
 There are three ways:
 
 - Checking the bottom of the camera
-- Checking with Wyze mobile app: Device info -> MAC
+- Checking with Wyze mobile app: Settings -> Device Info -> MAC address
 - Running `ifconfig wlan0` with SSH or serial connection
 
 ### How can I generate .sha256sum files for partition images?

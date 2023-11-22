@@ -3,7 +3,7 @@
 
 **✅ Option: `dry_run`**
 
-With this option, you can see what commands are executed with by the program without having them run. It would also help with obtaining your camera information.
+With this option, you can see what commands are executed with by the program without having them run. It would also help with obtaining your camera hardware and firmware information.
 
 With this option enabled:
 

@@ -25,7 +25,7 @@ Switch to wzmini profile
 
 ## 🛠️ Guide
 
-wzmini profile requires four partition images for: `boot`, `kernel`, `rootfs` and `configs`. It supports wzmini and any modded firmware with all-in-one partition layout.
+The wzmini profile requires four partition images for: `boot`, `kernel`, `rootfs` and `configs`. It supports wzmini and any modded firmware with all-in-one partition layout.
 
 **Step 1: [Setup](README_setup.md)**
 
@@ -49,6 +49,6 @@ next_profile="wzmini"
 
 **Step 4: Power on**
 
-Insert your SD card into the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it would reboot to wzmini firmware.
+Insert your SD card into your camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to wzmini firmware.
 
 After your camera finishes booting, you can use an IP scanner (e.g. nmap) to figure out its IP address and connect to it using SSH.

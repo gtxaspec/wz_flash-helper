@@ -27,7 +27,7 @@
 ```
 I am not responsible for bricking someone's camera.
 DO NOT DISCONNECT POWER when the switch profile operation is going on, this would brick your camera (unless you know how to recover with Ingenic Cloner or remove the flash chip and use SPI programmer).
-It is also possible to brick the camera if you corrupt the uboot partition with your custom script or inject dangerous commands into the config file.
+It is also possible to brick your camera if you corrupt the uboot partition with your custom script or inject dangerous commands into the config file.
 ```
 
 ## Credits

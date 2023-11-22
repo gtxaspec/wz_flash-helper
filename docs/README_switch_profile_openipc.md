@@ -23,7 +23,7 @@ Switch to OpenIPC profile
 
 ## 📄 Overview
 
-openipc profile requires four partition images for: `boot`, `env`, `kernel` and `rootfs`.
+The openipc profile requires four partition images for: `boot`, `env`, `kernel` and `rootfs`.
 
 ## 🛠️ Guide
 
@@ -73,7 +73,7 @@ custom_scripts="setup_openipc_env.sh"
 
 **Step 7: Power on**
 
-Insert your SD card into your camera and power on. It would take about 3 minutes to finish writing all partitions, then it will reboot to OpenIPC firmware.
+Insert your SD card into your camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to OpenIPC firmware.
 
 After your camera finishes booting, you can use an IP scanner (e.g. nmap) to figure out its IP address and connect to it using SSH.
 

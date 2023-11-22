@@ -23,9 +23,9 @@ Switch to Stock profile
 
 ## 📄 Overview
 
-Stock profile for T20 requires seven partition images for: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
+The Stock profile for T20 requires seven partition images for: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
 
-Stock profile for T31 requires five partition images for: `boot`, `kernel`, `rootfs`, `app` and `configs`.
+The Stock profile for T31 requires five partition images for: `boot`, `kernel`, `rootfs`, `app` and `configs`.
 
 ## 🛠️ Guide
 
@@ -47,4 +47,4 @@ switch_profile_with_all_partitions="no"
 
 **Step 4: Power on**
 
-Insert your SD card into the camera and power it on. It would take about 3 minutes to finish writing all partitions, then it would reboot to Stock firmware.
+Insert your SD card into your camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to Stock firmware.

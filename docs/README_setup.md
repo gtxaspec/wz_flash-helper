@@ -18,7 +18,7 @@ Example for T31:
 
 ## ℹ️ Notes
 
-- The program adds the extension `.wz_flash-helper` to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
+- The program adds the `.wz_flash-helper` extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
 
 - The program takes about 15 seconds to load before processing operations.
 

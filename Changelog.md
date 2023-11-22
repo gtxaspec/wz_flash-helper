@@ -36,3 +36,7 @@
 ## v0.7.0
 
 - Add more audio files to help the user better keep track of the operations
+
+## v0.7.1
+
+- Add a Powershell script to generate .sha256sum files to make Windows users happy

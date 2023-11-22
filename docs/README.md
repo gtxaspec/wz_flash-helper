@@ -12,6 +12,7 @@
 - Initramfs shell for manual debugging if you have a serial connection
 - Seamlessly boot to `wz_mini_hacks` on the next boot
 - Customize partitions with custom scripts support
+- Windows friendly
 
 ## Supported cameras
 

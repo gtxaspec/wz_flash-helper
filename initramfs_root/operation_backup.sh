@@ -59,11 +59,13 @@ function operation_backup() {
 	
 	/bg_blink_led_blue.sh &
 	local blue_led_pid="$!"
+	
 	msg
 	msg_color_bold blue ":: Starting backup operation"
 	msg_color_bold_nonewline white "Backup ID: " && msg_color cyan "$backup_id"
 	msg_color_bold_nonewline white "Backup destination: " && msg_color cyan "$cp_backup_path"
 	echo "$backup_id" > $cp_backup_path/ID.txt
+	
 	msg
 	msg_color_bold white "> Backing up partitions"
 	ob_backup_entire_flash || return 1
@@ -80,9 +82,9 @@ function operation_backup() {
 			msg_color red "failed"
 			msg_color red "    Backup with ID $backup_id exists on secondary backup directory, it will not be overwritten, skipping"
 		else
-			mkdir -p $cp_backup_secondary_path	
+			mkdir -p $cp_backup_secondary_path
 			cp -r $cp_backup_path $cp_backup_secondary_path && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
-		fi	
+		fi
 	fi
 	sync
 	msg

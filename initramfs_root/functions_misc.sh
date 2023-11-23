@@ -32,13 +32,14 @@ function rollback_boot_partition() {
 function custom_script_matched_profile_check() {
 # Description: Make sure the current profile is amatched profile and not switching profile, or switching to matched profile
 	local matched_profile="$1"
+	
 	msg_color_bold_nonewline white "This script requires the running profile to be "
 	msg_color_nonewline cyan "$matched_profile "
 	msg_color_bold "to run"
 	
-	[[ ! "$switch_profile" == "yes" ]] && local running_profile=$current_profile	
+	[[ ! "$switch_profile" == "yes" ]] && local running_profile=$current_profile
 	[[ "$switch_profile" == "yes" ]] && local running_profile=$next_profile
-
+	
 	msg_nonewline "   The running profile is: "
 	msg_color_nonewline cyan "$running_profile"
 	msg_nonewline ", "

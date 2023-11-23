@@ -11,7 +11,7 @@
 mkdir -p /dev /proc /sys /tmp
 mkdir -p /mnt /var/lock
 mkdir -p /sdcard
-	
+
 exec > /tmp/initramfs.log 2>&1 # Comment out this line to debug with serial connection
 set -x
 
@@ -26,7 +26,7 @@ function init_play_audio() {
 	! lsmod | grep -q audio && return 0
 	[[ ! "$enable_audio" == "yes" ]] && return 0
 
-	local audio_file="$1"	
+	local audio_file="$1"
 	local numberic='^[0-9]+$'
 
 	if [[ ! "$audio_volume" =~ $numberic ]] || [[ "$audio_volume" == "" ]] || [ "$audio_volume" -lt 0 ] || [ "$audio_volume" -gt 100 ]; then
@@ -94,7 +94,7 @@ function init_drop_a_shell() {
 	cd / && exec /bin/sh
 }
 
-function init_wait_init_interrupt() {
+function init_wait_interrupt() {
 # Description: Allow the user to access the initramfs shell with a serial connection
 	echo > /dev/console
 	echo "Press any key to enter initramfs shell" > /dev/console
@@ -216,7 +216,7 @@ function init_exit() {
 	
 	echo > /dev/console
 	echo "The program is finished! You can enter initramfs shell again before the camera reboots" > /dev/console
-	init_wait_init_interrupt
+	init_wait_interrupt
 
 	#init_drop_a_shell # Comment out this line to debug with serial connection
 	
@@ -229,7 +229,7 @@ function init_exit() {
 function init_main() {
 	init_detect_hardware
 	init_backup_bootpart
-
+	
 	init_source_variables_init_msg
 	init_source_functions
 	
@@ -237,7 +237,7 @@ function init_main() {
 	init_source_initialize_gpio
 	
 	init_welcome
-	init_wait_init_interrupt
+	init_wait_interrupt
 	
 	init_source_detect_profile || return 1
 	init_source_variables_emulate
@@ -248,7 +248,7 @@ function init_main() {
 	init_mount_sdcard || return 1
 	init_rename_prog_sdcard_kernel
 	init_import_prog_config_file || return 1
-
+	
 	init_source_detect_model || return 1
 	init_display_info
 

@@ -356,7 +356,7 @@ function validate_written_partition() {
 		local verifyfile_hash=$(sha256sum $verifyfile | cut -d ' ' -f1)
 
 		dd if=$partmtdblock of=$partimg_verify bs=1 count=$verifyfile_blocksize status=none
-		local partimg_verify_hash=$(sha256sum $partimg_verify | cut -d ' ' -f1)		
+		local partimg_verify_hash=$(sha256sum $partimg_verify | cut -d ' ' -f1)
 
 		rm $partimg_verify
 		
@@ -364,6 +364,7 @@ function validate_written_partition() {
 		msg_color_nonewline brown "$partname"
 		msg_nonewline ": "
 		msg_color cyan "$partimg_verify_hash"
+		
 		msg_nonewline "    Hash of "
 		msg_color_nonewline brown "$verifyfile_basename"
 		msg_nonewline ": "

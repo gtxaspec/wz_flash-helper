@@ -47,16 +47,18 @@ function or_restore_partitions() {
 function operation_restore() {
 	[[ "$switch_profile" == "yes" ]] && { msg_color red "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	[ ! -d $cp_restore_path ] && { msg_color_bold red "$cp_restore_path directory is missing" ; return 1 ; }
-	[ ! -f $prog_restore_config_file ] && { msg_color red "$prog_restore_config_file file is missing. Nothing more will be done" ; return 1 ; }	
+	[ ! -f $prog_restore_config_file ] && { msg_color red "$prog_restore_config_file file is missing. Nothing more will be done" ; return 1 ; }
 
 	grep -q $'\r' $prog_restore_config_file && dos2unix $prog_restore_config_file
 	source $prog_restore_config_file || { msg_color_bold red "$prog_restore_config_file file is invalid. Nothing will be done" ; return 1 ; }
 
 	/bg_blink_led_red.sh &
 	local red_led_pid="$!"
+	
 	msg
 	msg_color_bold blue ":: Starting restore operation"
 	msg_color_bold_nonewline white "Restore source: " && msg_color cyan "$cp_restore_path"
+	
 	msg
 	msg_color_bold white "> Restoring partitions"
 	or_restore_boot_partition

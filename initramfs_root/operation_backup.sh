@@ -1,13 +1,7 @@
 #!/bin/sh
 #
-#  ____             _                                             _   _             
-# | __ )  __ _  ___| | ___   _ _ __     ___  _ __   ___ _ __ __ _| |_(_) ___  _ __  
-# |  _ \ / _` |/ __| |/ / | | | '_ \   / _ \| '_ \ / _ \ '__/ _` | __| |/ _ \| '_ \ 
-# | |_) | (_| | (__|   <| |_| | |_) | | (_) | |_) |  __/ | | (_| | |_| | (_) | | | |
-# |____/ \__,_|\___|_|\_\\__,_| .__/   \___/| .__/ \___|_|  \__,_|\__|_|\___/|_| |_|
-#                             |_|           |_|                                     
-
-
+# Description: Backup operation
+#
 
 function ob_backup_entire_flash() {
 # Description: Dump the entire flash to a file
@@ -41,7 +35,7 @@ function ob_archive_partitions() {
 	done
 }
 
-function operation_backup() {
+function ob_main() {
 # Description: Create partition images of the entire flash, all partitions, and create extra archives from config partitions
 	mkdir -p $cp_backup_path || { msg_color red "Failed to create backup directory at $cp_backup_path" ; return 1 ; }
 	
@@ -86,10 +80,12 @@ function operation_backup() {
 			cp -r $cp_backup_path $cp_backup_secondary_path && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 		fi
 	fi
+	
 	sync
+	
 	msg
 	kill $blue_led_pid
 	/bg_turn_off_leds.sh
 }
 
-operation_backup || return 1
+ob_main || return 1

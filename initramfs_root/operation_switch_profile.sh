@@ -1,13 +1,7 @@
 #!/bin/sh
 #
-#  ____          _ _       _                        __ _ _                                   _   _             
-# / ___|_      _(_) |_ ___| |__    _ __  _ __ ___  / _(_) | ___    ___  _ __   ___ _ __ __ _| |_(_) ___  _ __  
-# \___ \ \ /\ / / | __/ __| '_ \  | '_ \| '__/ _ \| |_| | |/ _ \  / _ \| '_ \ / _ \ '__/ _` | __| |/ _ \| '_ \ 
-#  ___) \ V  V /| | || (__| | | | | |_) | | | (_) |  _| | |  __/ | (_) | |_) |  __/ | | (_| | |_| | (_) | | | |
-# |____/ \_/\_/ |_|\__\___|_| |_| | .__/|_|  \___/|_| |_|_|\___|  \___/| .__/ \___|_|  \__,_|\__|_|\___/|_| |_|
-#                                 |_|                                  |_|                                     
-
-
+# Description: Switch profile operation
+#
 
 function osp_validate_restore_partition_images() {
 	msg_color_bold white "> Making sure that all needed partition images exist and are valid"
@@ -38,7 +32,7 @@ function osp_validate_written_boot_partition() {
 	validate_written_partition $partname $partmtdblock $verifyfile || return 1
 }
 
-function operation_switch_profile() {
+function osp_main() {
 	[[ "$restore_partitions" == "yes" ]] && { msg_color red "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	[[ "$current_profile" == "$next_profile" ]] && { msg_color red "next_profile value is same as current_profile, aborting switch profile" ; return 1 ; }
 	[ ! -d /profile.d/$chip_family/$next_profile ] && { msg_color red "next_profile is not supported, aborting switch profile" ; return 1 ; }
@@ -54,6 +48,7 @@ function operation_switch_profile() {
 	
 	/bg_blink_led_red_and_blue.sh &
 	local red_and_blue_leds_pid="$!"
+	
 	msg
 	msg_color_bold blue ":: Starting switch profile operation"
 	msg_color_bold_nonewline white "Switch profile: "
@@ -87,13 +82,16 @@ function operation_switch_profile() {
 				;;
 		esac
 	done
+	
 	msg
 	[[ "$dry_run" == "yes" ]] && { msg "No need to check for boot partition corruption on dry run mode" ; return 0 ; }
 	osp_validate_written_boot_partition || rollback_boot_partition || return 1
+	
 	sync
+	
 	msg
 	kill $red_and_blue_leds_pid
 	/bg_turn_off_leds.sh
 }
 
-operation_switch_profile || return 1
+osp_main || return 1

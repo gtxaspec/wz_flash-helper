@@ -1,13 +1,7 @@
 #!/bin/sh
 #
-#  ____           _                                              _   _             
-# |  _ \ ___  ___| |_ ___  _ __ ___    ___  _ __   ___ _ __ __ _| |_(_) ___  _ __  
-# | |_) / _ \/ __| __/ _ \| '__/ _ \  / _ \| '_ \ / _ \ '__/ _` | __| |/ _ \| '_ \ 
-# |  _ <  __/\__ \ || (_) | | |  __/ | (_) | |_) |  __/ | | (_| | |_| | (_) | | | |
-# |_| \_\___||___/\__\___/|_|  \___|  \___/| .__/ \___|_|  \__,_|\__|_|\___/|_| |_|
-#                                          |_|                                     
-
-
+# Description: Restore operation
+#
 
 function or_restore_boot_partition() {
 # Description: Restore the boot partition, this option is hidden from restore config files
@@ -44,7 +38,7 @@ function or_restore_partitions() {
 	done
 }
 
-function operation_restore() {
+function or_main() {
 	[[ "$switch_profile" == "yes" ]] && { msg_color red "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	[ ! -d $cp_restore_path ] && { msg_color_bold red "$cp_restore_path directory is missing" ; return 1 ; }
 	[ ! -f $prog_restore_config_file ] && { msg_color red "$prog_restore_config_file file is missing. Nothing more will be done" ; return 1 ; }
@@ -63,10 +57,12 @@ function operation_restore() {
 	msg_color_bold white "> Restoring partitions"
 	or_restore_boot_partition
 	or_restore_partitions
+	
 	sync
+	
 	msg
 	kill $red_led_pid
 	/bg_turn_off_leds.sh
 }
 
-operation_restore || return 1
+or_main || return 1

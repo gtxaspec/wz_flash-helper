@@ -6,14 +6,14 @@
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_loading.png)
 
-### Backup OpenIPC partitions
+### Backup T31 stock partitions
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_backup.png)
 
-### Restore OpenIPC partitions
+### Restore T31 stock partitions
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_restore.png)
 
-### Switch profile from Stock to OpenIPC (with setup_openipc_env.sh script)
+### Switch profile from T31 Stock to OpenIPC (with setup_openipc_env.sh script)
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_switch_profile.png)

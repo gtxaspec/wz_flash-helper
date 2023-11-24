@@ -35,14 +35,17 @@ The openipc profile requires four partition images for: `boot`, `env`, `kernel` 
 
 **❗ WARNING:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would brick your camera.
 
-Download the latest firmware archive (`openipc.[chip family]-[flash type]-ultimate.tgz`  file) and uboot image (`u-boot-[SoC]-universal.bin` file) for your camera from the OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest).
+Visit OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) and download the latest build that includes:
+
+- Uboot image: `u-boot-[SoC]-universal.bin`
+- Firmware archive: `openipc.[chip family]-[flash type]-ultimate.tgz`
 
 Then extract the firmware archive, place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 
-- `u-boot-[SoC]-universal.bin` to `openipc_[SoC]_boot.bin`
-- `openipc_[chip family]_env.bin.[SoC]` to `openipc_[SoC]_env.bin`
-- `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`
-- `rootfs.squashfs.[SoC]` to `openipc_[SoC]_rootfs.bin`
+- boot: `u-boot-[SoC]-universal.bin` to `openipc_[SoC]_boot.bin`
+- env: `openipc_[chip family]_env.bin.[SoC]` to `openipc_[SoC]_env.bin`
+- kernel: `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`
+- rootfs: `rootfs.squashfs.[SoC]` to `openipc_[SoC]_rootfs.bin`
 
 **Step 4: Generate .sha256sum files** using [this guide](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-generate-sha256sum-files-for-partition-images)
 

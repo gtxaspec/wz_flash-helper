@@ -53,5 +53,5 @@ Compiled kernels and releases will be saved at `output/` directory.
 
 ## ℹ️ Notes
 
-- Cloning the Github repo might take up to 15 minutes, depending on your Internet speed.
-- On the first time you build a kernel/release, it might take up to 20 minutes to download necessary toolchains before the compiling, after that it takes only about a minute.
+- Cloning the Github repo takes between 30 seconds and 15 minutes, depending on your Internet speed.
+- On the first time you build a kernel/release, it takes between 2 minutes and 20 minutes to download necessary toolchains before the compiling, after that it takes only about a minute.

@@ -44,3 +44,7 @@
 ## v0.7.2
 
 - Minor fixes
+
+## v0.7.3
+
+- Add emulation for chip name

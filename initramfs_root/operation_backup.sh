@@ -31,7 +31,7 @@ function ob_archive_partitions() {
 		local partfstype="$(get_cp_partfstype $partname_archive)"
 		local outfile="$cp_backup_path/${current_profile}_${chip_group}_${partname}.tar.gz"
 		
-		create_archive_from_partition $partname $partmtdblock $partfstype $outfile
+		create_archive_from_partition $partname $partmtdblock $partfstype $outfile || return 1
 	done
 }
 

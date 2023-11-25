@@ -93,7 +93,6 @@ function detect_openipc_wifi_driver() {
 	fi
 	
 	case $model in
-	
 		"pan_v1")
 			wifi_driver="rtl8189ftv-t20-wyze-pan-v1"
 			;;

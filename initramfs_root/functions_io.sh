@@ -1,13 +1,7 @@
 #!/bin/bash
 #
-#  ___ ___     __                  _   _                 
-# |_ _/ _ \   / _|_   _ _ __   ___| |_(_) ___  _ __  ___ 
-#  | | | | | | |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __|
-#  | | |_| | |  _| |_| | | | | (__| |_| | (_) | | | \__ \
-# |___\___/  |_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
+# Description: IO functions
 #
-
-
 
 function read_partition_nor() {
 # Description: Dump partition <partmtd> to <outfile> on NOR flash
@@ -113,8 +107,8 @@ function write_partition() {
 	local infile="$2"
 	local infile_basename=$(basename $infile)
 	local partmtd="$3"
-
 	local restore_stage_dir="/restore_stage_dir"
+	
 	mkdir -p $restore_stage_dir
 	
 	msg_color_bold_nonewline white "-> Write to flash: "
@@ -157,8 +151,8 @@ function create_archive_from_partition() {
 	local outfile="$4"
 	local outfile_basename=$(basename $outfile)
 	local outfile_dirname=$(dirname $outfile)
-	
 	local archive_mnt="/archive_mnt_$partname"
+	
 	mkdir -p $archive_mnt
 	
 	msg_color_bold_nonewline white "-> Archive partition files: "
@@ -199,8 +193,8 @@ function extract_archive_to_partition() {
 	local infile_dirname=$(dirname $infile)
 	local partmtdblock="$3"
 	local fstype="$4"
-	
 	local unarchive_mnt="/unarchive_mnt_$partname"
+	
 	mkdir -p $unarchive_mnt
 	
 	msg_color_bold_nonewline white "-> Extract archive to partition: "
@@ -263,7 +257,6 @@ function format_partition() {
 	local partfstype="$3"
 	local partmtd="/dev/mtd$partnum"
 	local partmtdblock="/dev/mtdblock$partnum"
-	
 
 	case $partfstype in
 		"jffs2")

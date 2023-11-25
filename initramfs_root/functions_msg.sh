@@ -89,7 +89,6 @@ function msg_color_bold() {
 	local color_code=$(get_color_code $color)
 	local message="$2"
 
-	
 	echo "$message"
 	echo "$message" >> /tmp/initramfs_serial.log
         echo -e "\e[1;${color_code}m${message}\e[0m" > /dev/console

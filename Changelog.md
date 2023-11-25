@@ -48,3 +48,7 @@
 ## v0.7.3
 
 - Add emulation for chip name
+
+## v0.7.4
+
+-  Add missing error checks for some functions 

@@ -44,7 +44,15 @@ function init_detect_hardware() {
 
 function init_backup_bootpart() {
 # Description: Create a backup of the boot partition to rollback in case it gets corrupted and to detect the current profile by analyzing its strings
-	dd if=/dev/mtdblock0 of=/boot_backup.img status=none
+	case "$flash_type" in
+		"nor")
+			dd if=/dev/mtdblock0 of=/boot_backup.img status=none
+			;;
+		"nand")
+			nanddump -q -f /boot_backup.img /dev/mtd0
+			;;
+	esac
+	
 	sha256sum /boot_backup.img > /boot_backup.img.sha256sum
 	strings /boot_backup.img > /boot_backup.img.strings
 }

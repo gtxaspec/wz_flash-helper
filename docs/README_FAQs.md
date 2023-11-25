@@ -47,7 +47,7 @@ for i in *.bin *.tar.gz; do sha256sum $i > $i.sha256sum; done
 
 If you are on Windows with Poweshell 5.0 or newer:
 - Copy the script `generate_hash_files.ps1` from `wz_flash-helper/scripts/` directory to the partition images location.
-- Right click the script `generate_hash_files.ps1` then select `Run with Powershell`. The script will generate .sha256sum files for you.
+- Right click the new script `generate_hash_files.ps1` then select `Run with Powershell`. The script will generate .sha256sum files for you.
 
 ### Can you add support for my camera?
 

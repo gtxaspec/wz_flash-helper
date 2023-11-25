@@ -25,6 +25,7 @@ function get_color_code() {
 # Description: Return color code of a given color
 	local color="$1"
 	local message="$2"
+	
 	case $color in
 		"black")
 			echo -n "30" ;;

@@ -10,12 +10,14 @@ Make sure that:
 
 ### How can I access serial console?
 
-Connect 3 pins: Tx, Rx and GND from your camera to your computer with a USB to TTL adapter. Then run this command from your terminal:
+Connect 3 pins: Tx, Rx and GND from your camera to your computer with a USB-to-TTL adapter.
+
+If you are on Linux, run:
 ```
 sudo picocom /dev/ttyUSB0 -b 115200 -l | tee /tmp/serial.log
 ```
 
-Alternatively you can use PuTTY.
+If you are on Windows, use a third-party tool(eg. PuTTY), then set baud rate to `115200` and select the correct COM port for your USB-to-TTL adapter.
 
 ### How can I obtain my camera hardware information?
 

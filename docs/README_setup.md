@@ -22,6 +22,11 @@ Example for T31:
 
 - The program takes about 15 seconds to load before processing operations.
 
-- T20 releases support: `Wyze Cam Pan` and `Wyze Cam v2`.
+- T20 releases support:
+   - Wyze Cam Pan
+   - Wyze Cam v2
 
-- T31 releases support: `Wyze Cam v2 Pan`, `Wyze Cam v3` and `Wyze Cam Floodlight`.
+- T31 releases support:
+   - Wyze Cam v2 Pan
+   - Wyze Cam v3
+   - Wyze Cam Floodlight

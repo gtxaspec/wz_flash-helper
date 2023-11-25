@@ -42,7 +42,7 @@ restore_partitions="yes"
 
 **❗ WARNING:** Doing this might brick your camera, only do when you know what you are doing.
 
-To restore the `boot` partition, add this hidden option to [profile].conf under the `wz_flash-helper/restore/[profile]` directory:
+To restore the `boot` partition, add this hidden option to `[profile].conf` under the `wz_flash-helper/restore/[profile]` directory:
 ```
 hidden_option_restore_boot="yes"
 ```

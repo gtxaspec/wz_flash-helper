@@ -51,4 +51,6 @@
 
 ## v0.7.4
 
--  Add missing error checks for some functions 
+- Fix error checks for some functions are missing
+- Fix boot partition backup on NAND flash
+- Play audio for init fails

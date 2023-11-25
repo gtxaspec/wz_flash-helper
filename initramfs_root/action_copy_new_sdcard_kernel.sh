@@ -9,7 +9,11 @@ function copy_new_sdcard_kernel() {
 	[[ "$dry_run" == "yes" ]] && { msg_color lightbrown "New SD card kernel is not copied when dry run is active" ; return 0 ; }
 	
 	msg
-	msg_nonewline "Copying /sdcard/$new_sdcard_kernel to /sdcard/$cp_sdcard_kernel_name... "
+	msg_nonewline "Copying "
+	msg_color_nonewline cyan "/sdcard/$new_sdcard_kernel "
+	msg_nonewline "to "
+	msg_color_nonewline cyan "/sdcard/$cp_sdcard_kernel_name"
+	msg_nonewline "... "
 	cp /sdcard/$new_sdcard_kernel /sdcard/$cp_sdcard_kernel_name && msg_color green "done" || { msg_color red "failed" ; return 1 ; }
 }
 

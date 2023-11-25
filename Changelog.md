@@ -54,3 +54,7 @@
 - Add mising error checks for some functions
 - Fix boot partition on NAND flash might not be backup correctly
 - Add audio play for init fails
+
+## v0.7.5
+
+- Add colors to copy new sdcard kernel script 

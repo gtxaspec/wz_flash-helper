@@ -37,3 +37,12 @@ restore_partitions="yes"
 - All partition restore images must come with their .sha256sum files for integrity verification.
 - During the restore operation, the red LED would be blinking every second.
 - Typically, the restore operation takes about 2 minutes (excluding load time).
+
+## Restore the boot partition
+
+**❗ WARNING:** Doing this might brick your camera, only do when you know what you are doing.
+
+To restore the `boot` partition, add this hidden option to [profile].conf under the `wz_flash-helper/restore/[profile]` directory:
+```
+hidden_option_restore_boot="yes"
+```

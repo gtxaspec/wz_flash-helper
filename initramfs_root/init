@@ -354,5 +354,5 @@ function init_main() {
 	fi
 }
 
-init_main && init_play_audio /audio.d/all_operations_are_successful.pcm
+init_main && init_play_audio /audio.d/all_operations_are_successful.pcm || init_play_audio /audio.d/an_error_has_occurred.pcm
 init_exit

@@ -14,6 +14,7 @@ function copy_new_sdcard_kernel() {
 	msg_nonewline "to "
 	msg_color_nonewline cyan "/sdcard/$cp_sdcard_kernel_name"
 	msg_nonewline "... "
+	
 	cp /sdcard/$new_sdcard_kernel /sdcard/$cp_sdcard_kernel_name && msg_color green "done" || { msg_color red "failed" ; return 1 ; }
 }
 

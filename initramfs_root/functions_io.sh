@@ -13,7 +13,7 @@ function read_partition_nor() {
 		msg_dry_run "dd if=$partmtd of=$outfile"
 	else
 		msg_nonewline "    Reading... "
-		dd if=$partmtd of=$outfile && msg_color green "ok" || { msg_color red "failed" ; return 1 ; } 
+		dd if=$partmtd of=$outfile && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	fi
 }
 
@@ -27,7 +27,7 @@ function read_partition_nand() {
 		msg_dry_run "nanddump -f $outfile $partmtd"
 	else
 		msg_nonewline "    Reading... "
-		nanddump -f $outfile $partmtd && msg_color green "ok" || { msg_color red "failed" ; return 1 ; } 
+		nanddump -f $outfile $partmtd && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	fi
 }
 
@@ -67,7 +67,7 @@ function read_partition() {
 		msg_dry_run "sed -i \"s|$outfile_dirname/||g\" $outfile.sha256sum"
 	else
 		msg_nonewline "    Generating sha256sum file... "
-		sha256sum $outfile > $outfile.sha256sum && msg_color green "ok" || { msg_color red "failed" ; return 1 ; } 
+		sha256sum $outfile > $outfile.sha256sum && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path from .sha256sum file
 	fi
 }
@@ -82,7 +82,8 @@ function write_partition_nor() {
 		msg_dry_run "flashcp $infile $partmtd"
 	else
 		msg_nonewline "    Writing... "
-		flashcp $infile $partmtd && msg_color green "ok" || { msg_color red "failed" ; return 1 ; } 
+		flash_eraseall $partmtd || { msg_color red "failed" ; return 1 ; }
+		flashcp $infile $partmtd && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	fi
 }
 
@@ -96,7 +97,8 @@ function write_partition_nand() {
 		msg_dry_run "nandwrite -p $partmtd $infile"
 	else
 		msg_nonewline "    Writing... "
-		nandwrite -p $partmtd $infile && msg_color green "ok" || { msg_color red "failed" ; return 1 ; } 
+		flash_eraseall $partmtd || { msg_color red "failed" ; return 1 ; }
+		nandwrite -p $partmtd $infile && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	fi
 }
 
@@ -246,7 +248,7 @@ function format_partition_jffs2() {
 		msg_dry_run "flash_eraseall -j $partmtd"
 	else
 		msg_nonewline "    Formatting... "
-		flash_eraseall -j $partmtd && msg_color green "ok" || { msg_color red "failed" ; return 1 ; } 
+		flash_eraseall -j $partmtd && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	fi
 }
 

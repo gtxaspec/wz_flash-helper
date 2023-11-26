@@ -326,13 +326,15 @@ function leave_partition() {
 
 function validate_written_partition() {
 # Description: Validate if the written partition is the same as the partition image that was used to write it. If the validation fails, it is done again up to three times
-# Syntax: validate_written_partition <partname> <partmtdblock> <verifyfile>
+# Syntax: validate_written_partition <partname> <partnum> <verifyfile>
 	local partname="$1"
-	local partmtdblock="$2"
+	local partnum="$2"
+	local partmtd="/dev/mtd$partnum"
+	local partmtdblock="/dev/mtdblock$partnum"
 	local verifyfile="$3"
 	local verifyfile_basename=$(basename $verifyfile)
 	local partimg_verify="/verify_$partname.img"
-
+	
 	msg_color_bold_nonewline white "> Validating written "
 	msg_color_nonewline brown "$partname "
 	msg_color_nonewline magenta "$partmtdblock "
@@ -345,12 +347,24 @@ function validate_written_partition() {
 	for attempt in 1 2 3; do
 		msg_color_bold white "-> Validation attempt $attempt:"
 		
-		local verifyfile_blocksize=$(du -b $verifyfile | cut -f -1)
 		local verifyfile_hash=$(sha256sum $verifyfile | cut -d ' ' -f1)
-
-		dd if=$partmtdblock of=$partimg_verify bs=1 count=$verifyfile_blocksize status=none
+		
+		msg_nonewline "    Hash of "
+		msg_color_nonewline brown "$verifyfile_basename"
+		msg_nonewline ": "
+		msg_color cyan "$verifyfile_hash"
+		
+		case "$flash_type" in
+			"nor")
+				local verifyfile_blocksize=$(du -b $verifyfile | cut -f -1)
+				dd if=$partmtdblock of=$partimg_verify bs=1 count=$verifyfile_blocksize status=none
+				;;
+			"nand")
+				nanddump -q -f $partimg_verify $partmtd
+				;;
+		esac
+		
 		local partimg_verify_hash=$(sha256sum $partimg_verify | cut -d ' ' -f1)
-
 		rm $partimg_verify
 		
 		msg_nonewline "    Hash of "
@@ -358,11 +372,6 @@ function validate_written_partition() {
 		msg_nonewline ": "
 		msg_color cyan "$partimg_verify_hash"
 		
-		msg_nonewline "    Hash of "
-		msg_color_nonewline brown "$verifyfile_basename"
-		msg_nonewline ": "
-		msg_color cyan "$verifyfile_hash"
-
 		msg_nonewline "    Validation result: "
 		[[ "$verifyfile_hash" == "$partimg_verify_hash" ]] && { msg_color green "good" ; return 0 ; } || msg_color red "bad"
 	done

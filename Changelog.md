@@ -58,3 +58,4 @@
 ## v0.7.5
 
 - Add colors to copy new sdcard kernel script 
+- Fix written partition validation on NAND flash

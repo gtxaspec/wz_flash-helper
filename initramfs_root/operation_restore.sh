@@ -8,14 +8,14 @@ function or_restore_boot_partition() {
 	if [[ "$hidden_option_restore_boot" == "yes" ]]; then
 		msg_color_bold white "Sssh! Restoring boot partition"
 		local partname="boot"
-		local infile_name=$(get_cp_partimg $partname)
-		local infile="$cp_restore_path/$infile_name"
+		local partnum="0"
 		local partmtd=$(get_cp_partmtd $partname)
-		local partmtdblock=$(get_cp_partmtdblock $partname)
+		local verifyfile_name=$(get_cp_partimg $partname)
+		local verifyfile="$cp_restore_path/$verifyfile_name"
 		
 		write_partition $partname $infile $partmtd || return 1
 		
-		validate_written_partition $partname $partmtdblock $infile || rollback_boot_partition || return 1
+		validate_written_partition $partname $partnum $verifyfile || rollback_boot_partition || return 1
 	fi
 }
 

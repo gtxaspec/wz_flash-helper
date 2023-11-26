@@ -25,11 +25,11 @@ function osp_validate_restore_partition_images() {
 function osp_validate_written_boot_partition() {
 # Description: Validate if the written boot partition is the same as the boot partition image used to write
 	local partname="boot"
-	local partmtdblock=$(get_np_partmtdblock $partname)
+	local partnum="0"
 	local verifyfile_basename=$(get_np_partimg $partname)
 	local verifyfile="$np_images_path/$verifyfile_basename"
 	
-	validate_written_partition $partname $partmtdblock $verifyfile || return 1
+	validate_written_partition $partname $partnum $verifyfile || return 1
 }
 
 function osp_main() {

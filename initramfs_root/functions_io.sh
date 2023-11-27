@@ -356,13 +356,16 @@ function validate_written_partition() {
 		msg_nonewline ": "
 		msg_color cyan "$verifyfile_hash"
 		
+		local verifyfile_blocksize=$(du -b $verifyfile | cut -f -1)
+		
 		case "$flash_type" in
 			"nor")
-				local verifyfile_blocksize=$(du -b $verifyfile | cut -f -1)
-				dd if=$partmtdblock of=$partimg_verify bs=1 count=$verifyfile_blocksize status=none
+				dd if=$partmtdblock of=$partimg_verify bs=1 count=$verifyfile_blocksize
 				;;
 			"nand")
-				nanddump -q -f $partimg_verify $partmtd
+				nanddump -f $partimg_verify.nand $partmtd
+				dd if=$partimg_verify.nand of=$partimg_verify bs=1 count=$verifyfile_blocksize
+				rm $partimg_verify.nand
 				;;
 		esac
 		

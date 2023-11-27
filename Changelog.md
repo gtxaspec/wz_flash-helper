@@ -59,3 +59,4 @@
 
 - Add colors to copy new sdcard kernel script 
 - Fix written partition validation on NAND flash
+- Before writing a partition using its partition image, erase it first

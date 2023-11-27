@@ -245,7 +245,8 @@ function format_partition_jffs2() {
 }
 
 function format_partition() {
-# Description: Format partition <partnum>
+# Description: Format partition with <partnum> as <partfstype>
+# Syntax: format_partition <partname> <partnum> <partfstype>
 	local partname="$1"
 	local partnum="$2"
 	local partfstype="$3"

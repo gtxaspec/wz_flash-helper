@@ -90,11 +90,11 @@ function write_partition_nand() {
 	local partmtd="$2"
 	
 	if [[ "$dry_run" == "yes" ]]; then
-		msg_dry_run "nandwrite -p $partmtd $infile"
+		msg_dry_run "nandwrite $partmtd $infile"
 	else
 		msg_nonewline "    Writing... "
 		flash_eraseall $partmtd || { msg_color red "failed" ; return 1 ; }
-		nandwrite -p $partmtd $infile && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+		nandwrite $partmtd $infile && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	fi
 }
 

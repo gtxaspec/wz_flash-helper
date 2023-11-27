@@ -56,10 +56,6 @@ function read_partition() {
 		"nand")
 			read_partition_nand $partmtd $outfile || return 1
 			;;
-		*)
-			msg_color red "    Invalid flash type: $flash_type"
-			return 1
-			;;
 	esac
 	
 	if [[ "$dry_run" == "yes" ]]; then
@@ -136,10 +132,6 @@ function write_partition() {
 			;;
 		"nand")
 			write_partition_nand $infile $partmtd || return 1
-			;;
-		*)
-			msg_color red "    Invalid flash type: $flash_type"
-			return 1
 			;;
 	esac
 }
@@ -227,7 +219,7 @@ function extract_archive_to_partition() {
 }
 
 function format_partition_vfat() {
-# Description: Format partition <partmtd> as vfat
+# Description: Format partition <partmtd> as VFAT
 # Syntax: format_partition_vfat <partmtdblock>
 	local partmtdblock="$1"
 
@@ -240,7 +232,7 @@ function format_partition_vfat() {
 }
 
 function format_partition_jffs2() {
-# Description: Format partition <partmtd> as jffs2
+# Description: Format partition <partmtd> as JFFS2
 # Syntax: format_partition_jffs2 <partmtd>
 	local partmtd="$1"
 
@@ -327,7 +319,7 @@ function leave_partition() {
 }
 
 function validate_written_partition() {
-# Description: Validate if the written partition is the same as the partition image that was used to write it. If the validation fails, it is done again up to three times
+# Description: Validate if the written partition is the same as the partition image that was used to write it. The validation can be done up to three times if it fails
 # Syntax: validate_written_partition <partname> <partnum> <verifyfile>
 	local partname="$1"
 	local partnum="$2"

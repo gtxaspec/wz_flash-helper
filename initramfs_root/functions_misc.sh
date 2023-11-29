@@ -36,7 +36,7 @@ function unpad_partimg() {
 	done
 	
 	echo "Creating unpadded partition image..."
-	dd if=$infile of=$outfile bs=$blocksize count=$(( $infile_totalblocks - $padding_blocks_total )) status=none
+	dd if=$infile of=$outfile bs=$blocksize count=$(( $infile_totalblocks - $padding_blocks_total )) status=none || return 1
 	
 	echo "Data block counts: $(( $infile_totalblocks - $padding_blocks_total ))"
 	echo "Padded block counts: $padding_blocks_total"

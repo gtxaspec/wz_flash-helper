@@ -39,6 +39,7 @@ function init_detect_hardware() {
 # Description: Detect SoC and flash chip type
 	chip_name=$(ipcinfo --chip-name)
 	chip_family=$(ipcinfo --family)
+	
 	flash_type=$(ipcinfo --flash-type)
 	blocksize=$(blockdev  --getbsz /dev/mtdblock0)
 }

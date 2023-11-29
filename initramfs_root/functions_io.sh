@@ -93,7 +93,7 @@ function write_partition_nand() {
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "unpad_partimg $infile $blocksize $infile.unpadded"
 		msg_dry_run "flash_eraseall $partmtd"
-		msg_dry_run "nandwrite -p $partmtd $infile"
+		msg_dry_run "nandwrite -p $partmtd $infile.unpadded"
 		
 	else
 		msg_nonewline "    Creating unpadded partition image..."
@@ -136,10 +136,10 @@ function write_partition() {
 
 	case "$flash_type" in
 		"nor")
-			write_partition_nor $infile $partmtd || return 1
+			write_partition_nor $restore_stage_dir/$infile_basename $partmtd || return 1
 			;;
 		"nand")
-			write_partition_nand $infile $partmtd || return 1
+			write_partition_nand $restore_stage_dir/$infile_basename $partmtd || return 1
 			;;
 	esac
 	

@@ -64,7 +64,7 @@ function read_partition() {
 	else
 		msg_nonewline "    Generating sha256sum file... "
 		sha256sum $outfile > $outfile.sha256sum && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
-		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path from .sha256sum file
+		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path of the partition image from its .sha256sum file
 	fi
 }
 
@@ -94,7 +94,6 @@ function write_partition_nand() {
 		msg_dry_run "unpad_partimg $infile $blocksize $infile.unpadded"
 		msg_dry_run "flash_eraseall $partmtd"
 		msg_dry_run "nandwrite -p $partmtd $infile.unpadded"
-		
 	else
 		msg_nonewline "    Creating unpadded partition image..."
 		unpad_partimg $infile $blocksize $infile.unpadded && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }

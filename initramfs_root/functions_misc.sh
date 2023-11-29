@@ -9,35 +9,37 @@ function gen_4digit_id() {
 }
 
 unpad_partimg() {
-# Create a partition image with padded blocks removed from a partition image
-# Syntax: unpad_partimg <partimg> <blocksize>
-	local partimg="$1"
+# Remove padding blocks from partition image <infile> to create a new partition image <outfile>
+# Syntax: unpad_infile <infile> <blocksize> <outfile>
+	local infile="$1"
 	local blocksize="$2"
-	local blocksize=$(( $blocksize * 1024 ))
+	local outfile="$3"
 	
-	[ ! -f $partimg ] && { echo "Partition image $partimg is missing" ; return 1 ; }
+	[ ! -f $infile ] && { echo "Partition image $infile is missing" ; return 1 ; }
 	
-	local partimg_size=$(du -b $partimg | cut -f -1)
+	local infile_size=$(du -b $infile | cut -f -1)
+	local infile_totalblocks=$(( $infile_size/$blocksize ))
+	local infile_totalblocks_minusone=$(( $infile_totalblocks - 1 ))
 	local padding_block=$(dd if=/dev/zero bs=$blocksize count=1 status=none | tr '\0' '\377')
-	local partimg_totalblocks=$(( $partimg_size/$blocksize ))
-	local partimg_totalblocks_minusone=$(( $partimg_totalblocks - 1 ))
-
+	
 	local block_contents=""
 	local padding_blocks_total="0"
-	for block in $(seq $partimg_totalblocks_minusone -1 0); do
-		block_contents=$(dd if=$partimg bs=$blocksize count=1 skip=$block status=none | tr -d '\000')
+	echo "Counting padded blocks..."
+	for block in $(seq $infile_totalblocks_minusone -1 0); do
+		block_contents=$(dd if=$infile bs=$blocksize count=1 skip=$block status=none | tr -d '\000')
 		if [[ "$block_contents" == "$padding_block" ]]; then
 			padding_blocks_total=$(( $padding_blocks_total + 1 ))
-			echo "Block $block is padded"
+			# echo "Block $block is padded"
 		else
 			break
 		fi
 	done
-
-	echo "Number of data blocks: $(( $partimg_totalblocks - $padding_blocks_total ))"
-	echo "Number of padded blocks: $padding_blocks_total"
-	dd if=$partimg of=$partimg.unpadded bs=$blocksize count=$(( $partimg_totalblocks - $padding_blocks_total )) status=none
-	echo "Output file: $partimg.unpadded"
+	
+	echo "Creating unpadded partition image..."
+	dd if=$infile of=$outfile bs=$blocksize count=$(( $infile_totalblocks - $padding_blocks_total )) status=none
+	
+	echo "Data block counts: $(( $infile_totalblocks - $padding_blocks_total ))"
+	echo "Padded block counts: $padding_blocks_total"
 }
 
 function rollback_boot_partition() {

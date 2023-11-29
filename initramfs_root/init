@@ -40,6 +40,7 @@ function init_detect_hardware() {
 	chip_name=$(ipcinfo --chip-name)
 	chip_family=$(ipcinfo --family)
 	flash_type=$(ipcinfo --flash-type)
+	blocksize=$(blockdev  --getbsz /dev/mtdblock0)
 }
 
 function init_backup_bootpart() {
@@ -201,12 +202,16 @@ function init_display_info() {
 	msg
 	msg_color_bold_nonewline white "Program version: " && msg_color cyan "$(cat /version)"
 	
-	msg_color_bold_nonewline white "Hardware: "
-	msg_nonewline "chip name: " && msg_color_nonewline cyan $chip_name
-	msg_nonewline ", chip family: " && msg_color_nonewline cyan $chip_family
-	msg_nonewline ", chip group: " && msg_color_nonewline cyan $chip_group
-	msg_nonewline ", flash type: " && msg_color_nonewline cyan $flash_type
-	msg_nonewline ", model: " && msg_color cyan $model
+	msg_color_bold_nonewline white "Chip: "
+	msg_nonewline "name: " && msg_color_nonewline cyan $chip_name
+	msg_nonewline ", family: " && msg_color_nonewline cyan $chip_family
+	msg_nonewline ", group: " && msg_color cyan $chip_group
+	
+	msg_color_bold_nonewline white "Flash: "
+	msg_nonewline "type: " && msg_color_nonewline cyan $flash_type
+	msg_nonewline ", block size: " && msg_color cyan $blocksize
+	
+	msg_nonewline "Model: " && msg_color cyan $model
 	
 	msg_color_bold_nonewline white "Current profile: " && msg_color cyan "$current_profile"
 	msg

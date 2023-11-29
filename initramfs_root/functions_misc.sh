@@ -8,7 +8,7 @@ function gen_4digit_id() {
 	shuf -i 1000-9999 -n 1
 }
 
-unpad_partimg() {
+function unpad_partimg() {
 # Remove padding blocks from partition image <infile> to create a new partition image <outfile>
 # Syntax: unpad_infile <infile> <blocksize> <outfile>
 	local infile="$1"

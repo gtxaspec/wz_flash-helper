@@ -42,7 +42,7 @@ There are three ways:
 
 If you are on Linux, run:
 ```
-for i in *.bin *.tar.gz; do sha256sum $i > $i.sha256sum; done
+for i in *.bin; do sha256sum $i > $i.sha256sum; done
 ```
 
 If you are on Windows, first, make sure that your Powershell version is 5.0 or newer(run `$PSVersionTable` to check), then:

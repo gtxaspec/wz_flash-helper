@@ -7,11 +7,12 @@ emulate_mode="no"
 
 function emulate() {
 	dry_run="yes" # Override dry_run option so nothing is actually done
+	touch /force_dry_run
 
-	chip_name=""
-	chip_family=""
-	flash_type=""
-	current_profile=""
+	#chip_name=""
+	#chip_family=""
+	#flash_type=""
+	#current_profile=""
 
 	msg
 	msg_color_bold lightbrown "### Emulation mode is enabled; these variables are forged:"

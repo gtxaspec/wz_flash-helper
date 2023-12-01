@@ -264,7 +264,8 @@ function init_main() {
 	init_mount_sdcard || return 1
 	init_rename_prog_sdcard_kernel
 	init_import_prog_config_file || return 1
-	
+
+	[ -f /force_dry_run ] && dry_run="yes"
 	init_display_info
 
 	init_play_audio /audio.d/wz_helper_finished_loading.pcm

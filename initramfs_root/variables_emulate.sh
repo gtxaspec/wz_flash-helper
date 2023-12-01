@@ -6,8 +6,7 @@
 emulate_mode="no"
 
 function emulate() {
-	dry_run="yes" # Override dry_run option so nothing is actually done
-	touch /force_dry_run
+	enforce_dry_run="yes" # Override dry_run option so nothing is actually done
 
 	#chip_name=""
 	#chip_family=""

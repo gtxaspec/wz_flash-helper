@@ -61,3 +61,6 @@
 - Fix written partition validation on NAND flash
 - Before writing partition image, erase the partition first
 - Remove partition image padding before writing it on NAND flash
+- Fix dry_run is not enforced on emulation mode
+
+## v0.7.6

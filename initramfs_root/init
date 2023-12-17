@@ -235,7 +235,7 @@ function init_exit() {
 
 	#init_drop_a_shell # Comment out this line to debug with serial connection
 	
-	init_play_audio /audio.d/rebooting_now.pcm
+	init_play_audio /sounds/rebooting_now.pcm
 	umount -a -r
 	reboot -f # Reboot immediately
 	sleep 10 # Prevent init from continuing after init_exit finishes, but the camera has not rebooted immediately
@@ -268,20 +268,20 @@ function init_main() {
 	[ "$enforce_dry_run" == "yes" ] && dry_run="yes"
 	init_display_info
 	
-	init_play_audio /audio.d/wz_helper_finished_loading.pcm
+	init_play_audio /sounds/wz_helper_finished_loading.pcm
 
 	#---------- Backup operation ----------
 	msg
 	if [[ "$backup_partitions" == "yes" ]]; then
 		msg_tickbox_yes
 		msg "$msg_backup_partitions_yes"
-		init_play_audio /audio.d/processing_backup_operations.pcm
+		init_play_audio /sounds/processing_backup_operations.pcm
 		
 		if source /operation_backup.sh ; then
 			msg_color_bold green "$msg_backup_partitions_succeed"
 		else
 			msg_color_bold red "$msg_backup_partitions_fail"
-			init_play_audio /audio.d/backup_operations_failed.pcm
+			init_play_audio /sounds/backup_operations_failed.pcm
 			return 1
 		fi
 		msg
@@ -295,13 +295,13 @@ function init_main() {
 	if [[ "$restore_partitions" == "yes" ]]; then
 		msg_tickbox_yes
 		msg "$msg_restore_partitions_yes"
-		init_play_audio /audio.d/processing_restore_operations.pcm
+		init_play_audio /sounds/processing_restore_operations.pcm
 		
 		if source /operation_restore.sh ; then
 			msg_color_bold green "$msg_restore_partitions_succeed"
 		else
 			msg_color_bold red "$msg_restore_partitions_fail"
-			init_play_audio /audio.d/restore_operations_failed.pcm
+			init_play_audio /sounds/restore_operations_failed.pcm
 			return 1
 		fi
 		msg
@@ -315,13 +315,13 @@ function init_main() {
 	if [[ "$switch_profile" == "yes" ]]; then
 		msg_tickbox_yes
 		msg "$msg_switch_profile_yes"
-		init_play_audio /audio.d/processing_switch_profile_operations.pcm
+		init_play_audio /sounds/processing_switch_profile_operations.pcm
 		
 		if source /operation_switch_profile.sh ; then
 			msg_color_bold green "$msg_switch_profile_succeed"
 		else
 			msg_color_bold red "$msg_switch_profile_fail"
-			init_play_audio /audio.d/switch_profile_operations_failed.pcm
+			init_play_audio /sounds/switch_profile_operations_failed.pcm
 			return 1
 		fi
 		msg
@@ -346,13 +346,13 @@ function init_main() {
 	if [[ "$enable_custom_scripts" == "yes" ]]; then
 		msg_tickbox_yes
 		msg "$msg_enable_custom_scripts_yes"
-		init_play_audio /audio.d/running_custom_scripts.pcm
+		init_play_audio /sounds/running_custom_scripts.pcm
 		
 		if source /action_execute_custom_scripts.sh ; then
 			msg_color_bold green "$msg_enable_custom_scripts_succeed"
 		else	
 			msg_color_bold red "$msg_enable_custom_scripts_fail"
-			init_play_audio /audio.d/custom_scripts_failed.pcm
+			init_play_audio /sounds/custom_scripts_failed.pcm
 			return 1
 		fi
 		msg
@@ -362,5 +362,5 @@ function init_main() {
 	fi
 }
 
-init_main && init_play_audio /audio.d/all_operations_are_successful.pcm || init_play_audio /audio.d/an_error_has_occurred.pcm
+init_main && init_play_audio /sounds/all_operations_are_successful.pcm || init_play_audio /sounds/an_error_has_occurred.pcm
 init_exit

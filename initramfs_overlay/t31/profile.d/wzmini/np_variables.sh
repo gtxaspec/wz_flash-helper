@@ -4,7 +4,7 @@
 #
 
 ## List of all partition names
-np_all_partname_list="boot kernel rootfs configs"
+np_all_partname_list="boot env kernel rootfs configs"
 
 ## Where all partition images will be saved
 ## Same as cp_backup_path

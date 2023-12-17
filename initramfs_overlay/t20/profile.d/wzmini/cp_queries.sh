@@ -10,12 +10,14 @@ function get_cp_partnum() {
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
-		"kernel")
+		"env")
 			echo -n "15" ;;
-		"rootfs")
+		"kernel")
 			echo -n "16" ;;
-		"configs")
+		"rootfs")
 			echo -n "17" ;;
+		"configs")
+			echo -n "18" ;;
 	esac
 }
 
@@ -25,6 +27,8 @@ function get_cp_partfstype() {
 	local partname="$1"
 	case "$1" in
 		"boot")
+			echo -n "raw" ;;
+		"env")
 			echo -n "raw" ;;
 		"kernel")
 			echo -n "raw" ;;
@@ -40,6 +44,8 @@ function get_cp_restore_opt_value() {
 # Syntax: get_cp_restore_opt_value <partname>
 	local partname="$1"
 	case "$1" in
+		"env")
+			echo -n "$restore_wzmini_env" ;;
 		"kernel")
 			echo -n "$restore_wzmini_kernel" ;;
 		"rootfs")

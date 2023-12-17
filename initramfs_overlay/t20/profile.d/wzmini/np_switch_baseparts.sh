@@ -9,6 +9,8 @@ function get_np_partoperation() {
 	case "$1" in
 		"boot")
 			echo -n "write" ;;
+		"env")
+			echo -n "erase" ;;
 		"kernel")
 			echo -n "write" ;;
 		"rootfs")

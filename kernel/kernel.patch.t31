@@ -29,7 +29,7 @@ index abb91073..fc9d6e42 100644
  CONFIG_EARLY_PRINTK=y
 -# CONFIG_CMDLINE_BOOL is not set
 +CONFIG_CMDLINE_BOOL=y
-+CONFIG_CMDLINE="mem=94M rmem=34M@0x5E00000 console=ttyS1,115200n8 rdinit=/init mtdparts=jz_sfc:256K@0(boot),16384k@0(all),64K@256K(openipc_env),3072K@320K(openipc_kernel),10240K@3392K(openipc_rootfs),2752K@13632K(openipc_rootfs-data),1984K@256K(stock_kernel),3904K@2240K(stock_rootfs),3904K@6144K(stock_app),1984K@10048K(stock_kback),3904K@12032K(stock_aback),384K@15936K(stock_cfg),64K@16320K(stock_para),3072K@256K(wzmini_kernel),12672K@2240K(wzmini_rootfs),384K@16000K(wzmini_configs) nogmac"
++CONFIG_CMDLINE="mem=94M rmem=34M@0x5E00000 console=ttyS1,115200n8 rdinit=/init mtdparts=jz_sfc:256K@0(boot),16384k@0(all),64K@256K(openipc_env),3072K@320K(openipc_kernel),10240K@3392K(openipc_rootfs),2752K@13632K(openipc_rootfs-data),1984K@256K(stock_kernel),3904K@2240K(stock_rootfs),3904K@6144K(stock_app),1984K@10048K(stock_kback),3904K@12032K(stock_aback),384K@15936K(stock_cfg),64K@16320K(stock_para),64K@256K(wzmini_env),3072K@320K(wzmini_kernel),12608K@3392K(wzmini_rootfs),384K@16000K(wzmini_configs) nogmac"
 +CONFIG_CMDLINE_OVERRIDE=y
  # CONFIG_DEBUG_STACKOVERFLOW is not set
  # CONFIG_RUNTIME_DEBUG is not set

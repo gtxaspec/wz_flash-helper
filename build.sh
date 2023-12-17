@@ -12,7 +12,8 @@ SoC="${2}"
 function show_syntax() {
 	echo "./build.sh <action> <SoC>"
 	echo "Actions: patch initramfs kernel release clean"
-	echo "SoC: t20 t31"
+	echo "SoCs: t20 t31"
+	exit 1
 }
 
 function get_sdcard_kernel_filename() {
@@ -41,7 +42,15 @@ function get_default_kernel_config() {
 
 function make_initramfs() {
 	echo "[build.sh] Creating /tmp/initramfs.cpio"
-	( cd initramfs_root && find . | fakeroot cpio --create --format='newc' | gzip > /tmp/initramfs.cpio)
+	
+	mkdir -p output/initramfs
+	cp -r initramfs_root/* output/initramfs
+	cp -r initramfs_overlay/${SoC}/* output/initramfs
+	
+	[ -f /tmp/initramfs.cpio ] && rm /tmp/initramfs.cpio
+	( cd output/initramfs && find . | fakeroot cpio --create --format='newc' | gzip > /tmp/initramfs.cpio)
+	
+	rm -r output/initramfs
 }
 
 function patch_all_kernel_config() {
@@ -56,7 +65,9 @@ function patch_all_kernel_config() {
 }
 
 function make_kernel() {
+	patch_all_kernel_config
 	make_initramfs
+	
 	echo "[build.sh] Compiling kernel for ${SoC}"
 	( cd firmware && BOARD=${SoC}_ultimate_defconfig make br-linux )
 
@@ -94,6 +105,10 @@ all_SoCs="t20 t31"
 
 mkdir -p output
 
+
+[[ ${SoC} == "" ]] && show_syntax
+echo "${all_SoCs}" | grep -q ${SoC} || { echo "[build.sh] Unsupported SoC" ; show_syntax ; }
+
 case ${action} in
 	"patch")
 		patch_all_kernel_config
@@ -111,6 +126,7 @@ case ${action} in
 		clean_up
 		;;
 	*)
+		echo "[build.sh] Invalid action"
 		show_syntax
 		;;
 esac

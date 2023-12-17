@@ -4,8 +4,7 @@
 #
 
 function blink_led_blue() {
-	local chip_family=$(ipcinfo --family)
-	source /leds_gpio.d/$chip_family.sh
+	source /leds_gpio.d/leds_gpio.sh
 	
 	while true; do
 		echo 0 > /sys/class/gpio/gpio$red_led_pin/value

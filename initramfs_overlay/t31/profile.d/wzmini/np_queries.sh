@@ -10,14 +10,12 @@ function get_np_partnum() {
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
-		"env")
-			echo -n "13" ;;
 		"kernel")
-			echo -n "14" ;;
+			echo -n "13" ;;
 		"rootfs")
-			echo -n "15" ;;
+			echo -n "14" ;;
 		"configs")
-			echo -n "16" ;;
+			echo -n "15" ;;
 	esac
 }
 
@@ -27,8 +25,6 @@ function get_np_partfstype() {
 	local partname="$1"
 	case "$1" in
 		"boot")
-			echo -n "raw" ;;
-		"env")
 			echo -n "raw" ;;
 		"kernel")
 			echo -n "raw" ;;

@@ -11,7 +11,7 @@ SoC="${2}"
 
 function show_syntax() {
 	echo "./build.sh <action> <SoC>"
-	echo "Actions: patch initramfs kernel release clean"
+	echo "Actions: initramfs kernel release clean"
 	echo "SoCs: t20 t31"
 	exit 1
 }
@@ -95,7 +95,7 @@ function make_release() {
 function clean_up() {
 	[ -d output ] && rm -r output
 	[ -f /tmp/initramfs.cpio ] && rm /tmp/initramfs.cpio
-	return 0
+	exit 0
 }
 
 
@@ -106,7 +106,7 @@ all_SoCs="t20 t31"
 mkdir -p output
 
 
-[[ ${SoC} == "" ]] && show_syntax
+[[ ${SoC} == "" ]] && [[ "${action}" == "clean" ]] && clean_up
 echo "${all_SoCs}" | grep -q ${SoC} || { echo "[build.sh] Unsupported SoC" ; show_syntax ; }
 
 case ${action} in
@@ -118,9 +118,6 @@ case ${action} in
 		;;
 	"release")
 		make_release
-		;;
-	"clean")
-		clean_up
 		;;
 	*)
 		echo "[build.sh] Invalid action"

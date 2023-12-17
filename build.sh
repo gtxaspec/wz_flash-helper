@@ -110,9 +110,6 @@ mkdir -p output
 echo "${all_SoCs}" | grep -q ${SoC} || { echo "[build.sh] Unsupported SoC" ; show_syntax ; }
 
 case ${action} in
-	"patch")
-		patch_all_kernel_config
-		;;
 	"initramfs")
 		make_initramfs
 		;;

@@ -1,6 +1,8 @@
---- firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config	2023-11-08 14:17:15.855420052 +0700
-+++ kernel/kernel.config.t31	2023-11-08 14:24:25.195014509 +0700
-@@ -272,7 +272,7 @@
+diff --git a/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config b/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config
+index abb91073..fc9d6e42 100644
+--- a/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config
++++ b/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config
+@@ -272,7 +272,7 @@ CONFIG_UIDGID_CONVERTED=y
  # CONFIG_SYSFS_DEPRECATED is not set
  # CONFIG_RELAY is not set
  CONFIG_BLK_DEV_INITRD=y
@@ -9,20 +11,7 @@
  CONFIG_RD_GZIP=y
  # CONFIG_RD_BZIP2 is not set
  # CONFIG_RD_LZMA is not set
-@@ -1625,9 +1625,9 @@
- #
- # File systems
- #
--# CONFIG_EXT2_FS is not set
--# CONFIG_EXT3_FS is not set
--# CONFIG_EXT4_FS is not set
-+CONFIG_EXT2_FS=y
-+CONFIG_EXT3_FS=y
-+CONFIG_EXT4_FS=y
- # CONFIG_REISERFS_FS is not set
- # CONFIG_JFS_FS is not set
- # CONFIG_XFS_FS is not set
-@@ -1661,9 +1661,9 @@
+@@ -1661,9 +1661,9 @@ CONFIG_GENERIC_ACL=y
  #
  # DOS/FAT/NT Filesystems
  #
@@ -34,7 +23,7 @@
  CONFIG_FAT_DEFAULT_CODEPAGE=437
  CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
  # CONFIG_NTFS_FS is not set
-@@ -1894,7 +1894,9 @@
+@@ -1894,7 +1894,9 @@ CONFIG_HAVE_ARCH_KGDB=y
  # CONFIG_TEST_STRING_HELPERS is not set
  # CONFIG_TEST_KSTRTOX is not set
  CONFIG_EARLY_PRINTK=y

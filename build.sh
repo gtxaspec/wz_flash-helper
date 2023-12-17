@@ -40,38 +40,36 @@ function get_default_kernel_config() {
 }
 
 function make_initramfs() {
-	echo "Creating /tmp/initramfs.cpio"
+	echo "[build.sh] Creating /tmp/initramfs.cpio"
 	( cd initramfs_root && find . | fakeroot cpio --create --format='newc' | gzip > /tmp/initramfs.cpio)
 }
 
 function patch_all_kernel_config() {
 	for patch_SoC in ${all_SoCs}; do
-		default_kernel_config=$(get_default_kernel_config ${patch_SoC})
+		local default_kernel_config=$(get_default_kernel_config ${patch_SoC})
 		
-		[ ! -f ${default_kernel_config}.bak ] && cp ${default_kernel_config} ${default_kernel_config}.bak
-		patch ${default_kernel_config} < kernel/kernel.patch.${patch_SoC}
+		if [ ! -f ${default_kernel_config}.bak ]; then
+			cp ${default_kernel_config} ${default_kernel_config}.bak
+			patch ${default_kernel_config} < kernel/kernel.patch.${patch_SoC}
+		fi
 	done
 }
 
-function compile_kernel() {
-	echo "Make sure that you patched kernel config by running \"./build.sh patch\" first!"
-	echo
-	sleep 2
+function make_kernel() {
 	make_initramfs
-	echo "Compiling kernel for ${SoC}"
+	echo "[build.sh] Compiling kernel for ${SoC}"
 	( cd firmware && BOARD=${SoC}_ultimate_defconfig make br-linux )
 
 	mkdir -p output/${SoC}
 	cp firmware/output/images/uImage output/${SoC}/${sdcard_kernel_filename}
+	echo "[build.sh] Compiled kernel has been saved at output/${SoC}/${sdcard_kernel_filename}"
 }
 
 function make_release() {
-	mkdir -p output/${SoC}
-
-        make_initramfs
-	compile_kernel
-
-	echo "Making release for ${SoC}"
+	make_kernel
+	
+	echo "[build.sh] Making release for ${SoC}"
+	
 	cp -r wz_flash-helper output/${SoC}
 	mv output/${SoC}/wz_flash-helper/restore/stock.conf.${SoC} output/${SoC}/wz_flash-helper/restore/stock.conf
 	rm output/${SoC}/wz_flash-helper/restore/stock.conf.*
@@ -104,7 +102,7 @@ case ${action} in
 		make_initramfs
 		;;
 	"kernel")
-		compile_kernel
+		make_kernel
 		;;
 	"release")
 		make_release

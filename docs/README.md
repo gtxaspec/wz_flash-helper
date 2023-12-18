@@ -16,11 +16,13 @@
 
 ## Supported cameras
 
-- Wyze Cam Pan
-- Wyze Cam v2
-- Wyze Cam v2 Pan
-- Wyze Cam v3
-- Wyze Cam Floodlight
+| Camera              | Support status |
+| ------------------- | -------------- |
+| Wyze Cam v2         | ✅ Supported   |
+| Wyze Cam Pan        | ⚠️ Untested    |
+| Wyze Cam v3         | ✅ Supported   |
+| Wyze Cam v2 Pan     | ❌ Not yet     |
+| Wyze Cam Floodlight | ⚠️ Untested    |
 
 ## Disclaimer
 

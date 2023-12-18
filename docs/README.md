@@ -7,12 +7,12 @@
 - Backup partitions
 - Restore partitions
 - Switch between Stock, wzmini and OpenIPC firmware
-- Only SD card is needed
+- No need to disassemble your camera
 - Dry run option debugging
 - Initramfs shell for manual debugging if you have a serial connection
 - Seamlessly boot to `wz_mini_hacks` on the next boot
 - Customize partitions with custom scripts support
-- Windows friendly
+- Windows-friendly setup progress
 
 ## Supported cameras
 
@@ -27,7 +27,7 @@
 ## Disclaimer
 
 ```
-I am not responsible for bricking someone's camera.
+I am not responsible for bricking someone's cameras.
 DO NOT DISCONNECT POWER when the switch profile operation is going on, this would brick your camera (unless you know how to recover with Ingenic Cloner or remove the flash chip and use SPI programmer).
 It is also possible to brick your camera if you corrupt the uboot partition with your custom script or inject dangerous commands into the config file.
 ```

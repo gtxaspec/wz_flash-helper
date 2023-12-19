@@ -174,11 +174,11 @@ function init_import_prog_config_file() {
 
 function init_source_detect_profile() {
 # Description: Detect the current profile to read and write partitions correctly
-	if [[ ! "$debug_manual_curent_profile" == "" ]]; then
+	if [[ ! "$debug_manual_current_profile" == "" ]]; then
 		msg_color_nonewline lightbrown "current_profile has been manually set to: "
-		msg_color cyan "$debug_manual_curent_profile"
+		msg_color cyan "$debug_manual_current_profile"
 		
-		current_profile="$debug_manual_curent_profile"
+		current_profile="$debug_manual_current_profile"
 	else
 		source /profile.d/detect_profile.sh || return 1
 	fi

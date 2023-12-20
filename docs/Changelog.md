@@ -76,4 +76,3 @@
 ## v0.7.7
 
 - Add option debug_manual_current_profile to set current_profile manually in case profile detection fails
-- Add error check for empty next_profile value

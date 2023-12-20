@@ -9,3 +9,4 @@ echo "You can run resize command to make the terminal output match the terminal 
 hostname initramfs
 resize
 cd /
+echo

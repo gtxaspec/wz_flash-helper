@@ -101,11 +101,23 @@ function init_welcome() {
 
 function init_drop_a_shell() {
 # Description: Drop initramfs shell
+	echo > /dev/console
+	echo "Dropping a shell, the init script will be resumed after you exit this shell" > /dev/console
+	echo "If you want to force a reboot, please run: reboot -f" > /dev/console
+	echo > /dev/console
+
 	exec 0< /dev/console
-	echo "Dropping a shell" > /dev/console
 	exec 1> /dev/console
 	exec 2> /dev/console
-	exec /bin/sh -l
+	
+	/bin/sh -l
+
+	exec > /tmp/initramfs.log 2>&1 # Redirect output back to the log file
+	exec 0< /dev/null # Stop the user from typing on the serial terminal
+	echo > /dev/console
+	
+	echo "Continuing init" > /dev/console
+	sleep 1
 }
 
 function init_wait_interrupt() {
@@ -116,11 +128,13 @@ function init_wait_interrupt() {
 	exec 0< /dev/console # Allow the user to type on the serial terminal
 
 	read -r -s -n 1 -t 3
-	[[ "$?" -eq 0 ]] && init_drop_a_shell
-
-	exec 0< /dev/null # Stop the user from typing on the serial terminal
-	echo "Action has timed out" > /dev/console
-	echo > /dev/console
+	if [[ "$?" -eq 0 ]]; then
+		init_drop_a_shell
+	else
+		echo "Action has timed out" > /dev/console
+	fi
+	
+	exec 0< /dev/null
 }
 
 function init_source_detect_profile() {
@@ -161,7 +175,7 @@ function init_rename_prog_sdcard_kernel() {
 # Description: Rename the program SD card kernel to avoid an infinite boot loop
 	for kernelimg in $cp_sdcard_kernel_name $cp_sdcard_secondary_kernel_name; do
 		if [ -f /sdcard/$kernelimg ]; then
-			msg_nonewline "Renaming program SD card kernel: "
+			msg_nonewline "Renaming program SD card kernel "
 			msg_color_nonewline cyan "$kernelimg "
 			msg_nonewline "to "
 			msg_color_nonewline cyan "$kernelimg.$prog_name"
@@ -220,8 +234,10 @@ function init_exit() {
 	msg
 	msg_color_bold magenta "Initramfs init is finished!"
 
+	echo > /dev/console
 	cp /tmp/initramfs_serial.log $prog_log_file_serial
 	cp /tmp/initramfs.log $prog_log_file
+	msg_color green "Log files have been copied to SD card"
 
 	sync
 	umount /sdcard

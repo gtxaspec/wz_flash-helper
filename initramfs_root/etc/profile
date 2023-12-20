@@ -1,0 +1,11 @@
+# /etc/profile
+
+
+export PS1='\[\e[1;31m\]\h \w # \[\e[0m\]\[\e[32m\]\[\e[00m\]'
+export TERM='linux'
+export TERMINFO=/etc/terminfo
+
+echo "You can run resize command to make the terminal output match the terminal size" > /dev/console
+hostname initramfs
+resize
+cd /

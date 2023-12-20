@@ -126,6 +126,32 @@ function init_wait_interrupt() {
 	echo > /dev/console
 }
 
+function init_source_detect_profile() {
+# Description: Detect the current profile to read and write partitions correctly
+	source /profile.d/detect_profile.sh || return 1
+}
+
+function init_source_variables_emulate() {
+# Description: Emulate chip family, flash type, and current profile for testing
+	source /variables_emulate.sh
+}
+
+function init_source_current_profile() {
+# Description: Import current profile variables and query script
+	source /profile.d/detect_chip_group.sh || return 1
+	source /profile.d/$current_profile/cp_variables.sh
+	source /profile.d/$current_profile/cp_queries.sh
+}
+
+function init_source_detect_model() {
+# Description: Detect the current camera model by reading the factory-generated config file
+	source /profile.d/$current_profile/detect_model.sh
+}
+
+function init_source_variables_prog_info() {
+# Description: Import program variables
+	source /variables_prog_info.sh
+}
 
 function init_mount_sdcard() {
 # Description: Mount SD card, nothing more
@@ -170,40 +196,6 @@ function init_import_prog_config_file() {
 	# Fix issue that config file fails to be sourced if it contains MS-DOS newlines
 	grep -q $'\r' $prog_config_file && dos2unix $prog_config_file
 	source $prog_config_file || { msg_color_bold red "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
-}
-
-function init_source_detect_profile() {
-# Description: Detect the current profile to read and write partitions correctly
-	if [[ ! "$debug_manual_curent_profile" == "" ]]; then
-		msg_color_nonewline lightbrown "current_profile has been manually set to: "
-		msg_color cyan "$debug_manual_curent_profile"
-		
-		current_profile="$debug_manual_curent_profile"
-	else
-		source /profile.d/detect_profile.sh || return 1
-	fi
-}
-
-function init_source_variables_emulate() {
-# Description: Emulate chip family, flash type, and current profile for testing
-	source /variables_emulate.sh
-}
-
-function init_source_current_profile() {
-# Description: Import current profile variables and query script
-	source /profile.d/detect_chip_group.sh || return 1
-	source /profile.d/$current_profile/cp_variables.sh
-	source /profile.d/$current_profile/cp_queries.sh
-}
-
-function init_source_detect_model() {
-# Description: Detect the current camera model by reading the factory-generated config file
-	source /profile.d/$current_profile/detect_model.sh
-}
-
-function init_source_variables_prog_info() {
-# Description: Import program variables
-	source /variables_prog_info.sh
 }
 
 function init_display_info() {
@@ -261,17 +253,17 @@ function init_main() {
 	
 	init_welcome
 	init_wait_interrupt
-
-	init_mount_sdcard || return 1
-	init_rename_prog_sdcard_kernel
-	init_import_prog_config_file || return 1
-		
+	
 	init_source_detect_profile || return 1
 	init_source_variables_emulate
 	
 	init_source_current_profile || return 1
 	init_source_detect_model || return 1
 	init_source_variables_prog_info
+	
+	init_mount_sdcard || return 1
+	init_rename_prog_sdcard_kernel
+	init_import_prog_config_file || return 1
 	
 	[ "$enforce_dry_run" == "yes" ] && dry_run="yes"
 	init_display_info

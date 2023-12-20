@@ -72,3 +72,9 @@
 - Remove ext2,ext3,ext4 kernel modules and minimalize busybox for smaller program size
 - Use a single fw_printenv binary to slightly reduce program size
 - Now the program contains only neccessary files for the SoC that it supports in each program kernel file
+
+## v0.7.7
+
+- Add /etc/profile and make initramfs shell login shell
+- Remove vi from busybox
+- Add color for nano

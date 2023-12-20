@@ -79,3 +79,4 @@
 - Remove vi from busybox
 - Add color highlighting for nano
 - Make initramfs shell prettier
+- Fix Wi-Fi driver detection still runs even it is set on OpenIPC

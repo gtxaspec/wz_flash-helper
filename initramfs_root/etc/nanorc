@@ -1,0 +1,3 @@
+include /etc/nano/json.nanorc
+include /etc/nano/sh.nanorc
+include /etc/nano/yaml.nanorc

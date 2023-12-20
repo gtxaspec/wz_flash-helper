@@ -33,7 +33,7 @@ timezone=""
 
 ## Only use this option to override for Wi-Fi module driver detection if the program cannot detect the correct camera driver
 set_wifi_driver_manually="no"
-wifi_driver=""
+manual_wifi_driver=""
 
 # ---------- End of user customization ----------
 
@@ -87,8 +87,19 @@ function get_wifi_vendor_id() {
 function detect_openipc_wifi_driver() {
 # Description: Assign Wi-Fi driver for OpenIPC based on the camera model and vendor ID
 	msg "Detecting driver for Wi-Fi module"
+	
 	if [[ "$set_wifi_driver_manually" == "yes" ]]; then
 		msg_nonewline "   Using custom Wi-Fi driver value: " && msg_color cyan "$wifi_driver"
+		wifi_driver=$manual_wifi_driver
+		return 0
+	fi
+
+	if fw_printenv wlandev ; then
+		msg_color_nonewline lightbrown "   Wi-Fi driver has already been set, set "
+		msg_color_nonewline cyan "manual_wifi_driver "
+		msg_color lightbrown "if you want overwrite it, leaving it empty for now"
+		
+		wifi_driver=""
 		return 0
 	fi
 	

@@ -77,4 +77,5 @@
 
 - Add /etc/profile and make initramfs shell login shell
 - Remove vi from busybox
-- Add color for nano
+- Add color highlighting for nano
+- Make initramfs shell prettier

@@ -35,8 +35,7 @@ function osp_validate_written_boot_partition() {
 function osp_main() {
 	[[ "$restore_partitions" == "yes" ]] && { msg_color red "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	[[ "$current_profile" == "$next_profile" ]] && { msg_color red "next_profile value is same as current_profile, aborting switch profile" ; return 1 ; }
-	[[ "$next_profile" == "" ]] && { msg_color red "next_profile value is empty, aborting switch profile" ; return 1 ; }
-	[ ! -d /profile.d/$next_profile ] && { msg_color red "next_profile is not supported, aborting switch profile" ; return 1 ; }
+	[ ! -d /profile.d/$next_profile ] && { msg_color red "next_profile profile is not supported, aborting switch profile" ; return 1 ; }
 	
 	source /profile.d/$next_profile/np_variables.sh
 	source /profile.d/$next_profile/np_queries.sh

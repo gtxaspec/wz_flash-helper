@@ -39,6 +39,8 @@ function or_restore_partitions() {
 }
 
 function or_main() {
+	prog_restore_config_file="/sdcard/wz_flash-helper/restore/$current_profile.conf"
+
 	[[ "$switch_profile" == "yes" ]] && { msg_color red "Restore and Switch_profile operations are conflicted, please enable only one option at a time" ; return 1 ; }
 	[ ! -d $cp_restore_path ] && { msg_color_bold red "$cp_restore_path directory is missing" ; return 1 ; }
 	[ ! -f $prog_restore_config_file ] && { msg_color red "$prog_restore_config_file file is missing. Nothing more will be done" ; return 1 ; }

@@ -80,3 +80,9 @@
 - Add color highlighting for nano
 - Make initramfs shell prettier
 - Fix Wi-Fi driver detection still runs even it is set on OpenIPC
+
+## v0.7.8
+
+- Add manual_current_profile and manual_model options
+- Add command shortcuts `ms` and `us` for mounting and umounting SD card from initramfs shell
+

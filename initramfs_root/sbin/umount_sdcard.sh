@@ -2,6 +2,7 @@
 
 echo -n "Umounting SD card... "
 if mountpoint -q /sdcard ; then
+	sync
 	umount /sdcard && echo "done"
 else
 	echo "already umounted"

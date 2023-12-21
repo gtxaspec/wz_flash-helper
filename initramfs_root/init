@@ -140,8 +140,9 @@ function init_wait_interrupt() {
 function init_source_detect_profile() {
 # Description: Detect the current profile to read and write partitions correctly
 	if [[ ! "$manual_current_profile" == "" ]]; then
-		msg_nonewline "Setting manual_current_profile: "
+		msg_color_nonewline lightbrown "Setting manual_current_profile: "
 		msg_color cyan "$manual_current_profile"
+		
 		current_profile=$manual_current_profile
 	else
 		source /profile.d/detect_profile.sh || return 1
@@ -162,7 +163,14 @@ function init_source_current_profile() {
 
 function init_source_detect_model() {
 # Description: Detect the current camera model by reading the factory-generated config file
-	source /profile.d/$current_profile/detect_model.sh
+	if [[ ! "$manual_model" == "" ]]; then
+		msg_color_nonewline lightbrown "Setting manual_model: "
+		msg_color cyan "$manual_model"
+		
+		model=$manual_model
+	else
+		source /profile.d/$current_profile/detect_model.sh
+	fi
 }
 
 function init_source_variables_prog_info() {

@@ -140,6 +140,7 @@ function init_wait_interrupt() {
 function init_source_detect_profile() {
 # Description: Detect the current profile to read and write partitions correctly
 	if [[ ! "$manual_current_profile" == "" ]]; then
+		[ ! -d /profile.d/$manual_current_profile ] && { msg_color red "$manual_current_profile profile is not supported" ; return 1 ; }
 		msg_color_nonewline lightbrown "Setting manual_current_profile: "
 		msg_color cyan "$manual_current_profile"
 		

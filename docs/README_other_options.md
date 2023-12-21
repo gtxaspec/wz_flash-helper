@@ -29,3 +29,14 @@ If you are on OpenIPC profile, SD card kernel specified with `new_sdcard_kernel`
 **✅ Option: `custom_scripts`**
 
 With this option, you can write scripts and get them executed by the program after backup/restore/switch_profile operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
+
+### Debug options
+
+**✅ Option: `manual_current_profile`**
+
+`current_profile` detection might fail due to currupted rootfs partitions(for Stock and wzmini), you can set it manually to fix the partition.
+
+
+**✅ Option: `manual_model`**
+
+`model` detection might fail due to corrupted `configs` or `cfg` partitions, you can set it manually.

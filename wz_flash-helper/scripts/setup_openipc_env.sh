@@ -89,7 +89,7 @@ function detect_openipc_wifi_driver() {
 	msg "Detecting driver for Wi-Fi module"
 	
 	if [[ "$set_wifi_driver_manually" == "yes" ]]; then
-		msg_nonewline "   Using custom Wi-Fi driver value: " && msg_color cyan "$wifi_driver"
+		msg_nonewline "   Using custom Wi-Fi driver value: " && msg_color cyan "$manual_wifi_driver"
 		wifi_driver=$manual_wifi_driver
 		return 0
 	fi

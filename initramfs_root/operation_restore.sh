@@ -10,12 +10,12 @@ function or_restore_boot_partition() {
 		local partname="boot"
 		local partnum="0"
 		local partmtd=$(get_cp_partmtd $partname)
-		local verifyfile_name=$(get_cp_partimg $partname)
-		local verifyfile="$cp_restore_path/$verifyfile_name"
+		local infile_name=$(get_cp_partimg $partname)
+		local infile="$cp_restore_path/$infile_name"
 		
 		write_partition $partname $infile $partmtd || return 1
 		
-		validate_written_partition $partname $partnum $verifyfile || rollback_boot_partition || return 1
+		validate_written_partition $partname $partnum $infile || rollback_boot_partition || return 1
 	fi
 }
 

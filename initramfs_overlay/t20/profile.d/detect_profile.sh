@@ -9,8 +9,8 @@ function detect_profile() {
 		msg "Detected stock Wyze Cam Pan v2 or Wyze Cam Pan uboot"
 		current_profile="stock"
 	
-	elif grep -q "factory_t20_0P3N1PC_kernel" /boot_backup.img.strings ; then
-		msg "Detected OpenIPC T20 uboot"
+	elif grep -q "OpenIPC" /boot_backup.img.strings ; then
+		msg "Detected OpenIPC uboot"
 		current_profile="openipc"
 	else
 		msg_color_bold red "No known uboot string is found on boot partition, failed to detect current profile"

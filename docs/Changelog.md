@@ -86,3 +86,7 @@
 - Add manual_current_profile and manual_model options
 - Add command shortcuts `ms` and `us` for mounting and umounting SD card from initramfs shell
 
+## v0.7.9
+
+- Fix boot partition restore
+- Change OpenIPC uboot string for profile detection

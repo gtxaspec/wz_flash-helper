@@ -183,7 +183,11 @@ function init_mount_sdcard() {
 # Description: Mount SD card, nothing more
 	msg
 	msg_nonewline "Mounting SD card... "
-	mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg_color green "ok" || msg_color red "failed"
+	if ! mountpoint -q /sdcard ; then
+		mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	else
+		msg_color green "already done"
+	fi
 }
 
 function init_rename_prog_sdcard_kernel() {

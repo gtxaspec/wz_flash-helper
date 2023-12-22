@@ -5,7 +5,6 @@
 **❗ WARNING:**
 - DO NOT DISCONNECT POWER when the switch profile operation is going on. Doing this would brick your camera.
 - DO NOT share `initramfs.log` when you are switching to OpenIPC with the `setup_openipc_env.sh` script, this log file contains your Wi-Fi name and password.
-- Switching to other profiles from OpenIPC is not supported yet. If you have switched to OpenIPC, you need to use SSH or serial connection to switch manually.
 - Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development stage).
 
 -----
@@ -34,12 +33,13 @@ The openipc profile requires four partition images for: `boot`, `env`, `kernel` 
 
 **Step 3: Prepare partition images**
 
-**❗ WARNING:** Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would brick your camera.
+**❗ WARNING:**
+- Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would brick your camera.
+- Don't download OpenIPC official uboot image because it doesn't support from SD card kernel that wz_flash-helper relies on to work.
 
-Visit OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) and download the latest build that includes:
+Download OpenIPC Uboot image from [this repo](https://github.com/gtxaspec/u-boot-ingenic/releases/tag/latest) with this format: `u-boot-[SoC]-universal.bin`
 
-- Uboot image: `u-boot-[SoC]-universal.bin`
-- Firmware archive: `openipc.[chip family]-[flash type]-ultimate.tgz`
+Download OpenIPC tarball that includes kernel and rootfs imaes from [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) with this format: `openipc.[chip family]-[flash type]-ultimate.tgz`
 
 Then extract the firmware archive, place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 

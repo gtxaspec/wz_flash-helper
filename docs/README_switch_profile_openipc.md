@@ -39,7 +39,7 @@ The openipc profile requires four partition images for: `boot`, `env`, `kernel` 
 
 Download OpenIPC Uboot image from [this repo](https://github.com/gtxaspec/u-boot-ingenic/releases/tag/latest) with this format: `u-boot-[SoC]-universal.bin`
 
-Download OpenIPC tarball that includes kernel and rootfs imaes from [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) with this format: `openipc.[chip family]-[flash type]-ultimate.tgz`
+Download OpenIPC tarball that includes kernel and rootfs images from [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) with this format: `openipc.[chip family]-[flash type]-ultimate.tgz`
 
 Then extract the firmware archive, place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 
@@ -61,6 +61,8 @@ Because Wyze cameras don't have Ethernet, Wi-Fi authentication information and d
 To get the `setup_openipc_env.sh` script work, edit the script to set your Wi-Fi name (SSID) and password, optionally set your camera's MAC address and Timezone.
 
 The Wi-Fi driver doesn't need to be set manually because it is automatically detected.
+
+**❗ WARNING:** If you forget to run this script, your camera would not be able to connect to Wi-Fi. In order to fix, you have to run the program again with it enabled.
 
 **Step 6: Edit the program configuration file**
 

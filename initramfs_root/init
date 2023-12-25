@@ -21,18 +21,13 @@ mount -t sysfs sysfs /sys
 
 sleep 1
 
-function init_play_audio() {
-# Description: Play audio to let the user keep track of the progress, useful when they don't have a serial connection
-	! lsmod | grep -q audio && return 0
-	[[ ! "$enable_audio" == "yes" ]] && return 0
-
-	local audio_file="$1"
-	local numberic='^[0-9]+$'
-
-	if [[ ! "$audio_volume" =~ $numberic ]] || [[ "$audio_volume" == "" ]] || [ "$audio_volume" -lt 0 ] || [ "$audio_volume" -gt 100 ]; then
-		local audio_volume="50" # If the audio value is invalid, set it to 50
-	fi
-	audioplay $audio_file $audio_volume
+function init_source() {
+# Description: Import function and variable scripts
+	source /functions_msg.sh
+	source /functions_io.sh
+	source /functions_misc.sh
+	source /variables_msg.sh
+	source /variables_prog_info.sh
 }
 
 function init_detect_hardware() {
@@ -41,7 +36,7 @@ function init_detect_hardware() {
 	chip_family=$(ipcinfo --family)
 	
 	flash_type=$(ipcinfo --flash-type)
-	blocksize=$(blockdev  --getbsz /dev/mtdblock0)
+	blocksize=$(blockdev --getbsz /dev/mtdblock0)
 }
 
 function init_backup_bootpart() {
@@ -59,13 +54,9 @@ function init_backup_bootpart() {
 	strings /boot_backup.img > /boot_backup.img.strings
 }
 
-function init_source() {
-# Description: Import function and variable scripts
-	source /functions_msg.sh
-	source /functions_io.sh
-	source /functions_misc.sh
-	source /variables_msg.sh
-	source /variables_prog_info.sh
+function init_source_initialize_gpio() {
+# Description: Initialize some GPIO pins to enable LEDs, also SD card if needed
+	source /initialize_gpio.d/initialize_gpio.sh
 }
 
 function init_load_kernel_modules() {
@@ -83,38 +74,12 @@ function init_load_kernel_modules() {
 	done
 }
 
-function init_source_initialize_gpio() {
-# Description: Initialize some GPIO pins to enable LEDs, also SD card if needed
-	source /initialize_gpio.d/initialize_gpio.sh
-}
-
 function init_welcome() {
 # Description: It is nice to let the user know that they are welcome!
 	msg
 	msg
 	msg_color_bold lightmagenta "Welcome to initramfs init! ^_^" # Yep, a smiling emoji!
 	msg
-}
-
-function init_drop_a_shell() {
-# Description: Drop initramfs shell
-	echo > /dev/console
-	echo "Dropping a shell, the init script will be resumed after you exit this shell" > /dev/console
-	echo "If you want to force a reboot, please run: reboot -f" > /dev/console
-	echo > /dev/console
-
-	exec 0< /dev/console
-	exec 1> /dev/console
-	exec 2> /dev/console
-	
-	/bin/sh -l
-
-	exec > /tmp/initramfs.log 2>&1 # Redirect output back to the log file
-	exec 0< /dev/null # Stop the user from typing on the serial terminal
-	echo > /dev/console
-	
-	echo "Continuing init" > /dev/console
-	sleep 1
 }
 
 function init_wait_interrupt() {
@@ -126,12 +91,33 @@ function init_wait_interrupt() {
 
 	read -r -s -n 1 -t 3
 	if [[ "$?" -eq 0 ]]; then
-		init_drop_a_shell
+		drop_a_shell
 	else
 		echo "Action has timed out" > /dev/console
 	fi
 	
 	exec 0< /dev/null
+}
+
+function init_mount_sdcard() {
+# Description: Mount SD card, nothing more
+	msg
+	msg_nonewline "Mounting SD card... "
+	if ! mountpoint -q /sdcard ; then
+		mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	else
+		msg_color green "already done"
+	fi
+}
+
+function init_import_prog_config_file() {
+# Description: Source program config file to know and do what the user wants
+	[ ! -d $prog_dir ] && { msg_color_bold red "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; return 1 ; }
+	[ ! -f $prog_config_file ] && { msg_color_bold red "$prog_config_file file is missing. Nothing will be done" ; return 1 ; }
+
+	# Fix issue that config file fails to be sourced if it contains MS-DOS newlines
+	grep -q $'\r' $prog_config_file && dos2unix $prog_config_file
+	source $prog_config_file || { msg_color_bold red "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
 }
 
 function init_source_detect_profile() {
@@ -157,29 +143,6 @@ function init_source_current_profile() {
 	source /profile.d/detect_chip_group.sh || return 1
 	source /profile.d/$current_profile/cp_variables.sh
 	source /profile.d/$current_profile/cp_queries.sh
-}
-
-function init_source_detect_model() {
-# Description: Detect the current camera model by reading the factory-generated config file
-	if [[ ! "$manual_model" == "" ]]; then
-		msg_color_nonewline lightbrown "Setting manual_model: "
-		msg_color cyan "$manual_model"
-		
-		model=$manual_model
-	else
-		source /profile.d/$current_profile/detect_model.sh
-	fi
-}
-
-function init_mount_sdcard() {
-# Description: Mount SD card, nothing more
-	msg
-	msg_nonewline "Mounting SD card... "
-	if ! mountpoint -q /sdcard ; then
-		mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
-	else
-		msg_color green "already done"
-	fi
 }
 
 function init_rename_prog_sdcard_kernel() {
@@ -210,14 +173,16 @@ function init_rename_prog_sdcard_kernel() {
 	return 1
 }
 
-function init_import_prog_config_file() {
-# Description: Source program config file to know and do what the user wants
-	[ ! -d $prog_dir ] && { msg_color_bold red "$prog_dir does not exist. Creating it to store log files. Nothing will be done" ; mkdir -p $prog_dir ; return 1 ; }
-	[ ! -f $prog_config_file ] && { msg_color_bold red "$prog_config_file file is missing. Nothing will be done" ; return 1 ; }
-
-	# Fix issue that config file fails to be sourced if it contains MS-DOS newlines
-	grep -q $'\r' $prog_config_file && dos2unix $prog_config_file
-	source $prog_config_file || { msg_color_bold red "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
+function init_source_detect_model() {
+# Description: Detect the current camera model by reading the factory-generated config file
+	if [[ ! "$manual_model" == "" ]]; then
+		msg_color_nonewline lightbrown "Setting manual_model: "
+		msg_color cyan "$manual_model"
+		
+		model=$manual_model
+	else
+		source /profile.d/$current_profile/detect_model.sh
+	fi
 }
 
 function init_display_info() {
@@ -257,9 +222,9 @@ function init_exit() {
 	echo "The program is finished! You can enter initramfs shell again before the camera reboots" > /dev/console
 	init_wait_interrupt
 
-	#init_drop_a_shell # Comment out this line to debug with serial connection
+	#drop_a_shell # Comment out this line to debug with serial connection
 	
-	init_play_audio /sounds/rebooting_now.pcm
+	play_audio /sounds/rebooting_now.pcm
 	umount -a -r
 	reboot -f # Reboot immediately
 	sleep 10 # Prevent init from continuing after init_exit finishes, but the camera has not rebooted immediately
@@ -270,7 +235,8 @@ function init_main() {
 	
 	init_detect_hardware
 	init_backup_bootpart
-		
+	init_source_variables_emulate
+	
 	init_source_initialize_gpio
 	init_load_kernel_modules
 	
@@ -281,8 +247,6 @@ function init_main() {
 	init_import_prog_config_file || return 1
 	
 	init_source_detect_profile || return 1
-	init_source_variables_emulate
-	
 	init_source_current_profile || return 1
 	init_rename_prog_sdcard_kernel || return 1 # If any error happens before the SD card kernel is renamed, the camera will bootloop
 	init_source_detect_model || return 1
@@ -291,20 +255,20 @@ function init_main() {
 	[ "$enforce_dry_run" == "yes" ] && dry_run="yes"
 	init_display_info
 	
-	init_play_audio /sounds/wz_helper_finished_loading.pcm
+	play_audio /sounds/wz_helper_finished_loading.pcm
 
 	#---------- Backup operation ----------
 	msg
 	if [[ "$backup_partitions" == "yes" ]]; then
 		msg_tickbox_yes
 		msg "$msg_backup_partitions_yes"
-		init_play_audio /sounds/processing_backup_operations.pcm
+		play_audio /sounds/processing_backup_operations.pcm
 		
 		if source /operation_backup.sh ; then
 			msg_color_bold green "$msg_backup_partitions_succeed"
 		else
 			msg_color_bold red "$msg_backup_partitions_fail"
-			init_play_audio /sounds/backup_operations_failed.pcm
+			play_audio /sounds/backup_operations_failed.pcm
 			return 1
 		fi
 		msg
@@ -318,13 +282,13 @@ function init_main() {
 	if [[ "$restore_partitions" == "yes" ]]; then
 		msg_tickbox_yes
 		msg "$msg_restore_partitions_yes"
-		init_play_audio /sounds/processing_restore_operations.pcm
+		play_audio /sounds/processing_restore_operations.pcm
 		
 		if source /operation_restore.sh ; then
 			msg_color_bold green "$msg_restore_partitions_succeed"
 		else
 			msg_color_bold red "$msg_restore_partitions_fail"
-			init_play_audio /sounds/restore_operations_failed.pcm
+			play_audio /sounds/restore_operations_failed.pcm
 			return 1
 		fi
 		msg
@@ -338,13 +302,13 @@ function init_main() {
 	if [[ "$switch_profile" == "yes" ]]; then
 		msg_tickbox_yes
 		msg "$msg_switch_profile_yes"
-		init_play_audio /sounds/processing_switch_profile_operations.pcm
+		play_audio /sounds/processing_switch_profile_operations.pcm
 		
 		if source /operation_switch_profile.sh ; then
 			msg_color_bold green "$msg_switch_profile_succeed"
 		else
 			msg_color_bold red "$msg_switch_profile_fail"
-			init_play_audio /sounds/switch_profile_operations_failed.pcm
+			play_audio /sounds/switch_profile_operations_failed.pcm
 			return 1
 		fi
 		msg
@@ -369,13 +333,13 @@ function init_main() {
 	if [[ "$enable_custom_scripts" == "yes" ]]; then
 		msg_tickbox_yes
 		msg "$msg_enable_custom_scripts_yes"
-		init_play_audio /sounds/running_custom_scripts.pcm
+		play_audio /sounds/running_custom_scripts.pcm
 		
 		if source /action_execute_custom_scripts.sh ; then
 			msg_color_bold green "$msg_enable_custom_scripts_succeed"
 		else	
 			msg_color_bold red "$msg_enable_custom_scripts_fail"
-			init_play_audio /sounds/custom_scripts_failed.pcm
+			play_audio /sounds/custom_scripts_failed.pcm
 			return 1
 		fi
 		msg
@@ -385,5 +349,5 @@ function init_main() {
 	fi
 }
 
-init_main && init_play_audio /sounds/all_operations_are_successful.pcm || init_play_audio /sounds/an_error_has_occurred.pcm
+init_main && play_audio /sounds/all_operations_are_successful.pcm || play_audio /sounds/an_error_has_occurred.pcm
 init_exit

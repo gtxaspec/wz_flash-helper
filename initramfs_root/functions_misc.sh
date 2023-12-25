@@ -8,6 +8,41 @@ function gen_4digit_id() {
 	shuf -i 1000-9999 -n 1
 }
 
+function play_audio() {
+# Description: Play audio to let the user keep track of the progress, useful when they don't have a serial connection
+	! lsmod | grep -q audio && return 0
+	[[ ! "$enable_audio" == "yes" ]] && return 0
+
+	local audio_file="$1"
+	local numberic='^[0-9]+$'
+
+	if [[ ! "$audio_volume" =~ $numberic ]] || [[ "$audio_volume" == "" ]] || [ "$audio_volume" -lt 0 ] || [ "$audio_volume" -gt 100 ]; then
+		local audio_volume="50" # If the audio value is invalid, set it to 50
+	fi
+	audioplay $audio_file $audio_volume
+}
+
+function drop_a_shell() {
+# Description: Drop initramfs shell
+	echo > /dev/console
+	echo "Dropping a shell, the init script will be resumed after you exit this shell" > /dev/console
+	echo "If you want to force a reboot, please run: reboot -f" > /dev/console
+	echo > /dev/console
+
+	exec 0< /dev/console
+	exec 1> /dev/console
+	exec 2> /dev/console
+	
+	/bin/sh -l
+
+	exec > /tmp/initramfs.log 2>&1 # Redirect output back to the log file
+	exec 0< /dev/null # Stop the user from typing on the serial terminal
+	echo > /dev/console
+	
+	echo "Continuing init" > /dev/console
+	sleep 1
+}
+
 function unpad_partimg() {
 # Remove padding blocks from partition image <infile> to create a new partition image <outfile>
 # Syntax: unpad_infile <infile> <blocksize> <outfile>

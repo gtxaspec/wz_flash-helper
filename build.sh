@@ -106,7 +106,8 @@ all_SoCs="t20 t31"
 mkdir -p output
 
 
-[[ ${SoC} == "" ]] && [[ "${action}" == "clean" ]] && clean_up
+[[ ${SoC} == "" ]] && [[ "${action}" == "clean" ]] && { clean_up ; exit 0 ; }
+[[ ${SoC} == "" ]] && [[ "${action}" == "patch" ]] && { patch_all_kernel_config ; exit 0 ; }
 echo "${all_SoCs}" | grep -q ${SoC} || { echo "[build.sh] Unsupported SoC" ; show_syntax ; }
 
 case ${action} in

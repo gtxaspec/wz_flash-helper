@@ -59,16 +59,13 @@ function init_backup_bootpart() {
 	strings /boot_backup.img > /boot_backup.img.strings
 }
 
-function init_source_variables_init_msg() {
-# Description: Place long init messages somewhere else to keep this script clean
-	source /variables_msg.sh
-}
-
-function init_source_functions() {
-# Description: Import function scripts
+function init_source() {
+# Description: Import function and variable scripts
 	source /functions_msg.sh
 	source /functions_io.sh
 	source /functions_misc.sh
+	source /variables_msg.sh
+	source /variables_prog_info.sh
 }
 
 function init_load_kernel_modules() {
@@ -174,11 +171,6 @@ function init_source_detect_model() {
 	fi
 }
 
-function init_source_variables_prog_info() {
-# Description: Import program variables
-	source /variables_prog_info.sh
-}
-
 function init_mount_sdcard() {
 # Description: Mount SD card, nothing more
 	msg
@@ -274,19 +266,17 @@ function init_exit() {
 }
 
 function init_main() {
+	init_source
+	
 	init_detect_hardware
 	init_backup_bootpart
-	
-	init_source_variables_init_msg
-	init_source_functions
-	
-	init_load_kernel_modules
+		
 	init_source_initialize_gpio
+	init_load_kernel_modules
 	
 	init_welcome
 	init_wait_interrupt
 	
-	init_source_variables_prog_info
 	init_mount_sdcard || return 1
 	init_import_prog_config_file || return 1
 	

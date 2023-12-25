@@ -56,21 +56,15 @@ function init_backup_bootpart() {
 
 function init_source_initialize_gpio() {
 # Description: Initialize some GPIO pins to enable LEDs, also SD card if needed
-	source /initialize_gpio.d/initialize_gpio.sh
+	for gpio_script in /initialize_gpio.d/*.sh ; do
+		source $gpio_script
+	done
 }
 
 function init_load_kernel_modules() {
 # Description: Load kernel modules for the camera chip family
-	# Some camera models need to load kernel modules with parameters
-	for specialty_kmod_script in /kernel_module.d/model_specialty.d/*.sh ; do
-		source $specialty_kmod_script
-	done
-	
-	# Do not load kernel modules again if they have already been loaded by specialty scripts
-	[[ "$kmod_specialty_flag" == "true" ]] && return 0
-
-	for kernel_module in /kernel_module.d/*.ko ; do
-		insmod $kernel_module
+	for kmod_script in /kernel_module.d/*.sh ; do
+		source $kmod_script
 	done
 }
 

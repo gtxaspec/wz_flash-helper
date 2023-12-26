@@ -219,6 +219,8 @@ function init_exit() {
 	#drop_a_shell # Comment out this line to debug with serial connection
 	
 	play_audio /sounds/rebooting_now.pcm
+
+	sync
 	umount -a -r
 	reboot -f # Reboot immediately
 	sleep 10 # Prevent init from continuing after init_exit finishes, but the camera has not rebooted immediately

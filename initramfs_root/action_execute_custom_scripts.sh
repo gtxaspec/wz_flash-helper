@@ -4,8 +4,7 @@
 #
 
 function execute_custom_scripts() {
-	msg_nonewline "custom_scripts is set to "
-	msg_color cyan "$custom_scripts"
+	msg_nonewline "custom_scripts is set to " && msg_color cyan "$custom_scripts"
 
 	[[ "$dry_run" == "yes" ]] && { msg_color lightbrown "Custom scripts are not run when dry run is active" ; return 0 ; }
 

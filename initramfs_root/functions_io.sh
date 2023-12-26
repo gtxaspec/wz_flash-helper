@@ -40,7 +40,7 @@ function read_partition() {
 	local outfile_basename=$(basename $outfile)
 	local outfile_dirname=$(dirname $outfile)
 	
-	msg_color_bold_nonewline white "-> Read from flash: "
+	msg_color_bold_nonewline white "-> Read partition: "
 	msg_color_nonewline brown "$partname "
 	msg_color_nonewline magenta "$partmtd "
 	msg_nonewline "to file "
@@ -116,7 +116,7 @@ function write_partition() {
 	
 	mkdir -p $restore_stage_dir
 	
-	msg_color_bold_nonewline white "-> Write to flash: "
+	msg_color_bold_nonewline white "-> Write partition: "
 	msg_nonewline "file "
 	msg_color_nonewline brown "$infile_basename "
 	msg_nonewline "to "
@@ -340,10 +340,10 @@ function validate_written_partition() {
 	local verifyfile_basename=$(basename $verifyfile)
 	local partimg_verify="/verify_$partname.img"
 	
-	msg_color_bold_nonewline white "> Validating written "
+	msg_color_bold_nonewline white "> Validating written partition: "
 	msg_color_nonewline brown "$partname "
 	msg_color_nonewline magenta "$partmtdblock "
-	msg_nonewline "against "
+	msg_nonewline "against file "
 	msg_color brown "$verifyfile_basename"
 	
 	[ ! -b $partmtdblock ] && { msg_color red "    $partmtdblock is not a block device" ; return 1 ; }

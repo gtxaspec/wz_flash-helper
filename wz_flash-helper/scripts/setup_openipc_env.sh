@@ -48,35 +48,9 @@ manual_wifi_driver=""
 
 ##### DO NOT MODIFY THE BELOW CODE #####	
 
-function get_wifi_gpio_pin() {
-# Description: Return GPIO pin for the queried camera model
-# Syntax: get_wifi_gpio_pin <model>
-	local model="$1"
-	case $model in
-		"pan_v1")
-			echo -n "62" ;;
-		"v2")
-			echo -n "62" ;;
-		"v3")
-			echo -n "59" ;;
-		"v3c")
-			echo -n "59" ;;
-		"pan_v2")
-			echo -n "58" ;;
-	esac
-}
-
 function get_wifi_vendor_id() {
-# Description: Obtain and return the Wi-Fi module vendor ID after initializing its GPIO pin
-# Syntax: get_wifi_id <gpio_pin>
-	local wifi_gpio_pin="$1"
-	
-	if [ ! -d /sys/class/gpio/gpio$wifi_gpio_pin ]; then
-		echo $wifi_gpio_pin > /sys/class/gpio/export
-		echo out > /sys/class/gpio/gpio$wifi_gpio_pin/direction
-		echo 1 > /sys/class/gpio/gpio$wifi_gpio_pin/value
-	fi
-	
+# Description: Obtain and return the Wi-Fi module vendor ID
+# Syntax: get_wifi_id
 	echo INSERT > /sys/devices/platform/jzmmc_v1.2.1/present
 	sleep 1
 
@@ -111,8 +85,7 @@ function detect_openipc_wifi_driver() {
 			wifi_driver="rtl8189ftv-t20-wyze-v2"
 			;;
 		"v3")
-			local wifi_gpio_pin=$(get_wifi_gpio_pin $model)
-			wifi_vendor_id=$(get_wifi_vendor_id $wifi_gpio_pin)
+			wifi_vendor_id=$(get_wifi_vendor_id)
 			[[ "$wifi_vendor_id" == "0x024c" ]] && wifi_driver="rtl8189ftv-t31-wyze-v3"
 			[[ "$wifi_vendor_id" == "0x007a" ]] && wifi_driver="atbm603x-t31-wyze-v3"
 			;;

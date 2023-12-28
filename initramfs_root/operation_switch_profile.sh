@@ -87,7 +87,12 @@ function osp_main() {
 	msg
 	[[ "$dry_run" == "yes" ]] && { msg "No need to check for boot partition corruption on dry run mode" ; return 0 ; }
 	osp_validate_written_boot_partition || rollback_boot_partition || return 1
-	[ -f  /profile.d/$next_profile/post_switch.sh ] && source /profile.d/$next_profile/post_switch.sh
+	
+	if [ -f /profile.d/$next_profile/post_switch.sh ]; then
+		msg
+		msg_color_bold white "> Executing post-switch profile script"
+		source /profile.d/$next_profile/post_switch.sh || { msg_color red "Executing post-switch profile script failed" ; return 1 ; }
+	fi
 	
 	sync
 	msg

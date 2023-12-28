@@ -13,7 +13,7 @@ function or_restore_boot_partition() {
 		local infile="$cp_restore_path/$infile_name"
 
 		msg_tickbox_yes
-		msg_color lightbrown "restore_${current_profile}_${partname} is set to Yes"
+		msg_color lightbrown "hidden_option_restore_boot is set to Yes"
 		write_partition $partname $infile $partmtd || return 1
 		
 		validate_written_partition $partname $partnum $infile || rollback_boot_partition || return 1

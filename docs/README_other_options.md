@@ -34,7 +34,7 @@ With this option, you can write scripts and get them executed by the program aft
 
 **✅ Option: `manual_current_profile`**
 
-You can set it manually to fix the currupted rootfs partition partition(for Stock and wzmini) that makes `current_profile` detection fail.
+You can set it manually to fix the currupted rootfs partition partition(for Stock and wzmini) that makes `current_profile` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
 
 
 **✅ Option: `manual_model`**

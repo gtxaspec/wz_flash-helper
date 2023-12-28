@@ -87,9 +87,9 @@ function osp_main() {
 	msg
 	[[ "$dry_run" == "yes" ]] && { msg "No need to check for boot partition corruption on dry run mode" ; return 0 ; }
 	osp_validate_written_boot_partition || rollback_boot_partition || return 1
+	[ -f  /profile.d/$next_profile/post_switch.sh ] && source /profile.d/$next_profile/post_switch.sh
 	
 	sync
-	
 	msg
 	kill $red_and_blue_leds_pid
 	/bg_turn_off_leds.sh

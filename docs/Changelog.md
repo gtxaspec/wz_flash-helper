@@ -2,6 +2,13 @@
 
 
 
+## v0.8.0
+
+- Add post-switch profile script to set `devicemodel` variable
+- Include `lsof` with busybox
+- Fix Wi-Fi module vendor ID can't be read from OpenIPC
+- Allow executing multiple gpio and kmod scripts 
+
 ## v0.7.9
 
 - Fix boot partition restore

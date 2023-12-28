@@ -6,13 +6,14 @@
 function or_restore_boot_partition() {
 # Description: Restore the boot partition, this option is hidden from restore config files
 	if [[ "$hidden_option_restore_boot" == "yes" ]]; then
-		msg_color_bold white "Sssh! Restoring boot partition"
 		local partname="boot"
 		local partnum="0"
 		local partmtd=$(get_cp_partmtd $partname)
 		local infile_name=$(get_cp_partimg $partname)
 		local infile="$cp_restore_path/$infile_name"
-		
+
+		msg_tickbox_yes
+		msg_color lightbrown "restore_${current_profile}_${partname} is set to Yes"
 		write_partition $partname $infile $partmtd || return 1
 		
 		validate_written_partition $partname $partnum $infile || rollback_boot_partition || return 1
@@ -57,9 +58,8 @@ function or_main() {
 	
 	msg
 	msg_color_bold white "> Restoring partitions"
-	or_restore_boot_partition || return 1
 	or_restore_partitions || return 1
-	
+	or_restore_boot_partition || return 1
 	sync
 	
 	msg

@@ -68,14 +68,6 @@ function init_load_kernel_modules() {
 	done
 }
 
-function init_welcome() {
-# Description: It is nice to let the user know that they are welcome!
-	msg
-	msg
-	msg_color_bold lightmagenta "Welcome to initramfs init! ^_^" # Yep, a smiling emoji!
-	msg
-}
-
 function init_wait_interrupt() {
 # Description: Allow the user to access the initramfs shell with a serial connection
 	echo > /dev/console
@@ -91,6 +83,14 @@ function init_wait_interrupt() {
 	fi
 	
 	exec 0< /dev/null
+}
+
+function init_welcome() {
+# Description: It is nice to let the user know that they are welcome!
+	msg
+	msg
+	msg_color_bold lightmagenta "Welcome to initramfs init! ^_^" # Yep, a smiling emoji!
+	msg
 }
 
 function init_mount_sdcard() {
@@ -236,9 +236,9 @@ function init_main() {
 	init_source_initialize_gpio
 	init_load_kernel_modules
 	
-	init_welcome
 	init_wait_interrupt
-	
+	init_welcome
+		
 	init_mount_sdcard || return 1
 	init_source_prog_config_file || return 1
 	

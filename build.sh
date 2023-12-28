@@ -28,18 +28,6 @@ function get_sdcard_kernel_filename() {
 	esac
 }
 
-function get_default_kernel_config() {
-	local SoC="${1}"
-	case ${SoC} in
-		"t20")
-			echo -n "firmware/br-ext-chip-ingenic/board/t21/kernel/t20.generic.config"
-			;;
-		"t31")
-			echo -n "firmware/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config"
-			;;
-	esac
-}
-
 function make_initramfs() {
 	echo "[build.sh] Creating /tmp/initramfs.cpio"
 	
@@ -53,19 +41,18 @@ function make_initramfs() {
 	rm -r output/initramfs
 }
 
-function patch_all_kernel_config() {
+function patch_source() {
+	cd firmware
 	for patch_SoC in ${all_SoCs}; do
-		local default_kernel_config=$(get_default_kernel_config ${patch_SoC})
-		
-		if [ ! -f ${default_kernel_config}.bak ]; then
-			cp ${default_kernel_config} ${default_kernel_config}.bak
-			patch ${default_kernel_config} < kernel/kernel.patch.${patch_SoC}
+		if ! patch -R -p1 -s -f --dry-run < ../patches/${patch_SoC}.patch ; then
+  			patch -p1 < ../patches/${patch_SoC}.patch
 		fi
 	done
+	cd ..
 }
 
 function make_kernel() {
-	patch_all_kernel_config
+	patch_source
 	make_initramfs
 	
 	echo "[build.sh] Compiling kernel for ${SoC}"
@@ -73,6 +60,7 @@ function make_kernel() {
 
 	mkdir -p output/${SoC}
 	cp firmware/output/images/uImage output/${SoC}/${sdcard_kernel_filename}
+	echo
 	echo "[build.sh] Compiled kernel has been saved at output/${SoC}/${sdcard_kernel_filename}"
 }
 
@@ -90,6 +78,8 @@ function make_release() {
 	
 	( cd output/${SoC} && zip -r ${version}_${SoC}.zip . -x *.gitkeep)
 	rm -r output/${SoC}/wz_flash-helper
+	echo
+	echo "[build.sh] Release zip file has been saved at output/${SoC}/${version}_${SoC}.zip"
 }
 
 function clean_up() {

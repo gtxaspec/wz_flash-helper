@@ -1,5 +1,5 @@
 diff --git a/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config b/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config
-index abb91073..fc9d6e42 100644
+index abb91073..d12cea82 100644
 --- a/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config
 +++ b/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config
 @@ -272,7 +272,7 @@ CONFIG_UIDGID_CONVERTED=y
@@ -11,6 +11,15 @@ index abb91073..fc9d6e42 100644
  CONFIG_RD_GZIP=y
  # CONFIG_RD_BZIP2 is not set
  # CONFIG_RD_LZMA is not set
+@@ -1468,7 +1468,7 @@ CONFIG_MMC_BLOCK_BOUNCE=y
+ #
+ # MMC/SD/SDIO Host Controller Drivers
+ #
+-CONFIG_JZMMC_V12=y
++CONFIG_JZMMC_V12=m
+ CONFIG_JZMMC_V12_SDMA=y
+ CONFIG_JZMMC_V12_MMC0=y
+ # CONFIG_JZMMC_V12_MMC0_PA_4BIT is not set
 @@ -1661,9 +1661,9 @@ CONFIG_GENERIC_ACL=y
  #
  # DOS/FAT/NT Filesystems
@@ -34,3 +43,16 @@ index abb91073..fc9d6e42 100644
  # CONFIG_DEBUG_STACKOVERFLOW is not set
  # CONFIG_RUNTIME_DEBUG is not set
  # CONFIG_DEBUG_ZBOOT is not set
+diff --git a/br-ext-chip-ingenic/configs/t31_ultimate_defconfig b/br-ext-chip-ingenic/configs/t31_ultimate_defconfig
+index cbdc683b..7f35b960 100644
+--- a/br-ext-chip-ingenic/configs/t31_ultimate_defconfig
++++ b/br-ext-chip-ingenic/configs/t31_ultimate_defconfig
+@@ -27,7 +27,7 @@ BR2_TOOLCHAIN_BUILDROOT_USE_SSP=y
+ # Kernel
+ BR2_LINUX_KERNEL=y
+ BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
+-BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="https://github.com/openipc/linux/archive/$(OPENIPC_KERNEL).tar.gz"
++BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="https://github.com/gtxaspec/openipc_linux/archive/$(OPENIPC_KERNEL).tar.gz"
+ BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
+ BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(EXTERNAL_VENDOR)/board/t31/kernel/t31.generic.config"
+ BR2_LINUX_KERNEL_UIMAGE=y

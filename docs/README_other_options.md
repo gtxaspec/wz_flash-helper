@@ -34,9 +34,9 @@ With this option, you can write scripts and get them executed by the program aft
 
 **✅ Option: `manual_current_profile`**
 
-`current_profile` detection might fail due to currupted rootfs partitions(for Stock and wzmini), you can set it manually to fix the partition.
+You can set it manually to fix the currupted rootfs partition partition(for Stock and wzmini) that makes `current_profile` detection fail.
 
 
 **✅ Option: `manual_model`**
 
-`model` detection might fail due to corrupted `configs` or `cfg` partitions, you can set it manually.
+You can set it manually to work with corrupted `configs` or `cfg` partitions on stock firmware that makes model detection fail.

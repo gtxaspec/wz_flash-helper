@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: Write user Wi-Fi, MAC address, and Timezone variables to the OpenIPC env partition
+# Description: Write user Wi-Fi SSID, password, MAC address, and Timezone variables to the OpenIPC env partition
 #              Use this script to do initial setup when you switch from stock to OpenIPC for the first time
 #              This script is only run if the running profile is openipc
 
@@ -9,11 +9,14 @@
 # ---------- Begin of user customization ----------
 
 ## Wi-Fi authentication info
-## All characters are allowed for wifi_name and wifi_password, EXCEPT single quote (')
-## If your your Wi-Fi password contains a single quote(s), modify the line "fw_setenv wlanpass" below with: "fw_setenv wlanpass $(echo wifi-password)" and replace "wifi-password" with your Wi-Fi password with all special characters escaped
-## Don't remove the single quotes that quote the values
-wifi_name='Wi-Fi name'
-wifi_password='WiFi password'
+## All printable characters are allowed for Wi-Fi name and password (a-z, A-Z, 0-9, all special characters)
+read -r -d '' wifi_ssid <<'EOF'
+replace_this_line_with_your_wifi_ssid
+EOF
+
+read -r -d '' wifi_password <<'EOF'
+replace_this_line_with_your_wifi_password
+EOF
 
 
 
@@ -95,6 +98,9 @@ function detect_openipc_wifi_driver() {
 		"pan_v2")
 			wifi_driver="atbm603x-t31-wyze-pan-v2"
 			;;
+		*)
+			msg_color red "    Your camera model is not supported by this script"
+			;;
 	esac
 	
 	if [[ ! "$wifi_driver" == "" ]]; then # Exit function if Wi-Fi driver has been set
@@ -113,7 +119,7 @@ function set_openipc_user_env() {
 
 	#---------- Wi-Fi SSID ----------
 	msg_nonewline "   Setting Wi-Fi SSID... "
-	fw_setenv wlanssid $(echo $wifi_name) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	fw_setenv wlanssid $(echo $wifi_ssid) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 
 	#---------- Wi-Fi password ----------
 	msg_nonewline "   Setting Wi-Fi password... "

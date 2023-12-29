@@ -21,10 +21,7 @@ git clone --recurse-submodules https://github.com/archandanime/wz_flash-helper.g
 cd wz_flash-helper
 ```
 
-Patch OpenIPC kernel config:
-```
-./build.sh patch
-```
+This takes between 30 seconds and 15 minutes, depending on your Internet speed.
 
 **2. Build**
 
@@ -51,7 +48,4 @@ To build everything, run:
 
 Compiled kernels and releases will be saved at `output/` directory.
 
-## ℹ️ Notes
-
-- Cloning the Github repo takes between 30 seconds and 15 minutes, depending on your Internet speed.
-- On the first time you build a kernel/release, it takes between 2 minutes and 20 minutes to download necessary toolchains before the compiling, after that it takes only about a minute.
+On the first time you build a kernel/release, it takes between 2 minutes and 20 minutes to download necessary toolchains before the compiling, after that it takes only about a minute.

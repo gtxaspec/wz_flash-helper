@@ -91,6 +91,7 @@ function init_welcome() {
 	msg
 	msg_color_bold lightmagenta "Welcome to initramfs init! ^_^" # Yep, a smiling emoji!
 	msg
+	sleep 1
 }
 
 function init_mount_sdcard() {
@@ -229,6 +230,8 @@ function init_exit() {
 function init_main() {
 	init_source
 	
+	init_wait_interrupt
+	
 	init_detect_hardware
 	init_backup_bootpart
 	init_source_variables_emulate
@@ -236,9 +239,8 @@ function init_main() {
 	init_source_initialize_gpio
 	init_load_kernel_modules
 	
-	init_wait_interrupt
 	init_welcome
-		
+	
 	init_mount_sdcard || return 1
 	init_source_prog_config_file || return 1
 	
@@ -247,7 +249,7 @@ function init_main() {
 	init_rename_prog_sdcard_kernel || return 1 # If any error happens before the SD card kernel is renamed, the camera will bootloop
 	init_source_detect_model || return 1
 
-	
+
 	[ "$enforce_dry_run" == "yes" ] && dry_run="yes"
 	init_display_info
 	
@@ -333,7 +335,7 @@ function init_main() {
 		
 		if source /action_execute_custom_scripts.sh ; then
 			msg_color_bold green "$msg_enable_custom_scripts_succeed"
-		else	
+		else
 			msg_color_bold red "$msg_enable_custom_scripts_fail"
 			play_audio /sounds/custom_scripts_failed.pcm
 			return 1

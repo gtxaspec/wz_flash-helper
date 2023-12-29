@@ -39,4 +39,4 @@ You can set it manually to fix the currupted rootfs partition partition(for Stoc
 
 **✅ Option: `manual_model`**
 
-You can set it manually to work with corrupted `configs` or `cfg` partitions on stock firmware that makes model detection fail. Check [Introduction page](README.md) for "Model code" to set your camera model correctly.
+You can set it manually to work with corrupted `configs` or `cfg` partitions on stock firmware that makes model detection fail. Check the [Introduction page](README.md) for "Model code" to set your camera model correctly.

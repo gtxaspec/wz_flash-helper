@@ -55,7 +55,7 @@ Yes, with the condition that your camera uboot supports booting a kernel file fr
 
 ### How does switching profile work?
 
-On NOR flash, there is no partition table; the partition layout is actually seen by the kernel by setting `CONFIG_CMDLINE= ... mtdparts=...` which will be passed to `jz_sfc` driver. That option defines each partition size to let partition data be read and written to the correct addresses.
+On NOR flash and raw NAND flash, there is no partition table; the partition layout is actually seen by the kernel by setting `CONFIG_CMDLINE= ... mtdparts=...` which will be passed to `jz_sfc` driver. That option defines each partition size to let partition data be read and written to the correct addresses.
 
 The partitions can also be defined by setting their sizes and offsets from the start address (0x0). What we do is define partition offsets and the size of both the current and next profile so we can both read and write those partitions correctly.
 
@@ -65,12 +65,14 @@ When the switch profile operation is going on, it reads the partition images tha
 
 `wz_flash-helper` does not care about the firmware you use (which is a set of binaries); it only cares about the partition information (name, MTD mapping number, filesystem type) of the firmware to read or write the partitions correctly. A profile provides that information to let the program do its job. It includes:
 
-- List of all partition names
-- MTD mapping number of each partition
-- List of partitions that store user data to create archives for them with backup operation
-- Partition types (`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
+- List of all partition names with their properties:
+   - MTD mapping number
+   - List of partitions that store user data to create archives for them with backup operation
+   - Partition types (`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
+   - List of mandatory partitions that must be written when switching to that profile (when `witch_profile_with_all_partitions` is disabled) and list of tasks to do (`write`, `erase,`,`format`, `leave`) with other partitions.
+   
 - Name of SD card kernel that can be recognized and booted by uboot
 - Backup and restore paths to hold partition images
-- List of mandatory partitions that must be written when switching to that profile (when `witch_profile_with_all_partitions` is disabled) and list of tasks to do (`write`, `erase,`,`format`, `leave`) with other partitions.
-- Model detection script to detect camera model
-- Profile detection script to detect current profile
+- Model detection script(`detect_model.sh`) to detect camera model
+- Profile detection script(`detect_profile.sh`) to detect current profile
+- (Optional) Post-switch profile script(`post_switch.sh`) to run after switching to that profile

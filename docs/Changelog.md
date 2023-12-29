@@ -2,6 +2,11 @@
 
 
 
+## v0.8.1
+
+- Make setting Wi-Fi password with special characters easier
+- Allow accessing initramfs shell before GPIO pins are initialized and kernel modules are loaded
+
 ## v0.8.0
 
 - Add post-switch profile script to set `devicemodel` variable

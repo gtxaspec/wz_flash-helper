@@ -23,9 +23,6 @@ function detect_model() {
 		
 	elif cat $mnt_config/$model_config_file | grep -q "HL_PAN2" ; then
 		model="pan_v2"
-
-	elif cat $mnt_config/$model_config_file | grep -q "WYZEDB3" ; then
-		model="db3"
 		
 	elif cat $mnt_config/$model_config_file | grep -q "WYZEC1-JZ" ; then
 		model="v3c"

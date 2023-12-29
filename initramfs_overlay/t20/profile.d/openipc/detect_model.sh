@@ -5,7 +5,7 @@
 
 function detect_model() {
 	model=$(fw_printenv devicemodel | sed 's/devicemodel=//')
-	
+
 }
 
 detect_model || return 1

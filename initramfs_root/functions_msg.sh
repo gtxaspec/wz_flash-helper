@@ -25,7 +25,7 @@ function get_color_code() {
 # Description: Return color code of a given color
 	local color="$1"
 	local message="$2"
-	
+
 	case $color in
 		"black")
 			echo -n "30" ;;
@@ -109,7 +109,7 @@ function msg_color_bold_nonewline() {
 function msg_tickbox_yes() {
 # Description: Display a tickbox with color
 	local color_code_yes=$(get_color_code "lightgreen")
-	
+
 	echo -n "[x] "
 	echo -n "[x] " >> /tmp/initramfs_serial.log 
 	echo -ne "\e[1;${color_code_yes}m[x] \e[0m" > /dev/console
@@ -118,7 +118,7 @@ function msg_tickbox_yes() {
 function msg_tickbox_no() {
 # Description: Display a tickbox with color
 	local color_code_no=$(get_color_code "lightbrown")
-	
+
 	echo -n "[ ] "
 	echo -n "[ ] " >> /tmp/initramfs_serial.log
 	echo -ne "\e[1;${color_code_no}m[ ] \e[0m" > /dev/console

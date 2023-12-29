@@ -15,7 +15,7 @@ function or_restore_boot_partition() {
 		msg_tickbox_yes
 		msg_color lightbrown "hidden_option_restore_boot is set to Yes"
 		write_partition $partname $infile $partmtd || return 1
-		
+
 		validate_written_partition $partname $partnum $infile || rollback_boot_partition || return 1
 	fi
 }
@@ -27,7 +27,7 @@ function or_restore_partitions() {
 		local infile="$cp_restore_path/$infile_name"
 		local partmtd=$(get_cp_partmtd $partname)
 		local restore_opt_value=$(get_cp_restore_opt_value $partname)
-		
+
 		if [[ "$restore_opt_value" == "yes" ]]; then
 			msg_tickbox_yes
 			msg "restore_${current_profile}_${partname} is set to Yes"
@@ -51,17 +51,17 @@ function or_main() {
 
 	/bg_blink_led_red.sh &
 	local red_led_pid="$!"
-	
+
 	msg
 	msg_color_bold blue ":: Starting restore operation"
 	msg_color_bold_nonewline white "Restore source: " && msg_color cyan "$cp_restore_path"
-	
+
 	msg
 	msg_color_bold white "> Restoring partitions"
 	or_restore_partitions || return 1
 	or_restore_boot_partition || return 1
 	sync
-	
+
 	msg
 	kill $red_led_pid
 	/bg_turn_off_leds.sh

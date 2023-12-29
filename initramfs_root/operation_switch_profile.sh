@@ -5,14 +5,14 @@
 
 function osp_validate_restore_partition_images() {
 	msg_color_bold white "> Making sure that all needed partition images exist and are valid"
-	
+
 	cd $np_images_path
-	
+
 	# Check sha256 for all partitions first to make sure they are all valid before flashing each partition
 	for partname in $np_all_partname_list; do 
 		if [[ "$(get_np_partoperation $partname)" == "write" ]]; then
 			local infile_name=$(get_np_partimg $partname)
-		
+
 			msg_nonewline "    Verifying "
 			msg_color_nonewline brown "$infile_name... "
 			[ ! -f $infile_name ] && { msg_color red "file is missing" ; return 1 ; }
@@ -28,7 +28,7 @@ function osp_validate_written_boot_partition() {
 	local partnum="0"
 	local verifyfile_basename=$(get_np_partimg $partname)
 	local verifyfile="$np_images_path/$verifyfile_basename"
-	
+
 	validate_written_partition $partname $partnum $verifyfile || return 1
 }
 
@@ -37,19 +37,19 @@ function osp_main() {
 	[[ "$current_profile" == "$next_profile" ]] && { msg_color red "next_profile value is same as current_profile, aborting switch profile" ; return 1 ; }
 	[[ "$next_profile" == "" ]] && { msg_color red "next_profile value is empty, aborting switch profile" ; return 1 ; }
 	[ ! -d /profile.d/$next_profile ] && { msg_color red "$next_profile profile is not supported, aborting switch profile" ; return 1 ; }
-	
+
 	source /profile.d/$next_profile/np_variables.sh
 	source /profile.d/$next_profile/np_queries.sh
-	
+
 	if [[ "$switch_profile_with_all_partitions" == "yes" ]]; then
 		source /profile.d/$next_profile/np_switch_allparts.sh
 	else
 		source /profile.d/$next_profile/np_switch_baseparts.sh
 	fi
-	
+
 	/bg_blink_led_red_and_blue.sh &
 	local red_and_blue_leds_pid="$!"
-	
+
 	msg
 	msg_color_bold blue ":: Starting switch profile operation"
 	msg_color_bold_nonewline white "Switch profile: "
@@ -58,12 +58,12 @@ function osp_main() {
 
 	msg
 	osp_validate_restore_partition_images || return 1
-	
+
 	msg_color_bold white "> Writing partition images"
 	for partname in $np_all_partname_list; do
 		local partoperation=$(get_np_partoperation $partname)
 		local partmtd=$(get_np_partmtd $partname)
-		
+
 		case "$partoperation" in
 			"write")
 				local infile_name=$(get_np_partimg $partname)
@@ -83,17 +83,17 @@ function osp_main() {
 				;;
 		esac
 	done
-	
+
 	msg
 	[[ "$dry_run" == "yes" ]] && { msg "No need to check for boot partition corruption on dry run mode" ; return 0 ; }
 	osp_validate_written_boot_partition || rollback_boot_partition || return 1
-	
+
 	if [ -f /profile.d/$next_profile/post_switch.sh ]; then
 		msg
 		msg_color_bold white "> Executing post-switch profile script"
 		source /profile.d/$next_profile/post_switch.sh || { msg_color red "Executing post-switch profile script failed" ; return 1 ; }
 	fi
-	
+
 	sync
 	msg
 	kill $red_and_blue_leds_pid

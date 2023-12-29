@@ -32,7 +32,7 @@ matched_profile=""
 function extract_archive_file_to_partition() {
 	local partname="$partition_name"
 	local infile="$archive_file"
-	
+
 	if [[ "$switch_profile" == "yes" ]]; then
 		local partmtdblock=$(get_np_partmtdblock $partname)
 		local partfstype=$(get_np_partfstype $partname)
@@ -40,7 +40,7 @@ function extract_archive_file_to_partition() {
 		local partmtdblock=$(get_cp_partmtdblock $partname)
 		local partfstype=$(get_cp_partfstype $partname)
 	fi
-		
+
 	extract_archive_to_partition $partname $infile $partmtdblock $partfstype || return 1
 }
 

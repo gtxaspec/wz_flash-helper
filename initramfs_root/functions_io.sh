@@ -8,7 +8,7 @@ function read_partition_nor() {
 # Syntax: read_partition_nor <partmtd> <outfile>
 	local partmtd="$1"
 	local outfile="$2"
-	
+
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "dd if=$partmtd of=$outfile"
 	else
@@ -22,7 +22,7 @@ function read_partition_nand() {
 # Syntax: read_partition_nand <partmtd> <outfile>
 	local partmtd="$1"
 	local outfile="$2"
-	
+
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "nanddump -f $outfile $partmtd"
 	else
@@ -39,16 +39,16 @@ function read_partition() {
 	local outfile="$3"
 	local outfile_basename=$(basename $outfile)
 	local outfile_dirname=$(dirname $outfile)
-	
+
 	msg_color_bold_nonewline white "-> Read partition: "
 	msg_color_nonewline brown "$partname "
 	msg_color_nonewline magenta "$partmtd "
 	msg_nonewline "to file "
 	msg_color brown "$outfile_basename"
-	
+
 	[ ! -c $partmtd ] && { msg_color red "    $partmtd is not a character device" ; return 1 ; }
 	[ -f $outfile ] && { msg_color red "    $outfile_basename already exists" ; return 1 ; }
-	
+
 	case "$flash_type" in
 		"nor")
 			read_partition_nor $partmtd $outfile || return 1
@@ -57,7 +57,7 @@ function read_partition() {
 			read_partition_nand $partmtd $outfile || return 1
 			;;
 	esac
-	
+
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "sha256sum $outfile > $outfile.sha256sum"
 		msg_dry_run "sed -i \"s|$outfile_dirname/||g\" $outfile.sha256sum"
@@ -89,7 +89,7 @@ function write_partition_nand() {
 # Syntax: write_partition_nand <infile> <partmtd>
 	local infile="$1"
 	local partmtd="$2"
-	
+
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "unpad_partimg $infile $blocksize $infile.unpadded"
 		msg_dry_run "flash_eraseall $partmtd"
@@ -97,7 +97,7 @@ function write_partition_nand() {
 	else
 		msg_nonewline "    Creating unpadded partition image..."
 		unpad_partimg $infile $blocksize $infile.unpadded && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
-		
+
 		msg_nonewline "    Writing... "
 		flash_eraseall $partmtd || { msg_color red "failed" ; return 1 ; }
 		nandwrite -p $partmtd $infile.unpadded && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
@@ -113,9 +113,9 @@ function write_partition() {
 	local infile_basename=$(basename $infile)
 	local partmtd="$3"
 	local restore_stage_dir="/restore_stage_dir"
-	
+
 	mkdir -p $restore_stage_dir
-	
+
 	msg_color_bold_nonewline white "-> Write partition: "
 	msg_nonewline "file "
 	msg_color_nonewline brown "$infile_basename "
@@ -126,7 +126,7 @@ function write_partition() {
 	[ ! -c $partmtd ] && { msg_color red "    $partmtd is not a character device" ; return 1 ; }
 	[ ! -f $infile ] && { msg_color red "    $infile_basename is missing" ; return 1 ; }
 	[ ! -f $infile.sha256sum ] && { msg_color red "    $infile_basename.sha256sum is missing" ; return 1 ; }
-	
+
 	cp $infile $restore_stage_dir/$infile_basename
 	cp $infile.sha256sum $restore_stage_dir/$infile_basename.sha256sum
 
@@ -141,7 +141,7 @@ function write_partition() {
 			write_partition_nand $restore_stage_dir/$infile_basename $partmtd || return 1
 			;;
 	esac
-	
+
 	rm $restore_stage_dir/$infile_basename
 	rm $restore_stage_dir/$infile_basename.sha256sum
 }
@@ -156,9 +156,9 @@ function create_archive_from_partition() {
 	local outfile_basename=$(basename $outfile)
 	local outfile_dirname=$(dirname $outfile)
 	local archive_mnt="/archive_mnt_$partname"
-	
+
 	mkdir -p $archive_mnt
-	
+
 	msg_color_bold_nonewline white "-> Archive partition files: "
 	msg_color_nonewline brown "$partname "
 	msg_color_nonewline magenta "$partmtdblock "
@@ -167,7 +167,7 @@ function create_archive_from_partition() {
 
 	[ ! -b $partmtdblock ] && { msg_color red "    $partmtdblock is not a block device" ; return 1 ; }
 	[ -f $outfile ] && { msg_color red "    $outfile_basename already exists" ; return 1 ; }
-		
+
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "mount -o ro -t $fstype $partmtdblock $archive_mnt"
 		msg_dry_run "tar -czf $outfile -C $archive_mnt ."
@@ -180,10 +180,10 @@ function create_archive_from_partition() {
 		msg_nonewline "    Generating sha256sum file... "
 		sha256sum $outfile > $outfile.sha256sum && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 		sed -i "s|$outfile_dirname/||g" $outfile.sha256sum # Remove path from .sha256sum file
-		
+
 		umount $archive_mnt && rmdir $archive_mnt
 	fi
-	
+
 	sync
 
 }
@@ -198,9 +198,9 @@ function extract_archive_to_partition() {
 	local partmtdblock="$3"
 	local fstype="$4"
 	local unarchive_mnt="/unarchive_mnt_$partname"
-	
+
 	mkdir -p $unarchive_mnt
-	
+
 	msg_color_bold_nonewline white "-> Extract archive to partition: "
 	msg_nonewline "file "
 	msg_color_nonewline brown "$infile_basename "
@@ -210,7 +210,7 @@ function extract_archive_to_partition() {
 
 	[ ! -f $infile ] && { msg_color red "    $infile_basename is missing" ; return 1 ; }
 	[ ! -b $partmtdblock ] && { msg_color red "    $partmtdblock is not a block device" ; return 1 ; }
-	
+
 	msg_nonewline "    Verifying file... "
 	( cd $infile_dirname && sha256sum -c $infile_basename.sha256sum ) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 
@@ -221,10 +221,10 @@ function extract_archive_to_partition() {
 		mount -o rw -t $fstype $partmtdblock $unarchive_mnt || { msg_color red "Failed to mount $partname" ; return 1 ; }
 		msg_nonewline "    Extracting archive file... "
 		tar -xf $infile -C $unarchive_mnt && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
-		
+
 		umount $unarchive_mnt && rmdir $unarchive_mnt
 	fi
-	
+
 	sync
 }
 
@@ -237,7 +237,7 @@ function format_partition_vfat() {
 		msg_dry_run "mkfs.vfat $partmtdblock"
 	else
 		msg_nonewline "    Formatting... "
-		mkfs.vfat $partmtdblock && msg_color green "ok" || { msg_color red "failed" ; return 1 ; } 
+		mkfs.vfat $partmtdblock && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	fi
 }
 
@@ -308,7 +308,7 @@ function erase_partition() {
 	msg_color magenta " $partmtd"
 
 	[ ! -c $partmtd ] && { msg_color red "    $partmtd is not a character device" ; return 1 ; }
-	
+
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "flash_eraseall $partmtd"
 	else
@@ -339,28 +339,28 @@ function validate_written_partition() {
 	local verifyfile="$3"
 	local verifyfile_basename=$(basename $verifyfile)
 	local partimg_verify="/verify_$partname.img"
-	
+
 	msg_color_bold_nonewline white "> Validating written partition: "
 	msg_color_nonewline brown "$partname "
 	msg_color_nonewline magenta "$partmtdblock "
 	msg_nonewline "against file "
 	msg_color brown "$verifyfile_basename"
-	
+
 	[ ! -b $partmtdblock ] && { msg_color red "    $partmtdblock is not a block device" ; return 1 ; }
 	[ ! -f $verifyfile ] && { msg_color red "    $verifyfile_basename is missing" ; return 1 ; }
-	
+
 	for attempt in 1 2 3; do
 		msg_color_bold white "-> Validation attempt $attempt:"
-		
+
 		local verifyfile_hash=$(sha256sum $verifyfile | cut -d ' ' -f1)
-		
+
 		msg_nonewline "    Hash of "
 		msg_color_nonewline brown "$verifyfile_basename"
 		msg_nonewline ": "
 		msg_color cyan "$verifyfile_hash"
-		
+
 		local verifyfile_blocksize=$(du -b $verifyfile | cut -f -1)
-		
+
 		case "$flash_type" in
 			"nor")
 				dd if=$partmtdblock of=$partimg_verify bs=1 count=$verifyfile_blocksize
@@ -371,15 +371,15 @@ function validate_written_partition() {
 				rm $partimg_verify.nand
 				;;
 		esac
-		
+
 		local partimg_verify_hash=$(sha256sum $partimg_verify | cut -d ' ' -f1)
 		rm $partimg_verify
-		
+
 		msg_nonewline "    Hash of "
 		msg_color_nonewline brown "$partname"
 		msg_nonewline ": "
 		msg_color cyan "$partimg_verify_hash"
-		
+
 		msg_nonewline "    Validation result: "
 		[[ "$verifyfile_hash" == "$partimg_verify_hash" ]] && { msg_color green "good" ; return 0 ; } || msg_color red "bad"
 	done

@@ -62,8 +62,8 @@ function get_cp_partmtd() {
 # Syntax: get_cp_partmtd <partname>
 	local partname="$1"
 	local partnum=$(get_cp_partnum $partname)
-	
-	echo -n "/dev/mtd$partnum"	
+
+	echo -n "/dev/mtd$partnum"
 }
 
 function get_cp_partmtdblock() {
@@ -71,14 +71,14 @@ function get_cp_partmtdblock() {
 # Syntax: get_cp_partmtdblock <partname>
 	local partname="$1"
 	local partnum=$(get_cp_partnum $partname)
-	
-	echo -n "/dev/mtdblock$partnum"	
+
+	echo -n "/dev/mtdblock$partnum"
 }
 
 function get_cp_partimg() {
 # Description: Return filename of the partition image for the queried partition name
 # Syntax: get_openipc_partimg <partname>
 	local partname="$1"
-	
+
 	echo -n "${current_profile}_${chip_group}_${partname}.bin"
 }

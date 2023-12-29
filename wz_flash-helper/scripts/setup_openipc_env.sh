@@ -49,7 +49,7 @@ manual_wifi_driver=""
 
 
 
-##### DO NOT MODIFY THE BELOW CODE #####	
+##### DO NOT MODIFY THE BELOW CODE #####
 
 function get_wifi_vendor_id() {
 # Description: Obtain and return the Wi-Fi module vendor ID
@@ -64,7 +64,7 @@ function get_wifi_vendor_id() {
 function detect_openipc_wifi_driver() {
 # Description: Assign Wi-Fi driver for OpenIPC based on the camera model and vendor ID
 	msg "Detecting driver for Wi-Fi module"
-	
+
 	if [[ "$set_wifi_driver_manually" == "yes" ]]; then
 		msg_nonewline "   Using custom Wi-Fi driver value: " && msg_color cyan "$manual_wifi_driver"
 		wifi_driver=$manual_wifi_driver
@@ -75,11 +75,11 @@ function detect_openipc_wifi_driver() {
 		msg_color_nonewline lightbrown "   Wi-Fi driver has already been set, set "
 		msg_color_nonewline cyan "manual_wifi_driver "
 		msg_color lightbrown "if you want overwrite it, leaving it empty for now"
-		
+
 		wifi_driver=""
 		return 0
 	fi
-	
+
 	case $model in
 		"pan_v1")
 			wifi_driver="rtl8189ftv-t20-wyze-pan-v1"
@@ -102,7 +102,7 @@ function detect_openipc_wifi_driver() {
 			msg_color red "    Your camera model is not supported by this script"
 			;;
 	esac
-	
+
 	if [[ ! "$wifi_driver" == "" ]]; then # Exit function if Wi-Fi driver has been set
 		msg_nonewline "   Found driver: " && msg_color cyan "$wifi_driver"
 		return 0
@@ -140,7 +140,7 @@ function set_openipc_user_env() {
 	else
 		msg "not set because it is empty"
 	fi
-	
+
 	#---------- Timezone ----------
 	msg_nonewline "   Setting Timezone... "
 	if [[ ! "$timezone" == "" ]]; then

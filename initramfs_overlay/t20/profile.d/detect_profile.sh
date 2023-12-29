@@ -8,7 +8,7 @@ function detect_profile() {
 	if grep -q "demo.bin" /boot_backup.img.strings ; then # Stock Cam v2 & Cam Pan
 		msg "Detected stock Wyze Cam Pan v2 or Wyze Cam Pan uboot"
 		current_profile="stock"
-	
+
 	elif grep -q "OpenIPC" /boot_backup.img.strings ; then
 		msg "Detected OpenIPC uboot"
 		current_profile="openipc"

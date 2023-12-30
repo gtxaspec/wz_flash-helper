@@ -179,7 +179,7 @@ function set_openipc_user_env() {
 	fi
 
 	#---------- Device model ----------
-	msg_nonewline "   Setting devicemodel... "
+	msg_nonewline "   Setting Device model... "
 	if [ -z "$model" ]; then
 		msg_color_nonewline lightbrown "not set "
 		msg "because it is empty"

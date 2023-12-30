@@ -30,7 +30,7 @@ If you are on OpenIPC profile, SD card kernel specified with `new_sdcard_kernel`
 
 With this option, you can write scripts and get them executed by the program after backup/restore/switch_profile operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
 
-### Debug options
+## Debug options
 
 **✅ Option: `manual_current_profile`**
 
@@ -40,3 +40,9 @@ You can set it manually to fix the currupted rootfs partition partition(for Stoc
 **✅ Option: `manual_model`**
 
 You can set it manually to work with corrupted `configs` or `cfg` partitions on stock firmware that makes model detection fail. Check the [Introduction page](README.md) for "Model code" to set your camera model correctly.
+
+## Hidden options
+
+**✅ Option: `skip_rename_prog_sdcard_kernel`**
+
+This option makes wz_flash-helper skip renaming its SD card kernel to make the camera boot loop. It is solely used for testing.

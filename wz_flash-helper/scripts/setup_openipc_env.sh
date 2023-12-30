@@ -57,7 +57,8 @@ function get_wifi_vendor_id() {
 	echo INSERT > /sys/devices/platform/jzmmc_v1.2.1/present
 	sleep 1
 
-	local wifi_vendor_id=$(cat /sys/bus/mmc/devices/mmc1:0001/mmc1:0001:1/vendor)
+	local vendor_file="/sys/bus/mmc/devices/mmc*:000*/mmc*:000*:*/vendor"
+	local wifi_vendor_id=$(cat $vendor_file)
 	echo -n $wifi_vendor_id
 }
 

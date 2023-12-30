@@ -114,7 +114,7 @@ function set_openipc_user_env() {
 		msg_color_nonewline lightbrown "not set "
 		msg "because it is empty"
 
-	elif [[ "$wifi_ssid" == "$(fw_printenv wlanssid | sed 's/wlanssid=//')" ]]; then
+	elif [ "$wifi_ssid" == "$(fw_printenv wlanssid | sed 's/wlanssid=//')" ]; then
 		msg_color_nonewline lightbrown "skipping "
 		msg "because it is the same as the old value"
 
@@ -128,7 +128,7 @@ function set_openipc_user_env() {
 		msg_color_nonewline lightbrown "not set "
 		msg "because it is empty"
 
-	elif [[ "$wifi_password" == "$(fw_printenv wlanpass | sed 's/wlanpass=//')" ]]; then
+	elif [ "$wifi_password" == "$(fw_printenv wlanpass | sed 's/wlanpass=//')" ]; then
 		msg_color_nonewline lightbrown "skipping "
 		msg "because it is the same as the old value"
 

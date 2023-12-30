@@ -116,7 +116,7 @@ function set_openipc_user_env() {
 
 	elif [[ "$wifi_ssid" == "$(fw_printenv wlanssid | sed 's/wlanssid=//')" ]]; then
 		msg_color_nonewline lightbrown "skipping "
-		msg "because the new value is the same as old value"
+		msg "because it is the same as the old value"
 
 	else
 		fw_setenv wlanssid $(echo $wifi_ssid) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
@@ -130,7 +130,7 @@ function set_openipc_user_env() {
 
 	elif [[ "$wifi_password" == "$(fw_printenv wlanpass | sed 's/wlanpass=//')" ]]; then
 		msg_color_nonewline lightbrown "skipping "
-		msg "because the new value is the same as old value"
+		msg "because it is the same as the old value"
 
 	else
 		fw_setenv wlanpass $(echo $wifi_password) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
@@ -144,7 +144,7 @@ function set_openipc_user_env() {
 
 	elif [[ "$wifi_driver" == "$(fw_printenv wlandev | sed 's/wlandev=//')" ]]; then
 		msg_color_nonewline lightbrown "skipping "
-		msg "because the new value is the same as old value"
+		msg "because it is the same as the old value"
 
 	else
 		fw_setenv wlandev $wifi_driver && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
@@ -158,7 +158,7 @@ function set_openipc_user_env() {
 
 	elif [[ "$mac_address" == "$(fw_printenv wlanmac | sed 's/wlanmac=//')" ]]; then
 		msg_color_nonewline lightbrown "skipping "
-		msg "because the new value is the same as old value"
+		msg "because it is the same as the old value"
 
 	else
 		fw_setenv wlanmac $mac_address && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
@@ -172,7 +172,7 @@ function set_openipc_user_env() {
 
 	elif [[ "$timezone" == "$(fw_printenv timezone | sed 's/timezone=//')" ]]; then
 		msg_color_nonewline lightbrown "skipping "
-		msg "because the new value is the same as old value"
+		msg "because it is the same as the old value"
 
 	else
 		fw_setenv timezone $timezone && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
@@ -186,7 +186,7 @@ function set_openipc_user_env() {
 
 	elif [[ "$model" == "$(fw_printenv devicemodel | sed 's/devicemodel=//')" ]]; then
 		msg_color_nonewline lightbrown "skipping "
-		msg "because the new value is the same as old value"
+		msg "because it is the same as the old value"
 
 	else
 		fw_setenv devicemodel $model && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }

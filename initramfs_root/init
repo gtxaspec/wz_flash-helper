@@ -225,12 +225,19 @@ function init_exit() {
 
 	#drop_a_shell # Comment out this line to debug with serial connection
 
-	play_audio /sounds/rebooting_now.pcm
-
 	sync
-	umount -a -r
-	reboot -f # Reboot immediately
-	sleep 10 # Prevent init from continuing after init_exit finishes, but the camera has not rebooted immediately
+
+	if [[ "$$" == "1" ]]; then
+		umount -a -r
+		play_audio /sounds/rebooting_now.pcm
+		reboot -f # Reboot immediately
+	else
+		msg
+		msg_color_bold green "Running init on manual mode is finished"
+		msg
+		msg
+	fi
+
 }
 
 function init_main() {

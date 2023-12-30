@@ -205,10 +205,16 @@ function init_exit() {
 	msg
 	msg_color_bold magenta "Initramfs init is finished!"
 
+	exec > /dev/null 2>&1
+
 	echo > /dev/console
-	cp /tmp/initramfs_serial.log $prog_log_file_serial
-	cp /tmp/initramfs.log $prog_log_file
-	msg_color green "Log files have been copied to SD card"
+	msg "Copying log files to SD card"
+
+	msg_nonewline "    initramfs_serial.log... "
+	cp /tmp/initramfs_serial.log $prog_log_file_serial && msg_color green "ok" || msg_color red "failed"
+
+	msg_nonewline "    initramfs.log... "
+	cp /tmp/initramfs.log $prog_log_file && msg_color green "ok" || msg_color red "failed"
 
 	sync
 	umount /sdcard

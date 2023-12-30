@@ -63,7 +63,6 @@ function or_main() {
 	sync
 
 	msg
-	kill $red_led_pid
 	/bg_turn_off_leds.sh
 }
 

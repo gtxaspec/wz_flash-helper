@@ -84,7 +84,6 @@ function ob_main() {
 	sync
 
 	msg
-	kill $blue_led_pid
 	/bg_turn_off_leds.sh
 }
 

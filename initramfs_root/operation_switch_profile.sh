@@ -96,7 +96,6 @@ function osp_main() {
 
 	sync
 	msg
-	kill $red_and_blue_leds_pid
 	/bg_turn_off_leds.sh
 }
 

@@ -72,13 +72,11 @@ function detect_openipc_wifi_driver() {
 		return 0
 	fi
 
-	if fw_printenv wlandev ; then
-		msg_color_nonewline lightbrown "   Wi-Fi driver has already been set, set "
-		msg_color_nonewline cyan "manual_wifi_driver "
-		msg_color lightbrown "if you want overwrite it, leaving it empty for now"
-
-		wifi_driver=""
-		return 0
+	local existed_wlandev=$(fw_printenv wlandev | sed 's/wlandev=//')
+	if [[ ! -z $existed_wlandev ]]; then
+		msg_color_nonewline lightbrown "   Wi-Fi driver has already been set: "
+		msg_color_nonewline cyan "$existed_wlandev"
+		msg_color lightbrown ", overwriting it anyway"
 	fi
 
 	case $model in

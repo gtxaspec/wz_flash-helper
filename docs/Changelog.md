@@ -2,6 +2,11 @@
 
 
 
+## v0.8.5
+
+- Fix busybox ash double quote comparison quirk for Wi-Fi SSID and password
+- Add an option to skip renaming program SD card kernel
+
 ## v0.8.4
 
 - Improve coding style

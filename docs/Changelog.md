@@ -2,6 +2,12 @@
 
 
 
+## v0.8.2
+
+- Fix LEDs don't stop blinking after operations fail
+- Fix copying log files to SD card shown as successful even it fails
+- Make copying new SD card kernel skip instead of fail if its prerequisites are not met
+
 ## v0.8.1
 
 - Make setting Wi-Fi password with special characters easier

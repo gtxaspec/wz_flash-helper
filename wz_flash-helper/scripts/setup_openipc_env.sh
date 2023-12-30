@@ -72,13 +72,6 @@ function detect_openipc_wifi_driver() {
 		return 0
 	fi
 
-	local existed_wlandev=$(fw_printenv wlandev | sed 's/wlandev=//')
-	if [[ ! -z $existed_wlandev ]]; then
-		msg_color_nonewline lightbrown "   Wi-Fi driver has already been set: "
-		msg_color_nonewline cyan "$existed_wlandev"
-		msg_color lightbrown ", overwriting it anyway"
-	fi
-
 	case $model in
 		"pan_v1")
 			wifi_driver="rtl8189ftv-t20-wyze-pan-v1"
@@ -102,12 +95,11 @@ function detect_openipc_wifi_driver() {
 			;;
 	esac
 
-	if [[ ! "$wifi_driver" == "" ]]; then # Exit function if Wi-Fi driver has been set
-		msg_nonewline "   Found driver: " && msg_color cyan "$wifi_driver"
-		return 0
-	else
-		msg_color red "   Can not detect driver, please set it manually and run this script again"
+	if [ -z "$wifi_driver" ]; then # Exit function if Wi-Fi driver has been set
+		msg_color red "    Can not detect driver, please set it manually and run this script again"
 		return 1
+	else
+		msg_nonewline "   Found driver: " && msg_color cyan "$wifi_driver"
 	fi
 }
 
@@ -118,34 +110,86 @@ function set_openipc_user_env() {
 
 	#---------- Wi-Fi SSID ----------
 	msg_nonewline "   Setting Wi-Fi SSID... "
-	fw_setenv wlanssid $(echo $wifi_ssid) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	if [ -z "$wifi_ssid" ]; then
+		msg_color_nonewline lightbrown "not set "
+		msg "because it is empty"
+
+	elif [[ "$wifi_ssid" == "$(fw_printenv wlanssid | sed 's/wlanssid=//')" ]]; then
+		msg_color_nonewline lightbrown "skipping "
+		msg "because the new value is the same as old value"
+
+	else
+		fw_setenv wlanssid $(echo $wifi_ssid) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	fi
 
 	#---------- Wi-Fi password ----------
 	msg_nonewline "   Setting Wi-Fi password... "
-	fw_setenv wlanpass $(echo $wifi_password) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	if [ -z "$wifi_password" ]; then
+		msg_color_nonewline lightbrown "not set "
+		msg "because it is empty"
+
+	elif [[ "$wifi_password" == "$(fw_printenv wlanpass | sed 's/wlanpass=//')" ]]; then
+		msg_color_nonewline lightbrown "skipping "
+		msg "because the new value is the same as old value"
+
+	else
+		fw_setenv wlanpass $(echo $wifi_password) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	fi
 
 	#---------- Wi-Fi driver ----------
 	msg_nonewline "   Setting Wi-Fi driver... "
-	if [[ ! "$wifi_driver" == "" ]]; then
-		fw_setenv wlandev $wifi_driver && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	if [ -z "$wifi_driver"]]; then
+		msg_color_nonewline lightbrown "not set "
+		msg "because it is empty"
+
+	elif [[ "$wifi_driver" == "$(fw_printenv wlandev | sed 's/wlandev=//')" ]]; then
+		msg_color_nonewline lightbrown "skipping "
+		msg "because the new value is the same as old value"
+
 	else
-		msg "not set because it is empty"
+		fw_setenv wlandev $wifi_driver && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	fi
 
 	#---------- MAC address ----------
 	msg_nonewline "   Setting MAC address... "
-	if [[ ! "$mac_address" == "" ]]; then
-		fw_setenv wlanmac $mac_address && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	if [ -z "$mac_address" ]; then
+		msg_color_nonewline lightbrown "not set "
+		msg "because it is empty"
+
+	elif [[ "$mac_address" == "$(fw_printenv wlanmac | sed 's/wlanmac=//')" ]]; then
+		msg_color_nonewline lightbrown "skipping "
+		msg "because the new value is the same as old value"
+
 	else
-		msg "not set because it is empty"
+		fw_setenv wlanmac $mac_address && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	fi
 
 	#---------- Timezone ----------
 	msg_nonewline "   Setting Timezone... "
-	if [[ ! "$timezone" == "" ]]; then
-		fw_setenv timezone $timezone && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	if [ -z "$timezone" ]; then
+		msg_color_nonewline lightbrown "not set "
+		msg "because it is empty"
+
+	elif [[ "$timezone" == "$(fw_printenv timezone | sed 's/timezone=//')" ]]; then
+		msg_color_nonewline lightbrown "skipping "
+		msg "because the new value is the same as old value"
+
 	else
-		msg "not set because it is empty"
+		fw_setenv timezone $timezone && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+	fi
+
+	#---------- Device model ----------
+	msg_nonewline "   Setting devicemodel... "
+	if [ -z "$model" ]; then
+		msg_color_nonewline lightbrown "not set "
+		msg "because it is empty"
+
+	elif [[ "$model" == "$(fw_printenv devicemodel | sed 's/devicemodel=//')" ]]; then
+		msg_color_nonewline lightbrown "skipping "
+		msg "because the new value is the same as old value"
+
+	else
+		fw_setenv devicemodel $model && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	fi
 }
 
@@ -154,4 +198,3 @@ matched_profile="openipc"
 custom_script_matched_profile_check $matched_profile || return 0
 detect_openipc_wifi_driver || return 1
 set_openipc_user_env || return 1
-

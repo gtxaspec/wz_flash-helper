@@ -2,6 +2,12 @@
 
 
 
+## v0.8.4
+
+- Improve coding style
+- Improve `setup_openipc_env.sh`, add setting `devicemodel` to the script
+- Allow executing init on manual mode
+
 ## v0.8.3
 
 - Fix Wi-Fi vendor file path randomly changes

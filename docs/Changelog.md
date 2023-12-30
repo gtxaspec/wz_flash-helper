@@ -2,6 +2,11 @@
 
 
 
+## v0.8.3
+
+- Fix Wi-Fi vendor file path randomly changes
+- Add error check for model detection fail on OpenIPC
+
 ## v0.8.2
 
 - Fix LEDs don't stop blinking after operations fail

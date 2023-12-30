@@ -4,9 +4,9 @@
 #
 
 function copy_new_sdcard_kernel() {
-	[ ! -f /sdcard/$new_sdcard_kernel ] && { msg_color red "File /sdcard/$new_sdcard_kernel is missing" ; return 1 ; }
-	[[ "$switch_profile" == "yes" ]] && { msg_color lightbrown "New SD card kernel will not be copied when switch_profile is enabled" ; return 1 ; }
-	[[ "$dry_run" == "yes" ]] && { msg_color lightbrown "New SD card kernel is not copied when dry run is active" ; return 0 ; }
+	[ ! -f /sdcard/$new_sdcard_kernel ] && { msg_color red "File /sdcard/$new_sdcard_kernel is missing, skipping" ; return 0 ; }
+	[[ "$switch_profile" == "yes" ]] && { msg_color lightbrown "New SD card kernel will not be copied when switch_profile is enabled, skipping" ; return 0 ; }
+	[[ "$dry_run" == "yes" ]] && { msg_color lightbrown "New SD card kernel is not copied when dry run is active, skipping" ; return 0 ; }
 
 	msg
 	msg_nonewline "Copying "

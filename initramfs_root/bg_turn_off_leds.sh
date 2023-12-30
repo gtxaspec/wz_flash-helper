@@ -11,3 +11,5 @@ echo 1 > /sys/class/gpio/gpio$blue_led_pin/value
 pkill -f bg_blink_led_blue.sh
 pkill -f bg_blink_led_red.sh
 pkill -f bg_blink_led_red_and_blue.sh
+
+exit 0

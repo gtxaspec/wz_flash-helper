@@ -208,13 +208,13 @@ function init_exit() {
 	exec > /dev/null 2>&1
 
 	echo > /dev/console
-	msg "Copying log files to SD card"
+	echo "Copying log files to SD card" > /dev/console
 
-	msg_nonewline "    initramfs_serial.log... "
-	cp /tmp/initramfs_serial.log $prog_log_file_serial && msg_color green "ok" || msg_color red "failed"
+	echo -n "    initramfs.log... " > /dev/console
+	cp /tmp/initramfs.log $prog_log_file && msg_color_serial green "ok" || msg_color_serial red "failed"
 
-	msg_nonewline "    initramfs.log... "
-	cp /tmp/initramfs.log $prog_log_file && msg_color green "ok" || msg_color red "failed"
+	echo -n "    initramfs_serial.log... " > /dev/console
+	cp /tmp/initramfs_serial.log $prog_log_file_serial && msg_color_serial green "ok" || msg_color_serial red "failed"
 
 	sync
 	umount /sdcard

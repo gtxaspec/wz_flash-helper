@@ -73,6 +73,16 @@ function msg_color() {
         echo -e "\e[0;${color_code}m${message}\e[0m" > /dev/console
 }
 
+function msg_color_serial() {
+# Description: Print out messages to serial terminal with colored text
+	local color="$1"
+	local color_code=$(get_color_code $color)
+	local message="$2"
+
+	echo "$message"
+        echo -e "\e[0;${color_code}m${message}\e[0m" > /dev/console
+}
+
 function msg_color_nonewline() {
 # Description: Print out messages to serial terminal with colored text without newline
 	local color="$1"

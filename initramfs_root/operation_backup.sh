@@ -66,7 +66,7 @@ function ob_main() {
 	ob_backup_partitions || return 1
 	ob_archive_partitions || return 1
 
-	if [[ ! "$cp_backup_secondary_path" == "" ]] && [[ ! "$dry_run" == "yes" ]]; then
+	if [ ! -z "$cp_backup_secondary_path" ] && [[ ! "$dry_run" == "yes" ]]; then
 		msg
 		msg_color_bold_nonewline white "> This profile has secondary backup directory at "
 		msg_color cyan "$cp_backup_secondary_path"

@@ -16,7 +16,7 @@ function play_audio() {
 	local audio_file="$1"
 	local numberic='^[0-9]+$'
 
-	if [[ ! "$audio_volume" =~ $numberic ]] || [[ "$audio_volume" == "" ]] || [ "$audio_volume" -lt 0 ] || [ "$audio_volume" -gt 100 ]; then
+	if [[ ! "$audio_volume" =~ $numberic ]] || [ -z "$audio_volume" ] || [ "$audio_volume" -lt 0 ] || [ "$audio_volume" -gt 100 ]; then
 		local audio_volume="50" # If the audio value is invalid, set it to 50
 	fi
 	audioplay $audio_file $audio_volume

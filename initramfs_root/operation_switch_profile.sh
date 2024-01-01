@@ -8,7 +8,7 @@ function osp_validate_restore_partition_images() {
 
 	cd $np_images_path
 
-	# Check sha256 for all partitions first to make sure they are all valid before flashing each partition
+	# Verify all partition images first to make sure they are all valid before flashing them
 	for partname in $np_all_partname_list; do 
 		if [[ "$(get_np_partoperation $partname)" == "write" ]]; then
 			local infile_name=$(get_np_partimg $partname)

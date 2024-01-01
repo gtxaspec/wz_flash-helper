@@ -53,17 +53,16 @@ manual_wifi_driver=""
 
 function get_wifi_vendor_id() {
 # Description: Obtain and return the Wi-Fi module vendor ID
-# Syntax: get_wifi_id
 	echo INSERT > /sys/devices/platform/jzmmc_v1.2.1/present
 	sleep 1
 
-	local vendor_file="/sys/bus/mmc/devices/mmc*:000*/mmc*:000*:*/vendor" # Use wildcard because Wi-Fi vendor ID file path can change
+	local vendor_file="/sys/bus/mmc/devices/mmc?:????/mmc?:????:?/vendor" # Use wildcard because Wi-Fi vendor ID file path might randomly change
 	local wifi_vendor_id=$(cat $vendor_file)
 	echo -n $wifi_vendor_id
 }
 
 function detect_openipc_wifi_driver() {
-# Description: Assign Wi-Fi driver for OpenIPC based on the camera model and vendor ID
+# Description: Assign Wi-Fi driver for OpenIPC based on camera model and vendor ID
 	msg "Detecting driver for Wi-Fi module"
 
 	if [[ "$set_wifi_driver_manually" == "yes" ]]; then

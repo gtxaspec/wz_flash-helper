@@ -11,3 +11,5 @@
    - For switch profile: The verification progress stops immediately if one partition image verificaion fails. It doesn't tell if the remaining unverified partition images fail or not.
 
 - Wi-Fi vendor ID file at `/sys/bus/mmc/devices/mmc1:0001/mmc1:0001:1/vendor` might randomly(?) change to `/sys/bus/mmc/devices/mmc1:0002/mmc1:0002:1/vendor` or `/sys/bus/mmc/devices/mmc1:0003/mmc1:0003:1/vendor` for undetermined reasons, a temporary fix for this is using wildcard(already implemented).
+
+- Current code for LEDs blinking currently only work with cameras with 2 LEDs, to support more cameras that have one or no LED some minor changes are needed.

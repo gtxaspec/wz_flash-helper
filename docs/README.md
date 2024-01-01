@@ -16,7 +16,7 @@
 
 ## Supported cameras
 
-| Camera              |  SoC  | Support status | Model code  |
+| Camera model        |  SoC  | Support status | Model code  |
 | ------------------- | ----- | -------------- | ----------- |
 | Wyze Cam v2         |  t20  | ✅ Supported   | `v2`        |
 | Wyze Cam Pan        |  t20  | ⚠️ Untested    | `pan_v1`    |

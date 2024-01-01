@@ -51,7 +51,9 @@ If you are on Windows, first, make sure that your Powershell version is 5.0 or n
 
 ### Can you add support for my camera?
 
-Yes, with the condition that your camera uboot supports booting a kernel file from SD card. Otherwise, you have to root it then compile and flash a uboot that has that functionality.
+Yes, with the condition that:
+- Your camera uboot supports booting a kernel file from SD card or you can compile and flash a uboot(by rooting or removing the flash chip) that has that functionality.
+- Your camera has NOR flash(NAND is not supported yet)
 
 ### How does switching profile work?
 

@@ -30,14 +30,14 @@ function get_sdcard_kernel_filename() {
 
 function make_initramfs() {
 	echo "[build.sh] Creating /tmp/initramfs.cpio"
-	
+
 	mkdir -p output/initramfs
 	cp -r initramfs_root/* output/initramfs
 	cp -r initramfs_overlay/${SoC}/* output/initramfs
-	
+
 	[ -f /tmp/initramfs.cpio ] && rm /tmp/initramfs.cpio
 	( cd output/initramfs && find . | fakeroot cpio --create --format='newc' | gzip > /tmp/initramfs.cpio)
-	
+
 	rm -r output/initramfs
 }
 
@@ -54,7 +54,7 @@ function patch_source() {
 function make_kernel() {
 	patch_source
 	make_initramfs
-	
+
 	echo "[build.sh] Compiling kernel for ${SoC}"
 	( cd firmware && BOARD=${SoC}_ultimate_defconfig make br-linux )
 
@@ -66,16 +66,12 @@ function make_kernel() {
 
 function make_release() {
 	make_kernel
-	
+
 	echo "[build.sh] Making release for ${SoC}"
-	
+
 	cp -r wz_flash-helper output/${SoC}
-	mv output/${SoC}/wz_flash-helper/restore/stock.conf.${SoC} output/${SoC}/wz_flash-helper/restore/stock.conf
-	rm output/${SoC}/wz_flash-helper/restore/stock.conf.*
-	
-	mv output/${SoC}/wz_flash-helper/restore/openipc/openipc_env.bin.${SoC} output/${SoC}/wz_flash-helper/restore/openipc/openipc_${SoC}_env.bin
-	rm output/${SoC}/wz_flash-helper/restore/openipc/openipc_env.bin.*
-	
+	cp -r wz_flash-helper_overlay/${SoC}/* output/${SoC}/wz_flash-helper
+
 	( cd output/${SoC} && zip -r ${version}_${SoC}.zip . -x *.gitkeep)
 	rm -r output/${SoC}/wz_flash-helper
 	echo

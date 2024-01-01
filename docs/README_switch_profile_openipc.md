@@ -44,7 +44,7 @@ Download OpenIPC tarball that contains kernel and rootfs images from OpenIPC [Re
 Then extract the firmware archive, place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 
 - boot: `u-boot-[SoC]-universal.bin` to `openipc_[SoC]_boot.bin`
-- env: `openipc_[chip family]_env.bin.[SoC]` to `openipc_[SoC]_env.bin`
+- env: `openipc_[chip family]_env.bin` to `openipc_[SoC]_env.bin`
 - kernel: `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`
 - rootfs: `rootfs.squashfs.[SoC]` to `openipc_[SoC]_rootfs.bin`
 

@@ -2,6 +2,11 @@
 
 
 
+## v0.8.6
+
+- Improve coding style
+- Prioritize renaming user SD card kernel over running operations to ensure `wz_mini_hacks` kernel will be booted on the next boot regardless of operations results
+
 ## v0.8.5
 
 - Fix busybox ash double quote comparison quirk for Wi-Fi SSID and password

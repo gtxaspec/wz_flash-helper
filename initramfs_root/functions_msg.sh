@@ -105,6 +105,16 @@ function msg_color_bold() {
         echo -e "\e[1;${color_code}m${message}\e[0m" > /dev/console
 }
 
+function msg_color_bold_serial() {
+# Description: Print out a bold colored message to the serial terminal
+	local color="$1"
+	local color_code=$(get_color_code $color)
+	local message="$2"
+
+	echo "$message"
+        echo -e "\e[1;${color_code}m${message}\e[0m" > /dev/console
+}
+
 function msg_color_bold_nonewline() {
 # Description: Print out a bold colored message without newline to serial terminal and the log files
 	local color="$1"

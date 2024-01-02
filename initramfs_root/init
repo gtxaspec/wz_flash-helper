@@ -231,8 +231,10 @@ function init_exit() {
 	sync
 
 	if [[ "$$" == "1" ]]; then
-		umount -a -r
+		msg
+		msg_color_bold_serial green "Rebooting now"
 		play_audio /sounds/rebooting_now.pcm
+		umount -a -r
 		reboot -f # Reboot immediately
 	else
 		msg

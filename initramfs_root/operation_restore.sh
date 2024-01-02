@@ -63,7 +63,7 @@ function or_main() {
 	sync
 
 	msg
-	/bg_turn_off_leds.sh
+	/bg_turn_off_leds
 }
 
 or_main || return 1

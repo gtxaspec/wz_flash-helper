@@ -365,5 +365,5 @@ function init_main() {
 
 init_main && play_audio /sounds/all_operations_are_successful.pcm || play_audio /sounds/an_error_has_occurred.pcm
 
-/bg_turn_off_leds.sh
+/bg_turn_off_leds
 init_exit

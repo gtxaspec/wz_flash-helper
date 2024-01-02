@@ -96,7 +96,7 @@ function osp_main() {
 
 	sync
 	msg
-	/bg_turn_off_leds.sh
+	/bg_turn_off_leds
 }
 
 osp_main || return 1

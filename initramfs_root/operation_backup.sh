@@ -84,7 +84,7 @@ function ob_main() {
 	sync
 
 	msg
-	/bg_turn_off_leds.sh
+	/bg_turn_off_leds
 }
 
 ob_main || return 1

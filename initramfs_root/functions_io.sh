@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Description: IO functions
-#
+# IO functions
+
 
 function read_partition_nor() {
 # Description: Dump partition <partmtd> to <outfile> on NOR flash
@@ -114,8 +114,6 @@ function write_partition() {
 	local partmtd="$3"
 	local restore_stage_dir="/restore_stage_dir"
 
-	mkdir -p $restore_stage_dir
-
 	msg_color_bold_nonewline white "-> Write partition: "
 	msg_nonewline "file "
 	msg_color_nonewline brown "$infile_basename "
@@ -126,6 +124,8 @@ function write_partition() {
 	[ ! -c $partmtd ] && { msg_color red "    $partmtd is not a character device" ; return 1 ; }
 	[ ! -f $infile ] && { msg_color red "    $infile_basename is missing" ; return 1 ; }
 	[ ! -f $infile.sha256sum ] && { msg_color red "    $infile_basename.sha256sum is missing" ; return 1 ; }
+
+	mkdir -p $restore_stage_dir
 
 	cp $infile $restore_stage_dir/$infile_basename
 	cp $infile.sha256sum $restore_stage_dir/$infile_basename.sha256sum
@@ -157,8 +157,6 @@ function create_archive_from_partition() {
 	local outfile_dirname=$(dirname $outfile)
 	local archive_mnt="/archive_mnt_$partname"
 
-	mkdir -p $archive_mnt
-
 	msg_color_bold_nonewline white "-> Archive partition files: "
 	msg_color_nonewline brown "$partname "
 	msg_color_nonewline magenta "$partmtdblock "
@@ -167,6 +165,8 @@ function create_archive_from_partition() {
 
 	[ ! -b $partmtdblock ] && { msg_color red "    $partmtdblock is not a block device" ; return 1 ; }
 	[ -f $outfile ] && { msg_color red "    $outfile_basename already exists" ; return 1 ; }
+
+	mkdir -p $archive_mnt
 
 	if [[ "$dry_run" == "yes" ]]; then
 		msg_dry_run "mount -o ro -t $fstype $partmtdblock $archive_mnt"
@@ -199,8 +199,6 @@ function extract_archive_to_partition() {
 	local fstype="$4"
 	local unarchive_mnt="/unarchive_mnt_$partname"
 
-	mkdir -p $unarchive_mnt
-
 	msg_color_bold_nonewline white "-> Extract archive to partition: "
 	msg_nonewline "file "
 	msg_color_nonewline brown "$infile_basename "
@@ -210,6 +208,8 @@ function extract_archive_to_partition() {
 
 	[ ! -f $infile ] && { msg_color red "    $infile_basename is missing" ; return 1 ; }
 	[ ! -b $partmtdblock ] && { msg_color red "    $partmtdblock is not a block device" ; return 1 ; }
+
+	mkdir -p $unarchive_mnt
 
 	msg_nonewline "    Verifying file... "
 	( cd $infile_dirname && sha256sum -c $infile_basename.sha256sum ) && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }

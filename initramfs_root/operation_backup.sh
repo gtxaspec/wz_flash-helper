@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Description: Backup operation
-#
+# Backup operation
+
 
 function ob_backup_entire_flash() {
 # Description: Dump the entire flash to a file
@@ -51,7 +51,7 @@ function ob_main() {
 	cp_backup_path="$cp_backup_path/$backup_id"
 	mkdir -p $cp_backup_path
 
-	/bg_blink_led_blue.sh &
+	/bg_blink_led_blue &
 	local blue_led_pid="$!"
 
 	msg

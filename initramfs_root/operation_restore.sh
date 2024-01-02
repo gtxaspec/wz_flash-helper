@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Description: Restore operation
-#
+# Restore operation
+
 
 function or_restore_boot_partition() {
 # Description: Restore the boot partition, this option is hidden from restore config files
@@ -49,7 +49,7 @@ function or_main() {
 	grep -q $'\r' $prog_restore_config_file && dos2unix $prog_restore_config_file
 	source $prog_restore_config_file || { msg_color_bold red "$prog_restore_config_file file is invalid. Nothing will be done" ; return 1 ; }
 
-	/bg_blink_led_red.sh &
+	/bg_blink_led_red &
 	local red_led_pid="$!"
 
 	msg

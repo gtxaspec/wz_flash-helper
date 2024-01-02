@@ -5,7 +5,6 @@
 ## v0.8.6
 
 - Improve coding style
-- Prioritize renaming user SD card kernel over running operations to ensure `wz_mini_hacks` kernel will be booted on the next boot regardless of operations results
 - Allow booting a custom SD card kernel on the next boot after switching profile
 
 ## v0.8.5

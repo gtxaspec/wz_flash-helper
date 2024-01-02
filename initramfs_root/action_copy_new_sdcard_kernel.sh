@@ -10,7 +10,6 @@ function copy_new_sdcard_kernel() {
 	[[ "$switch_profile" == "yes" ]] && msg_color lightbrown "Warning: switch_profile is enabled, new SD card kernel might not be compatile with the next profile"
 
 	if [[ "$switch_profile" == "yes" ]]; then
-		source /profile.d/$next_profile/np_variables.sh
 		local new_sdcard_kernel_name=$np_sdcard_kernel_name
 	else
 		local new_sdcard_kernel_name=$cp_sdcard_kernel_name

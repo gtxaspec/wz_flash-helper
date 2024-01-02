@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Description: Miscellaneous functions
-#
+# Miscellaneous functions
+
 
 function gen_4digit_id() {
 # Description: Return a random number in 1000-9999 range
@@ -59,6 +59,7 @@ function unpad_partimg() {
 
 	local block_contents=""
 	local padding_blocks_total="0"
+
 	echo "Counting padded blocks..."
 	for block in $(seq $infile_totalblocks_minusone -1 0); do
 		block_contents=$(dd if=$infile bs=$blocksize count=1 skip=$block status=none | tr -d '\000')

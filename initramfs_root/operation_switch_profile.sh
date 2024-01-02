@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Description: Switch profile operation
-#
+# Switch profile operation
+
 
 function osp_validate_restore_partition_images() {
 	msg_color_bold white "> Making sure that all needed partition images exist and are valid"
@@ -9,7 +9,7 @@ function osp_validate_restore_partition_images() {
 	cd $np_images_path
 
 	# Verify all partition images first to make sure they are all valid before flashing them
-	for partname in $np_all_partname_list; do 
+	for partname in $np_all_partname_list; do
 		if [[ "$(get_np_partoperation $partname)" == "write" ]]; then
 			local infile_name=$(get_np_partimg $partname)
 
@@ -47,7 +47,7 @@ function osp_main() {
 		source /profile.d/$next_profile/np_switch_baseparts.sh
 	fi
 
-	/bg_blink_led_red_and_blue.sh &
+	/bg_blink_led_red_and_blue &
 	local red_and_blue_leds_pid="$!"
 
 	msg

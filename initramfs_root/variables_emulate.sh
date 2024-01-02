@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Description: Emulate various supposed-to-be automatically detected variables. For testing only!
-#
+# Emulate hardware variables. For testing only!
+
 
 emulate_mode="no"
 

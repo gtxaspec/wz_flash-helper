@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Description: Execute user-custom scripts
-#
+# Execute user-custom scripts
+
 
 function execute_custom_scripts() {
 	msg_nonewline "custom_scripts is set to " && msg_color cyan "$custom_scripts"
@@ -10,7 +10,7 @@ function execute_custom_scripts() {
 
 	msg
 	msg_color_bold blue ":: Starting custom scripts"
-	for custom_scriptlet in $custom_scripts ; do
+	for custom_scriptlet in $custom_scripts; do
 		msg_color_bold_nonewline white "> Running script: "
 		msg_color cyan "$custom_scriptlet"
 		msg

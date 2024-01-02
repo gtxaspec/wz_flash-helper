@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Description: Make a copy of the user-specified SD card kernel and rename it to let it be booted by uboot on the next boot
-#
+# Make a copy of the user-specified SD card kernel and rename it to let it be booted by uboot on the next boot
+
 
 function copy_new_sdcard_kernel() {
 	[ ! -f /sdcard/$new_sdcard_kernel ] && { msg_color lightbrown "File /sdcard/$new_sdcard_kernel is missing, skipping" ; return 0 ; }

@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Description: Blink the blue LED every second
-#
+# Blink the blue LED every second
+
 
 source /leds_gpio.d/leds_gpio.sh
 

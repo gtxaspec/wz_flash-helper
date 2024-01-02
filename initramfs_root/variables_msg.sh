@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Description: These messages are used by init script, writing them on a separate file makes it look clean.
-#
+# These messages are used by init script, writing them on a separate file makes it look clean.
+
 
 msg_backup_partitions_yes="backup_partition is set to Yes"
 msg_backup_partitions_no="backup_partition is set to No"

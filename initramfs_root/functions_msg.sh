@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# Description: Print out messages to both the serial terminal and the log files
-#
+# Print out messages to both the serial terminal and the log files
+
 
 function msg() {
-# Description: Print messages to the serial terminal and the log files
+# Description: Print a message to the serial terminal and the log files
 	local message="$1"
 
 	echo "$message" # Print to log file
@@ -13,7 +13,7 @@ function msg() {
 }
 
 function msg_nonewline() {
-# Description: Same as msg but without newline
+# Description: Same as msg() but without a newline
 	local message="$1"
 
 	echo -n "$message"
@@ -63,7 +63,7 @@ function get_color_code() {
 }
 
 function msg_color() {
-# Description: Print out messages to serial terminal with colored text
+# Description: Print out a colored message to the serial terminal and the log files
 	local color="$1"
 	local color_code=$(get_color_code $color)
 	local message="$2"
@@ -74,7 +74,7 @@ function msg_color() {
 }
 
 function msg_color_serial() {
-# Description: Print out messages to serial terminal with colored text
+# Description: Print out a colored message to the serial terminal
 	local color="$1"
 	local color_code=$(get_color_code $color)
 	local message="$2"
@@ -84,7 +84,7 @@ function msg_color_serial() {
 }
 
 function msg_color_nonewline() {
-# Description: Print out messages to serial terminal with colored text without newline
+# Description: Print out a colored message without newline to the serial terminal and the log files
 	local color="$1"
 	local color_code=$(get_color_code $color)
 	local message="$2"
@@ -95,7 +95,7 @@ function msg_color_nonewline() {
 }
 
 function msg_color_bold() {
-# Description: Print out messages to serial terminal with bold colored text
+# Description: Print out a bold colored message to the serial terminal and the log files
 	local color="$1"
 	local color_code=$(get_color_code $color)
 	local message="$2"
@@ -106,7 +106,7 @@ function msg_color_bold() {
 }
 
 function msg_color_bold_nonewline() {
-# Description: Print out messages to serial terminal with bold colored text without newline
+# Description: Print out a bold colored message without newline to serial terminal and the log files
 	local color="$1"
 	local color_code=$(get_color_code $color)
 	local message="$2"
@@ -117,16 +117,16 @@ function msg_color_bold_nonewline() {
 }
 
 function msg_tickbox_yes() {
-# Description: Display a tickbox with color
+# Description: Print out a colored tickbox, the tickbox is ticked
 	local color_code_yes=$(get_color_code "lightgreen")
 
 	echo -n "[x] "
-	echo -n "[x] " >> /tmp/initramfs_serial.log 
+	echo -n "[x] " >> /tmp/initramfs_serial.log
 	echo -ne "\e[1;${color_code_yes}m[x] \e[0m" > /dev/console
 }
 
 function msg_tickbox_no() {
-# Description: Display a tickbox with color
+# Description: Display a colored tickbox, the tickbox is unticked
 	local color_code_no=$(get_color_code "lightbrown")
 
 	echo -n "[ ] "
@@ -135,7 +135,7 @@ function msg_tickbox_no() {
 }
 
 function msg_dry_run() {
-# Description: Print out commands instead of executing them when dry run is enabled
+# Description: Print out a message with (dry_run) prefix
 	local cmd="$1"
 
 	echo "   (dry run) $cmd"

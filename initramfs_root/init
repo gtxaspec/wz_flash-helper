@@ -6,6 +6,7 @@
 # |   .'.   | /  `-.,----.|  .-'|  |\ '-'  |.-'  `)|  | |  |'-----'|  | |  |\   --.|  || '-' '\   --.|  |
 # '--'   '--'`-----''----'`--'  `--' `--`--'`----' `--' `--'       `--' `--' `----'`--'|  |-'  `----'`--'
 #                                                                                      `--'
+#
 
 
 mkdir -p /dev /proc /sys /tmp
@@ -56,14 +57,14 @@ function init_backup_bootpart() {
 
 function init_source_initialize_gpio() {
 # Description: Initialize some GPIO pins to enable LEDs, also SD card if needed
-	for gpio_script in /initialize_gpio.d/*.sh ; do
+	for gpio_script in /initialize_gpio.d/*.sh; do
 		source $gpio_script
 	done
 }
 
 function init_load_kernel_modules() {
 # Description: Load kernel modules for the camera chip family
-	for kmod_script in /kernel_module.d/*.sh ; do
+	for kmod_script in /kernel_module.d/*.sh; do
 		source $kmod_script
 	done
 }
@@ -98,7 +99,7 @@ function init_mount_sdcard() {
 # Description: Mount SD card, nothing more
 	msg
 	msg_nonewline "Mounting SD card... "
-	if ! mountpoint -q /sdcard ; then
+	if ! mountpoint -q /sdcard; then
 		mount -t vfat /dev/mmcblk0p1 /sdcard -o rw,umask=0000,dmask=0000 && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 	else
 		msg_color green "already done"
@@ -265,7 +266,7 @@ function init_main() {
 	init_source_detect_model || return 1
 
 
-	[ "$enforce_dry_run" == "yes" ] && dry_run="yes"
+	[[ "$enforce_dry_run" == "yes" ]] && dry_run="yes"
 	init_display_info
 
 	play_audio /sounds/wz_helper_finished_loading.pcm
@@ -277,7 +278,7 @@ function init_main() {
 		msg "$msg_backup_partitions_yes"
 		play_audio /sounds/processing_backup_operations.pcm
 
-		if source /operation_backup.sh ; then
+		if source /operation_backup.sh; then
 			msg_color_bold green "$msg_backup_partitions_succeed"
 		else
 			msg_color_bold red "$msg_backup_partitions_fail"
@@ -297,7 +298,7 @@ function init_main() {
 		msg "$msg_restore_partitions_yes"
 		play_audio /sounds/processing_restore_operations.pcm
 
-		if source /operation_restore.sh ; then
+		if source /operation_restore.sh; then
 			msg_color_bold green "$msg_restore_partitions_succeed"
 		else
 			msg_color_bold red "$msg_restore_partitions_fail"
@@ -317,7 +318,7 @@ function init_main() {
 		msg "$msg_switch_profile_yes"
 		play_audio /sounds/processing_switch_profile_operations.pcm
 
-		if source /operation_switch_profile.sh ; then
+		if source /operation_switch_profile.sh; then
 			msg_color_bold green "$msg_switch_profile_succeed"
 		else
 			msg_color_bold red "$msg_switch_profile_fail"
@@ -348,7 +349,7 @@ function init_main() {
 		msg "$msg_enable_custom_scripts_yes"
 		play_audio /sounds/running_custom_scripts.pcm
 
-		if source /action_execute_custom_scripts.sh ; then
+		if source /action_execute_custom_scripts.sh; then
 			msg_color_bold green "$msg_enable_custom_scripts_succeed"
 		else
 			msg_color_bold red "$msg_enable_custom_scripts_fail"

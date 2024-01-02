@@ -271,6 +271,17 @@ function init_main() {
 
 	play_audio /sounds/wz_helper_finished_loading.pcm
 
+	#---------- New SD card kernel ----------
+	msg
+	if [[ "$copy_new_sdcard_kernel" == "yes" ]]; then
+		msg_tickbox_yes
+		msg "$msg_copy_new_sdcard_kernel_yes"
+		source /action_copy_new_sdcard_kernel.sh || return 1
+	else
+		msg_tickbox_no
+		msg "$msg_copy_new_sdcard_kernel_no"
+	fi
+
 	#---------- Backup operation ----------
 	msg
 	if [[ "$backup_partitions" == "yes" ]]; then
@@ -329,17 +340,6 @@ function init_main() {
 	else
 		msg_tickbox_no
 		msg "$msg_switch_profile_no"
-	fi
-
-	#---------- New SD card kernel ----------
-	msg
-	if [[ "$copy_new_sdcard_kernel" == "yes" ]]; then
-		msg_tickbox_yes
-		msg "$msg_copy_new_sdcard_kernel_yes"
-		source /action_copy_new_sdcard_kernel.sh || return 1
-	else
-		msg_tickbox_no
-		msg "$msg_copy_new_sdcard_kernel_no"
 	fi
 
 	#---------- Custom scripts ----------

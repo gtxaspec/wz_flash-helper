@@ -107,8 +107,11 @@ function custom_script_matched_profile_check() {
 	msg_color_nonewline cyan "$matched_profile "
 	msg_color_bold "to run"
 
-	[[ ! "$switch_profile" == "yes" ]] && local running_profile=$current_profile
-	[[ "$switch_profile" == "yes" ]] && local running_profile=$next_profile
+	if [[ "$switch_profile" == "yes" ]]; then
+		local running_profile=$next_profile
+	else
+		local running_profile=$current_profile
+	fi
 
 	msg_nonewline "   The running profile is: "
 	msg_color_nonewline cyan "$running_profile"

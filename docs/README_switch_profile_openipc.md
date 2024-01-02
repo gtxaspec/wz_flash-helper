@@ -73,6 +73,8 @@ switch_profile="yes"
 next_profile="openipc"
 switch_profile_with_all_partitions="no"
 
+copy_new_sdcard_kernel="no"
+
 enable_custom_scripts="yes"
 custom_scripts="setup_openipc_env.sh"
 ```

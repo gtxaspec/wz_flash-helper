@@ -45,6 +45,8 @@ Edit `general.conf` with:
 restore_partitions="no"
 switch_profile="yes"
 next_profile="wzmini"
+
+copy_new_sdcard_kernel="no"
 ```
 
 **Step 4: Power on**

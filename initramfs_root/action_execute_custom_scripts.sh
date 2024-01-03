@@ -13,8 +13,11 @@ function execute_custom_scripts() {
 	for custom_scriptlet in $custom_scripts; do
 		msg_color_bold_nonewline white "> Running script: "
 		msg_color cyan "$custom_scriptlet"
+
 		msg
 		[ ! -f $prog_dir/scripts/$custom_scriptlet ] && { msg_color red "Script file is missing" ; return 1 ; }
+		grep -q $'\r' $prog_dir/scripts/$custom_scriptlet && dos2unix $prog_dir/scripts/$custom_scriptlet
+
 		source $prog_dir/scripts/$custom_scriptlet || return 1
 		msg
 	done

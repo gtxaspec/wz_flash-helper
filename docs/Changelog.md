@@ -4,7 +4,7 @@
 
 ## v0.8.7
 
-- Add check and fix for Windows Line Ending in scripts custom
+- Add check and fix for Custom scripts that contain Windows Line Ending
 
 ## v0.8.6
 

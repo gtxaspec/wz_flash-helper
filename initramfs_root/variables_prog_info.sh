@@ -6,9 +6,9 @@
 prog_name="wz_flash-helper"
 
 prog_dir="/sdcard/wz_flash-helper"
-prog_config_file="/sdcard/wz_flash-helper/general.conf"
-prog_log_file="/sdcard/wz_flash-helper/initramfs.log"
-prog_log_file_serial="/sdcard/wz_flash-helper/initramfs_serial.log"
+prog_config_file="$prog_dir/general.conf"
+prog_log_file="$prog_dir/initramfs.log"
+prog_log_file_serial="$prog_dir/initramfs_serial.log"
 
 boot_partmtd="/dev/mtd0"
 all_partmtd="/dev/mtd1"

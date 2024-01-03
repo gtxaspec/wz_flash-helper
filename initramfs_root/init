@@ -13,7 +13,7 @@ mkdir -p /dev /proc /sys /tmp
 mkdir -p /mnt /var/lock
 mkdir -p /sdcard
 
-exec > /tmp/initramfs.log 2>&1 # Comment out this line to debug with serial connection
+exec > /tmp/initramfs.log 2>&1
 set -x
 
 mount -t devtmpfs devtmpfs /dev
@@ -73,7 +73,7 @@ function init_backup_bootpart() {
 }
 
 function init_source_initialize_gpio() {
-# Description: Initialize some GPIO pins to enable LEDs, also SD card if needed
+# Description: Initialize some GPIO pins to enable LEDs, maybe also SD card and Wi-Fi if needed
 	for gpio_script in /initialize_gpio.d/*.sh; do
 		source $gpio_script
 	done
@@ -117,7 +117,7 @@ function init_source_prog_config_file() {
 }
 
 function init_source_variables_emulate() {
-# Description: Emulate chip family, flash type, and current profile for testing
+# Description: Emulate chip name, family and flash type
 	source /variables_emulate.sh
 }
 
@@ -172,7 +172,7 @@ function init_rename_prog_sdcard_kernel() {
 }
 
 function init_source_detect_model() {
-# Description: Detect the current camera model by reading the factory-generated config file
+# Description: Detect the current camera model
 	if [ ! -z "$manual_model" ]; then
 		msg_color_nonewline lightbrown "Setting manual_model: "
 		msg_color cyan "$manual_model"

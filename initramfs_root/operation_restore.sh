@@ -4,7 +4,7 @@
 
 
 function or_restore_boot_partition() {
-# Description: Restore the boot partition, this option is hidden from restore config files
+# Description: Restore the boot partition, this option is hidden from the restore config files
 	[[ ! "$hidden_option_restore_boot" == "yes" ]] && return 0
 
 	local partname="boot"
@@ -21,7 +21,7 @@ function or_restore_boot_partition() {
 }
 
 function or_restore_partitions() {
-# Description: Restore partitions from partition images
+# Description: Restore partitions with partition images
 	for partname in $cp_restore_partname_list; do
 		local infile_name=$(get_cp_partimg $partname)
 		local infile="$cp_restore_path/$infile_name"

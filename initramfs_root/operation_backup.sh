@@ -24,7 +24,7 @@ function ob_backup_partitions() {
 }
 
 function ob_archive_partitions() {
-# Description: Create .tar.gz archive for partition files on the current profile
+# Description: Create .tar.gz archive from partition contents of the current profile
 	for partname_archive in $cp_archive_partname_list; do
 		local partname="$partname_archive"
 		local partmtdblock="$(get_cp_partmtdblock $partname_archive)"

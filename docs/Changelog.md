@@ -2,6 +2,10 @@
 
 
 
+## v0.8.7
+
+- Add check and fix for Windows Line Ending in scripts custom
+
 ## v0.8.6
 
 - Improve coding style

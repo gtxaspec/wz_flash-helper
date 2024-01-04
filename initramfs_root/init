@@ -116,11 +116,6 @@ function init_source_prog_config_file() {
 	source $prog_config_file || { msg_color_bold red "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
 }
 
-function init_source_variables_emulate() {
-# Description: Emulate chip name, family and flash type
-	source /variables_emulate.sh
-}
-
 function init_source_detect_profile() {
 # Description: Detect the current profile to read and write partitions correctly
 	if [ ! -z "$manual_current_profile" ]; then
@@ -260,8 +255,6 @@ function init_main() {
 
 	init_mount_sdcard || return 1
 	init_source_prog_config_file || return 1
-
-	init_source_variables_emulate
 
 	init_source_detect_profile || return 1
 	init_source_current_profile || return 1

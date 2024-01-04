@@ -2,6 +2,11 @@
 
 
 
+## v0.9.0 - Incompatible with older versions
+
+- Change "switch profile" to "switch firmware"
+- Remove emulation
+
 ## v0.8.7
 
 - Add check and fix for Custom scripts that contain Windows Line Ending

@@ -4,8 +4,6 @@
 
 - Currently, creating new profiles with flash configuration on `.json` or `.yaml` files has not been implemented.
 
-- The term "Switch firmware" causes a lot of confusion to the users, it has been here since `v0.6.0`.
-
 - Partition image verification limitation:
    - For restore: each partition image is verified. If one succeeds, it is written. If the second partition image verification fails, the first partition image is already written, this might cause a soft-brocked camera.
    - For switch firmware: The verification progress stops immediately if one partition image verificaion fails. It doesn't tell if the remaining unverified partition images fail or not.

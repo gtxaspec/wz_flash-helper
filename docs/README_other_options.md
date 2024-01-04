@@ -1,6 +1,5 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | **Other options** | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
-
 **✅ Option: `dry_run`**
 
 With this option, you can see what commands are executed with by the program without having them run. It would also help with obtaining your camera hardware and firmware information.

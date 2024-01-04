@@ -1,12 +1,9 @@
 [Introduction](README.md) | [Setup](README_setup.md) | **Backup** | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
-
-
 **❗ WARNING:**
+
 - Backup your camera Stock partitions first and copy them to a safe place in case you need them later for recovery.
 - Do not modify your Stock partition backup images, especially the boot partition image, or else rolling back to the Stock firmware may brick your camera.
-
------
 
 ## Overview
 

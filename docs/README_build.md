@@ -1,6 +1,5 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | **Build** | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
-
 ## Overview
 
 wz_flash-helper uses OpenIPC kernel source. The compilation steps are the same as building OpenIPC kernels after the kernel config files are patched.

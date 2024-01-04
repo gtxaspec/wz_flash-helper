@@ -4,7 +4,7 @@
 
 ## v0.9.0
 
-> Note: This version configuration file is incompatible with older versions
+> Note: This version configuration file and custom scripts are incompatible with older versions, please do a fresh setup to upgrade.
 
 - Change "switch profile" to "switch firmware"
 - Remove emulation

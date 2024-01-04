@@ -1,4 +1,5 @@
 
+
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | **Switch firmware** | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
 
@@ -33,9 +34,9 @@ The OpenIPC firmware requires four partition images for: `boot`, `env`, `kernel`
 
 **Step 3: Prepare partition images**
 
-**❗ WARNING:**
-- Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would brick your camera.
-- Don't download OpenIPC official uboot image because it doesn't support from SD card kernel that wz_flash-helper relies on to work.
+>**❗ WARNING:**
+> - Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would brick your camera.
+> - Don't download OpenIPC official uboot image because it doesn't support from SD card kernel that wz_flash-helper relies on to work.
 
 Download OpenIPC Uboot image from [this repo](https://github.com/gtxaspec/u-boot-ingenic/releases/tag/latest) with this format: `u-boot-[SoC]-universal.bin`
 
@@ -62,7 +63,7 @@ To get the `setup_openipc_env.sh` script work, edit the script to set your Wi-Fi
 
 The Wi-Fi driver doesn't need to be set manually because it is automatically detected.
 
-**❗ WARNING:** If you forget to run this script, your camera would not be able to connect to Wi-Fi. In order to fix, you have to run the program again with it enabled.
+> **❗ WARNING:** If you forget to run this script, your camera would not be able to connect to Wi-Fi. In order to fix, you have to run the program again with it enabled.
 
 **Step 6: Edit the program configuration file**
 
@@ -86,3 +87,4 @@ Insert your SD card into your camera and power it on. It would take about 3 minu
 After your camera finishes booting, you can use an IP scanner (e.g. nmap) to figure out its IP address and connect to it using SSH.
 
 OpenIPC default SSH username is `root` and password is `12345`.
+

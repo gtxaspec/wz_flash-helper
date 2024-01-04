@@ -1,17 +1,17 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | **Build** | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
 
-## 📄 Overview
+## Overview
 
 wz_flash-helper uses OpenIPC kernel source. The compilation steps are the same as building OpenIPC kernels after the kernel config files are patched.
 
-## ‍🍳 Prerequisites
+## ‍Prerequisites
 
 A Linux distro with `git`, `fakeroot`, `cpio` and other [Buildroot mandatory packages](https://buildroot.org/downloads/manual/manual.html#requirement-mandatory) installed. 2GB free disk space is also required.
 
 Building with WSL2 is NOT supported.
 
-## 🔨 Build
+## Build
 
 **1. Prepare**
 

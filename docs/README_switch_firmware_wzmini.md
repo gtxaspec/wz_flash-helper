@@ -9,7 +9,7 @@
 
 -----
 
-## 📋 Index
+## Index
 
 [Switch firmware overview](README_switch_firmware.md)
 
@@ -21,9 +21,9 @@ Switch to wzmini firmware
 
 -----
 
-## 📄 Overview
+## Overview
 
-## 🛠️ Guide
+## Guide
 
 The wzmini firmware requires four partition images for: `boot`, `kernel`, `rootfs` and `configs`. It supports wzmini and any modded firmware with all-in-one partition layout.
 

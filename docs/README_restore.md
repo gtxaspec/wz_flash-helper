@@ -5,11 +5,11 @@
 
 -----
 
-## 📄 Overview
+## Overview
 
 The restore operation allows restoring one or more partitions using partition images. You can decide what partitions will be restored.
 
-## 🛠️ Guide
+## Guide
 
 **Step 1: [Setup](README_setup.md)**
 
@@ -31,7 +31,7 @@ restore_partitions="yes"
 ```
 **Step 5:** Insert your SD card into your camera and power on. Wait for the program to finish. After it is finished, your camera will reboot.
 
-## ℹ️ Notes
+## Notes
 
 - For the backup operation to start, the `switch_firmware` option must be disabled, like in the above configurations. If both the `restore_partitions` and `switch_firmware` options are enabled, both operations will not be done.
 - All partition restore images must come with their .sha256sum files for integrity verification.

@@ -9,7 +9,7 @@
 
 -----
 
-## 📋 Index
+## Index
 
 Switch firmware overview
 
@@ -39,7 +39,7 @@ This option value has no effect when switching to the wzmini firmware. All parti
 
 -----
 
-## ℹ️ Notes
+## Notes
 
 - For the switch firmware operation to start, the `restore_partitions` option must be disabled, like in the above configurations. If both the  `restore_partitions` and `switch_firmware` options are enabled, both operations would not be done.
 - All partition images are verified with their .sha256sum files before the switch firmware operation starts. If one partiton image fails the verification, no change will be made.

@@ -9,7 +9,7 @@
 
 -----
 
-## 📋 Index
+## Index
 
 [Switch firmware overview](README_switch_firmware.md)
 
@@ -21,13 +21,13 @@ Switch to Stock firmware
 
 -----
 
-## 📄 Overview
+## Overview
 
 The Stock firmware for T20 requires seven partition images for: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
 
 The Stock firmware for T31 requires five partition images for: `boot`, `kernel`, `rootfs`, `app` and `configs`.
 
-## 🛠️ Guide
+## Guide
 
 **Step 1: [Setup](README_setup.md)**
 

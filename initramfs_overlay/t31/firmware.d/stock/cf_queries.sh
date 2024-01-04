@@ -3,9 +3,9 @@
 # Description: This script contains functions to query partition mapping, partition image filenames, and user restore options
 #
 
-function get_cp_partnum() {
+function get_cf_partnum() {
 # Description: Return the mtdmapping number of the queried partition name
-# Syntax: get_cp_partnum <partname>
+# Syntax: get_cf_partnum <partname>
 	local partname="$1"
 	case "$1" in
 		"boot")
@@ -27,9 +27,9 @@ function get_cp_partnum() {
 	esac
 }
 
-function get_cp_partfstype() {
+function get_cf_partfstype() {
 # Description: Return the fstype of the queried partition name
-# Syntax: get_cp_partfstype <partname>
+# Syntax: get_cf_partfstype <partname>
 	local partname="$1"
 	case "$1" in
 		"boot")
@@ -51,9 +51,9 @@ function get_cp_partfstype() {
 	esac
 }
 
-function get_cp_restore_opt_value() {
+function get_cf_restore_opt_value() {
 # Description: Return user option to decide if the queried partition will be restored
-# Syntax: get_cp_restore_opt_value <partname>
+# Syntax: get_cf_restore_opt_value <partname>
 	local partname="$1"
 	case "$1" in
 		"kernel")
@@ -74,28 +74,28 @@ function get_cp_restore_opt_value() {
 }
 
 
-function get_cp_partmtd() {
+function get_cf_partmtd() {
 # Description: Return the mtd device of the queried partition name
-# Syntax: get_cp_partmtd <partname>
+# Syntax: get_cf_partmtd <partname>
 	local partname="$1"
-	local partnum=$(get_cp_partnum $partname)
+	local partnum=$(get_cf_partnum $partname)
 
 	echo -n "/dev/mtd$partnum"
 }
 
-function get_cp_partmtdblock() {
+function get_cf_partmtdblock() {
 # Description: Return the mtdblock device of the queried partition
-# Syntax: get_cp_partmtdblock <partname>
+# Syntax: get_cf_partmtdblock <partname>
 	local partname="$1"
-	local partnum=$(get_cp_partnum $partname)
+	local partnum=$(get_cf_partnum $partname)
 
 	echo -n "/dev/mtdblock$partnum"
 }
 
-function get_cp_partimg() {
+function get_cf_partimg() {
 # Description: Return filename of the partition image for the queried partition name
 # Syntax: get_openipc_partimg <partname>
 	local partname="$1"
 
-	echo -n "${current_profile}_${chip_group}_${partname}.bin"
+	echo -n "${current_firmware}_${chip_group}_${partname}.bin"
 }

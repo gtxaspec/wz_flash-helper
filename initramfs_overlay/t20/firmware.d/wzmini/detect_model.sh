@@ -11,8 +11,8 @@ function detect_model() {
 	local config_partname="configs"
 	local model_config_file="para/config/.product_config"
 
-	local partmtdblock=$(get_cp_partmtdblock $config_partname)
-	local partfstype=$(get_cp_partfstype $config_partname)
+	local partmtdblock=$(get_cf_partmtdblock $config_partname)
+	local partfstype=$(get_cf_partfstype $config_partname)
 	local mnt_config="/mnt_${config_partname}"
 
 	mkdir $mnt_config

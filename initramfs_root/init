@@ -58,7 +58,7 @@ function init_detect_hardware() {
 }
 
 function init_backup_bootpart() {
-# Description: Create a backup of the boot partition to rollback in case it gets corrupted and to detect the current profile by analyzing its strings
+# Description: Create a backup of the boot partition to rollback in case it gets corrupted and to detect the current firmware by analyzing its strings
 	case "$flash_type" in
 		"nor")
 			dd if=/dev/mtdblock0 of=/boot_backup.img status=none
@@ -116,31 +116,31 @@ function init_source_prog_config_file() {
 	source $prog_config_file || { msg_color_bold red "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
 }
 
-function init_source_detect_profile() {
-# Description: Detect the current profile to read and write partitions correctly
-	if [ ! -z "$manual_current_profile" ]; then
-		[ ! -d /profile.d/$manual_current_profile ] && { msg_color red "$manual_current_profile profile is not supported" ; return 1 ; }
-		msg_color_nonewline lightbrown "Setting manual_current_profile: "
-		msg_color cyan "$manual_current_profile"
+function init_source_detect_firmware() {
+# Description: Detect the current firmware to read and write partitions correctly
+	if [ ! -z "$manual_current_firmware" ]; then
+		[ ! -d /firmware.d/$manual_current_firmware ] && { msg_color red "$manual_current_firmware firmware is not supported" ; return 1 ; }
+		msg_color_nonewline lightbrown "Setting manual_current_firmware: "
+		msg_color cyan "$manual_current_firmware"
 
-		current_profile=$manual_current_profile
+		current_firmware=$manual_current_firmware
 	else
-		source /profile.d/detect_profile.sh || return 1
+		source /firmware.d/detect_firmware.sh || return 1
 	fi
 }
 
-function init_source_current_profile() {
-# Description: Source current profile variables and query script
-	source /profile.d/detect_chip_group.sh || return 1
-	source /profile.d/$current_profile/cp_variables.sh
-	source /profile.d/$current_profile/cp_queries.sh
+function init_source_current_firmware() {
+# Description: Source current firmware variables and query script
+	source /firmware.d/detect_chip_group.sh || return 1
+	source /firmware.d/$current_firmware/cf_variables.sh
+	source /firmware.d/$current_firmware/cf_queries.sh
 }
 
 function init_rename_prog_sdcard_kernel() {
 # Description: Rename the program SD card kernel to avoid an infinite boot loop
 	[[ "$skip_rename_prog_sdcard_kernel" == "yes" ]] && { msg_color lightbrown "Skipping remaning program SD card kernel, your camera will boot loop" ; return 0 ; }
 
-	for kernelimg in $cp_sdcard_kernel_name $cp_sdcard_secondary_kernel_name; do
+	for kernelimg in $cf_sdcard_kernel_name $cf_sdcard_secondary_kernel_name; do
 		if [ -f /sdcard/$kernelimg ]; then
 			msg_nonewline "Renaming program SD card kernel "
 			msg_color_nonewline cyan "$kernelimg "
@@ -152,7 +152,7 @@ function init_rename_prog_sdcard_kernel() {
 		else
 			msg_color_nonewline lightbrown "Program SD card kernel "
 			msg_color_nonewline cyan "$kernelimg "
-			msg_color lightbrown "for this profile is missing"
+			msg_color lightbrown "for this firmware is missing"
 		fi
 	done
 
@@ -174,7 +174,7 @@ function init_source_detect_model() {
 
 		model=$manual_model
 	else
-		source /profile.d/$current_profile/detect_model.sh
+		source /firmware.d/$current_firmware/detect_model.sh
 	fi
 }
 
@@ -194,7 +194,7 @@ function init_display_info() {
 
 	msg_color_bold_nonewline white "Model: " && msg_color cyan $model
 
-	msg_color_bold_nonewline white "Current profile: " && msg_color cyan "$current_profile"
+	msg_color_bold_nonewline white "Current firmware: " && msg_color cyan "$current_firmware"
 	msg
 }
 
@@ -256,8 +256,8 @@ function init_main() {
 	init_mount_sdcard || return 1
 	init_source_prog_config_file || return 1
 
-	init_source_detect_profile || return 1
-	init_source_current_profile || return 1
+	init_source_detect_firmware || return 1
+	init_source_current_firmware || return 1
 	init_rename_prog_sdcard_kernel || return 1 # If any error happens before the program SD card kernel is renamed, the camera will bootloop
 	init_source_detect_model || return 1
 
@@ -305,24 +305,24 @@ function init_main() {
 		msg "$msg_restore_partitions_no"
 	fi
 
-	#---------- Switch profile operation ----------
+	#---------- Switch firmware operation ----------
 	msg
-	if [[ "$switch_profile" == "yes" ]]; then
+	if [[ "$switch_firmware" == "yes" ]]; then
 		msg_tickbox_yes
-		msg "$msg_switch_profile_yes"
-		play_audio /sounds/processing_switch_profile_operations.pcm
+		msg "$msg_switch_firmware_yes"
+		play_audio /sounds/processing_switch_firmware_operations.pcm
 
-		if source /operation_switch_profile.sh; then
-			msg_color_bold green "$msg_switch_profile_succeed"
+		if source /operation_switch_firmware.sh; then
+			msg_color_bold green "$msg_switch_firmware_succeed"
 		else
-			msg_color_bold red "$msg_switch_profile_fail"
-			play_audio /sounds/switch_profile_operations_failed.pcm
+			msg_color_bold red "$msg_switch_firmware_fail"
+			play_audio /sounds/switch_firmware_operations_failed.pcm
 			return 1
 		fi
 		msg
 	else
 		msg_tickbox_no
-		msg "$msg_switch_profile_no"
+		msg "$msg_switch_firmware_no"
 	fi
 
 	#---------- New SD card kernel ----------

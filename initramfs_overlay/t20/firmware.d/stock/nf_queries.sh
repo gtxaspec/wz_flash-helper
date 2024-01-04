@@ -3,9 +3,9 @@
 # Description: This script contains functions to query partition mapping, partition image filenames, and user restore options
 #
 
-function get_np_partnum() {
+function get_nf_partnum() {
 # Description: Return the mtdmapping number of the queried partition name
-# Syntax: get_np_partnum <partname>
+# Syntax: get_nf_partnum <partname>
 	local partname="$1"
 	case "$1" in
 		"boot")
@@ -31,9 +31,9 @@ function get_np_partnum() {
 	esac
 }
 
-function get_np_partfstype() {
+function get_nf_partfstype() {
 # Description: Return the fstype of the queried partition name
-# Syntax: get_np_partfstype <partname>
+# Syntax: get_nf_partfstype <partname>
 	local partname="$1"
 	case "$1" in
 		"boot")
@@ -59,29 +59,29 @@ function get_np_partfstype() {
 	esac
 }
 
-function get_np_partmtd() {
+function get_nf_partmtd() {
 # Description: Return the mtd device of the queried partition name
-# Syntax: get_np_partmtd <partname>
+# Syntax: get_nf_partmtd <partname>
 	local partname="$1"
-	local partnum=$(get_np_partnum $partname)
+	local partnum=$(get_nf_partnum $partname)
 
 	echo -n "/dev/mtd$partnum"
 }
 
-function get_np_partmtdblock() {
+function get_nf_partmtdblock() {
 # Description: Return the mtdblock device of the queried partition
-# Syntax: get_cp_partmtdblock <partname>
+# Syntax: get_cf_partmtdblock <partname>
 	local partname="$1"
-	local partnum=$(get_np_partnum $partname)
+	local partnum=$(get_nf_partnum $partname)
 
 	echo -n "/dev/mtdblock$partnum"
 }
 
-function get_np_partimg() {
+function get_nf_partimg() {
 # Description: Return filename of the partition image for the queried partition name
 # Syntax: get_openipc_partimg <partname>
 	local partname="$1"
 
-	echo -n "${next_profile}_${chip_group}_${partname}.bin"
+	echo -n "${next_firmware}_${chip_group}_${partname}.bin"
 }
 

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: This script is run after switch to this profile
+# Description: This script is run after switch to this firmware
 #
 
 msg_nonewline "    Setting "

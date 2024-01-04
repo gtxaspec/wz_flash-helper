@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: Extract archive file to a chosen writable partition on a matched profile
+# Description: Extract archive file to a chosen writable partition on a matched firmware
 #
 
 
@@ -10,11 +10,11 @@
 ## Absolute path of the archive file on SD card, must start with /sdcard
 archive_file=""
 
-## Name of the partition that the archive will be extracted to, defined on the profile
+## Name of the partition that the archive will be extracted to, defined on the firmware
 partition_name=""
 
-## Name of the profile that the script will only run on
-matched_profile=""
+## Name of the firmware that the script will only run on
+matched_firmware=""
 
 # ---------- End of user customization ----------
 
@@ -33,16 +33,16 @@ function extract_archive_file_to_partition() {
 	local partname="$partition_name"
 	local infile="$archive_file"
 
-	if [[ "$switch_profile" == "yes" ]]; then
-		local partmtdblock=$(get_np_partmtdblock $partname)
-		local partfstype=$(get_np_partfstype $partname)
+	if [[ "$switch_firmware" == "yes" ]]; then
+		local partmtdblock=$(get_nf_partmtdblock $partname)
+		local partfstype=$(get_nf_partfstype $partname)
 	else
-		local partmtdblock=$(get_cp_partmtdblock $partname)
-		local partfstype=$(get_cp_partfstype $partname)
+		local partmtdblock=$(get_cf_partmtdblock $partname)
+		local partfstype=$(get_cf_partfstype $partname)
 	fi
 
 	extract_archive_to_partition $partname $infile $partmtdblock $partfstype || return 1
 }
 
-custom_script_matched_profile_check $matched_profile || return 0
+custom_script_matched_firmware_check $matched_firmware || return 0
 extract_archive_file_to_partition || return 1

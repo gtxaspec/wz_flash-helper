@@ -1,29 +1,29 @@
 
-[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | **Switch profile** | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
+[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | **Switch firmware** | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
 
 **❗ WARNING:**
-- DO NOT DISCONNECT POWER when the switch profile operation is going on. Doing this would brick your camera.
+- DO NOT DISCONNECT POWER when the switch firmware operation is going on. Doing this would brick your camera.
 - DO NOT share `initramfs.log` when you are switching to OpenIPC with the `setup_openipc_env.sh` script, this log file contains your Wi-Fi name and password.
-- Switching to wzmini profile is not supported yet (it is actually supported but the firmware is still in early development stage).
+- Switching to wzmini firmware is not supported yet (it is actually supported but the firmware is still in early development stage).
 
 -----
 
 ## 📋 Index
 
-[Switch profile overview](README_switch_profile.md)
+[Switch firmware overview](README_switch_firmware.md)
 
-[Switch to Stock profile](README_switch_profile_stock.md)
+[Switch to Stock firmware](README_switch_firmware_stock.md)
 
-Switch to OpenIPC profile
+Switch to OpenIPC firmware
 
-[Switch to wzmini profile](README_switch_profile_wzmini.md)
+[Switch to wzmini firmware](README_switch_firmware_wzmini.md)
 
 -----
 
 ## 📄 Overview
 
-The openipc profile requires four partition images for: `boot`, `env`, `kernel` and `rootfs`.
+The OpenIPC firmware requires four partition images for: `boot`, `env`, `kernel` and `rootfs`.
 
 ## 🛠️ Guide
 
@@ -52,7 +52,7 @@ Then extract the firmware archive, place everything under the `wz_flash-helper/r
 
 Example for t31x:
 
-![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_profile_openipc.png)
+![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/switch_firmware_openipc.png)
 
 **Step 5: Edit the custom script setup_openipc_env.sh**
 
@@ -69,9 +69,9 @@ The Wi-Fi driver doesn't need to be set manually because it is automatically det
 Edit `general.conf` with:
 ```
 restore_partitions="no"
-switch_profile="yes"
-next_profile="openipc"
-switch_profile_with_all_partitions="no"
+switch_firmware="yes"
+next_firmware="openipc"
+switch_firmware_with_all_partitions="no"
 
 copy_new_sdcard_kernel="no"
 

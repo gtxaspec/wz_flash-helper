@@ -99,24 +99,24 @@ function rollback_boot_partition() {
 	return 1
 }
 
-function custom_script_matched_profile_check() {
-# Description: Make sure the current profile is amatched profile and not switching profile, or switching to matched profile
-	local matched_profile="$1"
+function custom_script_matched_firmware_check() {
+# Description: Make sure the current firmware is amatched firmware and not switching firmware, or switching to matched firmware
+	local matched_firmware="$1"
 
-	msg_color_bold_nonewline white "This script requires the running profile to be "
-	msg_color_nonewline cyan "$matched_profile "
+	msg_color_bold_nonewline white "This script requires the running firmware to be "
+	msg_color_nonewline cyan "$matched_firmware "
 	msg_color_bold "to run"
 
-	if [[ "$switch_profile" == "yes" ]]; then
-		local running_profile=$next_profile
+	if [[ "$switch_firmware" == "yes" ]]; then
+		local running_firmware=$next_firmware
 	else
-		local running_profile=$current_profile
+		local running_firmware=$current_firmware
 	fi
 
-	msg_nonewline "   The running profile is: "
-	msg_color_nonewline cyan "$running_profile"
+	msg_nonewline "   The running firmware is: "
+	msg_color_nonewline cyan "$running_firmware"
 	msg_nonewline ", "
-	if [[ "$running_profile" == "$matched_profile" ]]; then
+	if [[ "$running_firmware" == "$matched_firmware" ]]; then
 		msg_color green "running script now!"
 		msg
 	else

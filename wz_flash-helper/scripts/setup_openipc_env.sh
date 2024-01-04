@@ -2,7 +2,7 @@
 #
 # Description: Write user Wi-Fi SSID, password, MAC address, and Timezone variables to the OpenIPC env partition
 #              Use this script to do initial setup when you switch from stock to OpenIPC for the first time
-#              This script is only run if the running profile is openipc
+#              This script is only run if the running firmware is openipc
 
 
 
@@ -192,8 +192,8 @@ function set_openipc_user_env() {
 	fi
 }
 
-matched_profile="openipc"
+matched_firmware="openipc"
 
-custom_script_matched_profile_check $matched_profile || return 0
+custom_script_matched_firmware_check $matched_firmware || return 0
 detect_openipc_wifi_driver || return 1
 set_openipc_user_env || return 1

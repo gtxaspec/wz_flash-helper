@@ -1,6 +1,11 @@
-[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | **Changelog** | [Limitation](Limitation.md)
+[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | **Changelog** | [Limitation](Limitation.md)
 
 
+
+## v0.9.0 - Incompatible with older versions
+
+- Change "switch profile" to "switch firmware"
+- Remove emulation
 
 ## v0.8.7
 
@@ -9,7 +14,7 @@
 ## v0.8.6
 
 - Improve coding style
-- Allow booting a custom SD card kernel on the next boot after switching profile
+- Allow booting a custom SD card kernel on the next boot after switching firmware
 
 ## v0.8.5
 
@@ -40,7 +45,7 @@
 
 ## v0.8.0
 
-- Add post-switch profile script to set `devicemodel` variable
+- Add post-switch firmware script to set `devicemodel` variable
 - Include `lsof` with busybox
 - Fix Wi-Fi module vendor ID can't be read from OpenIPC
 - Allow executing multiple gpio and kmod scripts 
@@ -48,11 +53,11 @@
 ## v0.7.9
 
 - Fix boot partition restore
-- Change OpenIPC uboot string for profile detection
+- Change OpenIPC uboot string for firmware detection
 
 ## v0.7.8
 
-- Add manual_current_profile and manual_model options
+- Add manual_current_firmware and manual_model options
 - Add command shortcuts `ms` and `us` for mounting and umounting SD card from initramfs shell
 
 ## v0.7.7
@@ -106,7 +111,7 @@
 
 ## v0.6.6
 
-- Improve displayed messages for profile detection
+- Improve displayed messages for firmware detection
 
 ## v0.6.5
 
@@ -123,7 +128,7 @@
 ## v0.6.2
 
 - Fix some messages are not displayed with colors
-- Add wzmini profile
+- Add wzmini firmware
 
 ## v0.6.1
 

@@ -1,4 +1,4 @@
-**Introduction** | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
+**Introduction** | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
 
 
@@ -29,7 +29,7 @@
 
 ```
 I am not responsible for bricking someone's cameras.
-DO NOT DISCONNECT POWER when the switch profile operation is going on, this would brick your camera (unless you know how to recover with Ingenic Cloner or remove the flash chip and use SPI programmer).
+DO NOT DISCONNECT POWER when the switch firmware operation is going on, this would brick your camera (unless you know how to recover with Ingenic Cloner or remove the flash chip and use SPI programmer).
 It is also possible to brick your camera if you corrupt the uboot partition with your custom script or inject dangerous commands into the config file.
 ```
 

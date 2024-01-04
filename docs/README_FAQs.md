@@ -1,4 +1,4 @@
-[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | **FAQs** | [Changelog](Changelog.md) | [Limitation](Limitation.md)
+[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | **FAQs** | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
 
 ### The program does not work at all. Help!
@@ -55,13 +55,13 @@ Yes, with the condition that:
 - Your camera uboot supports booting a kernel file from SD card or you can compile and flash a uboot(by rooting or removing the flash chip) that has that functionality.
 - Your camera has NOR flash(NAND is not supported yet)
 
-### How does switching profile work?
+### How does switching firmware work?
 
 On NOR flash and raw NAND flash, there is no partition table; the partition layout is actually seen by the kernel by setting `CONFIG_CMDLINE= ... mtdparts=...` which will be passed to `jz_sfc` driver. That option defines each partition size to let partition data be read and written to the correct addresses.
 
-The partitions can also be defined by setting their sizes and offsets from the start address (0x0). What we do is define partition offsets and the size of both the current and next profile so we can both read and write those partitions correctly.
+The partitions can also be defined by setting their sizes and offsets from the start address (0x0). What we do is define partition offsets and the size of both the current and next firmware so we can both read and write those partitions correctly.
 
-When the switch profile operation is going on, it reads the partition images that you provide and writes them to the partitions of the next profile. It is just that simple.
+When the switch firmware operation is going on, it reads the partition images that you provide and writes them to the partitions of the next firmware. It is just that simple.
 
 ### What is a profile?
 
@@ -76,5 +76,5 @@ When the switch profile operation is going on, it reads the partition images tha
 - Name of SD card kernel that can be recognized and booted by uboot
 - Backup and restore paths to hold partition images
 - Model detection script(`detect_model.sh`) to detect camera model
-- Profile detection script(`detect_profile.sh`) to detect current profile
-- (Optional) Post-switch profile script(`post_switch.sh`) to run after switching to that profile
+- Profile detection script(`detect_firmware.sh`) to detect current firmware
+- (Optional) Post-switch firmware script(`post_switch.sh`) to run after switching to that profile

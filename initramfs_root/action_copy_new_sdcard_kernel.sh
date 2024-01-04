@@ -7,12 +7,12 @@ function copy_new_sdcard_kernel() {
 	[ ! -f /sdcard/$new_sdcard_kernel ] && { msg_color lightbrown "File /sdcard/$new_sdcard_kernel is missing, skipping" ; return 0 ; }
 	[[ "$dry_run" == "yes" ]] && { msg_color lightbrown "New SD card kernel is not copied when dry run is active, skipping" ; return 0 ; }
 
-	[[ "$switch_profile" == "yes" ]] && msg_color lightbrown "Warning: switch_profile is enabled, new SD card kernel might not be compatile with the next profile"
+	[[ "$switch_firmware" == "yes" ]] && msg_color lightbrown "Warning: switch_firmware is enabled, new SD card kernel might not be compatile with the next firmware"
 
-	if [[ "$switch_profile" == "yes" ]]; then
-		local new_sdcard_kernel_name=$np_sdcard_kernel_name
+	if [[ "$switch_firmware" == "yes" ]]; then
+		local new_sdcard_kernel_name=$nf_sdcard_kernel_name
 	else
-		local new_sdcard_kernel_name=$cp_sdcard_kernel_name
+		local new_sdcard_kernel_name=$cf_sdcard_kernel_name
 	fi
 
 	msg

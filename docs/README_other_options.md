@@ -1,4 +1,4 @@
-[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch profile](README_switch_profile.md) | **Other options** | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
+[Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | **Other options** | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
 
 **✅ Option: `dry_run`**
@@ -24,17 +24,17 @@ After all operations are finished, that file will be copied and renamed to:
 
 This kernel file will be booted on the next boot without having to pull the SD card and rename it manually. Seamless transition!
 
-If you are on OpenIPC profile, SD card kernel specified with `new_sdcard_kernel` will be copied and renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using the SD card kernel for personal purposes, you should disable it.
+If you are on OpenIPC firmware, SD card kernel specified with `new_sdcard_kernel` will be copied and renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using the SD card kernel for personal purposes, you should disable it.
 
 **✅ Option: `custom_scripts`**
 
-With this option, you can write scripts and get them executed by the program after backup/restore/switch_profile operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
+With this option, you can write scripts and get them executed by the program after backup/restore/switch_firmware operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
 
 ## Debug options
 
-**✅ Option: `manual_current_profile`**
+**✅ Option: `manual_current_firmware`**
 
-You can set it manually to fix the currupted rootfs partition partition(for Stock and wzmini) that makes `current_profile` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
+You can set it manually to fix the currupted rootfs partition partition(for Stock and wzmini) that makes `current_firmware` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
 
 
 **✅ Option: `manual_model`**

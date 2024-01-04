@@ -116,6 +116,14 @@ function init_source_prog_config_file() {
 	source $prog_config_file || { msg_color_bold red "$prog_config_file file is invalid. Nothing will be done" ; return 1 ; }
 }
 
+function init_warn_old_version() {
+# Description: Warn the user to update if configuration file of an older version is detected
+	if grep -q "switch_profile" prog_config_file; then
+		msg_color_bold red "WARNING: Configuration file of an older version is detected, please update the program directory"
+		return 1
+	fi
+}
+
 function init_source_detect_firmware() {
 # Description: Detect the current firmware to read and write partitions correctly
 	if [ ! -z "$manual_current_firmware" ]; then
@@ -255,6 +263,8 @@ function init_main() {
 
 	init_mount_sdcard || return 1
 	init_source_prog_config_file || return 1
+
+	init_warn_old_version || return 1
 
 	init_source_detect_firmware || return 1
 	init_source_current_firmware || return 1

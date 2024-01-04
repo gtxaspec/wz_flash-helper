@@ -1,10 +1,9 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | **Switch firmware** | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
-**❗ WARNING:**
-
-- DO NOT DISCONNECT POWER when the switch firmware operation is going on. Doing this would brick your camera.
-- DO NOT share `initramfs.log` when you are switching to OpenIPC with the `setup_openipc_env.sh` script, this log file contains your Wi-Fi name and password.
-- Switching to wzmini firmware is not supported yet (it is actually supported but the firmware is still in early development stage).
+> **❗ WARNING:**
+> - DO NOT DISCONNECT POWER when the switch firmware operation is going on. Doing this would brick your camera.
+> - DO NOT share `initramfs.log` when you are switching to OpenIPC with the `setup_openipc_env.sh` script, this log file contains your Wi-Fi name and password.
+> - Switching to wzmini firmware is not supported yet (it is actually supported but the firmware is still in early development stage).
 
 ## Index
 
@@ -28,7 +27,7 @@ The OpenIPC firmware requires four partition images for: `boot`, `env`, `kernel`
 
 **Step 3: Prepare partition images**
 
->**❗ WARNING:**
+> **❗ WARNING:**
 > - Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would brick your camera.
 > - Don't download OpenIPC official uboot image because it doesn't support from SD card kernel that wz_flash-helper relies on to work.
 

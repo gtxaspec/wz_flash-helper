@@ -1,8 +1,7 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | **Restore** | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
-**❗ WARNING:**
-
-- DO NOT DISCONNECT POWER when the restore operation is going on. This would soft brick your camera.
+> **❗ WARNING:**
+> - DO NOT DISCONNECT POWER when the restore operation is going on. This would soft brick your camera.
 
 ## Overview
 
@@ -39,7 +38,7 @@ restore_partitions="yes"
 
 ## Restore the boot partition
 
-**❗ WARNING:** Doing this might brick your camera, only do when you know what you are doing.
+> **❗ WARNING:** Doing this might brick your camera, only do when you know what you are doing.
 
 To restore the `boot` partition, add this hidden option to `[firmware].conf` under the `wz_flash-helper/restore/[firmware]` directory:
 ```

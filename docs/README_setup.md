@@ -1,9 +1,8 @@
 [Introduction](README.md) | **Setup** | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
-**⚠️ IMPORTANT:**
-
-- Make sure that your SD card partition table is **MBR** and partition format is **FAT32**.
-- If your camera is Wyze Cam Pan or Wyze Cam v2, before using the program, you need to update your camera bootloader to with the latest version using [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation).
+> **⚠️ IMPORTANT:**
+> - Make sure that your SD card partition table is **MBR** and partition format is **FAT32**.
+> - If your camera is Wyze Cam Pan or Wyze Cam v2, before using the program, you need to update your camera bootloader to with the latest version using [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation).
 
 ## Guide
 

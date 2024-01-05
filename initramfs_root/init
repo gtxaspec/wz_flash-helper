@@ -117,9 +117,9 @@ function init_source_prog_config_file() {
 }
 
 function init_warn_old_version() {
-# Description: Warn the user to update if configuration file of an older version is detected
+# Description: Warn the user to update if the configuration file of an older version is detected
 	if grep -q "switch_profile" $prog_config_file; then
-		msg_color_bold red "WARNING: Configuration file of an older version is detected, please update the program directory"
+		msg_color_bold red "WARNING: The configuration file of an older version is detected, please do a fresh setup to update the program"
 		return 1
 	fi
 }

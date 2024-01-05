@@ -3,7 +3,7 @@
 # Blink the red and blue LEDs every second
 
 
-source /leds_gpio.d/leds_gpio.sh
+source /hardware_variables.d/leds.sh
 
 while true; do
 	echo 0 > /sys/class/gpio/gpio$red_led_pin/value

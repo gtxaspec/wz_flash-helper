@@ -17,9 +17,9 @@ Switch to Stock firmware
 
 ## Overview
 
-The Stock firmware for T20 requires seven partition images for: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
+The Stock firmware for T20 cameras require seven partition images for: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
 
-The Stock firmware for T31 requires five partition images for: `boot`, `kernel`, `rootfs`, `app` and `configs`.
+The Stock firmware for T31 cameras require five partition images for: `boot`, `kernel`, `rootfs`, `app` and `configs`.
 
 ## Guide
 

@@ -33,7 +33,7 @@ The OpenIPC firmware requires four partition images for: `boot`, `env`, `kernel`
 
 Download OpenIPC U-boot image from [this repo](https://github.com/gtxaspec/u-boot-ingenic/releases/tag/latest) with this format: `u-boot-[SoC]-universal.bin`
 
-Download OpenIPC tarball that contains kernel and rootfs images from OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) with this format: `openipc.[chip family]-[flash type]-ultimate.tgz`
+Download OpenIPC tarball that contains kernel and rootfs images from [OpenIPC Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) with this format: `openipc.[chip family]-[flash type]-ultimate.tgz`
 
 Then extract the firmware archive, place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 

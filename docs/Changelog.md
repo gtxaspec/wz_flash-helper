@@ -5,7 +5,7 @@
 > Note: This version configuration file and custom scripts are incompatible with older versions, please do a fresh setup to upgrade.
 
 - Change "switch profile" to "switch firmware"
-- Remove emulation
+- Remove emulation script
 
 ## v0.8.7
 
@@ -29,13 +29,13 @@
 
 ## v0.8.3
 
-- Fix Wi-Fi vendor file path randomly changes
+- Workaround with Wi-Fi vendor file path randomly changes
 - Add error check for model detection fail on OpenIPC
 
 ## v0.8.2
 
 - Fix LEDs don't stop blinking after operations fail
-- Fix copying log files to SD card shown as successful even it fails
+- Fix copying log files to SD card is shown as successful even it fails
 - Make copying new SD card kernel skip instead of fail if its prerequisites are not met
 
 ## v0.8.1
@@ -71,7 +71,7 @@
 ## v0.7.6
 
 - Remove ext2,ext3,ext4 kernel modules and minimalize busybox for smaller program size
-- Use a single fw_printenv binary to slightly reduce program size
+- Use a single fw_printenv binary to slightly reduce the program size
 - Now the program contains only neccessary files for the SoC that it supports in each program kernel file
 
 ## v0.7.5
@@ -102,7 +102,7 @@
 
 ## v0.7.0
 
-- Add more audio files to help the user better keep track of the operations
+- Add more audio files to help users better keep track of the operations
 
 ## v0.6.7
 
@@ -128,7 +128,7 @@
 ## v0.6.2
 
 - Fix some messages are not displayed with colors
-- Add wzmini firmware
+- Add wzmini firmware support
 
 ## v0.6.1
 

@@ -4,11 +4,11 @@
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_loading.png)
 
-### Backup T31 stock partitions
+### Backup t31x stock partitions
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_backup.png)
 
-### Restore T31 stock partitions
+### Restore t31x stock partitions
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_restore.png)
 

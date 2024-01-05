@@ -18,7 +18,7 @@ If you are using `wz_mini_hacks` with Stock firmware, you can rename wz_mini's k
 
 After all operations are finished, that file will be copied and renamed to:
 
-- `factory_ZMC6tiIDQN` if your camera is on T20
+- `factory_ZMC6tiIDQN` if your camera is T20
 - `factory_t31_ZMC6tiIDQN` if your camera is T31
 
 This kernel file will be booted on the next boot without having to pull the SD card and rename it manually. Seamless transition!

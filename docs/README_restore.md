@@ -11,7 +11,7 @@ The restore operation allows restoring one or more partitions using partition im
 
 **Step 1: [Setup](README_setup.md)**
 
-**Step 2:** Place your partition restore images along with their .sha256sum files under the `wz_flash-helper/restore/[firmware]` directory on your SD card. They should have this format:
+**Step 2:** Place your partition restore images along with their .sha256sum files under the `wz_flash-helper/restore/[firmware]/` directory on your SD card. They should have this format:
 
 - `[firmware]_[SoC]_[partition name].bin` for partition restore images.
 - `[firmware]_[SoC]_[partition name].bin.sha256sum` for their .sha256sum files.
@@ -40,7 +40,7 @@ restore_partitions="yes"
 
 > **❗ WARNING:** Doing this might brick your camera, only do when you know what you are doing.
 
-To restore the `boot` partition, add this hidden option to `[firmware].conf` under the `wz_flash-helper/restore/[firmware]` directory:
+To restore the `boot` partition, add this hidden option to `[firmware].conf` under the `wz_flash-helper/restore/[firmware]/` directory:
 ```
 hidden_option_restore_boot="yes"
 ```

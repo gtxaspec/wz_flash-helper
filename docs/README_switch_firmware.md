@@ -20,15 +20,17 @@ Switch firmware overview
 
 With this option, you can decide if all partitions will be written by the switch firmware operation.
 
-- When it is disabled, only the necessary partitions for a barely functional camera are written.
-- When it is enabled, all partition images are required for the switch firmware operation to start. This is only helpful when you need to write `rootfs_data` partition for OpenIPC.
+- When it is disabled, only the necessary partitions for a barely functional camera are written. Other partitions are either formatted, erased or left alone. 
+- When it is enabled, all partitions are written.
 
-On Stock firmware, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be written because they don't contain any meaningful data as they are used by Stock firmware as stage partitions to install updates. You can disable this option to save time.
+On Stock firmware: Some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be written because they don't contain any meaningful data as they are used by Stock firmware as stage partitions to install updates. You should disable this option to save time.
 
-This option value has no effect when switching to the wzmini firmware. All partitions are written anyway because writing the `configs` partition is required for your camera to be functional.
+On OpenIPC firmware: If you want to have a fresh OpenIPC installation, leave it disabled. If you want to write `env` and `rootfs_data` partitions, you can enable it.
+
+This option value has no effect when switching to the wzmini firmware.
 
 ## Notes
 
-- For the switch firmware operation to start, the `restore_partitions` option must be disabled, like in the above configurations. If both the  `restore_partitions` and `switch_firmware` options are enabled, both operations would not be done.
+- For the switch firmware operation to start, the `restore_partitions` option must be disabled. If both the `restore_partitions` and `switch_firmware` options are enabled, the `switch_firmware` operation will fail.
 - All partition images are verified with their .sha256sum files before the switch firmware operation starts. If one partiton image fails the verification, no change will be made.
 - During the switch firmware operation, the red and blue LEDs would be blinking alternately.

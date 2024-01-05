@@ -31,7 +31,7 @@ restore_partitions="yes"
 
 ## Notes
 
-- For the backup operation to start, the `switch_firmware` option must be disabled, like in the above configurations. If both the `restore_partitions` and `switch_firmware` options are enabled, both operations will not be done.
+- For the backup operation to start, the `switch_firmware` option must be disabled. If both the `restore_partitions` and `switch_firmware` options are enabled, the backup operation operation will fail.
 - All partition restore images must come with their .sha256sum files for integrity verification.
 - During the restore operation, the red LED would be blinking every second.
 - Typically, the restore operation takes about 2 minutes (excluding load time).

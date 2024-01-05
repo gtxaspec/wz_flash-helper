@@ -29,9 +29,9 @@ The OpenIPC firmware requires four partition images for: `boot`, `env`, `kernel`
 
 > **❗ WARNING:**
 > - Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would brick your camera.
-> - Don't download OpenIPC official uboot image because it doesn't support from SD card kernel that wz_flash-helper relies on to work.
+> - Don't download OpenIPC official U-boot image because it doesn't support booting from SD card kernel that wz_flash-helper relies on to work.
 
-Download OpenIPC Uboot image from [this repo](https://github.com/gtxaspec/u-boot-ingenic/releases/tag/latest) with this format: `u-boot-[SoC]-universal.bin`
+Download OpenIPC U-boot image from [this repo](https://github.com/gtxaspec/u-boot-ingenic/releases/tag/latest) with this format: `u-boot-[SoC]-universal.bin`
 
 Download OpenIPC tarball that contains kernel and rootfs images from OpenIPC [Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) with this format: `openipc.[chip family]-[flash type]-ultimate.tgz`
 
@@ -50,7 +50,7 @@ Example for t31x:
 
 **Step 5: Edit the custom script setup_openipc_env.sh**
 
-Because Wyze cameras don't have Ethernet, Wi-Fi authentication information and driver need to be configured by setting uboot env variables so your camera can connect to your home Wi-Fi network after OpenIPC boots up. The `setup_openipc_env.sh` script under the `wz_flash-helper/scripts/` directory would help you to do the job.
+Because Wyze cameras don't have Ethernet, Wi-Fi authentication information and driver need to be configured by setting U-boot env variables so your camera can connect to your home Wi-Fi network after OpenIPC boots up. The `setup_openipc_env.sh` script under the `wz_flash-helper/scripts/` directory would help you to do the job.
 
 To get the `setup_openipc_env.sh` script work, edit the script to set your Wi-Fi name (SSID) and password, optionally set your camera's MAC address and Timezone.
 

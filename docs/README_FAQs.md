@@ -51,7 +51,7 @@ If you are on Windows, first, make sure that your Powershell version is 5.0 or n
 ### Can you add support for my camera?
 
 Yes, with the condition that:
-- Your camera uboot supports booting a kernel file from SD card or you can compile and flash a uboot(by rooting or removing the flash chip) that has that functionality.
+- Your camera U-boot supports booting a kernel file from SD card or you can compile and flash a U-boot(by rooting or removing the flash chip) that has that functionality.
 - Your camera has NOR flash(NAND is not supported yet)
 
 ### How does switching firmware work?
@@ -72,7 +72,7 @@ When the switch firmware operation is going on, it reads the partition images th
    - Partition types (`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
    - List of mandatory partitions that must be written when switching to that profile (when `witch_profile_with_all_partitions` is disabled) and list of tasks to do (`write`, `erase,`,`format`, `leave`) with other partitions.
    
-- Name of SD card kernel that can be recognized and booted by uboot
+- Name of SD card kernel that can be recognized and booted by U-boot
 - Backup and restore paths to hold partition images
 - Model detection script(`detect_model.sh`) to detect camera model
 - Profile detection script(`detect_firmware.sh`) to detect current firmware

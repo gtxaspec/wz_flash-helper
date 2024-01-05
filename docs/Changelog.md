@@ -53,7 +53,7 @@
 ## v0.7.9
 
 - Fix boot partition restore
-- Change OpenIPC uboot string for firmware detection
+- Change OpenIPC U-boot string for firmware detection
 
 ## v0.7.8
 

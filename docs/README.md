@@ -13,15 +13,50 @@
 - Windows-friendly setup progress
 
 ## Supported cameras
-
-| Camera model        |  SoC  | Support status | Model code  |
-| ------------------- | ----- | -------------- | ----------- |
-| Wyze Cam v2         |  t20  | ✅ Supported   | `v2`        |
-| Wyze Cam Pan        |  t20  | ⚠️ Untested    | `pan_v1`    |
-| Wyze Cam v3         |  t31  | ✅ Supported   | `v3`        |
-| Wyze Cam Pan v2     |  t31  | ⚠️ Untested    | `pan_v2`    |
-| Wyze Cam Floodlight |  t31  | ⚠️ Untested    | `v3`        |
-| ATOM Cam 2          |  t31  | ⚠️ Untested    | `v3c`       |
+<table>
+    <thead>
+        <tr>
+            <th>SoC</th>
+            <th>Camera model</th>
+            <th>Support status</th>
+            <th>Model code</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=2>Ingenic T20</td>
+            <td>Wyze Cam v2</td>
+            <td>✅ Supported</td>
+            <td >v2</td>
+        </tr>
+        <tr>
+            <td>Wyze Cam Pan</td>
+            <td>⚠️ Untested</td>
+            <td>pan_v1</td>
+        </tr>
+        <tr>
+            <td rowspan=4>Ingenic T31</td>
+            <td>Wyze Cam v3</td>
+            <td>✅ Supported</td>
+            <td>v3</td>
+        </tr>
+        <tr>
+            <td>Wyze Cam Floodlight</td>
+            <td>⚠️ Untested</td>
+            <td>v3</td>
+        </tr>
+        <tr>
+            <td>Wyze Cam Pan v2</td>
+            <td>⚠️ Untested</td>
+            <td>pan_v2</td>
+        </tr>
+        <tr>
+            <td>ATOM Cam 2</td>
+            <td>⚠️ Untested</td>
+            <td>v3c</td>
+        </tr>
+    </tbody>
+</table>
 
 ## Disclaimer
 

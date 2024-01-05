@@ -25,7 +25,7 @@
 
 - Improve coding style
 - Improve `setup_openipc_env.sh`, add setting `devicemodel` to the script
-- Allow executing init on manual mode
+- Allow executing init on manually from initramfs shell
 
 ## v0.8.3
 

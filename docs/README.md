@@ -68,6 +68,6 @@ It is also possible to brick your camera if you corrupt the uboot partition with
 
 ## Credits
 
-- Gtxaspec with his ideas, tips, and hard work on OpenIPC drivers, uboot SD card booting, and testing.
+- Gtxaspec with his ideas, tips, hard work on OpenIPC drivers, uboot SD card booting, and testing.
 - Mnakada with their Docker image to build the SD card kernel from [their repo](https://github.com/mnakada/atomcam_tools)
 - [OpenIPC](https://github.com/OpenIPC) project and people with their tools, firmware, and tips.

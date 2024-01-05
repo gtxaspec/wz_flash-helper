@@ -20,13 +20,8 @@ Switch firmware overview
 
 With this option, you can decide if all partitions will be written by the switch firmware operation.
 
-When it is disabled, only the necessary partitions for a barely functional camera are written.
-
-- For OpenIPC: `boot`, `kernel` and `rootfs` are written; `rootfs_data` would be formatted.
-- For Stock T20: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para` are written; `backupa` would be formatted.
-- For Stock T31: `boot`, `kernel`, `rootfs`, `app` and `cfg` are written; `kback` would be formatted.
-
-When it is enabled, all partition images are required for the switch firmware operation to start. This is only helpful when you need to write `rootfs_data` partition for OpenIPC.
+- When it is disabled, only the necessary partitions for a barely functional camera are written.
+- When it is enabled, all partition images are required for the switch firmware operation to start. This is only helpful when you need to write `rootfs_data` partition for OpenIPC.
 
 On Stock firmware, some partitions, such as `aback`, `kback`, `backupa`, `backupd`, etc., don't need to be written because they don't contain any meaningful data as they are used by Stock firmware as stage partitions to install updates. You can disable this option to save time.
 

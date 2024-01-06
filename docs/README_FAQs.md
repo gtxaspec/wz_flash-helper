@@ -5,7 +5,7 @@
 Make sure that:
 - Your SD card partition table is **MBR** and partition format is **FAT32**.
 - You downloaded the correct release for your camera SoC.
-- The SD card kernel has the correct name(`factory_..._ZMC6tiIDQN`) without the `.wz_flash-helper` extension. The program adds the extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
+- The SD card kernel has the correct name without the `.wz_flash-helper` extension. The program adds the extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
 
 ### How can I access serial console?
 
@@ -51,6 +51,8 @@ If you are on Windows, first, make sure that your Powershell version is 5.0 or n
 ### Can you add support for my camera?
 
 Yes, with the condition that:
+
+- Your camera does not have verified boot on hardware level.
 - Your camera U-boot supports booting a kernel file from SD card or you can compile and flash a U-boot(by rooting or removing the flash chip) that has that functionality.
 - Your camera has NOR flash(NAND is not supported yet)
 

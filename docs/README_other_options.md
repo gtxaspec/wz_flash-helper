@@ -2,7 +2,7 @@
 
 **✅ Option: `dry_run`**
 
-With this option, you can see what commands are executed with by the program without having them run. It would also help with obtaining your camera hardware and firmware information.
+With this option, you can see what commands are executed with by the program without actually running them. It would also help with obtaining your camera hardware and firmware information.
 
 With this option enabled:
 
@@ -27,13 +27,13 @@ If you are on OpenIPC firmware, SD card kernel specified with `new_sdcard_kernel
 
 **✅ Option: `custom_scripts`**
 
-With this option, you can write scripts and get them executed by the program after backup/restore/switch_firmware operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
+With this option, you can write shell scripts and get them executed by the program after backup/restore/switch_firmware operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
 
 ## Debug options
 
 **✅ Option: `manual_current_firmware`**
 
-You can set it manually to fix the currupted rootfs partition partition(for Stock and wzmini) that makes `current_firmware` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
+You can set it manually to fix the corrupted rootfs partition partition(for Stock and wzmini) that makes `current_firmware` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
 
 
 **✅ Option: `manual_model`**

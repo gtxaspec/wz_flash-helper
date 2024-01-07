@@ -1,11 +1,11 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | **Restore** | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | [Limitation](Limitation.md)
 
 > **❗ WARNING:**
-> - DO NOT DISCONNECT POWER when the restore operation is going on. This would soft brick your camera.
+> - DO NOT DISCONNECT POWER when the Restore operation is going on. This would soft brick your camera.
 
 ## Overview
 
-The restore operation allows restoring one or more partitions using partition images. You can decide what partitions will be restored.
+The Restore operation allows restoring one or more partitions using partition images. You can decide what partitions will be restored.
 
 ## Guide
 
@@ -22,7 +22,7 @@ Example for Stock restore images on t31x:
 
 **Step 3:** Edit `[firmware].conf` under the `wz_flash-helper/restore/` directory on your SD card to select what partitions will be restored:
 
-**Step 4:** Edit `general.conf` to enable the restore operation:
+**Step 4:** Edit `general.conf` to enable the Restore operation:
 ```
 switch_firmware="no"
 restore_partitions="yes"
@@ -31,10 +31,10 @@ restore_partitions="yes"
 
 ## Notes
 
-- For the backup operation to start, the `switch_firmware` option must be disabled. If both the `restore_partitions` and `switch_firmware` options are enabled, the backup operation operation will fail.
+- For the Restore operation to start, the `switch_firmware` option must be disabled. If both the `restore_partitions` and `switch_firmware` options are enabled, the Restore operation will fail.
 - All partition restore images must come with their .sha256sum files for integrity verification.
-- During the restore operation, the red LED would be blinking every second.
-- Typically, the restore operation takes about 2 minutes (excluding load time).
+- During the Restore operation, the red LED would be blinking every second.
+- Typically, the Restore operation takes about 2 minutes (excluding load time).
 
 ## Restore the boot partition
 

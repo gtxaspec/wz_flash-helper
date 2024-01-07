@@ -33,7 +33,7 @@ With this option, you can write shell scripts and get them executed by the progr
 
 **✅ Option: `manual_current_firmware`**
 
-You can set it manually to fix the corrupted rootfs partition partition(for Stock and wzmini) that makes `current_firmware` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
+You can set it manually to fix the corrupted rootfs partition partition(for Stock and wzmini firmware) that makes `current_firmware` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
 
 
 **✅ Option: `manual_model`**

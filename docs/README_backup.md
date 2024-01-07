@@ -6,7 +6,7 @@
 
 ## Overview
 
-The backup operation creates partition backup images for all partitions. Additionally, it creates an image for the entire flash and archive file(s) for writable partition(s). The partition backup images can be used to restore partitions or switch firmware.
+The Backup operation creates partition backup images for all partitions. Additionally, it creates an image for the entire flash and archive file(s) for writable partition(s). The partition backup images can be used to restore partitions or switch firmware.
 
 ## Guide
 
@@ -34,6 +34,6 @@ To know what backup ID was used for the most recent backup, check the `initramfs
 
 ## Notes
 
-- The backup operation automatically generates .sha256sum files for partition backup images and archives.
-- During the backup operation, the blue LED would be blinking every second.
-- Typically the backup operation takes about 30 seconds (excluding load time).
+- The Backup operation automatically generates .sha256sum files for partition backup images and archives.
+- During the Backup operation, the blue LED would be blinking every second.
+- Typically the Backup operation takes about 30 seconds (excluding load time).

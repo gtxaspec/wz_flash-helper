@@ -61,11 +61,11 @@ Yes, with the condition that:
 
 ### How does switching firmware work?
 
-On NOR flash and raw NAND flash, there is no partition table; the partition layout is actually seen by the kernel by setting `CONFIG_CMDLINE= ... mtdparts=...` which will be passed to `jz_sfc` driver. That option defines each partition size to let partition data be read and written to the correct addresses.
+On NOR flash and raw NAND flash, there is no partition table; the partition layout is actually seen by the kernel by setting `CONFIG_CMDLINE= ... mtdparts=...` which will be passed to the `jz_sfc` driver. That option defines each partition size to let partition data be read and written to the correct addresses.
 
-The partitions can also be defined by setting their sizes and offsets from the start address (0x0). What we do is define partition offsets and the size of both the current and next firmware so we can both read and write those partitions correctly.
+The partitions can also be defined by setting their sizes and offsets from the start address (0x0). What we do is define partition offsets and the size of both the current and next firmware so we can read, write or mount those partitions correctly.
 
-When the switch firmware operation is going on, it reads the partition images that you provide and writes them to the partitions of the next firmware. It is just that simple.
+The Switch firmware operation reads the partition images that you provide and writes them to the correct addresses of each partition on the next firmware.
 
 ### What is a profile?
 
@@ -73,12 +73,12 @@ When the switch firmware operation is going on, it reads the partition images th
 
 - List of all partition names with their properties:
    - MTD mapping number
-   - List of partitions that store user data to create archives for them with backup operation
+   - List of partitions that store user data to create archives for them with the Backup operation
    - Partition types (`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
    - List of mandatory partitions that must be written when switching to that firmware (when `switch_firmware_with_all_partitions` is disabled) and list of tasks to do (`write`, `erase,`,`format`, `leave`) with other partitions.
    
 - Name of the SD card kernel that can be recognized and booted by that firmware U-boot
-- Backup and restore paths to hold partition images
+- Backup and restore paths where partition images are stored
 - Model detection script(`detect_model.sh`) to detect camera model
 - Profile detection script(`detect_firmware.sh`) to detect current firmware
 - (Optional) Post-switch firmware script(`post_switch.sh`) to run after switching to that profile

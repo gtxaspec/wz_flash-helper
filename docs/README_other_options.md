@@ -27,7 +27,7 @@ If you are on OpenIPC firmware, SD card kernel specified with `new_sdcard_kernel
 
 **✅ Option: `custom_scripts`**
 
-With this option, you can write shell scripts and get them executed by the program after backup/restore/switch_firmware operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
+With this option, you can write shell scripts and get them executed by the program after the Backup, Restore and Switch firmware operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
 
 ## Debug options
 

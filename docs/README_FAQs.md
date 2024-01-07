@@ -25,6 +25,9 @@ If you are on Windows, use a third-party tool(eg. PuTTY), then set baud rate to 
 Edit `general.conf` with:
 ```
 dry_run="yes"
+backup_partitions="no"
+restore_partitions="no"
+switch_firmware="no"
 ```
 
 Then insert your SD card into your camera, power on, wait till the program is finished, then check `initramfs_serial.log` for "chip group" information. That is your camera SoC.
@@ -72,9 +75,9 @@ When the switch firmware operation is going on, it reads the partition images th
    - MTD mapping number
    - List of partitions that store user data to create archives for them with backup operation
    - Partition types (`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
-   - List of mandatory partitions that must be written when switching to that profile (when `witch_profile_with_all_partitions` is disabled) and list of tasks to do (`write`, `erase,`,`format`, `leave`) with other partitions.
+   - List of mandatory partitions that must be written when switching to that firmware (when `switch_firmware_with_all_partitions` is disabled) and list of tasks to do (`write`, `erase,`,`format`, `leave`) with other partitions.
    
-- Name of SD card kernel that can be recognized and booted by U-boot
+- Name of the SD card kernel that can be recognized and booted by that firmware U-boot
 - Backup and restore paths to hold partition images
 - Model detection script(`detect_model.sh`) to detect camera model
 - Profile detection script(`detect_firmware.sh`) to detect current firmware

@@ -63,7 +63,7 @@
 ```
 I am not responsible for bricking someone's cameras.
 DO NOT DISCONNECT POWER when the switch firmware operation is going on, this would brick your camera (unless you know how to recover with Ingenic Cloner or remove the flash chip and use SPI programmer).
-It is also possible to brick your camera if you corrupt the U-boot partition with your custom script or inject dangerous commands into the config file.
+It is also possible to brick your camera if you corrupt the U-boot partition with your custom scripts or inject dangerous commands into the configuration files.
 ```
 
 ## Credits

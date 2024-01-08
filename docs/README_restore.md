@@ -16,6 +16,8 @@ The Restore operation allows restoring one or more partitions using partition im
 - `[firmware]_[SoC]_[partition name].bin` for partition restore images.
 - `[firmware]_[SoC]_[partition name].bin.sha256sum` for their .sha256sum files.
 
+If you want to restore partitions using custom partition images, you have to generate .sha256sum files using [this guide](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-generate-sha256sum-files-for-partition-images)
+
 Example for Stock restore images on t31x:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/restore_01.png)

@@ -6,7 +6,7 @@ With this option, you can see what commands are executed with by the program wit
 
 With this option enabled:
 
-- No operation will be done.
+- No operation will be done. Instead, the shell commands used by the operations will be printed out without being run.
 - Custom scripts will not be run.
 - SD card kernel will not be copied and renamed.
 
@@ -24,6 +24,8 @@ After all operations are finished, that file will be copied and renamed to:
 This kernel file will be booted on the next boot without having to pull the SD card and rename it manually. Seamless transition!
 
 If you are on OpenIPC firmware, SD card kernel specified with `new_sdcard_kernel` will be copied and renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using the SD card kernel for personal purposes, you should disable it.
+
+> Note: This option still works when you are switching firmware. This is useful to switch from OpenIPC to Stock firmware with installed `wz_mini_hacks`.
 
 **✅ Option: `custom_scripts`**
 

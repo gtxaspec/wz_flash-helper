@@ -6,6 +6,10 @@
 > - DO NOT share `initramfs.log` when you are switching to OpenIPC with the `setup_openipc_env.sh` script, this log file contains your Wi-Fi name and password.
 > - Switching to wzmini firmware is not supported yet (it is actually supported, but the firmware is still in early development stage).
 
+## Overview
+
+The Switch firmware operation allow your camera to switch from one firmware to another.
+
 ## Index
 
 Switch firmware overview

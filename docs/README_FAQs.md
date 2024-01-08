@@ -7,16 +7,23 @@ Make sure that:
 - You downloaded the correct release for your camera SoC.
 - The SD card kernel has the correct name without the `.wz_flash-helper` extension. The program adds the extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.
 
+## What are use cases for this program?
+
+- If you need to backup your camera partitions or restore them.
+- If you need to flash customized partitions for stock firmware.
+- If you need switch between firmware without serial connection(even remotely!)
 ### How can I access serial console?
 
 Connect 3 pins: Tx, Rx and GND from your camera to your computer with a USB-to-TTL adapter.
+
+> **❗ WARNING:** DO NOT CONNECT the 3.3V or 5V pin from the USB-to-TTL serial converter to your camera. This would fry your camera PCB.
 
 If you are on Linux, run:
 ```
 sudo picocom /dev/ttyUSB0 -b 115200 -l | tee /tmp/serial.log
 ```
 
-If you are on Windows, use a third-party tool(eg. PuTTY), then set baud rate to `115200` and select the correct COM port for your USB-to-TTL adapter.
+If you are on Windows, use a third-party tool(eg. PuTTY), then set baud rate to `115200` and select the correct COM port for your USB-to-TTL serial converter.
 
 ### How can I obtain my camera hardware information?
 
@@ -76,7 +83,7 @@ The Switch firmware operation reads the partition images that you provide and wr
    - List of partitions that store user data to create archives for them with the Backup operation
    - Partition types (`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
    - List of mandatory partitions that must be written when switching to that firmware (when `switch_firmware_with_all_partitions` is disabled) and list of tasks to do (`write`, `erase,`,`format`, `leave`) with other partitions.
-   
+
 - Name of the SD card kernel that can be recognized and booted by that firmware U-boot
 - Backup and restore paths where partition images are stored
 - Model detection script(`detect_model.sh`) to detect camera model

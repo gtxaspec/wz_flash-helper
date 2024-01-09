@@ -29,7 +29,7 @@ Example for Stock restore images on t31x:
 switch_firmware="no"
 restore_partitions="yes"
 ```
-**Step 5:** Insert your SD card into your camera and power on. Wait for the program to finish. After it is finished, your camera will reboot.
+**Step 5:** Insert your SD card into your camera and power on. Wait for the program to finish restoring the partitions. After it is finished, your camera will reboot.
 
 ## Notes
 

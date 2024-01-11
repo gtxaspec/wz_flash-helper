@@ -78,7 +78,7 @@ manual_model="<camera model code>"
 
 **Step 7: Power on**
 
-Insert your SD card into your camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot again to write `env` variables, and once again to OpenIPC firmware.
+Insert your SD card into your camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to write `env` variables, and once again to OpenIPC firmware.
 
 After your camera finishes booting, you can use an IP scanner (e.g. nmap) to figure out its IP address and connect to it using SSH.
 

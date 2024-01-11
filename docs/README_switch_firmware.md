@@ -29,7 +29,7 @@ With this option, you can decide if all partitions will be written by the Switch
 
 On Stock firmware: Some partitions(such as `aback`, `kback`, `backupa`, `backupd`, etc. on T31 cameras) don't need to be written because they don't contain any meaningful data as they are used by Stock firmware as stage partitions to install updates. You should disable this option to save time.
 
-On OpenIPC firmware: If you want to have a fresh OpenIPC installation, leave it disabled. If you want to write `rootfs_data` partitions, you can enable it.
+On OpenIPC firmware: If you want to have a fresh OpenIPC installation, leave it disabled. If you want to write `env` and `rootfs_data` partitions, you can enable it.
 
 This option value has no effect when switching to the wzmini firmware.
 

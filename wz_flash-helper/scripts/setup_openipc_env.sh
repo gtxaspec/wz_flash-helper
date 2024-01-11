@@ -194,6 +194,6 @@ function set_openipc_user_env() {
 
 matched_firmware="openipc"
 
-custom_script_matched_firmware_check $matched_firmware || return 0
+custom_script_current_firmware_check $matched_firmware || return 0
 detect_openipc_wifi_driver || return 1
 set_openipc_user_env || return 1

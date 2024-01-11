@@ -139,7 +139,15 @@ function init_source_current_firmware() {
 
 function init_rename_prog_sdcard_kernel() {
 # Description: Rename the program SD card kernel to avoid an infinite boot loop
-	[[ "$skip_rename_prog_sdcard_kernel" == "yes" ]] && { msg_color lightbrown "Skipping remaning program SD card kernel, your camera will boot loop" ; return 0 ; }
+	[[ "$skip_rename_prog_sdcard_kernel" == "yes" ]] && { msg_color lightbrown "Skipping renaming program SD card kernel, your camera will boot loop" ; return 0 ; }
+
+	if [[ "$re_run" == "yes" ]]; then
+		sed -i "s/re_run=\"yes\"/re_run=\"no\"/" $prog_config_file
+		msg_color_nonewline lightbrown "Skipping renaming program SD card kernel, because "
+		msg_color_nonewline cyan "re_run "
+		msg_color lightbrown "is enabled, your camera will boot $prog_name again"
+		return 0
+	fi
 
 	for kernelimg in $cf_sdcard_kernel_name $cf_sdcard_secondary_kernel_name; do
 		if [ -f /sdcard/$kernelimg ]; then

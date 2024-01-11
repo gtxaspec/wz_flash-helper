@@ -105,7 +105,7 @@ function custom_script_matched_firmware_check() {
 
 	msg_color_bold_nonewline white "This script requires the running firmware to be "
 	msg_color_nonewline cyan "$matched_firmware "
-	msg_color_bold "to run"
+	msg_color_bold white "to run"
 
 	if [[ "$switch_firmware" == "yes" ]]; then
 		local running_firmware=$next_firmware
@@ -122,5 +122,28 @@ function custom_script_matched_firmware_check() {
 	else
 		msg_color lightbrown "skipping script"
 		return 1
+	fi
+}
+
+function custom_script_current_firmware_check() {
+# Description: Make sure the current firmware is amatched firmware and not switching firmware
+	local matched_firmware="$1"
+
+	msg_color_bold_nonewline white "This script requires the current firmware to be "
+	msg_color_nonewline cyan "$matched_firmware "
+	msg_color_bold white "and not switching firmware to run"
+
+	if [[ "$switch_firmware" == "yes" ]]; then
+		msg_color lightbrown "   Skipping script because your camera is switching firmware"
+		return 1
+	elif [[ ! "$current_firmware" == "$matched_firmware" ]]; then
+		msg_color lightbrown "   Skipping script because the current firmware is not $matched_firmware"
+		return 1
+	else
+		msg_nonewline "   The current firmware is: "
+		msg_color_nonewline cyan "$current_firmware"
+		msg_nonewline ", "
+		msg_color green "running script now!"
+		msg
 	fi
 }

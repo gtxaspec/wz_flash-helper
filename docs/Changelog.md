@@ -1,5 +1,13 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | **Changelog** | [Limitation](Limitation.md)
 
+## v0.9.2
+
+> Note: This version configuration file and custom scripts are incompatible with older versions, please do a fresh setup to upgrade.
+
+- Remove `env` images as switching to OpenIPC no longer needs `env` partition image
+- Add `re_run` option to run the program twice
+- Fix a mssage of the `custom_script_matched_firmware_check` script is not displayed correctly
+
 ## v0.9.1
 
 - Allow assigning multiple hardware variables
@@ -61,7 +69,7 @@
 
 ## v0.7.8
 
-- Add manual_current_firmware and manual_model options
+- Add `manual_current_firmware` and `manual_model` options
 - Add command shortcuts `ms` and `us` for mounting and umounting SD card from initramfs shell
 
 ## v0.7.7

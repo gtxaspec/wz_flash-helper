@@ -17,7 +17,7 @@ Switch to OpenIPC firmware
 
 ## Overview
 
-The OpenIPC firmware requires four partition images for: `boot`, `env`, `kernel` and `rootfs`.
+The OpenIPC firmware requires three partition images for: `boot`, `kernel` and `rootfs`.
 
 ## Guide
 
@@ -38,7 +38,6 @@ Download OpenIPC tarball that contains kernel and rootfs images from [OpenIPC Re
 Then extract the firmware archive, place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 
 - boot: `u-boot-[SoC]-universal.bin` to `openipc_[SoC]_boot.bin`
-- env: `openipc_[chip family]_env.bin` to `openipc_[SoC]_env.bin`
 - kernel: `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`
 - rootfs: `rootfs.squashfs.[SoC]` to `openipc_[SoC]_rootfs.bin`
 
@@ -71,11 +70,15 @@ copy_new_sdcard_kernel="no"
 
 enable_custom_scripts="yes"
 custom_scripts="setup_openipc_env.sh"
+
+re_run="yes"
+
+manual_model="<camera model code>"
 ```
 
 **Step 7: Power on**
 
-Insert your SD card into your camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to OpenIPC firmware.
+Insert your SD card into your camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot again to write `env` variables, and once again to OpenIPC firmware.
 
 After your camera finishes booting, you can use an IP scanner (e.g. nmap) to figure out its IP address and connect to it using SSH.
 

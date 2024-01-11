@@ -10,7 +10,7 @@ function get_nf_partoperation() {
 		"boot")
 			echo -n "write" ;;
 		"env")
-			echo -n "write" ;;
+			echo -n "erase" ;;
 		"kernel")
 			echo -n "write" ;;
 		"rootfs")

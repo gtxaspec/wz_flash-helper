@@ -31,6 +31,10 @@ If you are on OpenIPC firmware, SD card kernel specified with `new_sdcard_kernel
 
 With this option, you can write shell scripts and get them executed by the program after the Backup, Restore and Switch firmware operations are finished. This is useful for extra modifications to your partitions from the initramfs environment.
 
+**✅ Option: `re_run`**
+
+With this option, you can let the program run twice. This is useful to let OpenIPC U-boot set some `env` variables on its first boot as it only sets these variables if the `env` partition is empty.
+
 ## Debug options
 
 **✅ Option: `manual_current_firmware`**

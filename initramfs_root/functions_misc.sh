@@ -137,7 +137,8 @@ function custom_script_current_firmware_check() {
 		msg_color lightbrown "   Skipping script because your camera is switching firmware"
 		return 1
 	elif [[ ! "$current_firmware" == "$matched_firmware" ]]; then
-		msg_color lightbrown "   Skipping script because the current firmware is not $matched_firmware"
+		msg_color_nonewline lightbrown "   Skipping script because the current firmware is not "
+		msg_color cyan "$matched_firmware"
 		return 1
 	else
 		msg_nonewline "   The current firmware is: "

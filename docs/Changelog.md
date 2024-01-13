@@ -1,5 +1,9 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | **Changelog** | [Limitation](Limitation.md)
 
+## Next unreleased version
+
+- Fix a message is not displayed with color
+
 ## v0.9.2
 
 > Note: This version configuration file and custom scripts are incompatible with older versions, please do a fresh setup to upgrade.

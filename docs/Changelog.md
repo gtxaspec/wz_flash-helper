@@ -1,8 +1,9 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | **Changelog** | [Limitation](Limitation.md)
 
-## Next unreleased version
+## v0.9.3
 
 - Fix a message is not displayed with color
+- Play audio if `re_run` option is enabled
 
 ## v0.9.2
 

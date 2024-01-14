@@ -234,6 +234,8 @@ function init_exit() {
 
 	sync
 
+	[[ "$re_run" == "yes" ]] && play_audio /sounds/wz_helper_will_continue_after_rebooting.pcm
+
 	if [[ "$$" == "1" ]]; then
 		msg
 		msg_color_bold_serial green "Rebooting now"

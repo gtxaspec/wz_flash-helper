@@ -7,7 +7,7 @@
 
 The Restore operation allows restoring one or more partitions using partition images. You can decide what partitions will be restored.
 
-This operation is used to restore the partitions of the firmware your camera CURRELTLY has. If you are using OpenIPC and want to roll back to Stock firmware, please do the [Switch firmware](README_switch_firmware.md) operation instead.
+This operation is used to restore the partitions of the firmware your camera CURRELTLY has. If you are using OpenIPC and want to roll back to stock firmware, please do the [Switch firmware](README_switch_firmware.md) operation instead.
 
 ## Guide
 
@@ -20,7 +20,7 @@ This operation is used to restore the partitions of the firmware your camera CUR
 
 If you want to restore partitions using custom partition images, you have to generate .sha256sum files using [this guide](https://github.com/archandanime/wz_flash-helper/blob/main/docs/README_FAQs.md#how-can-i-generate-sha256sum-files-for-partition-images)
 
-Example for Stock restore images on t31x:
+Example for stock restore images on t31x:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/restore_01.png)
 
@@ -38,7 +38,7 @@ restore_partitions="yes"
 - For the Restore operation to start, the `switch_firmware` option must be disabled. If both the `restore_partitions` and `switch_firmware` options are enabled, the Restore operation will fail.
 - All partition restore images must come with their .sha256sum files for integrity verification.
 - During the Restore operation, the red LED would be blinking every second.
-- Typically, the Restore operation takes about 2 minutes (excluding load time).
+- Typically, the Restore operation takes about 2 minutes if all partitions are selected (excluding load time).
 
 ## Restore the boot partition
 

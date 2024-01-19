@@ -14,7 +14,7 @@ The Switch firmware operation allow your camera to switch from one firmware to a
 
 Switch firmware overview
 
-[Switch to Stock firmware](README_switch_firmware_stock.md)
+[Switch to stock firmware](README_switch_firmware_stock.md)
 
 [Switch to OpenIPC firmware](README_switch_firmware_openipc.md)
 
@@ -27,7 +27,7 @@ With this option, you can decide if all partitions will be written by the Switch
 - When it is disabled, only partition images for some necessary partitions for a barely functional camera are required. Other partitions are either formatted, erased or left alone. 
 - When it is enabled, partition images for all partitions are required.
 
-On Stock firmware: Some partitions(such as `aback`, `kback`, `backupa`, `backupd`, etc. on T31 cameras) don't need to be written because they don't contain any meaningful data as they are used by Stock firmware as stage partitions to install updates. You should disable this option to save time.
+On stock firmware: Some partitions (such as `aback`, `kback`, `backupa`, `backupd`, etc. on T31 cameras) don't need to be written because they don't contain any meaningful data as they are used by stock firmware as stage partitions to install updates. You should disable this option to save time.
 
 On OpenIPC firmware: If you want to have a fresh OpenIPC installation, leave it disabled. If you want to write `env` and `rootfs_data` partitions, you can enable it.
 

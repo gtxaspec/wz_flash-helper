@@ -11,7 +11,7 @@ Make sure that:
 
 - If you need to backup your camera partitions or restore them.
 - If you need to flash customized partitions for stock firmware.
-- If you need switch between firmware without serial connection(even remotely!)
+- If you need switch between firmware without serial connection (even remotely!)
 ### How can I access serial console?
 
 Connect 3 pins: Tx, Rx and GND from your camera to your computer with a USB-to-TTL adapter.
@@ -23,7 +23,7 @@ If you are on Linux, run:
 sudo picocom /dev/ttyUSB0 -b 115200 -l | tee /tmp/serial.log
 ```
 
-If you are on Windows, use a third-party tool(eg. PuTTY), then set baud rate to `115200` and select the correct COM port for your USB-to-TTL serial converter.
+If you are on Windows, use a third-party tool (eg. PuTTY), then set baud rate to `115200` and select the correct COM port for your USB-to-TTL serial converter.
 
 ### How can I obtain my camera hardware information?
 
@@ -54,23 +54,23 @@ If you are on Linux, run:
 for i in *.bin; do sha256sum $i > $i.sha256sum; done
 ```
 
-If you are on Windows, first, make sure that your Powershell version is 5.0 or newer(run `$PSVersionTable` to check), then:
+If you are on Windows, first, make sure that your Powershell version is 5.0 or newer (run `$PSVersionTable` to check), then:
 - Copy the script `generate_hash_files.ps1` from `wz_flash-helper/scripts/` directory to the partition images location.
 - Right click the new script `generate_hash_files.ps1` then select `Run with Powershell`. The script will generate .sha256sum files for you.
 
 ### Can you add support for my camera?
 
-Yes, with the condition that:
+Yes, with the conditions that:
 
 - Your camera does not have verified boot on hardware level.
-- Your camera U-boot supports booting a kernel file from SD card or you can compile and flash a U-boot(by rooting or removing the flash chip) that has that functionality.
-- Your camera has NOR flash(NAND is not supported yet)
+- Your camera U-boot supports booting a kernel file from SD card or you can compile and flash a U-boot (by rooting or removing the flash chip) that has that functionality.
+- Your camera has NOR flash (NAND is not supported yet)
 
 ### How does switching firmware work?
 
 On NOR flash and raw NAND flash, there is no partition table; the partition layout is actually seen by the kernel by setting `CONFIG_CMDLINE= ... mtdparts=...` which will be passed to the `jz_sfc` driver. That option defines each partition size to let partition data be read and written to the correct addresses.
 
-The partitions can also be defined by setting their sizes and offsets from the start address (0x0). What we do is define partition offsets and the size of both the current and next firmware so we can read, write or mount those partitions correctly.
+The partitions can also be defined by setting their sizes and offsets from the start address (`0x0`). What we do is define partition offsets and the size of both the current and next firmware so we can read, write or mount those partitions correctly.
 
 The Switch firmware operation reads the partition images that you provide and writes them to the correct addresses of each partition on the next firmware.
 
@@ -86,6 +86,6 @@ The Switch firmware operation reads the partition images that you provide and wr
 
 - Name of the SD card kernel that can be recognized and booted by that firmware U-boot
 - Backup and restore paths where partition images are stored
-- Model detection script(`detect_model.sh`) to detect camera model
-- Profile detection script(`detect_firmware.sh`) to detect current firmware
-- (Optional) Post-switch firmware script(`post_switch.sh`) to run after switching to that profile
+- Model detection script (`detect_model.sh`) to detect camera model
+- Profile detection script (`detect_firmware.sh`) to detect current firmware
+- (Optional) Post-switch firmware script (`post_switch.sh`) to run after switching to that profile

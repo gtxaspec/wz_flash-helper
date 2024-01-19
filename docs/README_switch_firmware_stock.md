@@ -9,7 +9,7 @@
 
 [Switch firmware overview](README_switch_firmware.md)
 
-Switch to Stock firmware
+Switch to stock firmware
 
 [Switch to OpenIPC firmware](README_switch_firmware_openipc.md)
 
@@ -17,9 +17,9 @@ Switch to Stock firmware
 
 ## Overview
 
-The Stock firmware for T20 cameras require seven partition images for: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
+The stock firmware for T20 cameras require seven partition images for: `boot`, `kernel`, `root`, `driver`, `appfs`, `config` and `para`.
 
-The Stock firmware for T31 cameras require five partition images for: `boot`, `kernel`, `rootfs`, `app` and `configs`.
+The stock firmware for T31 cameras require five partition images for: `boot`, `kernel`, `rootfs`, `app` and `configs`.
 
 ## Guide
 
@@ -27,7 +27,7 @@ The Stock firmware for T31 cameras require five partition images for: `boot`, `k
 
 **Step 2: Prepare partition images**
 
-Place your Stock partition backup images along with their .sha256sum files under the `wz_flash-helper/restore/stock/` directory.
+Place your stock partition backup images along with their .sha256sum files under the `wz_flash-helper/restore/stock/` directory.
 
 **Step 3: Edit the program configuration file**
 
@@ -41,4 +41,4 @@ switch_firmware_with_all_partitions="no"
 
 **Step 4: Power on**
 
-Insert your SD card into your camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to Stock firmware.
+Insert your SD card into your camera and power it on. It would take about 3 minutes to finish writing all partitions, then it will reboot to stock firmware.

@@ -2,7 +2,7 @@
 
 > **⚠️ IMPORTANT:**
 > - Make sure that your SD card partition table is **MBR** and partition format is **FAT32**.
-> - If your camera is Wyze Cam Pan or Wyze Cam v2, before using the program, you need to update your camera bootloader to with the latest version using [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation).
+> - If your camera is Wyze Cam Pan or Wyze Cam v2 on stock firmware, before using the program, you need to update your camera bootloader to with the latest version using [this guide](https://github.com/gtxaspec/wz_mini_hacks/wiki/Setup-&-Installation).
 
 ## Guide
 

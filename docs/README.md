@@ -4,7 +4,7 @@
 
 - Backup partitions
 - Restore partitions
-- Switch between Stock, wzmini and OpenIPC firmware
+- Switch between stock, wzmini and OpenIPC firmware
 - No need to disassemble your camera
 - Dry run option debugging
 - Initramfs shell for manual debugging if you have serial connection

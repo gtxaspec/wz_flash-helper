@@ -9,7 +9,7 @@
 
 [Switch firmware overview](README_switch_firmware.md)
 
-[Switch to Stock firmware](README_switch_firmware_stock.md)
+[Switch to stock firmware](README_switch_firmware_stock.md)
 
 Switch to OpenIPC firmware
 

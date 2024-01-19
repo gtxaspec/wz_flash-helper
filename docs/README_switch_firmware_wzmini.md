@@ -10,7 +10,7 @@
 
 [Switch firmware overview](README_switch_firmware.md)
 
-[Switch to Stock firmware](README_switch_firmware_stock.md)
+[Switch to stock firmware](README_switch_firmware_stock.md)
 
 [Switch to OpenIPC firmware](README_switch_firmware_openipc.md)
 
@@ -24,7 +24,7 @@ The wzmini firmware requires four partition images for: `boot`, `kernel`, `rootf
 
 **Step 2: Prepare partition images**
 
-- `boot` and `configs` partition images can be created by making a copy from the Stock firmware backup along with their .sha256sum files.
+- `boot` and `configs` partition images can be created by making a copy from the stock firmware backup along with their .sha256sum files.
 - `kernel` and `rootfs` partition images along with their .sha256sum files can be downloaded them from (**TBA**).
 
 Example for t31x:

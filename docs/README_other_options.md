@@ -14,7 +14,7 @@ With this option enabled:
 
 With this option, you can specify the SD card kernel that will be used on the next boot.
 
-If you are using `wz_mini_hacks` with Stock firmware, you can rename wz_mini's kernel file to `sdcard_boot.wz_mini` and specify that filename with the option.
+If you are using `wz_mini_hacks` with stock firmware, you can rename wz_mini's kernel file to `sdcard_boot.wz_mini` and specify that filename with the option.
 
 After all operations are finished, that file will be copied and renamed to:
 
@@ -25,7 +25,7 @@ This kernel file will be booted on the next boot without having to pull the SD c
 
 If you are on OpenIPC firmware, SD card kernel specified with `new_sdcard_kernel` will be copied and renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using the SD card kernel for personal purposes, you should disable it.
 
-> Note: This option still works when you are switching firmware. This is useful to switch from OpenIPC to Stock firmware with installed `wz_mini_hacks`.
+> Note: This option still works when you are switching firmware. This is useful to switch from OpenIPC to stock firmware with installed `wz_mini_hacks`.
 
 **✅ Option: `custom_scripts`**
 
@@ -39,7 +39,7 @@ With this option, you can let the program run twice. This is useful to let OpenI
 
 **✅ Option: `manual_current_firmware`**
 
-You can set it manually to fix the corrupted rootfs partition partition(for Stock and wzmini firmware) that makes `current_firmware` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
+You can set it manually to fix the corrupted rootfs partition partition (for stock and wzmini firmware) that makes `current_firmware` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
 
 
 **✅ Option: `manual_model`**

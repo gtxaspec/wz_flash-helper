@@ -12,6 +12,6 @@
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_restore.png)
 
-### Switch firmware from T31 Stock to OpenIPC (with setup_openipc_env.sh script)
+### Switch firmware from T31 stock to OpenIPC (with setup_openipc_env.sh script)
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_switch_firmware.png)

@@ -8,7 +8,7 @@
 - No need to disassemble your camera
 - Dry run option debugging
 - Initramfs shell for manual debugging if you have serial connection
-- Seamlessly boot to `wz_mini_hacks` on the next boot
+- Seamlessly boot with `wz_mini_hacks` on the next boot
 - Customize partitions with custom scripts support
 - Windows-friendly setup progress
 

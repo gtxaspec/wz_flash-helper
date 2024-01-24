@@ -12,6 +12,7 @@ Make sure that:
 - If you need to backup your camera partitions or restore them.
 - If you need to flash customized partitions for stock firmware.
 - If you need switch between firmware without serial connection (even remotely!)
+
 ### How can I access serial console?
 
 Connect 3 pins: Tx, Rx and GND from your camera to your computer with a USB-to-TTL adapter.
@@ -81,11 +82,11 @@ The Switch firmware operation reads the partition images that you provide and wr
 - List of all partition names with their properties:
    - MTD mapping number
    - List of partitions that store user data to create archives for them with the Backup operation
-   - Partition types (`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
+   - Filesystem types (`raw`, `jffs2`, `squashfs` or `vfat`) of each partition in case they need to be mounted
    - List of mandatory partitions that must be written when switching to that firmware (when `switch_firmware_with_all_partitions` is disabled) and list of tasks to do (`write`, `erase,`,`format`, `leave`) with other partitions.
 
 - Name of the SD card kernel that can be recognized and booted by that firmware U-boot
 - Backup and restore paths where partition images are stored
 - Model detection script (`detect_model.sh`) to detect camera model
 - Profile detection script (`detect_firmware.sh`) to detect current firmware
-- (Optional) Post-switch firmware script (`post_switch.sh`) to run after switching to that profile
+- (Optional) Post-switch firmware script (`post_switch.sh`) to run after switching to that firmware

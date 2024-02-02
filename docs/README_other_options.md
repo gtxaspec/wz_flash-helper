@@ -39,7 +39,7 @@ With this option, you can let the program run twice. This is useful to let OpenI
 
 **✅ Option: `manual_current_firmware`**
 
-You can set it manually to fix the corrupted rootfs partition partition (for stock and wzmini firmware) that makes `current_firmware` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
+You can set it manually to fix the corrupted rootfs partition partition (for stock firmware) that makes `current_firmware` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
 
 
 **✅ Option: `manual_model`**

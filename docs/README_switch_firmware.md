@@ -4,7 +4,6 @@
 > **❗ WARNING:**
 > - DO NOT DISCONNECT POWER when the Switch firmware operation is going on. Doing this would brick your camera.
 > - DO NOT share `initramfs.log` when you are switching to OpenIPC with the `setup_openipc_env.sh` script, this log file contains your Wi-Fi name and password.
-> - Switching to wzmini firmware is not supported yet (it is actually supported, but the firmware is still in early development stage).
 
 ## Overview
 
@@ -18,8 +17,6 @@ Switch firmware overview
 
 [Switch to OpenIPC firmware](README_switch_firmware_openipc.md)
 
-[Switch to wzmini firmware](README_switch_firmware_wzmini.md) 
-
 **✅ Option: `switch_firmware_with_all_partitions`**
 
 With this option, you can decide if all partitions will be written by the Switch firmware operation.
@@ -30,8 +27,6 @@ With this option, you can decide if all partitions will be written by the Switch
 On stock firmware: Some partitions (such as `aback`, `kback`, `backupa`, `backupd`, etc. on T31 cameras) don't need to be written because they don't contain any meaningful data as they are used by stock firmware as stage partitions to install updates. You should disable this option to save time.
 
 On OpenIPC firmware: If you want to have a fresh OpenIPC installation, leave it disabled. If you want to write `env` and `rootfs_data` partitions, you can enable it.
-
-This option value has no effect when switching to the wzmini firmware.
 
 ## Notes
 

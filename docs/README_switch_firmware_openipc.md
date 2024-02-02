@@ -3,7 +3,6 @@
 > **❗ WARNING:**
 > - DO NOT DISCONNECT POWER when the Switch firmware operation is going on. Doing this would brick your camera.
 > - DO NOT share `initramfs.log` when you are switching to OpenIPC with the `setup_openipc_env.sh` script, this log file contains your Wi-Fi name and password.
-> - Switching to wzmini firmware is not supported yet (it is actually supported but the firmware is still in early development stage).
 
 ## Index
 
@@ -12,8 +11,6 @@
 [Switch to stock firmware](README_switch_firmware_stock.md)
 
 Switch to OpenIPC firmware
-
-[Switch to wzmini firmware](README_switch_firmware_wzmini.md)
 
 ## Overview
 

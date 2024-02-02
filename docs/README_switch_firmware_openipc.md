@@ -28,13 +28,13 @@ The OpenIPC firmware requires three partition images for: `boot`, `kernel` and `
 > - Be careful to download the correct OpenIPC build corresponding with your camera SoC (eg. `t31a` and `t31x` are different). Using the wrong build would brick your camera.
 > - Don't download OpenIPC official U-boot image because it doesn't support booting from SD card kernel that wz_flash-helper relies on to work.
 
-Download OpenIPC U-boot image from [this repo](https://github.com/gtxaspec/u-boot-ingenic/releases/tag/latest) with this format: `u-boot-[SoC]-universal.bin`
+Download OpenIPC U-boot image from [this repo](https://github.com/gtxaspec/u-boot-ingenic/releases/tag/latest) with this format: `u-boot-[SoC].bin`
 
 Download OpenIPC tarball that contains kernel and rootfs images from [OpenIPC Release page](https://github.com/OpenIPC/firmware/releases/tag/latest) with this format: `openipc.[chip family]-[flash type]-ultimate.tgz`
 
 Then extract the firmware archive, place everything under the `wz_flash-helper/restore/openipc/` directory on your SD card, and rename the partition images:
 
-- boot: `u-boot-[SoC]-universal.bin` to `openipc_[SoC]_boot.bin`
+- boot: `u-boot-[SoC].bin` to `openipc_[SoC]_boot.bin`
 - kernel: `uImage.[SoC]` to `openipc_[SoC]_kernel.bin`
 - rootfs: `rootfs.squashfs.[SoC]` to `openipc_[SoC]_rootfs.bin`
 

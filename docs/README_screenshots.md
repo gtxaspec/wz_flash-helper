@@ -12,7 +12,7 @@
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_restore.png)
 
-### Switch firmware from T31 stock to thingino (with setup_thingino_env.sh script)
+### Switch firmware from t31x stock to thingino (with setup_thingino_env.sh script)
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_switch_firmware.png)
 

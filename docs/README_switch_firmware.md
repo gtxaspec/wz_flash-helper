@@ -4,7 +4,6 @@
 > **❗ WARNING:**
 > - DO NOT DISCONNECT POWER when the Switch firmware operation is going on. Doing this would brick your camera.
 > - DO NOT share `initramfs.log` when you are switching to thingino with the `setup_thingino_env.sh` script, this log file contains your Wi-Fi name and password.
-> - Currently Wi-Fi and SD card don't work on thingino firmware yet until they are fixed upstream
 
 ## Overview
 
@@ -27,7 +26,7 @@ With this option, you can decide if all partitions will be written by the Switch
 
 On stock firmware: Some partitions (such as `aback`, `kback`, `backupa`, `backupd`, etc. on T31 cameras) don't need to be written because they don't contain any meaningful data as they are used by stock firmware as stage partitions to install updates. You should disable this option to save time.
 
-On thingino firmware: If you want to have a fresh thingino installation, leave it disabled. If you want to write `env` and `rootfs_data` partitions, you can enable it.
+On thingino firmware: If you have a fresh thingino installation, it has no effect.
 
 ## Notes
 

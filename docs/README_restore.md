@@ -7,7 +7,7 @@
 
 The Restore operation allows restoring one or more partitions using partition images. You can decide what partitions will be restored.
 
-This operation is used to restore the partitions of the firmware your camera CURRENTLY has. If you are using thingino and want to roll back to stock firmware, please do the [Switch firmware](README_switch_firmware.md) operation instead.
+This operation is used to restore the partitions of the firmware your camera CURRENTLY has. If you are using thingino and want to roll back to stock firmware, and vice versa, please do the [Switch firmware](README_switch_firmware.md) operation instead.
 
 ## Guide
 

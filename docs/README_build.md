@@ -21,7 +21,6 @@ cd wz_flash-helper
 **2. Patch kernel source**
 ```
 ./build.sh patch
-
 ```
 
 **3. Install packages that are required by thingino Buildroot**
@@ -55,4 +54,4 @@ To build everything, run:
 
 Compiled kernels and releases will be saved at `output/` directory.
 
-On the first time you build a kernel/release, it takes between 2 minutes and 20 minutes to download necessary toolchains before the compiling, after that it takes only about a minute.
+On the first time you build a kernel/release, it might take a long time to download necessary toolchains before the compiling, after that it takes only about a minute.

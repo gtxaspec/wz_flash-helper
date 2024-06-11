@@ -3,11 +3,11 @@
 
 > **❗ WARNING:**
 > - DO NOT DISCONNECT POWER when the Switch firmware operation is going on. Doing this would brick your camera.
-> - DO NOT share `initramfs.log` when you are switching to thingino with the `setup_thingino_env.sh` script, this log file contains your Wi-Fi name and password.
+> - DO NOT share `initramfs.log` when you are switching to thingino with the `setup_thingino_env.sh` script, this log file contains your Wi-Fi credentials.
 
 ## Overview
 
-The Switch firmware operation allow your camera to switch from one firmware to another.
+The Switch firmware operation allows your camera to switch from one firmware to another.
 
 ## Index
 

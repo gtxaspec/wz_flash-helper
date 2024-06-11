@@ -2,7 +2,7 @@
 
 > **❗ WARNING:**
 > - DO NOT DISCONNECT POWER when the Switch firmware operation is going on. Doing this would brick your camera.
-> - DO NOT share `initramfs.log` when you are switching to thingino with the `setup_thingino_env.sh` script, this log file contains your Wi-Fi name and password.
+> - DO NOT share `initramfs.log` when you are switching to thingino with the `setup_thingino_env.sh` script, this log file contains your Wi-Fi name and credentials.
 
 ## Index
 
@@ -15,6 +15,7 @@ Switch to thingino firmware
 ## Overview
 
 As thingino don't have fixed sizes for `kernel`, `rootfs` and `rootfs_data` partitions, wz_flash-helper views them as a single partition called `ota`. Therefore backup and restore operations will be on that merged partition. They can't be read or written individually.
+
 The thingino firmware requires three partition images for: `boot`, `kernel` and `ota`. It can also be flashed using firmware image which contains all the needed partitions.
 
 ## Guide

@@ -14,9 +14,9 @@ Switch to thingino firmware
 
 ## Overview
 
-As thingino don't have fixed sizes for `kernel`, `rootfs` and `rootfs_data` partitions, wz_flash-helper views them as a single partition called `ota`. Therefore backup and restore operations will be on that merged partition. They can't be read or written individually.
+As thingino doesn't have fixed sizes for `kernel`, `rootfs` and `rootfs_data` partitions, wz_flash-helper views them as a single partition called `ota`. Therefore backup and restore operations will read and write on the `ota` partition instead on each partition.
 
-The thingino firmware requires three partition images for: `boot`, `kernel` and `ota`. It can also be flashed using firmware image which contains all the needed partitions.
+The thingino firmware requires three partition images for: `boot`, `kernel` and `ota`. It can also be flashed using firmware image which contains all those partitions.
 
 ## Guide
 

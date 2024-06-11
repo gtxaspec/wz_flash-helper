@@ -15,11 +15,23 @@ function osf_validate_restore_partition_images() {
 
 			msg_nonewline "    Verifying "
 			msg_color_nonewline brown "$infile_name... "
-			[ ! -f $infile_name ] && { msg_color red "file is missing" ; return 1 ; }
+			[ ! -f $infile_name ] && { msg_color lightbrown "file is missing" ; return 1 ; }
 			sha256sum -c $infile_name.sha256sum && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
 		fi
 	done
 	msg
+}
+
+function osf_validate_firmware_image() {
+	cd $nf_images_path
+	msg_color_bold_nonewline white "> Verifying firmware image: "
+	msg_color_bold_nonewline cyan "$nf_firmware_filename"
+	msg_color_bold_nonewline white "... "
+
+	[ ! -f $nf_firmware_filename ] && { msg_color red "file is missing" ; return 1 ; }
+	sha256sum -c $nf_firmware_filename.sha256sum && msg_color green "ok" || { msg_color red "failed" ; return 1 ; }
+
+	msg_color white "As you are switching firmware using firmware image, all partitions will be written, no partition will be erased or formatted"
 }
 
 function osf_validate_written_boot_partition() {
@@ -57,7 +69,16 @@ function osf_main() {
 	msg_color_bold_nonewline white "Source directory: " && msg_color cyan "$nf_images_path"
 
 	msg
-	osf_validate_restore_partition_images || return 1
+	if ! osf_validate_restore_partition_images; then
+		msg_color lightbrown "Required partition images verification failed, falling back to firmware image"
+		if osf_validate_firmware_image; then
+			source /firmware.d/$next_firmware/parse_firmware_image.sh || return 1
+			source /firmware.d/$next_firmware/nf_switch_allparts.sh
+			nf_images_path="/extracted_firmware"
+		else
+			return 1
+		fi
+	fi
 
 	msg_color_bold white "> Writing partition images"
 	for partname in $nf_all_partname_list; do

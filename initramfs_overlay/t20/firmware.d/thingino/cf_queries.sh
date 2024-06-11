@@ -10,24 +10,10 @@ function get_cf_partnum() {
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
-		"kernel")
-			echo -n "4" ;;
-		"root")
-			echo -n "5" ;;
-		"driver")
-			echo -n "6" ;;
-		"appfs")
-			echo -n "7" ;;
-		"backupk")
-			echo -n "8" ;;
-		"backupd")
-			echo -n "9" ;;
-		"backupa")
-			echo -n "10" ;;
-		"config")
-			echo -n "11" ;;
-		"para")
-			echo -n "12" ;;
+		"env")
+			echo -n "2" ;;
+		"ota")
+			echo -n "3" ;;
 	esac
 }
 
@@ -38,52 +24,23 @@ function get_cf_partfstype() {
 	case "$1" in
 		"boot")
 			echo -n "raw" ;;
-		"kernel")
+		"env")
 			echo -n "raw" ;;
-		"root")
-			echo -n "squashfs" ;;
-		"driver")
-			echo -n "squashfs" ;;
-		"appfs")
-			echo -n "squashfs" ;;
-		"backupk")
+		"ota")
 			echo -n "raw" ;;
-		"backupd")
-			echo -n "raw" ;;
-		"backupa")
-			echo -n "jffs2" ;;
-		"config")
-			echo -n "jffs2" ;;
-		"para")
-			echo -n "jffs2" ;;
 	esac
 }
 
 function get_cf_restore_opt_value() {
 # Description: Return user option to decide if the queried partition will be restored
+# Do not include the boot partition
 # Syntax: get_cf_restore_opt_value <partname>
 	local partname="$1"
 	case "$1" in
-		"boot")
-			echo -n "$restore_stock_boot" ;;
-		"kernel")
-			echo -n "$restore_stock_kernel" ;;
-		"root")
-			echo -n "$restore_stock_root" ;;
-		"driver")
-			echo -n "$restore_stock_driver" ;;
-		"appfs")
-			echo -n "$restore_stock_appfs" ;;
-		"backupk")
-			echo -n "$restore_stock_backupk" ;;
-		"backupd")
-			echo -n "$restore_stock_backupd" ;;
-		"backupa")
-			echo -n "$restore_stock_backupa" ;;
-		"config")
-			echo -n "$restore_stock_config" ;;
-		"para")
-			echo -n "$restore_stock_para" ;;
+		"env")
+			echo -n "$restore_thingino_env" ;;
+		"ota")
+			echo -n "$restore_thingino_ota" ;;
 	esac
 }
 
@@ -107,9 +64,8 @@ function get_cf_partmtdblock() {
 
 function get_cf_partimg() {
 # Description: Return filename of the partition image for the queried partition name
-# Syntax: get_cf_partimg <partname>
+# Syntax: get_thingino_partimg <partname>
 	local partname="$1"
 
 	echo -n "${current_firmware}_${chip_group}_${partname}.bin"
 }
-

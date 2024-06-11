@@ -23,9 +23,9 @@ After all operations are finished, that file will be copied and renamed to:
 
 This kernel file will be booted on the next boot without having to pull the SD card and rename it manually. Seamless transition!
 
-If you are on OpenIPC firmware, SD card kernel specified with `new_sdcard_kernel` will be copied and renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using the SD card kernel for personal purposes, you should disable it.
+If you are on thingino firmware, SD card kernel specified with `new_sdcard_kernel` will be copied and renamed to `factory_0P3N1PC_kernel` instead. Unless you are using `wz_mini_hacks` or using the SD card kernel for personal purposes, you should disable it.
 
-> Note: This option still works when you are switching firmware. This is useful to switch from OpenIPC to stock firmware with installed `wz_mini_hacks`.
+> Note: This option still works when you are switching firmware. This is useful to switch from thingino to stock firmware with installed `wz_mini_hacks`.
 
 **✅ Option: `custom_scripts`**
 
@@ -33,13 +33,13 @@ With this option, you can write shell scripts and get them executed by the progr
 
 **✅ Option: `re_run`**
 
-With this option, you can let the program run twice. This is useful to let OpenIPC U-boot set some `env` variables on its first boot as it only sets these variables if the `env` partition is empty.
+With this option, you can let the program run twice. This is useful to let thingino U-boot set some `env` variables on its first boot as it only sets these variables if the `env` partition is empty.
 
 ## Debug options
 
 **✅ Option: `manual_current_firmware`**
 
-You can set it manually to fix the corrupted rootfs partition partition (for stock firmware) that makes `current_firmware` detection fail. If you are on OpenIPC, you also have to set `manual_model`.
+You can set it manually to fix the corrupted rootfs partition partition (for stock firmware) that makes `current_firmware` detection fail. If you are on thingino, you also have to set `manual_model`.
 
 
 **✅ Option: `manual_model`**

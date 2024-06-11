@@ -12,6 +12,8 @@ Example for T31:
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/setup_01.png)
 
+Then set `manual_model` value on `general.conf` with your device model from [this table](https://github.com/archandanime/wz_flash-helper?tab=readme-ov-file#supported-cameras)
+
 ## Notes
 
 - The program adds the `.wz_flash-helper` extension to its kernel file after it is finished to prevent itself from booting multiple times; therefore you need to rename it back if you want to run the program again.

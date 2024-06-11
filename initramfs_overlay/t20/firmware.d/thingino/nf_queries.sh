@@ -10,24 +10,10 @@ function get_nf_partnum() {
 	case "$1" in
 		"boot")
 			echo -n "0" ;;
-		"kernel")
-			echo -n "4" ;;
-		"root")
-			echo -n "5" ;;
-		"driver")
-			echo -n "6" ;;
-		"appfs")
-			echo -n "7" ;;
-		"backupk")
-			echo -n "8" ;;
-		"backupd")
-			echo -n "9" ;;
-		"backupa")
-			echo -n "10" ;;
-		"config")
-			echo -n "11" ;;
-		"para")
-			echo -n "12" ;;
+		"env")
+			echo -n "2" ;;
+		"ota")
+			echo -n "3" ;;
 	esac
 }
 
@@ -38,24 +24,10 @@ function get_nf_partfstype() {
 	case "$1" in
 		"boot")
 			echo -n "raw" ;;
-		"kernel")
+		"env")
 			echo -n "raw" ;;
-		"root")
-			echo -n "squashfs" ;;
-		"driver")
-			echo -n "squashfs" ;;
-		"appfs")
-			echo -n "squashfs" ;;
-		"backupk")
+		"ota")
 			echo -n "raw" ;;
-		"backupd")
-			echo -n "raw" ;;
-		"backupa")
-			echo -n "jffs2" ;;
-		"config")
-			echo -n "jffs2" ;;
-		"para")
-			echo -n "jffs2" ;;
 	esac
 }
 
@@ -70,18 +42,17 @@ function get_nf_partmtd() {
 
 function get_nf_partmtdblock() {
 # Description: Return the mtdblock device of the queried partition
-# Syntax: get_cf_partmtdblock <partname>
+# Syntax: get_nf_partmtdblock <partname>
 	local partname="$1"
-	local partnum=$(get_nf_partnum $partname)
+	local partnum=$(get_cf_partnum $partname)
 
 	echo -n "/dev/mtdblock$partnum"
 }
 
 function get_nf_partimg() {
 # Description: Return filename of the partition image for the queried partition name
-# Syntax: get_nf_partimg <partname>
+# Syntax: get_thingino_partimg <partname>
 	local partname="$1"
 
 	echo -n "${next_firmware}_${chip_group}_${partname}.bin"
 }
-

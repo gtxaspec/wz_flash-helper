@@ -45,6 +45,11 @@ function make_a_table() {
 	done
 }
 
+function import_vars_thingino() {
+	part_name=(boot env ota)
+	part_size=(256 64 16064)
+}
+
 function import_vars_t20_stock() {
 	## Pan v1, v2
 	part_name=(boot kernel root driver appfs backupk backupd backupa config para)
@@ -57,26 +62,18 @@ function import_vars_t31_stock() {
 	part_size=(256 1984 3904 3904 1984 3904 384 64)
 }
 
-function import_vars_wzmini() {
-	part_name=(boot kernel rootfs configs)
-	part_size=(256 3072 12672 384)
-}
 
-function import_vars_openipc() {
-	part_name=(boot env kernel rootfs rootfs-data)
-	part_size=(256 64 3072 10240 2752)
-}
 
 
 
 echo
-echo "---------- OpenIPC ----------"
-import_vars_openipc
-make_a_table "openipc" > /tmp/openipc_addresses
-column -s, -t < /tmp/openipc_addresses
+echo "---------- thingino ----------"
+import_vars_thingino
+make_a_table "thingino" > /tmp/thingino_addresses
+column -s, -t < /tmp/thingino_addresses
 echo
-echo "mtdparts: $(cat /tmp/openipc_addresses | cut -d ',' -f5 | tail -n +2 | tr '\n' ',' | sed 's/.$//')"
-rm /tmp/openipc_addresses
+echo "mtdparts: $(cat /tmp/thingino_addresses | cut -d ',' -f5 | tail -n +2 | tr '\n' ',' | sed 's/.$//')"
+rm /tmp/thingino_addresses
 
 echo
 echo "---------- T20 stock ----------"
@@ -96,14 +93,6 @@ echo
 echo "mtdparts: $(cat /tmp/t31_stock_addresses | cut -d ',' -f5 | tail -n +2 | tr '\n' ',' | sed 's/.$//')"
 rm /tmp/t31_stock_addresses
 
-echo
-echo "---------- wzmini ----------"
-import_vars_wzmini
-make_a_table "wzmini" > /tmp/wzmini_addresses
-column -s, -t < /tmp/wzmini_addresses
-echo
-echo "mtdparts: $(cat /tmp/wzmini_addresses | cut -d ',' -f5 | tail -n +2 | tr '\n' ',' | sed 's/.$//')"
-rm /tmp/wzmini_addresses
 
 
 

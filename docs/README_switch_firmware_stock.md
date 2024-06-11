@@ -2,8 +2,8 @@
 
 > **❗ WARNING:**
 > - DO NOT DISCONNECT POWER when the Switch firmware operation is going on. Doing this would brick your camera.
-> - DO NOT share `initramfs.log` when you are switching to OpenIPC with the `setup_openipc_env.sh` script, this log file contains your Wi-Fi name and password.
-> - Currently Wi-Fi and SD card don't work on OpenIPC firmware yet until they are fixed upstream
+> - DO NOT share `initramfs.log` when you are switching to thingino with the `setup_thingino_env.sh` script, this log file contains your Wi-Fi name and password.
+> - Currently Wi-Fi and SD card don't work on thingino firmware yet until they are fixed upstream
 
 ## Index
 
@@ -11,7 +11,7 @@
 
 Switch to stock firmware
 
-[Switch to OpenIPC firmware](README_switch_firmware_openipc.md)
+[Switch to thingino firmware](README_switch_firmware_thingino.md)
 
 ## Overview
 

@@ -11,19 +11,19 @@ function get_cf_partnum() {
 		"boot")
 			echo -n "0" ;;
 		"kernel")
-			echo -n "6" ;;
+			echo -n "4" ;;
 		"rootfs")
-			echo -n "7" ;;
+			echo -n "5" ;;
 		"app")
-			echo -n "8" ;;
+			echo -n "6" ;;
 		"kback")
-			echo -n "9" ;;
+			echo -n "7" ;;
 		"aback")
-			echo -n "10" ;;
+			echo -n "8" ;;
 		"cfg")
-			echo -n "11" ;;
+			echo -n "9" ;;
 		"para")
-			echo -n "12" ;;
+			echo -n "10" ;;
 	esac
 }
 
@@ -94,7 +94,7 @@ function get_cf_partmtdblock() {
 
 function get_cf_partimg() {
 # Description: Return filename of the partition image for the queried partition name
-# Syntax: get_openipc_partimg <partname>
+# Syntax: get_cf_partimg <partname>
 	local partname="$1"
 
 	echo -n "${current_firmware}_${chip_group}_${partname}.bin"

@@ -1,3 +1,3 @@
 [submodule "firmware"]
 	path = firmware
-	url = https://github.com/OpenIPC/firmware.git
+	url = https://github.com/themactep/thingino-firmware.git

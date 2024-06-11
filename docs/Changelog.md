@@ -1,5 +1,8 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | **Changelog** | [Limitation](Limitation.md)
 
+## v1.0.0
+- Add support for thingino, remove support for OpenIPC
+
 ## v0.9.3
 
 - Fix a message is not displayed with color

@@ -1,5 +1,7 @@
 [Introduction](README.md) | [Setup](README_setup.md) | [Backup](README_backup.md) | [Restore](README_restore.md) | [Switch firmware](README_switch_firmware.md) | [Other options](README_other_options.md) | [Screenshots](README_screenshots.md) | [Build](README_build.md) | [FAQs](README_FAQs.md) | [Changelog](Changelog.md) | **Limitation**
 
+- thingino `kernel`, `rootfs` and `rootfs_data` partitions can't be detected to proper backup/restore them due to the limitation of hard-coded partition size and offset.
+
 - There is no way to read/write/format UBI partitions on NAND flash yet, same with bad block management.
 
 - Currently, creating new profiles with flash configuration on `.json` or `.yaml` files has not been implemented.

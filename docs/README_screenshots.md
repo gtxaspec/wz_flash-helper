@@ -12,6 +12,10 @@
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_restore.png)
 
-### Switch firmware from T31 stock to OpenIPC (with setup_openipc_env.sh script)
+### Switch firmware from T31 stock to thingino (with setup_thingino_env.sh script)
 
 ![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_switch_firmware.png)
+
+## Running setup_thingino_env.sh script
+
+![Alt text](https://raw.githubusercontent.com/archandanime/wz_flash-helper/main/images/sc_setup_thingino_env.png)

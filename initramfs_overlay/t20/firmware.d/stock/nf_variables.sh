@@ -12,3 +12,6 @@ nf_images_path="/sdcard/wz_flash-helper/restore/stock/"
 
 ## Name of SD card kernel
 nf_sdcard_kernel_name="factory_ZMC6tiIDQN"
+
+## Name of update flash image
+nf_firmware_filename="stock_${chip_group}_firmware.bin"

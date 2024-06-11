@@ -1,58 +1,37 @@
-diff --git a/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config b/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config
-index abb91073..d12cea82 100644
---- a/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config
-+++ b/br-ext-chip-ingenic/board/t31/kernel/t31.generic.config
-@@ -272,7 +272,7 @@ CONFIG_UIDGID_CONVERTED=y
+diff --git a/board/ingenic/xburst1/kernel/3.10/t31.generic.config b/board/ingenic/xburst1/kernel/3.10/t31.generic.config
+index aa4eb87c..fa4b54e1 100644
+--- a/board/ingenic/xburst1/kernel/3.10/t31.generic.config
++++ b/board/ingenic/xburst1/kernel/3.10/t31.generic.config
+@@ -273,7 +273,9 @@ CONFIG_UIDGID_CONVERTED=y
+ # CONFIG_SCHED_AUTOGROUP is not set
  # CONFIG_SYSFS_DEPRECATED is not set
  # CONFIG_RELAY is not set
- CONFIG_BLK_DEV_INITRD=y
--CONFIG_INITRAMFS_SOURCE=""
+-# CONFIG_BLK_DEV_INITRD is not set
++CONFIG_BLK_DEV_INITRD=y
 +CONFIG_INITRAMFS_SOURCE="/tmp/initramfs.cpio"
- CONFIG_RD_GZIP=y
- # CONFIG_RD_BZIP2 is not set
- # CONFIG_RD_LZMA is not set
-@@ -1468,7 +1468,7 @@ CONFIG_MMC_BLOCK_BOUNCE=y
- #
- # MMC/SD/SDIO Host Controller Drivers
- #
--CONFIG_JZMMC_V12=y
-+CONFIG_JZMMC_V12=m
- CONFIG_JZMMC_V12_SDMA=y
- CONFIG_JZMMC_V12_MMC0=y
- # CONFIG_JZMMC_V12_MMC0_PA_4BIT is not set
-@@ -1661,9 +1661,9 @@ CONFIG_GENERIC_ACL=y
++CONFIG_RD_GZIP=y
+ CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+ CONFIG_SYSCTL=y
+ CONFIG_ANON_INODES=y
+@@ -1540,8 +1542,9 @@ CONFIG_GENERIC_ACL=y
  #
  # DOS/FAT/NT Filesystems
  #
--CONFIG_FAT_FS=m
 +CONFIG_FAT_FS=y
  # CONFIG_MSDOS_FS is not set
--CONFIG_VFAT_FS=m
+-# CONFIG_VFAT_FS is not set
 +CONFIG_VFAT_FS=y
- CONFIG_FAT_DEFAULT_CODEPAGE=437
- CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
  # CONFIG_NTFS_FS is not set
-@@ -1894,7 +1894,9 @@ CONFIG_HAVE_ARCH_KGDB=y
+ 
+ #
+@@ -1770,7 +1773,9 @@ CONFIG_DYNAMIC_DEBUG=y
  # CONFIG_TEST_STRING_HELPERS is not set
  # CONFIG_TEST_KSTRTOX is not set
  CONFIG_EARLY_PRINTK=y
 -# CONFIG_CMDLINE_BOOL is not set
 +CONFIG_CMDLINE_BOOL=y
-+CONFIG_CMDLINE="mem=94M rmem=34M@0x5E00000 console=ttyS1,115200n8 rdinit=/init mtdparts=jz_sfc:256K@0(boot),16384k@0(all),64K@256K(openipc_env),3072K@320K(openipc_kernel),10240K@3392K(openipc_rootfs),2752K@13632K(openipc_rootfs-data),1984K@256K(stock_kernel),3904K@2240K(stock_rootfs),3904K@6144K(stock_app),1984K@10048K(stock_kback),3904K@12032K(stock_aback),384K@15936K(stock_cfg),64K@16320K(stock_para),3072K@256K(wzmini_kernel),12672K@2240K(wzmini_rootfs),384K@16000K(wzmini_configs) nogmac"
++CONFIG_CMDLINE="mem=94M rmem=34M@0x5E00000 console=ttyS1,115200n8 rdinit=/init mtdparts=jz_sfc:256K@0(boot),16384k@0(all),64K@256K(thingino_env),16064K@320K(thingino_ota),1984K@256K(stock_kernel),3904K@2240K(stock_rootfs),3904K@6144K(stock_app),1984K@10048K(stock_kback),3904K@12032K(stock_aback),384K@15936K(stock_cfg),64K@16320K(stock_para) nogmac"
 +CONFIG_CMDLINE_OVERRIDE=y
  # CONFIG_DEBUG_STACKOVERFLOW is not set
  # CONFIG_RUNTIME_DEBUG is not set
  # CONFIG_DEBUG_ZBOOT is not set
-diff --git a/br-ext-chip-ingenic/configs/t31_ultimate_defconfig b/br-ext-chip-ingenic/configs/t31_ultimate_defconfig
-index cbdc683b..7f35b960 100644
---- a/br-ext-chip-ingenic/configs/t31_ultimate_defconfig
-+++ b/br-ext-chip-ingenic/configs/t31_ultimate_defconfig
-@@ -27,7 +27,7 @@ BR2_TOOLCHAIN_BUILDROOT_USE_SSP=y
- # Kernel
- BR2_LINUX_KERNEL=y
- BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
--BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="https://github.com/openipc/linux/archive/$(OPENIPC_KERNEL).tar.gz"
-+BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="https://github.com/gtxaspec/openipc_linux/archive/$(OPENIPC_KERNEL).tar.gz"
- BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
- BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(EXTERNAL_VENDOR)/board/t31/kernel/t31.generic.config"
- BR2_LINUX_KERNEL_UIMAGE=y

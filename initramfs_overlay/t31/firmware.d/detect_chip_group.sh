@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Description: Detect "chip group" to download the correct OpenIPC uboot/build
+# Description: Detect "chip group" to download the correct thingino U-boot/build
 #
 
 function detect_chip_group() {

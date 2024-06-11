@@ -2,13 +2,11 @@
 
 ## Overview
 
-wz_flash-helper uses OpenIPC kernel source. The compilation steps are the same as building OpenIPC kernels after the kernel config files are patched.
+wz_flash-helper uses thingino kernel source. The compilation steps are the same as building thingino kernels after the kernel config files are patched.
 
 ## ‍Prerequisites
 
-A Linux distro with `git`, `fakeroot`, `cpio` and other [Buildroot mandatory packages](https://buildroot.org/downloads/manual/manual.html#requirement-mandatory) installed. 2GB free disk space is also required.
-
-Building with WSL2 is NOT supported.
+Ubuntu 24(on a virtual machine or Linux Container) with `git`, `fakeroot`, `cpio` and other [Buildroot mandatory packages](https://buildroot.org/downloads/manual/manual.html#requirement-mandatory) installed. 500MB free disk space is also required for each SoC that you build.
 
 ## Build
 
@@ -20,9 +18,19 @@ git clone --recurse-submodules https://github.com/archandanime/wz_flash-helper.g
 cd wz_flash-helper
 ```
 
-This takes between 30 seconds and 15 minutes, depending on your Internet speed.
+**2. Patch kernel source**
+```
+./build.sh patch
 
-**2. Build**
+```
+
+**3. Install packages that are required by thingino Buildroot**
+```
+cd thingino-firmware
+BOARD=<profile> make bootstrap
+```
+
+**4. Build**
 
 To build a kernel, run:
 ```

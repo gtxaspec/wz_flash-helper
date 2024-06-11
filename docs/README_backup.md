@@ -25,7 +25,7 @@ restore_partitions="no"
 **Step 5:** Check your SD card for the backup directory:
 
 - For stock firmware: `wz_flash-helper/backup/stock/` and `Wyze_factory_backup/`
-- For OpenIPC firmware: `wz_flash-helper/backup/openipc/`
+- For thingino firmware: `wz_flash-helper/backup/thingino/`
 
 Under those directories, there are directories with 4-digit ID names where partition backup images are stored.
 

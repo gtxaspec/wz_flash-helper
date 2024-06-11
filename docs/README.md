@@ -4,7 +4,7 @@
 
 - Backup partitions
 - Restore partitions
-- Switch between stock and OpenIPC firmware
+- Switch between stock and [thingino](https://github.com/themactep/thingino-firmware) firmware
 - No need to disassemble your camera
 - Dry run option debugging
 - Initramfs shell for manual debugging if you have serial connection
@@ -68,6 +68,7 @@ It is also possible to brick your camera if you corrupt the U-boot partition wit
 
 ## Credits
 
-- Gtxaspec with his ideas, tips, hard work on OpenIPC drivers, U-boot SD card kernel booting, and testing.
+- Gtxaspec with his ideas, tips, hard work on kernel drivers, U-boot, and testing.
 - Mnakada with their Docker image to build the SD card kernel from [their repo](https://github.com/mnakada/atomcam_tools)
 - [OpenIPC](https://github.com/OpenIPC) project and people with their tools, firmware, and tips.
+- [thingino](https://github.com/themactep/thingino-firmware) project and people with their tools, firmware, and tips.

@@ -16,7 +16,7 @@ function detect_model() {
 	local mnt_config="/mnt_${config_partname}"
 
 	mkdir $mnt_config
-	mount -o ro -t $partfstype $partmtdblock $mnt_config
+	mount -o ro -t $partfstype $partmtdblock $mnt_config || { msg_color red "Unable to mount $config_partname" ; return 1 ; }
 
 	if cat $mnt_config/$model_config_file | grep -q "WYZECP1_JEF" ; then
 		model="pan_v1"

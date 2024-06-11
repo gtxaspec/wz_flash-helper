@@ -6,7 +6,7 @@ wz_flash-helper uses thingino kernel source. The compilation steps are the same 
 
 ## ‍Prerequisites
 
-Ubuntu 24(on a virtual machine or Linux Container) with `git`, `fakeroot`, `cpio` and other [Buildroot mandatory packages](https://buildroot.org/downloads/manual/manual.html#requirement-mandatory) installed. 500MB free disk space is also required for each SoC that you build.
+Ubuntu 24(on a virtual machine or Linux Container) with `git`, `fakeroot`, `cpio` and other [Buildroot mandatory packages](https://buildroot.org/downloads/manual/manual.html#requirement-mandatory) installed. 1GB free disk space is also required for each SoC that you build.
 
 ## Build
 
@@ -54,4 +54,4 @@ To build everything, run:
 
 Compiled kernels and releases will be saved at `output/` directory.
 
-On the first time you build a kernel/release, it might take a long time to download necessary toolchains before the compiling, after that it takes only about a minute.
+On the first time you build a kernel/release, it might take a long time to download necessary toolchains before the compiling, after that it takes only about a couple of minutes.
